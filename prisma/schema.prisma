@@ -16,26 +16,42 @@ datasource db {
 
 
 model User {
-  id               Int             @id @default(autoincrement())
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  id                 Int               @id @default(autoincrement())
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
 
-  username         String          @unique
-  phone            String?
-  email            String          @unique
-  emailVerified    Boolean         @default(false)
-  password         String
-  referralCode     String?         @unique
+  username           String            @unique
+  phone              String?
+  email              String            @unique
+  emailVerified      Boolean           @default(false)
+  password           String
+  referralCode       String?           @unique
 
-  wallet           Wallet?
-  withdraws        Withdraw[]
-  userNFTs         UserNFT[]
-  agreements       Agreement[]
-  salesSold        Sale[]          @relation("SaleSeller")
-  salesBought      Sale[]          @relation("SaleBuyer")
-  referralsMade    Referral[]      @relation("UserReferralsMade")
-  referralsReceived Referral[]     @relation("UserReferralsReceived")
-  rewards          Reward[]
+  wallet             Wallet?
+  withdraws          Withdraw[]
+  userNFTs           UserNFT[]
+  agreements         Agreement[]
+  salesSold          Sale[]            @relation("SaleSeller")
+  salesBought        Sale[]            @relation("SaleBuyer")
+  referralsMade      Referral[]        @relation("UserReferralsMade")
+  referralsReceived  Referral[]        @relation("UserReferralsReceived")
+  rewards            Reward[]
+  trialFunds         TrialFund[]
+
+  verifications      Verification[] 
+}
+
+model Verification {
+  id          Int       @id @default(autoincrement())
+  email       String
+  code        String
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int?      @unique
+
+  @@unique([email])    
 }
 
 model NFT {
@@ -80,6 +96,8 @@ model Machine {
 
   agreements   Agreement[]
   rewards      Reward[]
+
+  TrialFund TrialFund[]
 }
 
 model Agreement {
@@ -196,6 +214,22 @@ model Withdraw {
   userId    Int
 }
 
+model TrialFund {
+  id          Int               @id @default(autoincrement())
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int               @unique
+  amount      Decimal           @default(200)
+  grantedAt   DateTime          @default(now())
+  expiresAt   DateTime
+  status      TrialFundStatus   @default(ACTIVE)
+  recoveredAt DateTime?
+
+  machine     Machine?          @relation(fields: [machineId], references: [id])
+  machineId   Int?
+
+  usedAmount  Decimal   @default(0)
+}
+
 
 enum WithdrawStatus {
   PENDING
@@ -216,4 +250,9 @@ enum AgreementStatus {
 enum ProductType {
   NFT
   MACHINE
+}
+
+enum TrialFundStatus {
+  ACTIVE
+  RECOVERED
 }

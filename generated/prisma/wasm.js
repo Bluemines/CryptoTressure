@@ -129,6 +129,15 @@ exports.Prisma.UserScalarFieldEnum = {
   referralCode: 'referralCode'
 };
 
+exports.Prisma.VerificationScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  code: 'code',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  userId: 'userId'
+};
+
 exports.Prisma.NFTScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -241,6 +250,18 @@ exports.Prisma.WithdrawScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.TrialFundScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  grantedAt: 'grantedAt',
+  expiresAt: 'expiresAt',
+  status: 'status',
+  recoveredAt: 'recoveredAt',
+  machineId: 'machineId',
+  usedAmount: 'usedAmount'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -276,8 +297,14 @@ exports.WithdrawStatus = exports.$Enums.WithdrawStatus = {
   SUSPENDED: 'SUSPENDED'
 };
 
+exports.TrialFundStatus = exports.$Enums.TrialFundStatus = {
+  ACTIVE: 'ACTIVE',
+  RECOVERED: 'RECOVERED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
+  Verification: 'Verification',
   NFT: 'NFT',
   UserNFT: 'UserNFT',
   Machine: 'Machine',
@@ -288,7 +315,8 @@ exports.Prisma.ModelName = {
   Commission: 'Commission',
   Reward: 'Reward',
   Wallet: 'Wallet',
-  Withdraw: 'Withdraw'
+  Withdraw: 'Withdraw',
+  TrialFund: 'TrialFund'
 };
 
 /**

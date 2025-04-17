@@ -35,6 +35,22 @@ model User {
   referralsMade     Referral[]  @relation("UserReferralsMade")
   referralsReceived Referral[]  @relation("UserReferralsReceived")
   rewards           Reward[]
+  trialFunds        TrialFund[]
+
+  verifications Verification[]
+}
+
+model Verification {
+  id        Int      @id @default(autoincrement())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int?  @unique
+
+  @@unique([email])
 }
 
 model NFT {
@@ -79,6 +95,8 @@ model Machine {
 
   agreements Agreement[]
   rewards    Reward[]
+
+  TrialFund TrialFund[]
 }
 
 model Agreement {
@@ -195,6 +213,20 @@ model Withdraw {
   userId Int
 }
 
+model TrialFund {
+  id          Int             @id @default(autoincrement())
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int             @unique
+  amount      Decimal         @default(200)
+  grantedAt   DateTime        @default(now())
+  expiresAt   DateTime
+  status      TrialFundStatus @default(ACTIVE)
+  recoveredAt DateTime?
+
+  machine   Machine? @relation(fields: [machineId], references: [id])
+  machineId Int?
+}
+
 enum WithdrawStatus {
   PENDING
   APPROVED
@@ -214,4 +246,9 @@ enum AgreementStatus {
 enum ProductType {
   NFT
   MACHINE
+}
+
+enum TrialFundStatus {
+  ACTIVE
+  RECOVERED
 }
