@@ -1,7 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto, SendEmailDto, SignupDto } from './dto';
+import { LoginDto, SendEmailDto, SignupDto } from './dto';
 import { ApiResponse } from 'src/common';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +25,31 @@ export class AuthController {
   }
 
   @Post('signin')
-  async signin(@Body() dto: AuthDto) {
-    return this.authService.signin(dto);
+  async signin(@Body() dto: LoginDto) {
+    const user = await this.authService.signin(dto);
+
+    return new ApiResponse(200, user, 'User Logged In Successfully');
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getCurrentUser(@Req() request: any): Promise<ApiResponse> {
+    const user = await this.authService.getCurrentUser(request.user.id);
+
+    return new ApiResponse(200, user, 'User Fetched Successfully');
+  }
+
+  @Post('request-password-reset')
+  async requestReset(
+    @Body() dto: RequestPasswordResetDto,
+  ): Promise<ApiResponse<null>> {
+    await this.authService.requestPasswordReset(dto);
+    return new ApiResponse(200, null, 'Password reset code sent');
+  }
+
+  @Post('reset-password')
+  async reset(@Body() dto: ResetPasswordDto): Promise<ApiResponse<null>> {
+    await this.authService.resetPassword(dto);
+    return new ApiResponse(200, null, 'Password has been reset');
   }
 }

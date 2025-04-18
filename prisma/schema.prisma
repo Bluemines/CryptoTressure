@@ -39,6 +39,8 @@ model User {
   trialFunds         TrialFund[]
 
   verifications      Verification[] 
+
+  PasswordReset PasswordReset[]
 }
 
 model Verification {
@@ -53,6 +55,19 @@ model Verification {
 
   @@unique([email])    
 }
+
+model PasswordReset {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int      @unique
+  code       String
+  expiresAt  DateTime
+  used       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([expiresAt])
+}
+
 
 model NFT {
   id           Int       @id @default(autoincrement())

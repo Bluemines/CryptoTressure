@@ -225,6 +225,8 @@ model TrialFund {
 
   machine   Machine? @relation(fields: [machineId], references: [id])
   machineId Int?
+
+  usedAmount Decimal @default(0)
 }
 
 enum WithdrawStatus {

@@ -138,6 +138,15 @@ exports.Prisma.VerificationScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.PasswordResetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  code: 'code',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.NFTScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -305,6 +314,7 @@ exports.TrialFundStatus = exports.$Enums.TrialFundStatus = {
 exports.Prisma.ModelName = {
   User: 'User',
   Verification: 'Verification',
+  PasswordReset: 'PasswordReset',
   NFT: 'NFT',
   UserNFT: 'UserNFT',
   Machine: 'Machine',

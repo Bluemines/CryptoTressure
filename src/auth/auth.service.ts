@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { AuthDto, SendEmailDto, SignupDto } from './dto';
+import { LoginDto, SendEmailDto, SignupDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ConfigService } from '@nestjs/config';
 import * as argon from 'argon2';
 import { ApiError } from 'src/common';
 import { generateCode } from 'src/common/helpers/generateCode';
 import { MailService } from 'src/common/services/mail.service';
-import { SchedulerRegistry } from '@nestjs/schedule';
 import { TrialFundService } from 'src/common/services/trial-fund.service';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +17,8 @@ export class AuthService {
     private prisma: PrismaService,
     private mailService: MailService,
     private readonly trialFundSvc: TrialFundService,
+    private jwt: JwtService,
+    private config: ConfigService,
   ) {}
 
   async sendEmail(dto: SendEmailDto): Promise<void> {
@@ -91,7 +95,100 @@ export class AuthService {
     await this.trialFundSvc.scheduleRecovery(result);
   }
 
-  async signin(dto: AuthDto) {
-    return { msg: 'I have signed in' };
+  async signin(dto: LoginDto) {
+    const { email, password } = dto;
+
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      throw new ApiError(400, 'Invalid credentials');
+    }
+
+    const match = await argon.verify(user.password, password);
+    if (!match) {
+      throw new ApiError(400, 'Invalid credentials');
+    }
+
+    const payload = { sub: user.id, email };
+
+    const secret = this.config.get<string>('JWT_SECRET');
+
+    const token = await this.jwt.signAsync(payload, {
+      expiresIn: '1d',
+      secret: secret,
+    });
+
+    return { access_token: token };
+  }
+
+  async getCurrentUser(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        emailVerified: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(404, 'User not found');
+    }
+
+    return user;
+  }
+
+  async requestPasswordReset(dto: RequestPasswordResetDto): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+    if (!user) throw new ApiError(404, 'Email not found');
+
+    const code = generateCode(6);
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    await this.prisma.passwordReset.upsert({
+      where: { userId: user.id },
+      create: { userId: user.id, code, expiresAt },
+      update: { code, expiresAt, used: false },
+    });
+
+    await this.mailService.sendMail(
+      dto.email,
+      'Your password reset code',
+      `<p>Your code is <b>${code}</b> and expires at ${expiresAt.toLocaleTimeString()}.</p>`,
+    );
+  }
+
+  async resetPassword(dto: ResetPasswordDto): Promise<void> {
+    const { email, code, newPassword, confirmPassword } = dto;
+    if (newPassword !== confirmPassword) {
+      throw new ApiError(400, 'Passwords do not match');
+    }
+
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user) throw new ApiError(404, 'Email not found');
+
+    const pr = await this.prisma.passwordReset.findUnique({
+      where: { userId: user.id },
+    });
+    if (!pr || pr.used) throw new ApiError(400, 'No reset requested');
+    if (pr.code !== code) throw new ApiError(400, 'Invalid code');
+    if (pr.expiresAt < new Date()) throw new ApiError(400, 'Code expired');
+
+    const hash = await argon.hash(newPassword);
+
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: user.id },
+        data: { password: hash },
+      }),
+      this.prisma.passwordReset.update({
+        where: { userId: user.id },
+        data: { used: true },
+      }),
+    ]);
   }
 }
