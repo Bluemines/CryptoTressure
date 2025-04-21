@@ -305,7 +305,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\MY COMPUTER\\Downloads\\New folder\\generated\\prisma",
+      "value": "G:\\Projects\\CryptoTreasure\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -319,7 +319,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\MY COMPUTER\\Downloads\\New folder\\prisma\\schema.prisma",
+    "sourceFilePath": "G:\\Projects\\CryptoTreasure\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -333,11 +333,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:8Fj3Kp9LdZ4xQw6Ac2Rm@localhost:5434/nest?schema=public"
+        "value": null
       }
     }
   },
