@@ -25,19 +25,21 @@ model User {
   emailVerified Boolean @default(false)
   password      String
   referralCode  String? @unique
+  role          Role    @default(USER)
 
   wallet            Wallet?
   withdraws         Withdraw[]
-  userNFTs          UserNFT[]
+  userProducts      UserProduct[]
   agreements        Agreement[]
-  salesSold         Sale[]      @relation("SaleSeller")
-  salesBought       Sale[]      @relation("SaleBuyer")
-  referralsMade     Referral[]  @relation("UserReferralsMade")
-  referralsReceived Referral[]  @relation("UserReferralsReceived")
+  salesSold         Sale[]        @relation("SaleSeller")
+  salesBought       Sale[]        @relation("SaleBuyer")
+  referralsMade     Referral[]    @relation("UserReferralsMade")
+  referralsReceived Referral[]    @relation("UserReferralsReceived")
   rewards           Reward[]
-  trialFunds        TrialFund[]
+  trialFund         TrialFund?
 
-  verifications Verification[]
+  verifications  Verification[]
+  passwordResets PasswordReset[]
 }
 
 model Verification {
@@ -53,33 +55,19 @@ model Verification {
   @@unique([email])
 }
 
-model NFT {
+model PasswordReset {
   id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int      @unique
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
-  name        String
-  price       Decimal
-  description String?
-  dailyIncome Decimal
-  fee         Decimal
-  level       Int
-
-  userNFTs UserNFT[]
+  @@index([expiresAt])
 }
 
-model UserNFT {
-  id         Int      @id @default(autoincrement())
-  acquiredAt DateTime @default(now())
-
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
-
-  nft   NFT @relation(fields: [nftId], references: [id], onDelete: Cascade)
-  nftId Int
-}
-
-model Machine {
+model Product {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,13 +78,43 @@ model Machine {
   price       Decimal
   dailyIncome Decimal
   fee         Decimal
-  rentalDays  Int
   level       Int
+  rentalDays  Int?
+  deletedAt   DateTime?
 
-  agreements Agreement[]
-  rewards    Reward[]
+  userProducts UserProduct[]
+  agreements   Agreement[]
+  rewards      Reward[]
+  trialFunds   TrialFund[]
+  saleItems    SaleItem[]
+}
 
-  TrialFund TrialFund[]
+model UserProduct {
+  id         Int      @id @default(autoincrement())
+  acquiredAt DateTime @default(now())
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+
+  @@unique([userId, productId])
+}
+
+model Referral {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  code String @unique
+
+  referrer   User @relation("UserReferralsMade", fields: [referrerId], references: [id], onDelete: Cascade)
+  referrerId Int
+
+  referred   User @relation("UserReferralsReceived", fields: [referredId], references: [id], onDelete: Cascade)
+  referredId Int
+
+  commissions Commission[]
 }
 
 model Agreement {
@@ -111,8 +129,8 @@ model Agreement {
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
-  machine   Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
-  machineId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
 }
 
 model Sale {
@@ -137,39 +155,13 @@ model SaleItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  productType ProductType
-  productId   Int
-  quantity    Int
-
   sale   Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
   saleId Int
-}
 
-model Referral {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
 
-  code String @unique
-
-  referrer   User @relation("UserReferralsMade", fields: [referrerId], references: [id], onDelete: Cascade)
-  referrerId Int
-
-  referred   User @relation("UserReferralsReceived", fields: [referredId], references: [id], onDelete: Cascade)
-  referredId Int
-
-  commissions Commission[]
-}
-
-model Commission {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  amount     Decimal
-  percentage Float
-
-  referral   Referral @relation(fields: [referralId], references: [id], onDelete: Cascade)
-  referralId Int
+  quantity Int
 }
 
 model Reward {
@@ -184,8 +176,20 @@ model Reward {
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 
-  machine   Machine @relation(fields: [machineId], references: [id], onDelete: Cascade)
-  machineId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+}
+
+model Commission {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  amount     Decimal
+  percentage Float
+
+  referral   Referral @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  referralId Int
 }
 
 model Wallet {
@@ -214,19 +218,19 @@ model Withdraw {
 }
 
 model TrialFund {
-  id          Int             @id @default(autoincrement())
-  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int             @unique
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
   amount      Decimal         @default(200)
   grantedAt   DateTime        @default(now())
   expiresAt   DateTime
   status      TrialFundStatus @default(ACTIVE)
   recoveredAt DateTime?
-
-  machine   Machine? @relation(fields: [machineId], references: [id])
-  machineId Int?
-
-  usedAmount Decimal @default(0)
+  usedAmount  Decimal         @default(0)
 }
 
 enum WithdrawStatus {
@@ -253,4 +257,9 @@ enum ProductType {
 enum TrialFundStatus {
   ACTIVE
   RECOVERED
+}
+
+enum Role {
+  USER
+  ADMIN
 }

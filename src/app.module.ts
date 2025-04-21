@@ -4,7 +4,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CommonModule } from './common/common.module';
-import { MachineService } from './machine/machine.service';
+import { ProductService } from './product/product.service';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { MachineService } from './machine/machine.service';
     AuthModule,
     UserModule,
     CommonModule,
+    ProductModule,
   ],
-  providers: [MachineService],
+  providers: [ProductService],
 })
 export class AppModule {}

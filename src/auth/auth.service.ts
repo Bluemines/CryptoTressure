@@ -81,9 +81,15 @@ export class AuthService {
 
       await tx.verification.delete({ where: { email } });
 
+      // Correct that later
+      const defaultProduct = await tx.product.findFirst({
+        where: {},
+      });
+
       return tx.trialFund.create({
         data: {
-          userId: user.id,
+          user: { connect: { id: user.id } },
+          product: { connect: { id: defaultProduct.id } },
           amount: 200,
           grantedAt: new Date(),
           expiresAt: expires,

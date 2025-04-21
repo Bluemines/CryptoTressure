@@ -126,7 +126,8 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   password: 'password',
-  referralCode: 'referralCode'
+  referralCode: 'referralCode',
+  role: 'role'
 };
 
 exports.Prisma.VerificationScalarFieldEnum = {
@@ -147,26 +148,7 @@ exports.Prisma.PasswordResetScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.NFTScalarFieldEnum = {
-  id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  name: 'name',
-  price: 'price',
-  description: 'description',
-  dailyIncome: 'dailyIncome',
-  fee: 'fee',
-  level: 'level'
-};
-
-exports.Prisma.UserNFTScalarFieldEnum = {
-  id: 'id',
-  acquiredAt: 'acquiredAt',
-  userId: 'userId',
-  nftId: 'nftId'
-};
-
-exports.Prisma.MachineScalarFieldEnum = {
+exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -176,8 +158,24 @@ exports.Prisma.MachineScalarFieldEnum = {
   price: 'price',
   dailyIncome: 'dailyIncome',
   fee: 'fee',
+  level: 'level',
   rentalDays: 'rentalDays',
-  level: 'level'
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.UserProductScalarFieldEnum = {
+  id: 'id',
+  acquiredAt: 'acquiredAt',
+  userId: 'userId',
+  productId: 'productId'
+};
+
+exports.Prisma.ReferralScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  code: 'code',
+  referrerId: 'referrerId',
+  referredId: 'referredId'
 };
 
 exports.Prisma.AgreementScalarFieldEnum = {
@@ -188,7 +186,7 @@ exports.Prisma.AgreementScalarFieldEnum = {
   endDate: 'endDate',
   status: 'status',
   userId: 'userId',
-  machineId: 'machineId'
+  productId: 'productId'
 };
 
 exports.Prisma.SaleScalarFieldEnum = {
@@ -205,27 +203,9 @@ exports.Prisma.SaleItemScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  productType: 'productType',
+  saleId: 'saleId',
   productId: 'productId',
-  quantity: 'quantity',
-  saleId: 'saleId'
-};
-
-exports.Prisma.ReferralScalarFieldEnum = {
-  id: 'id',
-  createdAt: 'createdAt',
-  code: 'code',
-  referrerId: 'referrerId',
-  referredId: 'referredId'
-};
-
-exports.Prisma.CommissionScalarFieldEnum = {
-  id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  amount: 'amount',
-  percentage: 'percentage',
-  referralId: 'referralId'
+  quantity: 'quantity'
 };
 
 exports.Prisma.RewardScalarFieldEnum = {
@@ -236,7 +216,16 @@ exports.Prisma.RewardScalarFieldEnum = {
   date: 'date',
   status: 'status',
   userId: 'userId',
-  machineId: 'machineId'
+  productId: 'productId'
+};
+
+exports.Prisma.CommissionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  amount: 'amount',
+  percentage: 'percentage',
+  referralId: 'referralId'
 };
 
 exports.Prisma.WalletScalarFieldEnum = {
@@ -262,12 +251,12 @@ exports.Prisma.WithdrawScalarFieldEnum = {
 exports.Prisma.TrialFundScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  productId: 'productId',
   amount: 'amount',
   grantedAt: 'grantedAt',
   expiresAt: 'expiresAt',
   status: 'status',
   recoveredAt: 'recoveredAt',
-  machineId: 'machineId',
   usedAmount: 'usedAmount'
 };
 
@@ -285,14 +274,14 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
 exports.AgreementStatus = exports.$Enums.AgreementStatus = {
   ACTIVE: 'ACTIVE',
   CLOSED: 'CLOSED'
-};
-
-exports.ProductType = exports.$Enums.ProductType = {
-  NFT: 'NFT',
-  MACHINE: 'MACHINE'
 };
 
 exports.RewardStatus = exports.$Enums.RewardStatus = {
@@ -315,15 +304,14 @@ exports.Prisma.ModelName = {
   User: 'User',
   Verification: 'Verification',
   PasswordReset: 'PasswordReset',
-  NFT: 'NFT',
-  UserNFT: 'UserNFT',
-  Machine: 'Machine',
+  Product: 'Product',
+  UserProduct: 'UserProduct',
+  Referral: 'Referral',
   Agreement: 'Agreement',
   Sale: 'Sale',
   SaleItem: 'SaleItem',
-  Referral: 'Referral',
-  Commission: 'Commission',
   Reward: 'Reward',
+  Commission: 'Commission',
   Wallet: 'Wallet',
   Withdraw: 'Withdraw',
   TrialFund: 'TrialFund'

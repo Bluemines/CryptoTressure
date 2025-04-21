@@ -16,31 +16,31 @@ datasource db {
 
 
 model User {
-  id                 Int               @id @default(autoincrement())
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
+  id                Int                @id @default(autoincrement())
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 
-  username           String            @unique
-  phone              String?
-  email              String            @unique
-  emailVerified      Boolean           @default(false)
-  password           String
-  referralCode       String?           @unique
+  username          String             @unique
+  phone             String?
+  email             String             @unique
+  emailVerified     Boolean            @default(false)
+  password          String
+  referralCode      String?            @unique
+  role              Role               @default(USER)
 
-  wallet             Wallet?
-  withdraws          Withdraw[]
-  userNFTs           UserNFT[]
-  agreements         Agreement[]
-  salesSold          Sale[]            @relation("SaleSeller")
-  salesBought        Sale[]            @relation("SaleBuyer")
-  referralsMade      Referral[]        @relation("UserReferralsMade")
-  referralsReceived  Referral[]        @relation("UserReferralsReceived")
-  rewards            Reward[]
-  trialFunds         TrialFund[]
+  wallet            Wallet?
+  withdraws         Withdraw[]
+  userProducts      UserProduct[]      
+  agreements        Agreement[]        
+  salesSold         Sale[]             @relation("SaleSeller")
+  salesBought       Sale[]             @relation("SaleBuyer")
+  referralsMade     Referral[]         @relation("UserReferralsMade")
+  referralsReceived Referral[]         @relation("UserReferralsReceived")
+  rewards           Reward[]
+  trialFund         TrialFund?        
 
-  verifications      Verification[] 
-
-  PasswordReset PasswordReset[]
+  verifications     Verification[]
+  passwordResets    PasswordReset[]
 }
 
 model Verification {
@@ -53,7 +53,7 @@ model Verification {
   user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int?      @unique
 
-  @@unique([email])    
+  @@unique([email])
 }
 
 model PasswordReset {
@@ -68,37 +68,10 @@ model PasswordReset {
   @@index([expiresAt])
 }
 
-
-model NFT {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  name         String
-  price        Decimal
-  description  String?
-  dailyIncome  Decimal
-  fee          Decimal
-  level        Int
-
-  userNFTs     UserNFT[]
-}
-
-model UserNFT {
-  id          Int       @id @default(autoincrement())
-  acquiredAt  DateTime  @default(now())
-
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-
-  nft         NFT       @relation(fields: [nftId], references: [id], onDelete: Cascade)
-  nftId       Int
-}
-
-model Machine {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+model Product {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
   title        String
   description  String?
@@ -106,59 +79,28 @@ model Machine {
   price        Decimal
   dailyIncome  Decimal
   fee          Decimal
-  rentalDays   Int
   level        Int
+  rentalDays   Int?
+  deletedAt    DateTime?
 
-  agreements   Agreement[]
-  rewards      Reward[]
-
-  TrialFund TrialFund[]
+  userProducts UserProduct[]  
+  agreements   Agreement[]    
+  rewards      Reward[]       
+  trialFunds   TrialFund[]    
+  saleItems    SaleItem[]     
 }
 
-model Agreement {
-  id           Int              @id @default(autoincrement())
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+model UserProduct {
+  id         Int      @id @default(autoincrement())
+  acquiredAt DateTime @default(now())
 
-  startDate    DateTime
-  endDate      DateTime
-  status       AgreementStatus  @default(ACTIVE)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
 
-  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       Int
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  Int
 
-  machine      Machine          @relation(fields: [machineId], references: [id], onDelete: Cascade)
-  machineId    Int
-}
-
-model Sale {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  amount       Decimal
-  date         DateTime  @default(now())
-
-  seller       User      @relation("SaleSeller", fields: [sellerId], references: [id], onDelete: Cascade)
-  sellerId     Int
-
-  buyer        User      @relation("SaleBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
-  buyerId      Int
-
-  items        SaleItem[]
-}
-
-model SaleItem {
-  id           Int         @id @default(autoincrement())
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-
-  productType  ProductType
-  productId    Int
-  quantity     Int
-
-  sale         Sale        @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  saleId       Int
+  @@unique([userId, productId]) 
 }
 
 model Referral {
@@ -176,6 +118,70 @@ model Referral {
   commissions      Commission[]
 }
 
+model Agreement {
+  id           Int             @id @default(autoincrement())
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  startDate    DateTime
+  endDate      DateTime
+  status       AgreementStatus @default(ACTIVE)
+
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+
+  product      Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId    Int
+}
+
+model Sale {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  amount       Decimal
+  date         DateTime   @default(now())
+
+  seller       User       @relation("SaleSeller", fields: [sellerId], references: [id], onDelete: Cascade)
+  sellerId     Int
+
+  buyer        User       @relation("SaleBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  buyerId      Int
+
+  items        SaleItem[]
+}
+
+model SaleItem {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  sale       Sale      @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  saleId     Int
+
+  product    Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  Int
+
+  quantity   Int
+}
+
+model Reward {
+  id           Int           @id @default(autoincrement())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  reward       Decimal
+  date         DateTime      @default(now())
+  status       RewardStatus  @default(SUCCESS)
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+
+  product      Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId    Int
+}
+
+
 model Commission {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
@@ -188,61 +194,46 @@ model Commission {
   referralId  Int
 }
 
-model Reward {
-  id          Int          @id @default(autoincrement())
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  reward      Decimal
-  date        DateTime     @default(now())
-  status      RewardStatus @default(SUCCESS)
-
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-
-  machine     Machine      @relation(fields: [machineId], references: [id], onDelete: Cascade)
-  machineId   Int
-}
-
 model Wallet {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
-  balance   Decimal  @default(0)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int      @unique
+  balance      Decimal    @default(0)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int        @unique
 }
+
 
 model Withdraw {
-  id        Int             @id @default(autoincrement())
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id           Int             @id @default(autoincrement())
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
 
-  amount    Decimal
-  fee       Decimal
-  total     Decimal
-  status    WithdrawStatus  @default(PENDING)
-  date      DateTime        @default(now())
+  amount       Decimal
+  fee          Decimal
+  total        Decimal
+  status       WithdrawStatus  @default(PENDING)
+  date         DateTime        @default(now())
 
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
 }
 
 model TrialFund {
-  id          Int               @id @default(autoincrement())
-  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int               @unique
-  amount      Decimal           @default(200)
-  grantedAt   DateTime          @default(now())
-  expiresAt   DateTime
-  status      TrialFundStatus   @default(ACTIVE)
-  recoveredAt DateTime?
+  id           Int               @id @default(autoincrement())
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int               @unique
 
-  machine     Machine?          @relation(fields: [machineId], references: [id])
-  machineId   Int?
+  product      Product           @relation(fields: [productId], references: [id])
+  productId    Int
 
-  usedAmount  Decimal   @default(0)
+  amount       Decimal           @default(200)
+  grantedAt    DateTime          @default(now())
+  expiresAt    DateTime
+  status       TrialFundStatus   @default(ACTIVE)
+  recoveredAt  DateTime?
+  usedAmount   Decimal           @default(0)
 }
 
 
@@ -270,4 +261,9 @@ enum ProductType {
 enum TrialFundStatus {
   ACTIVE
   RECOVERED
+}
+
+enum Role {
+  USER
+  ADMIN
 }

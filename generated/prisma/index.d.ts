@@ -29,20 +29,20 @@ export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
  */
 export type PasswordReset = $Result.DefaultSelection<Prisma.$PasswordResetPayload>
 /**
- * Model NFT
+ * Model Product
  * 
  */
-export type NFT = $Result.DefaultSelection<Prisma.$NFTPayload>
+export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
 /**
- * Model UserNFT
+ * Model UserProduct
  * 
  */
-export type UserNFT = $Result.DefaultSelection<Prisma.$UserNFTPayload>
+export type UserProduct = $Result.DefaultSelection<Prisma.$UserProductPayload>
 /**
- * Model Machine
+ * Model Referral
  * 
  */
-export type Machine = $Result.DefaultSelection<Prisma.$MachinePayload>
+export type Referral = $Result.DefaultSelection<Prisma.$ReferralPayload>
 /**
  * Model Agreement
  * 
@@ -59,20 +59,15 @@ export type Sale = $Result.DefaultSelection<Prisma.$SalePayload>
  */
 export type SaleItem = $Result.DefaultSelection<Prisma.$SaleItemPayload>
 /**
- * Model Referral
+ * Model Reward
  * 
  */
-export type Referral = $Result.DefaultSelection<Prisma.$ReferralPayload>
+export type Reward = $Result.DefaultSelection<Prisma.$RewardPayload>
 /**
  * Model Commission
  * 
  */
 export type Commission = $Result.DefaultSelection<Prisma.$CommissionPayload>
-/**
- * Model Reward
- * 
- */
-export type Reward = $Result.DefaultSelection<Prisma.$RewardPayload>
 /**
  * Model Wallet
  * 
@@ -133,6 +128,14 @@ export const TrialFundStatus: {
 
 export type TrialFundStatus = (typeof TrialFundStatus)[keyof typeof TrialFundStatus]
 
+
+export const Role: {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
 }
 
 export type WithdrawStatus = $Enums.WithdrawStatus
@@ -154,6 +157,10 @@ export const ProductType: typeof $Enums.ProductType
 export type TrialFundStatus = $Enums.TrialFundStatus
 
 export const TrialFundStatus: typeof $Enums.TrialFundStatus
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
 
 /**
  * ##  Prisma Client ʲˢ
@@ -311,34 +318,34 @@ export class PrismaClient<
   get passwordReset(): Prisma.PasswordResetDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.nFT`: Exposes CRUD operations for the **NFT** model.
+   * `prisma.product`: Exposes CRUD operations for the **Product** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more NFTS
-    * const nFTS = await prisma.nFT.findMany()
+    * // Fetch zero or more Products
+    * const products = await prisma.product.findMany()
     * ```
     */
-  get nFT(): Prisma.NFTDelegate<ExtArgs, ClientOptions>;
+  get product(): Prisma.ProductDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.userNFT`: Exposes CRUD operations for the **UserNFT** model.
+   * `prisma.userProduct`: Exposes CRUD operations for the **UserProduct** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more UserNFTS
-    * const userNFTS = await prisma.userNFT.findMany()
+    * // Fetch zero or more UserProducts
+    * const userProducts = await prisma.userProduct.findMany()
     * ```
     */
-  get userNFT(): Prisma.UserNFTDelegate<ExtArgs, ClientOptions>;
+  get userProduct(): Prisma.UserProductDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.machine`: Exposes CRUD operations for the **Machine** model.
+   * `prisma.referral`: Exposes CRUD operations for the **Referral** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Machines
-    * const machines = await prisma.machine.findMany()
+    * // Fetch zero or more Referrals
+    * const referrals = await prisma.referral.findMany()
     * ```
     */
-  get machine(): Prisma.MachineDelegate<ExtArgs, ClientOptions>;
+  get referral(): Prisma.ReferralDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.agreement`: Exposes CRUD operations for the **Agreement** model.
@@ -371,14 +378,14 @@ export class PrismaClient<
   get saleItem(): Prisma.SaleItemDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.referral`: Exposes CRUD operations for the **Referral** model.
+   * `prisma.reward`: Exposes CRUD operations for the **Reward** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Referrals
-    * const referrals = await prisma.referral.findMany()
+    * // Fetch zero or more Rewards
+    * const rewards = await prisma.reward.findMany()
     * ```
     */
-  get referral(): Prisma.ReferralDelegate<ExtArgs, ClientOptions>;
+  get reward(): Prisma.RewardDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.commission`: Exposes CRUD operations for the **Commission** model.
@@ -389,16 +396,6 @@ export class PrismaClient<
     * ```
     */
   get commission(): Prisma.CommissionDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.reward`: Exposes CRUD operations for the **Reward** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Rewards
-    * const rewards = await prisma.reward.findMany()
-    * ```
-    */
-  get reward(): Prisma.RewardDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.wallet`: Exposes CRUD operations for the **Wallet** model.
@@ -872,15 +869,14 @@ export namespace Prisma {
     User: 'User',
     Verification: 'Verification',
     PasswordReset: 'PasswordReset',
-    NFT: 'NFT',
-    UserNFT: 'UserNFT',
-    Machine: 'Machine',
+    Product: 'Product',
+    UserProduct: 'UserProduct',
+    Referral: 'Referral',
     Agreement: 'Agreement',
     Sale: 'Sale',
     SaleItem: 'SaleItem',
-    Referral: 'Referral',
-    Commission: 'Commission',
     Reward: 'Reward',
+    Commission: 'Commission',
     Wallet: 'Wallet',
     Withdraw: 'Withdraw',
     TrialFund: 'TrialFund'
@@ -902,7 +898,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "verification" | "passwordReset" | "nFT" | "userNFT" | "machine" | "agreement" | "sale" | "saleItem" | "referral" | "commission" | "reward" | "wallet" | "withdraw" | "trialFund"
+      modelProps: "user" | "verification" | "passwordReset" | "product" | "userProduct" | "referral" | "agreement" | "sale" | "saleItem" | "reward" | "commission" | "wallet" | "withdraw" | "trialFund"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1128,225 +1124,225 @@ export namespace Prisma {
           }
         }
       }
-      NFT: {
-        payload: Prisma.$NFTPayload<ExtArgs>
-        fields: Prisma.NFTFieldRefs
+      Product: {
+        payload: Prisma.$ProductPayload<ExtArgs>
+        fields: Prisma.ProductFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.NFTFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload> | null
+            args: Prisma.ProductFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.NFTFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>
+            args: Prisma.ProductFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>
           }
           findFirst: {
-            args: Prisma.NFTFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload> | null
+            args: Prisma.ProductFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.NFTFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>
+            args: Prisma.ProductFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>
           }
           findMany: {
-            args: Prisma.NFTFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>[]
+            args: Prisma.ProductFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>[]
           }
           create: {
-            args: Prisma.NFTCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>
+            args: Prisma.ProductCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>
           }
           createMany: {
-            args: Prisma.NFTCreateManyArgs<ExtArgs>
+            args: Prisma.ProductCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.NFTCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>[]
+            args: Prisma.ProductCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>[]
           }
           delete: {
-            args: Prisma.NFTDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>
+            args: Prisma.ProductDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>
           }
           update: {
-            args: Prisma.NFTUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>
+            args: Prisma.ProductUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>
           }
           deleteMany: {
-            args: Prisma.NFTDeleteManyArgs<ExtArgs>
+            args: Prisma.ProductDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.NFTUpdateManyArgs<ExtArgs>
+            args: Prisma.ProductUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.NFTUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>[]
+            args: Prisma.ProductUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>[]
           }
           upsert: {
-            args: Prisma.NFTUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NFTPayload>
+            args: Prisma.ProductUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductPayload>
           }
           aggregate: {
-            args: Prisma.NFTAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateNFT>
+            args: Prisma.ProductAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProduct>
           }
           groupBy: {
-            args: Prisma.NFTGroupByArgs<ExtArgs>
-            result: $Utils.Optional<NFTGroupByOutputType>[]
+            args: Prisma.ProductGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProductGroupByOutputType>[]
           }
           count: {
-            args: Prisma.NFTCountArgs<ExtArgs>
-            result: $Utils.Optional<NFTCountAggregateOutputType> | number
+            args: Prisma.ProductCountArgs<ExtArgs>
+            result: $Utils.Optional<ProductCountAggregateOutputType> | number
           }
         }
       }
-      UserNFT: {
-        payload: Prisma.$UserNFTPayload<ExtArgs>
-        fields: Prisma.UserNFTFieldRefs
+      UserProduct: {
+        payload: Prisma.$UserProductPayload<ExtArgs>
+        fields: Prisma.UserProductFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.UserNFTFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload> | null
+            args: Prisma.UserProductFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.UserNFTFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>
+            args: Prisma.UserProductFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>
           }
           findFirst: {
-            args: Prisma.UserNFTFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload> | null
+            args: Prisma.UserProductFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.UserNFTFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>
+            args: Prisma.UserProductFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>
           }
           findMany: {
-            args: Prisma.UserNFTFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>[]
+            args: Prisma.UserProductFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>[]
           }
           create: {
-            args: Prisma.UserNFTCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>
+            args: Prisma.UserProductCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>
           }
           createMany: {
-            args: Prisma.UserNFTCreateManyArgs<ExtArgs>
+            args: Prisma.UserProductCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.UserNFTCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>[]
+            args: Prisma.UserProductCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>[]
           }
           delete: {
-            args: Prisma.UserNFTDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>
+            args: Prisma.UserProductDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>
           }
           update: {
-            args: Prisma.UserNFTUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>
+            args: Prisma.UserProductUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>
           }
           deleteMany: {
-            args: Prisma.UserNFTDeleteManyArgs<ExtArgs>
+            args: Prisma.UserProductDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.UserNFTUpdateManyArgs<ExtArgs>
+            args: Prisma.UserProductUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.UserNFTUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>[]
+            args: Prisma.UserProductUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>[]
           }
           upsert: {
-            args: Prisma.UserNFTUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserNFTPayload>
+            args: Prisma.UserProductUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserProductPayload>
           }
           aggregate: {
-            args: Prisma.UserNFTAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUserNFT>
+            args: Prisma.UserProductAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserProduct>
           }
           groupBy: {
-            args: Prisma.UserNFTGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UserNFTGroupByOutputType>[]
+            args: Prisma.UserProductGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserProductGroupByOutputType>[]
           }
           count: {
-            args: Prisma.UserNFTCountArgs<ExtArgs>
-            result: $Utils.Optional<UserNFTCountAggregateOutputType> | number
+            args: Prisma.UserProductCountArgs<ExtArgs>
+            result: $Utils.Optional<UserProductCountAggregateOutputType> | number
           }
         }
       }
-      Machine: {
-        payload: Prisma.$MachinePayload<ExtArgs>
-        fields: Prisma.MachineFieldRefs
+      Referral: {
+        payload: Prisma.$ReferralPayload<ExtArgs>
+        fields: Prisma.ReferralFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.MachineFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload> | null
+            args: Prisma.ReferralFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.MachineFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>
+            args: Prisma.ReferralFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
           }
           findFirst: {
-            args: Prisma.MachineFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload> | null
+            args: Prisma.ReferralFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.MachineFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>
+            args: Prisma.ReferralFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
           }
           findMany: {
-            args: Prisma.MachineFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>[]
+            args: Prisma.ReferralFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
           }
           create: {
-            args: Prisma.MachineCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>
+            args: Prisma.ReferralCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
           }
           createMany: {
-            args: Prisma.MachineCreateManyArgs<ExtArgs>
+            args: Prisma.ReferralCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.MachineCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>[]
+            args: Prisma.ReferralCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
           }
           delete: {
-            args: Prisma.MachineDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>
+            args: Prisma.ReferralDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
           }
           update: {
-            args: Prisma.MachineUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>
+            args: Prisma.ReferralUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
           }
           deleteMany: {
-            args: Prisma.MachineDeleteManyArgs<ExtArgs>
+            args: Prisma.ReferralDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.MachineUpdateManyArgs<ExtArgs>
+            args: Prisma.ReferralUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.MachineUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>[]
+            args: Prisma.ReferralUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
           }
           upsert: {
-            args: Prisma.MachineUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MachinePayload>
+            args: Prisma.ReferralUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
           }
           aggregate: {
-            args: Prisma.MachineAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateMachine>
+            args: Prisma.ReferralAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReferral>
           }
           groupBy: {
-            args: Prisma.MachineGroupByArgs<ExtArgs>
-            result: $Utils.Optional<MachineGroupByOutputType>[]
+            args: Prisma.ReferralGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReferralGroupByOutputType>[]
           }
           count: {
-            args: Prisma.MachineCountArgs<ExtArgs>
-            result: $Utils.Optional<MachineCountAggregateOutputType> | number
+            args: Prisma.ReferralCountArgs<ExtArgs>
+            result: $Utils.Optional<ReferralCountAggregateOutputType> | number
           }
         }
       }
@@ -1572,77 +1568,77 @@ export namespace Prisma {
           }
         }
       }
-      Referral: {
-        payload: Prisma.$ReferralPayload<ExtArgs>
-        fields: Prisma.ReferralFieldRefs
+      Reward: {
+        payload: Prisma.$RewardPayload<ExtArgs>
+        fields: Prisma.RewardFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.ReferralFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload> | null
+            args: Prisma.RewardFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.ReferralFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+            args: Prisma.RewardFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
           }
           findFirst: {
-            args: Prisma.ReferralFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload> | null
+            args: Prisma.RewardFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.ReferralFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+            args: Prisma.RewardFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
           }
           findMany: {
-            args: Prisma.ReferralFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
+            args: Prisma.RewardFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>[]
           }
           create: {
-            args: Prisma.ReferralCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+            args: Prisma.RewardCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
           }
           createMany: {
-            args: Prisma.ReferralCreateManyArgs<ExtArgs>
+            args: Prisma.RewardCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.ReferralCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
+            args: Prisma.RewardCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>[]
           }
           delete: {
-            args: Prisma.ReferralDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+            args: Prisma.RewardDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
           }
           update: {
-            args: Prisma.ReferralUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+            args: Prisma.RewardUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
           }
           deleteMany: {
-            args: Prisma.ReferralDeleteManyArgs<ExtArgs>
+            args: Prisma.RewardDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.ReferralUpdateManyArgs<ExtArgs>
+            args: Prisma.RewardUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.ReferralUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
+            args: Prisma.RewardUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>[]
           }
           upsert: {
-            args: Prisma.ReferralUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+            args: Prisma.RewardUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
           }
           aggregate: {
-            args: Prisma.ReferralAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateReferral>
+            args: Prisma.RewardAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReward>
           }
           groupBy: {
-            args: Prisma.ReferralGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ReferralGroupByOutputType>[]
+            args: Prisma.RewardGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RewardGroupByOutputType>[]
           }
           count: {
-            args: Prisma.ReferralCountArgs<ExtArgs>
-            result: $Utils.Optional<ReferralCountAggregateOutputType> | number
+            args: Prisma.RewardCountArgs<ExtArgs>
+            result: $Utils.Optional<RewardCountAggregateOutputType> | number
           }
         }
       }
@@ -1717,80 +1713,6 @@ export namespace Prisma {
           count: {
             args: Prisma.CommissionCountArgs<ExtArgs>
             result: $Utils.Optional<CommissionCountAggregateOutputType> | number
-          }
-        }
-      }
-      Reward: {
-        payload: Prisma.$RewardPayload<ExtArgs>
-        fields: Prisma.RewardFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.RewardFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.RewardFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
-          }
-          findFirst: {
-            args: Prisma.RewardFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.RewardFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
-          }
-          findMany: {
-            args: Prisma.RewardFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>[]
-          }
-          create: {
-            args: Prisma.RewardCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
-          }
-          createMany: {
-            args: Prisma.RewardCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.RewardCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>[]
-          }
-          delete: {
-            args: Prisma.RewardDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
-          }
-          update: {
-            args: Prisma.RewardUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
-          }
-          deleteMany: {
-            args: Prisma.RewardDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.RewardUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.RewardUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>[]
-          }
-          upsert: {
-            args: Prisma.RewardUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RewardPayload>
-          }
-          aggregate: {
-            args: Prisma.RewardAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateReward>
-          }
-          groupBy: {
-            args: Prisma.RewardGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RewardGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.RewardCountArgs<ExtArgs>
-            result: $Utils.Optional<RewardCountAggregateOutputType> | number
           }
         }
       }
@@ -2103,15 +2025,14 @@ export namespace Prisma {
     user?: UserOmit
     verification?: VerificationOmit
     passwordReset?: PasswordResetOmit
-    nFT?: NFTOmit
-    userNFT?: UserNFTOmit
-    machine?: MachineOmit
+    product?: ProductOmit
+    userProduct?: UserProductOmit
+    referral?: ReferralOmit
     agreement?: AgreementOmit
     sale?: SaleOmit
     saleItem?: SaleItemOmit
-    referral?: ReferralOmit
-    commission?: CommissionOmit
     reward?: RewardOmit
+    commission?: CommissionOmit
     wallet?: WalletOmit
     withdraw?: WithdrawOmit
     trialFund?: TrialFundOmit
@@ -2210,30 +2131,28 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     withdraws: number
-    userNFTs: number
+    userProducts: number
     agreements: number
     salesSold: number
     salesBought: number
     referralsMade: number
     referralsReceived: number
     rewards: number
-    trialFunds: number
     verifications: number
-    PasswordReset: number
+    passwordResets: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     withdraws?: boolean | UserCountOutputTypeCountWithdrawsArgs
-    userNFTs?: boolean | UserCountOutputTypeCountUserNFTsArgs
+    userProducts?: boolean | UserCountOutputTypeCountUserProductsArgs
     agreements?: boolean | UserCountOutputTypeCountAgreementsArgs
     salesSold?: boolean | UserCountOutputTypeCountSalesSoldArgs
     salesBought?: boolean | UserCountOutputTypeCountSalesBoughtArgs
     referralsMade?: boolean | UserCountOutputTypeCountReferralsMadeArgs
     referralsReceived?: boolean | UserCountOutputTypeCountReferralsReceivedArgs
     rewards?: boolean | UserCountOutputTypeCountRewardsArgs
-    trialFunds?: boolean | UserCountOutputTypeCountTrialFundsArgs
     verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
-    PasswordReset?: boolean | UserCountOutputTypeCountPasswordResetArgs
+    passwordResets?: boolean | UserCountOutputTypeCountPasswordResetsArgs
   }
 
   // Custom InputTypes
@@ -2257,8 +2176,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountUserNFTsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserNFTWhereInput
+  export type UserCountOutputTypeCountUserProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserProductWhereInput
   }
 
   /**
@@ -2306,13 +2225,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountTrialFundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TrialFundWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountVerificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VerificationWhereInput
   }
@@ -2320,118 +2232,74 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountPasswordResetArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountPasswordResetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PasswordResetWhereInput
   }
 
 
   /**
-   * Count Type NFTCountOutputType
+   * Count Type ProductCountOutputType
    */
 
-  export type NFTCountOutputType = {
-    userNFTs: number
-  }
-
-  export type NFTCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userNFTs?: boolean | NFTCountOutputTypeCountUserNFTsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * NFTCountOutputType without action
-   */
-  export type NFTCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFTCountOutputType
-     */
-    select?: NFTCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * NFTCountOutputType without action
-   */
-  export type NFTCountOutputTypeCountUserNFTsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserNFTWhereInput
-  }
-
-
-  /**
-   * Count Type MachineCountOutputType
-   */
-
-  export type MachineCountOutputType = {
+  export type ProductCountOutputType = {
+    userProducts: number
     agreements: number
     rewards: number
-    TrialFund: number
+    trialFunds: number
+    saleItems: number
   }
 
-  export type MachineCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agreements?: boolean | MachineCountOutputTypeCountAgreementsArgs
-    rewards?: boolean | MachineCountOutputTypeCountRewardsArgs
-    TrialFund?: boolean | MachineCountOutputTypeCountTrialFundArgs
+  export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userProducts?: boolean | ProductCountOutputTypeCountUserProductsArgs
+    agreements?: boolean | ProductCountOutputTypeCountAgreementsArgs
+    rewards?: boolean | ProductCountOutputTypeCountRewardsArgs
+    trialFunds?: boolean | ProductCountOutputTypeCountTrialFundsArgs
+    saleItems?: boolean | ProductCountOutputTypeCountSaleItemsArgs
   }
 
   // Custom InputTypes
   /**
-   * MachineCountOutputType without action
+   * ProductCountOutputType without action
    */
-  export type MachineCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the MachineCountOutputType
+     * Select specific fields to fetch from the ProductCountOutputType
      */
-    select?: MachineCountOutputTypeSelect<ExtArgs> | null
+    select?: ProductCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * MachineCountOutputType without action
+   * ProductCountOutputType without action
    */
-  export type MachineCountOutputTypeCountAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCountOutputTypeCountUserProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserProductWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AgreementWhereInput
   }
 
   /**
-   * MachineCountOutputType without action
+   * ProductCountOutputType without action
    */
-  export type MachineCountOutputTypeCountRewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCountOutputTypeCountRewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RewardWhereInput
   }
 
   /**
-   * MachineCountOutputType without action
+   * ProductCountOutputType without action
    */
-  export type MachineCountOutputTypeCountTrialFundArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCountOutputTypeCountTrialFundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TrialFundWhereInput
   }
 
-
   /**
-   * Count Type SaleCountOutputType
+   * ProductCountOutputType without action
    */
-
-  export type SaleCountOutputType = {
-    items: number
-  }
-
-  export type SaleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    items?: boolean | SaleCountOutputTypeCountItemsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * SaleCountOutputType without action
-   */
-  export type SaleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SaleCountOutputType
-     */
-    select?: SaleCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * SaleCountOutputType without action
-   */
-  export type SaleCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCountOutputTypeCountSaleItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SaleItemWhereInput
   }
 
@@ -2464,6 +2332,37 @@ export namespace Prisma {
    */
   export type ReferralCountOutputTypeCountCommissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CommissionWhereInput
+  }
+
+
+  /**
+   * Count Type SaleCountOutputType
+   */
+
+  export type SaleCountOutputType = {
+    items: number
+  }
+
+  export type SaleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | SaleCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SaleCountOutputType without action
+   */
+  export type SaleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SaleCountOutputType
+     */
+    select?: SaleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SaleCountOutputType without action
+   */
+  export type SaleCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaleItemWhereInput
   }
 
 
@@ -2501,6 +2400,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     password: string | null
     referralCode: string | null
+    role: $Enums.Role | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2513,6 +2413,7 @@ export namespace Prisma {
     emailVerified: boolean | null
     password: string | null
     referralCode: string | null
+    role: $Enums.Role | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2525,6 +2426,7 @@ export namespace Prisma {
     emailVerified: number
     password: number
     referralCode: number
+    role: number
     _all: number
   }
 
@@ -2547,6 +2449,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     referralCode?: true
+    role?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2559,6 +2462,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     referralCode?: true
+    role?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2571,6 +2475,7 @@ export namespace Prisma {
     emailVerified?: true
     password?: true
     referralCode?: true
+    role?: true
     _all?: true
   }
 
@@ -2670,6 +2575,7 @@ export namespace Prisma {
     emailVerified: boolean
     password: string
     referralCode: string | null
+    role: $Enums.Role
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -2701,18 +2607,19 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
+    role?: boolean
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdraws?: boolean | User$withdrawsArgs<ExtArgs>
-    userNFTs?: boolean | User$userNFTsArgs<ExtArgs>
+    userProducts?: boolean | User$userProductsArgs<ExtArgs>
     agreements?: boolean | User$agreementsArgs<ExtArgs>
     salesSold?: boolean | User$salesSoldArgs<ExtArgs>
     salesBought?: boolean | User$salesBoughtArgs<ExtArgs>
     referralsMade?: boolean | User$referralsMadeArgs<ExtArgs>
     referralsReceived?: boolean | User$referralsReceivedArgs<ExtArgs>
     rewards?: boolean | User$rewardsArgs<ExtArgs>
-    trialFunds?: boolean | User$trialFundsArgs<ExtArgs>
+    trialFund?: boolean | User$trialFundArgs<ExtArgs>
     verifications?: boolean | User$verificationsArgs<ExtArgs>
-    PasswordReset?: boolean | User$PasswordResetArgs<ExtArgs>
+    passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2726,6 +2633,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
+    role?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2738,6 +2646,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
+    role?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2750,22 +2659,23 @@ export namespace Prisma {
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
+    role?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "username" | "phone" | "email" | "emailVerified" | "password" | "referralCode", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "username" | "phone" | "email" | "emailVerified" | "password" | "referralCode" | "role", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdraws?: boolean | User$withdrawsArgs<ExtArgs>
-    userNFTs?: boolean | User$userNFTsArgs<ExtArgs>
+    userProducts?: boolean | User$userProductsArgs<ExtArgs>
     agreements?: boolean | User$agreementsArgs<ExtArgs>
     salesSold?: boolean | User$salesSoldArgs<ExtArgs>
     salesBought?: boolean | User$salesBoughtArgs<ExtArgs>
     referralsMade?: boolean | User$referralsMadeArgs<ExtArgs>
     referralsReceived?: boolean | User$referralsReceivedArgs<ExtArgs>
     rewards?: boolean | User$rewardsArgs<ExtArgs>
-    trialFunds?: boolean | User$trialFundsArgs<ExtArgs>
+    trialFund?: boolean | User$trialFundArgs<ExtArgs>
     verifications?: boolean | User$verificationsArgs<ExtArgs>
-    PasswordReset?: boolean | User$PasswordResetArgs<ExtArgs>
+    passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2776,16 +2686,16 @@ export namespace Prisma {
     objects: {
       wallet: Prisma.$WalletPayload<ExtArgs> | null
       withdraws: Prisma.$WithdrawPayload<ExtArgs>[]
-      userNFTs: Prisma.$UserNFTPayload<ExtArgs>[]
+      userProducts: Prisma.$UserProductPayload<ExtArgs>[]
       agreements: Prisma.$AgreementPayload<ExtArgs>[]
       salesSold: Prisma.$SalePayload<ExtArgs>[]
       salesBought: Prisma.$SalePayload<ExtArgs>[]
       referralsMade: Prisma.$ReferralPayload<ExtArgs>[]
       referralsReceived: Prisma.$ReferralPayload<ExtArgs>[]
       rewards: Prisma.$RewardPayload<ExtArgs>[]
-      trialFunds: Prisma.$TrialFundPayload<ExtArgs>[]
+      trialFund: Prisma.$TrialFundPayload<ExtArgs> | null
       verifications: Prisma.$VerificationPayload<ExtArgs>[]
-      PasswordReset: Prisma.$PasswordResetPayload<ExtArgs>[]
+      passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2797,6 +2707,7 @@ export namespace Prisma {
       emailVerified: boolean
       password: string
       referralCode: string | null
+      role: $Enums.Role
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3193,16 +3104,16 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     withdraws<T extends User$withdrawsArgs<ExtArgs> = {}>(args?: Subset<T, User$withdrawsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    userNFTs<T extends User$userNFTsArgs<ExtArgs> = {}>(args?: Subset<T, User$userNFTsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userProducts<T extends User$userProductsArgs<ExtArgs> = {}>(args?: Subset<T, User$userProductsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agreements<T extends User$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, User$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesSold<T extends User$salesSoldArgs<ExtArgs> = {}>(args?: Subset<T, User$salesSoldArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesBought<T extends User$salesBoughtArgs<ExtArgs> = {}>(args?: Subset<T, User$salesBoughtArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     referralsMade<T extends User$referralsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$referralsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     referralsReceived<T extends User$referralsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$referralsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rewards<T extends User$rewardsArgs<ExtArgs> = {}>(args?: Subset<T, User$rewardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    trialFunds<T extends User$trialFundsArgs<ExtArgs> = {}>(args?: Subset<T, User$trialFundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrialFundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trialFund<T extends User$trialFundArgs<ExtArgs> = {}>(args?: Subset<T, User$trialFundArgs<ExtArgs>>): Prisma__TrialFundClient<$Result.GetResult<Prisma.$TrialFundPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     verifications<T extends User$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    PasswordReset<T extends User$PasswordResetArgs<ExtArgs> = {}>(args?: Subset<T, User$PasswordResetArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    passwordResets<T extends User$passwordResetsArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3241,6 +3152,7 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly password: FieldRef<"User", 'String'>
     readonly referralCode: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
   }
     
 
@@ -3672,27 +3584,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.userNFTs
+   * User.userProducts
    */
-  export type User$userNFTsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$userProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserNFT
+     * Select specific fields to fetch from the UserProduct
      */
-    select?: UserNFTSelect<ExtArgs> | null
+    select?: UserProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserNFT
+     * Omit specific fields from the UserProduct
      */
-    omit?: UserNFTOmit<ExtArgs> | null
+    omit?: UserProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserNFTInclude<ExtArgs> | null
-    where?: UserNFTWhereInput
-    orderBy?: UserNFTOrderByWithRelationInput | UserNFTOrderByWithRelationInput[]
-    cursor?: UserNFTWhereUniqueInput
+    include?: UserProductInclude<ExtArgs> | null
+    where?: UserProductWhereInput
+    orderBy?: UserProductOrderByWithRelationInput | UserProductOrderByWithRelationInput[]
+    cursor?: UserProductWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserNFTScalarFieldEnum | UserNFTScalarFieldEnum[]
+    distinct?: UserProductScalarFieldEnum | UserProductScalarFieldEnum[]
   }
 
   /**
@@ -3840,9 +3752,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.trialFunds
+   * User.trialFund
    */
-  export type User$trialFundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$trialFundArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TrialFund
      */
@@ -3856,11 +3768,6 @@ export namespace Prisma {
      */
     include?: TrialFundInclude<ExtArgs> | null
     where?: TrialFundWhereInput
-    orderBy?: TrialFundOrderByWithRelationInput | TrialFundOrderByWithRelationInput[]
-    cursor?: TrialFundWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TrialFundScalarFieldEnum | TrialFundScalarFieldEnum[]
   }
 
   /**
@@ -3888,9 +3795,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.PasswordReset
+   * User.passwordResets
    */
-  export type User$PasswordResetArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$passwordResetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the PasswordReset
      */
@@ -6168,2303 +6075,36 @@ export namespace Prisma {
 
 
   /**
-   * Model NFT
+   * Model Product
    */
 
-  export type AggregateNFT = {
-    _count: NFTCountAggregateOutputType | null
-    _avg: NFTAvgAggregateOutputType | null
-    _sum: NFTSumAggregateOutputType | null
-    _min: NFTMinAggregateOutputType | null
-    _max: NFTMaxAggregateOutputType | null
+  export type AggregateProduct = {
+    _count: ProductCountAggregateOutputType | null
+    _avg: ProductAvgAggregateOutputType | null
+    _sum: ProductSumAggregateOutputType | null
+    _min: ProductMinAggregateOutputType | null
+    _max: ProductMaxAggregateOutputType | null
   }
 
-  export type NFTAvgAggregateOutputType = {
+  export type ProductAvgAggregateOutputType = {
     id: number | null
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
     level: number | null
-  }
-
-  export type NFTSumAggregateOutputType = {
-    id: number | null
-    price: Decimal | null
-    dailyIncome: Decimal | null
-    fee: Decimal | null
-    level: number | null
-  }
-
-  export type NFTMinAggregateOutputType = {
-    id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    name: string | null
-    price: Decimal | null
-    description: string | null
-    dailyIncome: Decimal | null
-    fee: Decimal | null
-    level: number | null
-  }
-
-  export type NFTMaxAggregateOutputType = {
-    id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    name: string | null
-    price: Decimal | null
-    description: string | null
-    dailyIncome: Decimal | null
-    fee: Decimal | null
-    level: number | null
-  }
-
-  export type NFTCountAggregateOutputType = {
-    id: number
-    createdAt: number
-    updatedAt: number
-    name: number
-    price: number
-    description: number
-    dailyIncome: number
-    fee: number
-    level: number
-    _all: number
-  }
-
-
-  export type NFTAvgAggregateInputType = {
-    id?: true
-    price?: true
-    dailyIncome?: true
-    fee?: true
-    level?: true
-  }
-
-  export type NFTSumAggregateInputType = {
-    id?: true
-    price?: true
-    dailyIncome?: true
-    fee?: true
-    level?: true
-  }
-
-  export type NFTMinAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    name?: true
-    price?: true
-    description?: true
-    dailyIncome?: true
-    fee?: true
-    level?: true
-  }
-
-  export type NFTMaxAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    name?: true
-    price?: true
-    description?: true
-    dailyIncome?: true
-    fee?: true
-    level?: true
-  }
-
-  export type NFTCountAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    name?: true
-    price?: true
-    description?: true
-    dailyIncome?: true
-    fee?: true
-    level?: true
-    _all?: true
-  }
-
-  export type NFTAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which NFT to aggregate.
-     */
-    where?: NFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NFTS to fetch.
-     */
-    orderBy?: NFTOrderByWithRelationInput | NFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: NFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NFTS.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned NFTS
-    **/
-    _count?: true | NFTCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: NFTAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: NFTSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: NFTMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: NFTMaxAggregateInputType
-  }
-
-  export type GetNFTAggregateType<T extends NFTAggregateArgs> = {
-        [P in keyof T & keyof AggregateNFT]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateNFT[P]>
-      : GetScalarType<T[P], AggregateNFT[P]>
-  }
-
-
-
-
-  export type NFTGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NFTWhereInput
-    orderBy?: NFTOrderByWithAggregationInput | NFTOrderByWithAggregationInput[]
-    by: NFTScalarFieldEnum[] | NFTScalarFieldEnum
-    having?: NFTScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: NFTCountAggregateInputType | true
-    _avg?: NFTAvgAggregateInputType
-    _sum?: NFTSumAggregateInputType
-    _min?: NFTMinAggregateInputType
-    _max?: NFTMaxAggregateInputType
-  }
-
-  export type NFTGroupByOutputType = {
-    id: number
-    createdAt: Date
-    updatedAt: Date
-    name: string
-    price: Decimal
-    description: string | null
-    dailyIncome: Decimal
-    fee: Decimal
-    level: number
-    _count: NFTCountAggregateOutputType | null
-    _avg: NFTAvgAggregateOutputType | null
-    _sum: NFTSumAggregateOutputType | null
-    _min: NFTMinAggregateOutputType | null
-    _max: NFTMaxAggregateOutputType | null
-  }
-
-  type GetNFTGroupByPayload<T extends NFTGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<NFTGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof NFTGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], NFTGroupByOutputType[P]>
-            : GetScalarType<T[P], NFTGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type NFTSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    name?: boolean
-    price?: boolean
-    description?: boolean
-    dailyIncome?: boolean
-    fee?: boolean
-    level?: boolean
-    userNFTs?: boolean | NFT$userNFTsArgs<ExtArgs>
-    _count?: boolean | NFTCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["nFT"]>
-
-  export type NFTSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    name?: boolean
-    price?: boolean
-    description?: boolean
-    dailyIncome?: boolean
-    fee?: boolean
-    level?: boolean
-  }, ExtArgs["result"]["nFT"]>
-
-  export type NFTSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    name?: boolean
-    price?: boolean
-    description?: boolean
-    dailyIncome?: boolean
-    fee?: boolean
-    level?: boolean
-  }, ExtArgs["result"]["nFT"]>
-
-  export type NFTSelectScalar = {
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    name?: boolean
-    price?: boolean
-    description?: boolean
-    dailyIncome?: boolean
-    fee?: boolean
-    level?: boolean
-  }
-
-  export type NFTOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "name" | "price" | "description" | "dailyIncome" | "fee" | "level", ExtArgs["result"]["nFT"]>
-  export type NFTInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userNFTs?: boolean | NFT$userNFTsArgs<ExtArgs>
-    _count?: boolean | NFTCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type NFTIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type NFTIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $NFTPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "NFT"
-    objects: {
-      userNFTs: Prisma.$UserNFTPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      createdAt: Date
-      updatedAt: Date
-      name: string
-      price: Prisma.Decimal
-      description: string | null
-      dailyIncome: Prisma.Decimal
-      fee: Prisma.Decimal
-      level: number
-    }, ExtArgs["result"]["nFT"]>
-    composites: {}
-  }
-
-  type NFTGetPayload<S extends boolean | null | undefined | NFTDefaultArgs> = $Result.GetResult<Prisma.$NFTPayload, S>
-
-  type NFTCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<NFTFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: NFTCountAggregateInputType | true
-    }
-
-  export interface NFTDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NFT'], meta: { name: 'NFT' } }
-    /**
-     * Find zero or one NFT that matches the filter.
-     * @param {NFTFindUniqueArgs} args - Arguments to find a NFT
-     * @example
-     * // Get one NFT
-     * const nFT = await prisma.nFT.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends NFTFindUniqueArgs>(args: SelectSubset<T, NFTFindUniqueArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one NFT that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {NFTFindUniqueOrThrowArgs} args - Arguments to find a NFT
-     * @example
-     * // Get one NFT
-     * const nFT = await prisma.nFT.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends NFTFindUniqueOrThrowArgs>(args: SelectSubset<T, NFTFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first NFT that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NFTFindFirstArgs} args - Arguments to find a NFT
-     * @example
-     * // Get one NFT
-     * const nFT = await prisma.nFT.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends NFTFindFirstArgs>(args?: SelectSubset<T, NFTFindFirstArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first NFT that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NFTFindFirstOrThrowArgs} args - Arguments to find a NFT
-     * @example
-     * // Get one NFT
-     * const nFT = await prisma.nFT.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends NFTFindFirstOrThrowArgs>(args?: SelectSubset<T, NFTFindFirstOrThrowArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more NFTS that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NFTFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all NFTS
-     * const nFTS = await prisma.nFT.findMany()
-     * 
-     * // Get first 10 NFTS
-     * const nFTS = await prisma.nFT.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const nFTWithIdOnly = await prisma.nFT.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends NFTFindManyArgs>(args?: SelectSubset<T, NFTFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a NFT.
-     * @param {NFTCreateArgs} args - Arguments to create a NFT.
-     * @example
-     * // Create one NFT
-     * const NFT = await prisma.nFT.create({
-     *   data: {
-     *     // ... data to create a NFT
-     *   }
-     * })
-     * 
-     */
-    create<T extends NFTCreateArgs>(args: SelectSubset<T, NFTCreateArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many NFTS.
-     * @param {NFTCreateManyArgs} args - Arguments to create many NFTS.
-     * @example
-     * // Create many NFTS
-     * const nFT = await prisma.nFT.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends NFTCreateManyArgs>(args?: SelectSubset<T, NFTCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many NFTS and returns the data saved in the database.
-     * @param {NFTCreateManyAndReturnArgs} args - Arguments to create many NFTS.
-     * @example
-     * // Create many NFTS
-     * const nFT = await prisma.nFT.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many NFTS and only return the `id`
-     * const nFTWithIdOnly = await prisma.nFT.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends NFTCreateManyAndReturnArgs>(args?: SelectSubset<T, NFTCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a NFT.
-     * @param {NFTDeleteArgs} args - Arguments to delete one NFT.
-     * @example
-     * // Delete one NFT
-     * const NFT = await prisma.nFT.delete({
-     *   where: {
-     *     // ... filter to delete one NFT
-     *   }
-     * })
-     * 
-     */
-    delete<T extends NFTDeleteArgs>(args: SelectSubset<T, NFTDeleteArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one NFT.
-     * @param {NFTUpdateArgs} args - Arguments to update one NFT.
-     * @example
-     * // Update one NFT
-     * const nFT = await prisma.nFT.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends NFTUpdateArgs>(args: SelectSubset<T, NFTUpdateArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more NFTS.
-     * @param {NFTDeleteManyArgs} args - Arguments to filter NFTS to delete.
-     * @example
-     * // Delete a few NFTS
-     * const { count } = await prisma.nFT.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends NFTDeleteManyArgs>(args?: SelectSubset<T, NFTDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more NFTS.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NFTUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many NFTS
-     * const nFT = await prisma.nFT.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends NFTUpdateManyArgs>(args: SelectSubset<T, NFTUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more NFTS and returns the data updated in the database.
-     * @param {NFTUpdateManyAndReturnArgs} args - Arguments to update many NFTS.
-     * @example
-     * // Update many NFTS
-     * const nFT = await prisma.nFT.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more NFTS and only return the `id`
-     * const nFTWithIdOnly = await prisma.nFT.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends NFTUpdateManyAndReturnArgs>(args: SelectSubset<T, NFTUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one NFT.
-     * @param {NFTUpsertArgs} args - Arguments to update or create a NFT.
-     * @example
-     * // Update or create a NFT
-     * const nFT = await prisma.nFT.upsert({
-     *   create: {
-     *     // ... data to create a NFT
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the NFT we want to update
-     *   }
-     * })
-     */
-    upsert<T extends NFTUpsertArgs>(args: SelectSubset<T, NFTUpsertArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of NFTS.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NFTCountArgs} args - Arguments to filter NFTS to count.
-     * @example
-     * // Count the number of NFTS
-     * const count = await prisma.nFT.count({
-     *   where: {
-     *     // ... the filter for the NFTS we want to count
-     *   }
-     * })
-    **/
-    count<T extends NFTCountArgs>(
-      args?: Subset<T, NFTCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], NFTCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a NFT.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NFTAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends NFTAggregateArgs>(args: Subset<T, NFTAggregateArgs>): Prisma.PrismaPromise<GetNFTAggregateType<T>>
-
-    /**
-     * Group by NFT.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NFTGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends NFTGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: NFTGroupByArgs['orderBy'] }
-        : { orderBy?: NFTGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, NFTGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNFTGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the NFT model
-   */
-  readonly fields: NFTFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for NFT.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__NFTClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    userNFTs<T extends NFT$userNFTsArgs<ExtArgs> = {}>(args?: Subset<T, NFT$userNFTsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the NFT model
-   */
-  interface NFTFieldRefs {
-    readonly id: FieldRef<"NFT", 'Int'>
-    readonly createdAt: FieldRef<"NFT", 'DateTime'>
-    readonly updatedAt: FieldRef<"NFT", 'DateTime'>
-    readonly name: FieldRef<"NFT", 'String'>
-    readonly price: FieldRef<"NFT", 'Decimal'>
-    readonly description: FieldRef<"NFT", 'String'>
-    readonly dailyIncome: FieldRef<"NFT", 'Decimal'>
-    readonly fee: FieldRef<"NFT", 'Decimal'>
-    readonly level: FieldRef<"NFT", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * NFT findUnique
-   */
-  export type NFTFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * Filter, which NFT to fetch.
-     */
-    where: NFTWhereUniqueInput
-  }
-
-  /**
-   * NFT findUniqueOrThrow
-   */
-  export type NFTFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * Filter, which NFT to fetch.
-     */
-    where: NFTWhereUniqueInput
-  }
-
-  /**
-   * NFT findFirst
-   */
-  export type NFTFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * Filter, which NFT to fetch.
-     */
-    where?: NFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NFTS to fetch.
-     */
-    orderBy?: NFTOrderByWithRelationInput | NFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for NFTS.
-     */
-    cursor?: NFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NFTS.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of NFTS.
-     */
-    distinct?: NFTScalarFieldEnum | NFTScalarFieldEnum[]
-  }
-
-  /**
-   * NFT findFirstOrThrow
-   */
-  export type NFTFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * Filter, which NFT to fetch.
-     */
-    where?: NFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NFTS to fetch.
-     */
-    orderBy?: NFTOrderByWithRelationInput | NFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for NFTS.
-     */
-    cursor?: NFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NFTS.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of NFTS.
-     */
-    distinct?: NFTScalarFieldEnum | NFTScalarFieldEnum[]
-  }
-
-  /**
-   * NFT findMany
-   */
-  export type NFTFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * Filter, which NFTS to fetch.
-     */
-    where?: NFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of NFTS to fetch.
-     */
-    orderBy?: NFTOrderByWithRelationInput | NFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing NFTS.
-     */
-    cursor?: NFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` NFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` NFTS.
-     */
-    skip?: number
-    distinct?: NFTScalarFieldEnum | NFTScalarFieldEnum[]
-  }
-
-  /**
-   * NFT create
-   */
-  export type NFTCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * The data needed to create a NFT.
-     */
-    data: XOR<NFTCreateInput, NFTUncheckedCreateInput>
-  }
-
-  /**
-   * NFT createMany
-   */
-  export type NFTCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many NFTS.
-     */
-    data: NFTCreateManyInput | NFTCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * NFT createManyAndReturn
-   */
-  export type NFTCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * The data used to create many NFTS.
-     */
-    data: NFTCreateManyInput | NFTCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * NFT update
-   */
-  export type NFTUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * The data needed to update a NFT.
-     */
-    data: XOR<NFTUpdateInput, NFTUncheckedUpdateInput>
-    /**
-     * Choose, which NFT to update.
-     */
-    where: NFTWhereUniqueInput
-  }
-
-  /**
-   * NFT updateMany
-   */
-  export type NFTUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update NFTS.
-     */
-    data: XOR<NFTUpdateManyMutationInput, NFTUncheckedUpdateManyInput>
-    /**
-     * Filter which NFTS to update
-     */
-    where?: NFTWhereInput
-    /**
-     * Limit how many NFTS to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * NFT updateManyAndReturn
-   */
-  export type NFTUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * The data used to update NFTS.
-     */
-    data: XOR<NFTUpdateManyMutationInput, NFTUncheckedUpdateManyInput>
-    /**
-     * Filter which NFTS to update
-     */
-    where?: NFTWhereInput
-    /**
-     * Limit how many NFTS to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * NFT upsert
-   */
-  export type NFTUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * The filter to search for the NFT to update in case it exists.
-     */
-    where: NFTWhereUniqueInput
-    /**
-     * In case the NFT found by the `where` argument doesn't exist, create a new NFT with this data.
-     */
-    create: XOR<NFTCreateInput, NFTUncheckedCreateInput>
-    /**
-     * In case the NFT was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<NFTUpdateInput, NFTUncheckedUpdateInput>
-  }
-
-  /**
-   * NFT delete
-   */
-  export type NFTDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-    /**
-     * Filter which NFT to delete.
-     */
-    where: NFTWhereUniqueInput
-  }
-
-  /**
-   * NFT deleteMany
-   */
-  export type NFTDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which NFTS to delete
-     */
-    where?: NFTWhereInput
-    /**
-     * Limit how many NFTS to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * NFT.userNFTs
-   */
-  export type NFT$userNFTsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    where?: UserNFTWhereInput
-    orderBy?: UserNFTOrderByWithRelationInput | UserNFTOrderByWithRelationInput[]
-    cursor?: UserNFTWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserNFTScalarFieldEnum | UserNFTScalarFieldEnum[]
-  }
-
-  /**
-   * NFT without action
-   */
-  export type NFTDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NFT
-     */
-    select?: NFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NFT
-     */
-    omit?: NFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NFTInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model UserNFT
-   */
-
-  export type AggregateUserNFT = {
-    _count: UserNFTCountAggregateOutputType | null
-    _avg: UserNFTAvgAggregateOutputType | null
-    _sum: UserNFTSumAggregateOutputType | null
-    _min: UserNFTMinAggregateOutputType | null
-    _max: UserNFTMaxAggregateOutputType | null
-  }
-
-  export type UserNFTAvgAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    nftId: number | null
-  }
-
-  export type UserNFTSumAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    nftId: number | null
-  }
-
-  export type UserNFTMinAggregateOutputType = {
-    id: number | null
-    acquiredAt: Date | null
-    userId: number | null
-    nftId: number | null
-  }
-
-  export type UserNFTMaxAggregateOutputType = {
-    id: number | null
-    acquiredAt: Date | null
-    userId: number | null
-    nftId: number | null
-  }
-
-  export type UserNFTCountAggregateOutputType = {
-    id: number
-    acquiredAt: number
-    userId: number
-    nftId: number
-    _all: number
-  }
-
-
-  export type UserNFTAvgAggregateInputType = {
-    id?: true
-    userId?: true
-    nftId?: true
-  }
-
-  export type UserNFTSumAggregateInputType = {
-    id?: true
-    userId?: true
-    nftId?: true
-  }
-
-  export type UserNFTMinAggregateInputType = {
-    id?: true
-    acquiredAt?: true
-    userId?: true
-    nftId?: true
-  }
-
-  export type UserNFTMaxAggregateInputType = {
-    id?: true
-    acquiredAt?: true
-    userId?: true
-    nftId?: true
-  }
-
-  export type UserNFTCountAggregateInputType = {
-    id?: true
-    acquiredAt?: true
-    userId?: true
-    nftId?: true
-    _all?: true
-  }
-
-  export type UserNFTAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserNFT to aggregate.
-     */
-    where?: UserNFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserNFTS to fetch.
-     */
-    orderBy?: UserNFTOrderByWithRelationInput | UserNFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: UserNFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserNFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserNFTS.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned UserNFTS
-    **/
-    _count?: true | UserNFTCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: UserNFTAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserNFTSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: UserNFTMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: UserNFTMaxAggregateInputType
-  }
-
-  export type GetUserNFTAggregateType<T extends UserNFTAggregateArgs> = {
-        [P in keyof T & keyof AggregateUserNFT]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUserNFT[P]>
-      : GetScalarType<T[P], AggregateUserNFT[P]>
-  }
-
-
-
-
-  export type UserNFTGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserNFTWhereInput
-    orderBy?: UserNFTOrderByWithAggregationInput | UserNFTOrderByWithAggregationInput[]
-    by: UserNFTScalarFieldEnum[] | UserNFTScalarFieldEnum
-    having?: UserNFTScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserNFTCountAggregateInputType | true
-    _avg?: UserNFTAvgAggregateInputType
-    _sum?: UserNFTSumAggregateInputType
-    _min?: UserNFTMinAggregateInputType
-    _max?: UserNFTMaxAggregateInputType
-  }
-
-  export type UserNFTGroupByOutputType = {
-    id: number
-    acquiredAt: Date
-    userId: number
-    nftId: number
-    _count: UserNFTCountAggregateOutputType | null
-    _avg: UserNFTAvgAggregateOutputType | null
-    _sum: UserNFTSumAggregateOutputType | null
-    _min: UserNFTMinAggregateOutputType | null
-    _max: UserNFTMaxAggregateOutputType | null
-  }
-
-  type GetUserNFTGroupByPayload<T extends UserNFTGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<UserNFTGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserNFTGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserNFTGroupByOutputType[P]>
-            : GetScalarType<T[P], UserNFTGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type UserNFTSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    acquiredAt?: boolean
-    userId?: boolean
-    nftId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    nft?: boolean | NFTDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userNFT"]>
-
-  export type UserNFTSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    acquiredAt?: boolean
-    userId?: boolean
-    nftId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    nft?: boolean | NFTDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userNFT"]>
-
-  export type UserNFTSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    acquiredAt?: boolean
-    userId?: boolean
-    nftId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    nft?: boolean | NFTDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userNFT"]>
-
-  export type UserNFTSelectScalar = {
-    id?: boolean
-    acquiredAt?: boolean
-    userId?: boolean
-    nftId?: boolean
-  }
-
-  export type UserNFTOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "acquiredAt" | "userId" | "nftId", ExtArgs["result"]["userNFT"]>
-  export type UserNFTInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    nft?: boolean | NFTDefaultArgs<ExtArgs>
-  }
-  export type UserNFTIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    nft?: boolean | NFTDefaultArgs<ExtArgs>
-  }
-  export type UserNFTIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    nft?: boolean | NFTDefaultArgs<ExtArgs>
-  }
-
-  export type $UserNFTPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UserNFT"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      nft: Prisma.$NFTPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      acquiredAt: Date
-      userId: number
-      nftId: number
-    }, ExtArgs["result"]["userNFT"]>
-    composites: {}
-  }
-
-  type UserNFTGetPayload<S extends boolean | null | undefined | UserNFTDefaultArgs> = $Result.GetResult<Prisma.$UserNFTPayload, S>
-
-  type UserNFTCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UserNFTFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: UserNFTCountAggregateInputType | true
-    }
-
-  export interface UserNFTDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserNFT'], meta: { name: 'UserNFT' } }
-    /**
-     * Find zero or one UserNFT that matches the filter.
-     * @param {UserNFTFindUniqueArgs} args - Arguments to find a UserNFT
-     * @example
-     * // Get one UserNFT
-     * const userNFT = await prisma.userNFT.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends UserNFTFindUniqueArgs>(args: SelectSubset<T, UserNFTFindUniqueArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one UserNFT that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {UserNFTFindUniqueOrThrowArgs} args - Arguments to find a UserNFT
-     * @example
-     * // Get one UserNFT
-     * const userNFT = await prisma.userNFT.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends UserNFTFindUniqueOrThrowArgs>(args: SelectSubset<T, UserNFTFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first UserNFT that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserNFTFindFirstArgs} args - Arguments to find a UserNFT
-     * @example
-     * // Get one UserNFT
-     * const userNFT = await prisma.userNFT.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends UserNFTFindFirstArgs>(args?: SelectSubset<T, UserNFTFindFirstArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first UserNFT that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserNFTFindFirstOrThrowArgs} args - Arguments to find a UserNFT
-     * @example
-     * // Get one UserNFT
-     * const userNFT = await prisma.userNFT.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends UserNFTFindFirstOrThrowArgs>(args?: SelectSubset<T, UserNFTFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more UserNFTS that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserNFTFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all UserNFTS
-     * const userNFTS = await prisma.userNFT.findMany()
-     * 
-     * // Get first 10 UserNFTS
-     * const userNFTS = await prisma.userNFT.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const userNFTWithIdOnly = await prisma.userNFT.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends UserNFTFindManyArgs>(args?: SelectSubset<T, UserNFTFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a UserNFT.
-     * @param {UserNFTCreateArgs} args - Arguments to create a UserNFT.
-     * @example
-     * // Create one UserNFT
-     * const UserNFT = await prisma.userNFT.create({
-     *   data: {
-     *     // ... data to create a UserNFT
-     *   }
-     * })
-     * 
-     */
-    create<T extends UserNFTCreateArgs>(args: SelectSubset<T, UserNFTCreateArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many UserNFTS.
-     * @param {UserNFTCreateManyArgs} args - Arguments to create many UserNFTS.
-     * @example
-     * // Create many UserNFTS
-     * const userNFT = await prisma.userNFT.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends UserNFTCreateManyArgs>(args?: SelectSubset<T, UserNFTCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many UserNFTS and returns the data saved in the database.
-     * @param {UserNFTCreateManyAndReturnArgs} args - Arguments to create many UserNFTS.
-     * @example
-     * // Create many UserNFTS
-     * const userNFT = await prisma.userNFT.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many UserNFTS and only return the `id`
-     * const userNFTWithIdOnly = await prisma.userNFT.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends UserNFTCreateManyAndReturnArgs>(args?: SelectSubset<T, UserNFTCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a UserNFT.
-     * @param {UserNFTDeleteArgs} args - Arguments to delete one UserNFT.
-     * @example
-     * // Delete one UserNFT
-     * const UserNFT = await prisma.userNFT.delete({
-     *   where: {
-     *     // ... filter to delete one UserNFT
-     *   }
-     * })
-     * 
-     */
-    delete<T extends UserNFTDeleteArgs>(args: SelectSubset<T, UserNFTDeleteArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one UserNFT.
-     * @param {UserNFTUpdateArgs} args - Arguments to update one UserNFT.
-     * @example
-     * // Update one UserNFT
-     * const userNFT = await prisma.userNFT.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends UserNFTUpdateArgs>(args: SelectSubset<T, UserNFTUpdateArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more UserNFTS.
-     * @param {UserNFTDeleteManyArgs} args - Arguments to filter UserNFTS to delete.
-     * @example
-     * // Delete a few UserNFTS
-     * const { count } = await prisma.userNFT.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends UserNFTDeleteManyArgs>(args?: SelectSubset<T, UserNFTDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more UserNFTS.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserNFTUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many UserNFTS
-     * const userNFT = await prisma.userNFT.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends UserNFTUpdateManyArgs>(args: SelectSubset<T, UserNFTUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more UserNFTS and returns the data updated in the database.
-     * @param {UserNFTUpdateManyAndReturnArgs} args - Arguments to update many UserNFTS.
-     * @example
-     * // Update many UserNFTS
-     * const userNFT = await prisma.userNFT.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more UserNFTS and only return the `id`
-     * const userNFTWithIdOnly = await prisma.userNFT.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends UserNFTUpdateManyAndReturnArgs>(args: SelectSubset<T, UserNFTUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one UserNFT.
-     * @param {UserNFTUpsertArgs} args - Arguments to update or create a UserNFT.
-     * @example
-     * // Update or create a UserNFT
-     * const userNFT = await prisma.userNFT.upsert({
-     *   create: {
-     *     // ... data to create a UserNFT
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the UserNFT we want to update
-     *   }
-     * })
-     */
-    upsert<T extends UserNFTUpsertArgs>(args: SelectSubset<T, UserNFTUpsertArgs<ExtArgs>>): Prisma__UserNFTClient<$Result.GetResult<Prisma.$UserNFTPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of UserNFTS.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserNFTCountArgs} args - Arguments to filter UserNFTS to count.
-     * @example
-     * // Count the number of UserNFTS
-     * const count = await prisma.userNFT.count({
-     *   where: {
-     *     // ... the filter for the UserNFTS we want to count
-     *   }
-     * })
-    **/
-    count<T extends UserNFTCountArgs>(
-      args?: Subset<T, UserNFTCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserNFTCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a UserNFT.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserNFTAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends UserNFTAggregateArgs>(args: Subset<T, UserNFTAggregateArgs>): Prisma.PrismaPromise<GetUserNFTAggregateType<T>>
-
-    /**
-     * Group by UserNFT.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserNFTGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends UserNFTGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserNFTGroupByArgs['orderBy'] }
-        : { orderBy?: UserNFTGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserNFTGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserNFTGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the UserNFT model
-   */
-  readonly fields: UserNFTFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for UserNFT.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__UserNFTClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    nft<T extends NFTDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NFTDefaultArgs<ExtArgs>>): Prisma__NFTClient<$Result.GetResult<Prisma.$NFTPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the UserNFT model
-   */
-  interface UserNFTFieldRefs {
-    readonly id: FieldRef<"UserNFT", 'Int'>
-    readonly acquiredAt: FieldRef<"UserNFT", 'DateTime'>
-    readonly userId: FieldRef<"UserNFT", 'Int'>
-    readonly nftId: FieldRef<"UserNFT", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * UserNFT findUnique
-   */
-  export type UserNFTFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * Filter, which UserNFT to fetch.
-     */
-    where: UserNFTWhereUniqueInput
-  }
-
-  /**
-   * UserNFT findUniqueOrThrow
-   */
-  export type UserNFTFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * Filter, which UserNFT to fetch.
-     */
-    where: UserNFTWhereUniqueInput
-  }
-
-  /**
-   * UserNFT findFirst
-   */
-  export type UserNFTFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * Filter, which UserNFT to fetch.
-     */
-    where?: UserNFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserNFTS to fetch.
-     */
-    orderBy?: UserNFTOrderByWithRelationInput | UserNFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserNFTS.
-     */
-    cursor?: UserNFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserNFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserNFTS.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserNFTS.
-     */
-    distinct?: UserNFTScalarFieldEnum | UserNFTScalarFieldEnum[]
-  }
-
-  /**
-   * UserNFT findFirstOrThrow
-   */
-  export type UserNFTFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * Filter, which UserNFT to fetch.
-     */
-    where?: UserNFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserNFTS to fetch.
-     */
-    orderBy?: UserNFTOrderByWithRelationInput | UserNFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserNFTS.
-     */
-    cursor?: UserNFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserNFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserNFTS.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserNFTS.
-     */
-    distinct?: UserNFTScalarFieldEnum | UserNFTScalarFieldEnum[]
-  }
-
-  /**
-   * UserNFT findMany
-   */
-  export type UserNFTFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * Filter, which UserNFTS to fetch.
-     */
-    where?: UserNFTWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserNFTS to fetch.
-     */
-    orderBy?: UserNFTOrderByWithRelationInput | UserNFTOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing UserNFTS.
-     */
-    cursor?: UserNFTWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserNFTS from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserNFTS.
-     */
-    skip?: number
-    distinct?: UserNFTScalarFieldEnum | UserNFTScalarFieldEnum[]
-  }
-
-  /**
-   * UserNFT create
-   */
-  export type UserNFTCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * The data needed to create a UserNFT.
-     */
-    data: XOR<UserNFTCreateInput, UserNFTUncheckedCreateInput>
-  }
-
-  /**
-   * UserNFT createMany
-   */
-  export type UserNFTCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many UserNFTS.
-     */
-    data: UserNFTCreateManyInput | UserNFTCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * UserNFT createManyAndReturn
-   */
-  export type UserNFTCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * The data used to create many UserNFTS.
-     */
-    data: UserNFTCreateManyInput | UserNFTCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * UserNFT update
-   */
-  export type UserNFTUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * The data needed to update a UserNFT.
-     */
-    data: XOR<UserNFTUpdateInput, UserNFTUncheckedUpdateInput>
-    /**
-     * Choose, which UserNFT to update.
-     */
-    where: UserNFTWhereUniqueInput
-  }
-
-  /**
-   * UserNFT updateMany
-   */
-  export type UserNFTUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update UserNFTS.
-     */
-    data: XOR<UserNFTUpdateManyMutationInput, UserNFTUncheckedUpdateManyInput>
-    /**
-     * Filter which UserNFTS to update
-     */
-    where?: UserNFTWhereInput
-    /**
-     * Limit how many UserNFTS to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * UserNFT updateManyAndReturn
-   */
-  export type UserNFTUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * The data used to update UserNFTS.
-     */
-    data: XOR<UserNFTUpdateManyMutationInput, UserNFTUncheckedUpdateManyInput>
-    /**
-     * Filter which UserNFTS to update
-     */
-    where?: UserNFTWhereInput
-    /**
-     * Limit how many UserNFTS to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * UserNFT upsert
-   */
-  export type UserNFTUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * The filter to search for the UserNFT to update in case it exists.
-     */
-    where: UserNFTWhereUniqueInput
-    /**
-     * In case the UserNFT found by the `where` argument doesn't exist, create a new UserNFT with this data.
-     */
-    create: XOR<UserNFTCreateInput, UserNFTUncheckedCreateInput>
-    /**
-     * In case the UserNFT was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<UserNFTUpdateInput, UserNFTUncheckedUpdateInput>
-  }
-
-  /**
-   * UserNFT delete
-   */
-  export type UserNFTDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-    /**
-     * Filter which UserNFT to delete.
-     */
-    where: UserNFTWhereUniqueInput
-  }
-
-  /**
-   * UserNFT deleteMany
-   */
-  export type UserNFTDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserNFTS to delete
-     */
-    where?: UserNFTWhereInput
-    /**
-     * Limit how many UserNFTS to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * UserNFT without action
-   */
-  export type UserNFTDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserNFT
-     */
-    select?: UserNFTSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserNFT
-     */
-    omit?: UserNFTOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserNFTInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Machine
-   */
-
-  export type AggregateMachine = {
-    _count: MachineCountAggregateOutputType | null
-    _avg: MachineAvgAggregateOutputType | null
-    _sum: MachineSumAggregateOutputType | null
-    _min: MachineMinAggregateOutputType | null
-    _max: MachineMaxAggregateOutputType | null
-  }
-
-  export type MachineAvgAggregateOutputType = {
-    id: number | null
-    price: Decimal | null
-    dailyIncome: Decimal | null
-    fee: Decimal | null
     rentalDays: number | null
-    level: number | null
   }
 
-  export type MachineSumAggregateOutputType = {
+  export type ProductSumAggregateOutputType = {
     id: number | null
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
-    rentalDays: number | null
     level: number | null
+    rentalDays: number | null
   }
 
-  export type MachineMinAggregateOutputType = {
+  export type ProductMinAggregateOutputType = {
     id: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8474,11 +6114,12 @@ export namespace Prisma {
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
-    rentalDays: number | null
     level: number | null
+    rentalDays: number | null
+    deletedAt: Date | null
   }
 
-  export type MachineMaxAggregateOutputType = {
+  export type ProductMaxAggregateOutputType = {
     id: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8488,11 +6129,12 @@ export namespace Prisma {
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
-    rentalDays: number | null
     level: number | null
+    rentalDays: number | null
+    deletedAt: Date | null
   }
 
-  export type MachineCountAggregateOutputType = {
+  export type ProductCountAggregateOutputType = {
     id: number
     createdAt: number
     updatedAt: number
@@ -8502,31 +6144,32 @@ export namespace Prisma {
     price: number
     dailyIncome: number
     fee: number
-    rentalDays: number
     level: number
+    rentalDays: number
+    deletedAt: number
     _all: number
   }
 
 
-  export type MachineAvgAggregateInputType = {
+  export type ProductAvgAggregateInputType = {
     id?: true
     price?: true
     dailyIncome?: true
     fee?: true
-    rentalDays?: true
     level?: true
+    rentalDays?: true
   }
 
-  export type MachineSumAggregateInputType = {
+  export type ProductSumAggregateInputType = {
     id?: true
     price?: true
     dailyIncome?: true
     fee?: true
-    rentalDays?: true
     level?: true
+    rentalDays?: true
   }
 
-  export type MachineMinAggregateInputType = {
+  export type ProductMinAggregateInputType = {
     id?: true
     createdAt?: true
     updatedAt?: true
@@ -8536,11 +6179,12 @@ export namespace Prisma {
     price?: true
     dailyIncome?: true
     fee?: true
-    rentalDays?: true
     level?: true
+    rentalDays?: true
+    deletedAt?: true
   }
 
-  export type MachineMaxAggregateInputType = {
+  export type ProductMaxAggregateInputType = {
     id?: true
     createdAt?: true
     updatedAt?: true
@@ -8550,11 +6194,12 @@ export namespace Prisma {
     price?: true
     dailyIncome?: true
     fee?: true
-    rentalDays?: true
     level?: true
+    rentalDays?: true
+    deletedAt?: true
   }
 
-  export type MachineCountAggregateInputType = {
+  export type ProductCountAggregateInputType = {
     id?: true
     createdAt?: true
     updatedAt?: true
@@ -8564,98 +6209,99 @@ export namespace Prisma {
     price?: true
     dailyIncome?: true
     fee?: true
-    rentalDays?: true
     level?: true
+    rentalDays?: true
+    deletedAt?: true
     _all?: true
   }
 
-  export type MachineAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Machine to aggregate.
+     * Filter which Product to aggregate.
      */
-    where?: MachineWhereInput
+    where?: ProductWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Machines to fetch.
+     * Determine the order of Products to fetch.
      */
-    orderBy?: MachineOrderByWithRelationInput | MachineOrderByWithRelationInput[]
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: MachineWhereUniqueInput
+    cursor?: ProductWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Machines from the position of the cursor.
+     * Take `±n` Products from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Machines.
+     * Skip the first `n` Products.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Machines
+     * Count returned Products
     **/
-    _count?: true | MachineCountAggregateInputType
+    _count?: true | ProductCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: MachineAvgAggregateInputType
+    _avg?: ProductAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: MachineSumAggregateInputType
+    _sum?: ProductSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: MachineMinAggregateInputType
+    _min?: ProductMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: MachineMaxAggregateInputType
+    _max?: ProductMaxAggregateInputType
   }
 
-  export type GetMachineAggregateType<T extends MachineAggregateArgs> = {
-        [P in keyof T & keyof AggregateMachine]: P extends '_count' | 'count'
+  export type GetProductAggregateType<T extends ProductAggregateArgs> = {
+        [P in keyof T & keyof AggregateProduct]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateMachine[P]>
-      : GetScalarType<T[P], AggregateMachine[P]>
+        : GetScalarType<T[P], AggregateProduct[P]>
+      : GetScalarType<T[P], AggregateProduct[P]>
   }
 
 
 
 
-  export type MachineGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MachineWhereInput
-    orderBy?: MachineOrderByWithAggregationInput | MachineOrderByWithAggregationInput[]
-    by: MachineScalarFieldEnum[] | MachineScalarFieldEnum
-    having?: MachineScalarWhereWithAggregatesInput
+  export type ProductGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductWhereInput
+    orderBy?: ProductOrderByWithAggregationInput | ProductOrderByWithAggregationInput[]
+    by: ProductScalarFieldEnum[] | ProductScalarFieldEnum
+    having?: ProductScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: MachineCountAggregateInputType | true
-    _avg?: MachineAvgAggregateInputType
-    _sum?: MachineSumAggregateInputType
-    _min?: MachineMinAggregateInputType
-    _max?: MachineMaxAggregateInputType
+    _count?: ProductCountAggregateInputType | true
+    _avg?: ProductAvgAggregateInputType
+    _sum?: ProductSumAggregateInputType
+    _min?: ProductMinAggregateInputType
+    _max?: ProductMaxAggregateInputType
   }
 
-  export type MachineGroupByOutputType = {
+  export type ProductGroupByOutputType = {
     id: number
     createdAt: Date
     updatedAt: Date
@@ -8665,30 +6311,31 @@ export namespace Prisma {
     price: Decimal
     dailyIncome: Decimal
     fee: Decimal
-    rentalDays: number
     level: number
-    _count: MachineCountAggregateOutputType | null
-    _avg: MachineAvgAggregateOutputType | null
-    _sum: MachineSumAggregateOutputType | null
-    _min: MachineMinAggregateOutputType | null
-    _max: MachineMaxAggregateOutputType | null
+    rentalDays: number | null
+    deletedAt: Date | null
+    _count: ProductCountAggregateOutputType | null
+    _avg: ProductAvgAggregateOutputType | null
+    _sum: ProductSumAggregateOutputType | null
+    _min: ProductMinAggregateOutputType | null
+    _max: ProductMaxAggregateOutputType | null
   }
 
-  type GetMachineGroupByPayload<T extends MachineGroupByArgs> = Prisma.PrismaPromise<
+  type GetProductGroupByPayload<T extends ProductGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<MachineGroupByOutputType, T['by']> &
+      PickEnumerable<ProductGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof MachineGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ProductGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], MachineGroupByOutputType[P]>
-            : GetScalarType<T[P], MachineGroupByOutputType[P]>
+              : GetScalarType<T[P], ProductGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type MachineSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ProductSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8698,15 +6345,18 @@ export namespace Prisma {
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    rentalDays?: boolean
     level?: boolean
-    agreements?: boolean | Machine$agreementsArgs<ExtArgs>
-    rewards?: boolean | Machine$rewardsArgs<ExtArgs>
-    TrialFund?: boolean | Machine$TrialFundArgs<ExtArgs>
-    _count?: boolean | MachineCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["machine"]>
+    rentalDays?: boolean
+    deletedAt?: boolean
+    userProducts?: boolean | Product$userProductsArgs<ExtArgs>
+    agreements?: boolean | Product$agreementsArgs<ExtArgs>
+    rewards?: boolean | Product$rewardsArgs<ExtArgs>
+    trialFunds?: boolean | Product$trialFundsArgs<ExtArgs>
+    saleItems?: boolean | Product$saleItemsArgs<ExtArgs>
+    _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["product"]>
 
-  export type MachineSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ProductSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8716,11 +6366,12 @@ export namespace Prisma {
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    rentalDays?: boolean
     level?: boolean
-  }, ExtArgs["result"]["machine"]>
+    rentalDays?: boolean
+    deletedAt?: boolean
+  }, ExtArgs["result"]["product"]>
 
-  export type MachineSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type ProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8730,11 +6381,12 @@ export namespace Prisma {
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    rentalDays?: boolean
     level?: boolean
-  }, ExtArgs["result"]["machine"]>
+    rentalDays?: boolean
+    deletedAt?: boolean
+  }, ExtArgs["result"]["product"]>
 
-  export type MachineSelectScalar = {
+  export type ProductSelectScalar = {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8744,26 +6396,31 @@ export namespace Prisma {
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    rentalDays?: boolean
     level?: boolean
+    rentalDays?: boolean
+    deletedAt?: boolean
   }
 
-  export type MachineOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "rentalDays" | "level", ExtArgs["result"]["machine"]>
-  export type MachineInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agreements?: boolean | Machine$agreementsArgs<ExtArgs>
-    rewards?: boolean | Machine$rewardsArgs<ExtArgs>
-    TrialFund?: boolean | Machine$TrialFundArgs<ExtArgs>
-    _count?: boolean | MachineCountOutputTypeDefaultArgs<ExtArgs>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "level" | "rentalDays" | "deletedAt", ExtArgs["result"]["product"]>
+  export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userProducts?: boolean | Product$userProductsArgs<ExtArgs>
+    agreements?: boolean | Product$agreementsArgs<ExtArgs>
+    rewards?: boolean | Product$rewardsArgs<ExtArgs>
+    trialFunds?: boolean | Product$trialFundsArgs<ExtArgs>
+    saleItems?: boolean | Product$saleItemsArgs<ExtArgs>
+    _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type MachineIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type MachineIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProductIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $MachinePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Machine"
+  export type $ProductPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Product"
     objects: {
+      userProducts: Prisma.$UserProductPayload<ExtArgs>[]
       agreements: Prisma.$AgreementPayload<ExtArgs>[]
       rewards: Prisma.$RewardPayload<ExtArgs>[]
-      TrialFund: Prisma.$TrialFundPayload<ExtArgs>[]
+      trialFunds: Prisma.$TrialFundPayload<ExtArgs>[]
+      saleItems: Prisma.$SaleItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8775,138 +6432,139 @@ export namespace Prisma {
       price: Prisma.Decimal
       dailyIncome: Prisma.Decimal
       fee: Prisma.Decimal
-      rentalDays: number
       level: number
-    }, ExtArgs["result"]["machine"]>
+      rentalDays: number | null
+      deletedAt: Date | null
+    }, ExtArgs["result"]["product"]>
     composites: {}
   }
 
-  type MachineGetPayload<S extends boolean | null | undefined | MachineDefaultArgs> = $Result.GetResult<Prisma.$MachinePayload, S>
+  type ProductGetPayload<S extends boolean | null | undefined | ProductDefaultArgs> = $Result.GetResult<Prisma.$ProductPayload, S>
 
-  type MachineCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<MachineFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: MachineCountAggregateInputType | true
+  type ProductCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProductFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProductCountAggregateInputType | true
     }
 
-  export interface MachineDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Machine'], meta: { name: 'Machine' } }
+  export interface ProductDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Product'], meta: { name: 'Product' } }
     /**
-     * Find zero or one Machine that matches the filter.
-     * @param {MachineFindUniqueArgs} args - Arguments to find a Machine
+     * Find zero or one Product that matches the filter.
+     * @param {ProductFindUniqueArgs} args - Arguments to find a Product
      * @example
-     * // Get one Machine
-     * const machine = await prisma.machine.findUnique({
+     * // Get one Product
+     * const product = await prisma.product.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends MachineFindUniqueArgs>(args: SelectSubset<T, MachineFindUniqueArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends ProductFindUniqueArgs>(args: SelectSubset<T, ProductFindUniqueArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Machine that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Product that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {MachineFindUniqueOrThrowArgs} args - Arguments to find a Machine
+     * @param {ProductFindUniqueOrThrowArgs} args - Arguments to find a Product
      * @example
-     * // Get one Machine
-     * const machine = await prisma.machine.findUniqueOrThrow({
+     * // Get one Product
+     * const product = await prisma.product.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends MachineFindUniqueOrThrowArgs>(args: SelectSubset<T, MachineFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends ProductFindUniqueOrThrowArgs>(args: SelectSubset<T, ProductFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Machine that matches the filter.
+     * Find the first Product that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MachineFindFirstArgs} args - Arguments to find a Machine
+     * @param {ProductFindFirstArgs} args - Arguments to find a Product
      * @example
-     * // Get one Machine
-     * const machine = await prisma.machine.findFirst({
+     * // Get one Product
+     * const product = await prisma.product.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends MachineFindFirstArgs>(args?: SelectSubset<T, MachineFindFirstArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends ProductFindFirstArgs>(args?: SelectSubset<T, ProductFindFirstArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Machine that matches the filter or
+     * Find the first Product that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MachineFindFirstOrThrowArgs} args - Arguments to find a Machine
+     * @param {ProductFindFirstOrThrowArgs} args - Arguments to find a Product
      * @example
-     * // Get one Machine
-     * const machine = await prisma.machine.findFirstOrThrow({
+     * // Get one Product
+     * const product = await prisma.product.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends MachineFindFirstOrThrowArgs>(args?: SelectSubset<T, MachineFindFirstOrThrowArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends ProductFindFirstOrThrowArgs>(args?: SelectSubset<T, ProductFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Machines that matches the filter.
+     * Find zero or more Products that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MachineFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {ProductFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Machines
-     * const machines = await prisma.machine.findMany()
+     * // Get all Products
+     * const products = await prisma.product.findMany()
      * 
-     * // Get first 10 Machines
-     * const machines = await prisma.machine.findMany({ take: 10 })
+     * // Get first 10 Products
+     * const products = await prisma.product.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const machineWithIdOnly = await prisma.machine.findMany({ select: { id: true } })
+     * const productWithIdOnly = await prisma.product.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends MachineFindManyArgs>(args?: SelectSubset<T, MachineFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends ProductFindManyArgs>(args?: SelectSubset<T, ProductFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Machine.
-     * @param {MachineCreateArgs} args - Arguments to create a Machine.
+     * Create a Product.
+     * @param {ProductCreateArgs} args - Arguments to create a Product.
      * @example
-     * // Create one Machine
-     * const Machine = await prisma.machine.create({
+     * // Create one Product
+     * const Product = await prisma.product.create({
      *   data: {
-     *     // ... data to create a Machine
+     *     // ... data to create a Product
      *   }
      * })
      * 
      */
-    create<T extends MachineCreateArgs>(args: SelectSubset<T, MachineCreateArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends ProductCreateArgs>(args: SelectSubset<T, ProductCreateArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Machines.
-     * @param {MachineCreateManyArgs} args - Arguments to create many Machines.
+     * Create many Products.
+     * @param {ProductCreateManyArgs} args - Arguments to create many Products.
      * @example
-     * // Create many Machines
-     * const machine = await prisma.machine.createMany({
+     * // Create many Products
+     * const product = await prisma.product.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends MachineCreateManyArgs>(args?: SelectSubset<T, MachineCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends ProductCreateManyArgs>(args?: SelectSubset<T, ProductCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Machines and returns the data saved in the database.
-     * @param {MachineCreateManyAndReturnArgs} args - Arguments to create many Machines.
+     * Create many Products and returns the data saved in the database.
+     * @param {ProductCreateManyAndReturnArgs} args - Arguments to create many Products.
      * @example
-     * // Create many Machines
-     * const machine = await prisma.machine.createManyAndReturn({
+     * // Create many Products
+     * const product = await prisma.product.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Machines and only return the `id`
-     * const machineWithIdOnly = await prisma.machine.createManyAndReturn({
+     * // Create many Products and only return the `id`
+     * const productWithIdOnly = await prisma.product.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -8916,28 +6574,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends MachineCreateManyAndReturnArgs>(args?: SelectSubset<T, MachineCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends ProductCreateManyAndReturnArgs>(args?: SelectSubset<T, ProductCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Machine.
-     * @param {MachineDeleteArgs} args - Arguments to delete one Machine.
+     * Delete a Product.
+     * @param {ProductDeleteArgs} args - Arguments to delete one Product.
      * @example
-     * // Delete one Machine
-     * const Machine = await prisma.machine.delete({
+     * // Delete one Product
+     * const Product = await prisma.product.delete({
      *   where: {
-     *     // ... filter to delete one Machine
+     *     // ... filter to delete one Product
      *   }
      * })
      * 
      */
-    delete<T extends MachineDeleteArgs>(args: SelectSubset<T, MachineDeleteArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends ProductDeleteArgs>(args: SelectSubset<T, ProductDeleteArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Machine.
-     * @param {MachineUpdateArgs} args - Arguments to update one Machine.
+     * Update one Product.
+     * @param {ProductUpdateArgs} args - Arguments to update one Product.
      * @example
-     * // Update one Machine
-     * const machine = await prisma.machine.update({
+     * // Update one Product
+     * const product = await prisma.product.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8947,30 +6605,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends MachineUpdateArgs>(args: SelectSubset<T, MachineUpdateArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends ProductUpdateArgs>(args: SelectSubset<T, ProductUpdateArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Machines.
-     * @param {MachineDeleteManyArgs} args - Arguments to filter Machines to delete.
+     * Delete zero or more Products.
+     * @param {ProductDeleteManyArgs} args - Arguments to filter Products to delete.
      * @example
-     * // Delete a few Machines
-     * const { count } = await prisma.machine.deleteMany({
+     * // Delete a few Products
+     * const { count } = await prisma.product.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends MachineDeleteManyArgs>(args?: SelectSubset<T, MachineDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends ProductDeleteManyArgs>(args?: SelectSubset<T, ProductDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Machines.
+     * Update zero or more Products.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MachineUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ProductUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Machines
-     * const machine = await prisma.machine.updateMany({
+     * // Update many Products
+     * const product = await prisma.product.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8980,14 +6638,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends MachineUpdateManyArgs>(args: SelectSubset<T, MachineUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends ProductUpdateManyArgs>(args: SelectSubset<T, ProductUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Machines and returns the data updated in the database.
-     * @param {MachineUpdateManyAndReturnArgs} args - Arguments to update many Machines.
+     * Update zero or more Products and returns the data updated in the database.
+     * @param {ProductUpdateManyAndReturnArgs} args - Arguments to update many Products.
      * @example
-     * // Update many Machines
-     * const machine = await prisma.machine.updateManyAndReturn({
+     * // Update many Products
+     * const product = await prisma.product.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8996,8 +6654,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Machines and only return the `id`
-     * const machineWithIdOnly = await prisma.machine.updateManyAndReturn({
+     * // Update zero or more Products and only return the `id`
+     * const productWithIdOnly = await prisma.product.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -9010,56 +6668,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends MachineUpdateManyAndReturnArgs>(args: SelectSubset<T, MachineUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends ProductUpdateManyAndReturnArgs>(args: SelectSubset<T, ProductUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Machine.
-     * @param {MachineUpsertArgs} args - Arguments to update or create a Machine.
+     * Create or update one Product.
+     * @param {ProductUpsertArgs} args - Arguments to update or create a Product.
      * @example
-     * // Update or create a Machine
-     * const machine = await prisma.machine.upsert({
+     * // Update or create a Product
+     * const product = await prisma.product.upsert({
      *   create: {
-     *     // ... data to create a Machine
+     *     // ... data to create a Product
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Machine we want to update
+     *     // ... the filter for the Product we want to update
      *   }
      * })
      */
-    upsert<T extends MachineUpsertArgs>(args: SelectSubset<T, MachineUpsertArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends ProductUpsertArgs>(args: SelectSubset<T, ProductUpsertArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Machines.
+     * Count the number of Products.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MachineCountArgs} args - Arguments to filter Machines to count.
+     * @param {ProductCountArgs} args - Arguments to filter Products to count.
      * @example
-     * // Count the number of Machines
-     * const count = await prisma.machine.count({
+     * // Count the number of Products
+     * const count = await prisma.product.count({
      *   where: {
-     *     // ... the filter for the Machines we want to count
+     *     // ... the filter for the Products we want to count
      *   }
      * })
     **/
-    count<T extends MachineCountArgs>(
-      args?: Subset<T, MachineCountArgs>,
+    count<T extends ProductCountArgs>(
+      args?: Subset<T, ProductCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], MachineCountAggregateOutputType>
+          : GetScalarType<T['select'], ProductCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Machine.
+     * Allows you to perform aggregations operations on a Product.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MachineAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ProductAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -9079,13 +6737,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends MachineAggregateArgs>(args: Subset<T, MachineAggregateArgs>): Prisma.PrismaPromise<GetMachineAggregateType<T>>
+    aggregate<T extends ProductAggregateArgs>(args: Subset<T, ProductAggregateArgs>): Prisma.PrismaPromise<GetProductAggregateType<T>>
 
     /**
-     * Group by Machine.
+     * Group by Product.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {MachineGroupByArgs} args - Group by arguments.
+     * @param {ProductGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -9100,14 +6758,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends MachineGroupByArgs,
+      T extends ProductGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: MachineGroupByArgs['orderBy'] }
-        : { orderBy?: MachineGroupByArgs['orderBy'] },
+        ? { orderBy: ProductGroupByArgs['orderBy'] }
+        : { orderBy?: ProductGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -9156,24 +6814,26 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, MachineGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMachineGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, ProductGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Machine model
+   * Fields of the Product model
    */
-  readonly fields: MachineFieldRefs;
+  readonly fields: ProductFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Machine.
+   * The delegate class that acts as a "Promise-like" for Product.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__MachineClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__ProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    agreements<T extends Machine$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, Machine$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    rewards<T extends Machine$rewardsArgs<ExtArgs> = {}>(args?: Subset<T, Machine$rewardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    TrialFund<T extends Machine$TrialFundArgs<ExtArgs> = {}>(args?: Subset<T, Machine$TrialFundArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrialFundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userProducts<T extends Product$userProductsArgs<ExtArgs> = {}>(args?: Subset<T, Product$userProductsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    agreements<T extends Product$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, Product$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rewards<T extends Product$rewardsArgs<ExtArgs> = {}>(args?: Subset<T, Product$rewardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trialFunds<T extends Product$trialFundsArgs<ExtArgs> = {}>(args?: Subset<T, Product$trialFundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrialFundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    saleItems<T extends Product$saleItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$saleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SaleItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9200,411 +6860,436 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Machine model
+   * Fields of the Product model
    */
-  interface MachineFieldRefs {
-    readonly id: FieldRef<"Machine", 'Int'>
-    readonly createdAt: FieldRef<"Machine", 'DateTime'>
-    readonly updatedAt: FieldRef<"Machine", 'DateTime'>
-    readonly title: FieldRef<"Machine", 'String'>
-    readonly description: FieldRef<"Machine", 'String'>
-    readonly image: FieldRef<"Machine", 'String'>
-    readonly price: FieldRef<"Machine", 'Decimal'>
-    readonly dailyIncome: FieldRef<"Machine", 'Decimal'>
-    readonly fee: FieldRef<"Machine", 'Decimal'>
-    readonly rentalDays: FieldRef<"Machine", 'Int'>
-    readonly level: FieldRef<"Machine", 'Int'>
+  interface ProductFieldRefs {
+    readonly id: FieldRef<"Product", 'Int'>
+    readonly createdAt: FieldRef<"Product", 'DateTime'>
+    readonly updatedAt: FieldRef<"Product", 'DateTime'>
+    readonly title: FieldRef<"Product", 'String'>
+    readonly description: FieldRef<"Product", 'String'>
+    readonly image: FieldRef<"Product", 'String'>
+    readonly price: FieldRef<"Product", 'Decimal'>
+    readonly dailyIncome: FieldRef<"Product", 'Decimal'>
+    readonly fee: FieldRef<"Product", 'Decimal'>
+    readonly level: FieldRef<"Product", 'Int'>
+    readonly rentalDays: FieldRef<"Product", 'Int'>
+    readonly deletedAt: FieldRef<"Product", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Machine findUnique
+   * Product findUnique
    */
-  export type MachineFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * Filter, which Machine to fetch.
+     * Filter, which Product to fetch.
      */
-    where: MachineWhereUniqueInput
+    where: ProductWhereUniqueInput
   }
 
   /**
-   * Machine findUniqueOrThrow
+   * Product findUniqueOrThrow
    */
-  export type MachineFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * Filter, which Machine to fetch.
+     * Filter, which Product to fetch.
      */
-    where: MachineWhereUniqueInput
+    where: ProductWhereUniqueInput
   }
 
   /**
-   * Machine findFirst
+   * Product findFirst
    */
-  export type MachineFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * Filter, which Machine to fetch.
+     * Filter, which Product to fetch.
      */
-    where?: MachineWhereInput
+    where?: ProductWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Machines to fetch.
+     * Determine the order of Products to fetch.
      */
-    orderBy?: MachineOrderByWithRelationInput | MachineOrderByWithRelationInput[]
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Machines.
+     * Sets the position for searching for Products.
      */
-    cursor?: MachineWhereUniqueInput
+    cursor?: ProductWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Machines from the position of the cursor.
+     * Take `±n` Products from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Machines.
+     * Skip the first `n` Products.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Machines.
+     * Filter by unique combinations of Products.
      */
-    distinct?: MachineScalarFieldEnum | MachineScalarFieldEnum[]
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
   /**
-   * Machine findFirstOrThrow
+   * Product findFirstOrThrow
    */
-  export type MachineFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * Filter, which Machine to fetch.
+     * Filter, which Product to fetch.
      */
-    where?: MachineWhereInput
+    where?: ProductWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Machines to fetch.
+     * Determine the order of Products to fetch.
      */
-    orderBy?: MachineOrderByWithRelationInput | MachineOrderByWithRelationInput[]
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Machines.
+     * Sets the position for searching for Products.
      */
-    cursor?: MachineWhereUniqueInput
+    cursor?: ProductWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Machines from the position of the cursor.
+     * Take `±n` Products from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Machines.
+     * Skip the first `n` Products.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Machines.
+     * Filter by unique combinations of Products.
      */
-    distinct?: MachineScalarFieldEnum | MachineScalarFieldEnum[]
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
   /**
-   * Machine findMany
+   * Product findMany
    */
-  export type MachineFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * Filter, which Machines to fetch.
+     * Filter, which Products to fetch.
      */
-    where?: MachineWhereInput
+    where?: ProductWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Machines to fetch.
+     * Determine the order of Products to fetch.
      */
-    orderBy?: MachineOrderByWithRelationInput | MachineOrderByWithRelationInput[]
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Machines.
+     * Sets the position for listing Products.
      */
-    cursor?: MachineWhereUniqueInput
+    cursor?: ProductWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Machines from the position of the cursor.
+     * Take `±n` Products from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Machines.
+     * Skip the first `n` Products.
      */
     skip?: number
-    distinct?: MachineScalarFieldEnum | MachineScalarFieldEnum[]
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
   /**
-   * Machine create
+   * Product create
    */
-  export type MachineCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * The data needed to create a Machine.
+     * The data needed to create a Product.
      */
-    data: XOR<MachineCreateInput, MachineUncheckedCreateInput>
+    data: XOR<ProductCreateInput, ProductUncheckedCreateInput>
   }
 
   /**
-   * Machine createMany
+   * Product createMany
    */
-  export type MachineCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Machines.
+     * The data used to create many Products.
      */
-    data: MachineCreateManyInput | MachineCreateManyInput[]
+    data: ProductCreateManyInput | ProductCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Machine createManyAndReturn
+   * Product createManyAndReturn
    */
-  export type MachineCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelectCreateManyAndReturn<ExtArgs> | null
+    select?: ProductSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
-     * The data used to create many Machines.
+     * The data used to create many Products.
      */
-    data: MachineCreateManyInput | MachineCreateManyInput[]
+    data: ProductCreateManyInput | ProductCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Machine update
+   * Product update
    */
-  export type MachineUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * The data needed to update a Machine.
+     * The data needed to update a Product.
      */
-    data: XOR<MachineUpdateInput, MachineUncheckedUpdateInput>
+    data: XOR<ProductUpdateInput, ProductUncheckedUpdateInput>
     /**
-     * Choose, which Machine to update.
+     * Choose, which Product to update.
      */
-    where: MachineWhereUniqueInput
+    where: ProductWhereUniqueInput
   }
 
   /**
-   * Machine updateMany
+   * Product updateMany
    */
-  export type MachineUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Machines.
+     * The data used to update Products.
      */
-    data: XOR<MachineUpdateManyMutationInput, MachineUncheckedUpdateManyInput>
+    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyInput>
     /**
-     * Filter which Machines to update
+     * Filter which Products to update
      */
-    where?: MachineWhereInput
+    where?: ProductWhereInput
     /**
-     * Limit how many Machines to update.
+     * Limit how many Products to update.
      */
     limit?: number
   }
 
   /**
-   * Machine updateManyAndReturn
+   * Product updateManyAndReturn
    */
-  export type MachineUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: ProductSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
-     * The data used to update Machines.
+     * The data used to update Products.
      */
-    data: XOR<MachineUpdateManyMutationInput, MachineUncheckedUpdateManyInput>
+    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyInput>
     /**
-     * Filter which Machines to update
+     * Filter which Products to update
      */
-    where?: MachineWhereInput
+    where?: ProductWhereInput
     /**
-     * Limit how many Machines to update.
+     * Limit how many Products to update.
      */
     limit?: number
   }
 
   /**
-   * Machine upsert
+   * Product upsert
    */
-  export type MachineUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * The filter to search for the Machine to update in case it exists.
+     * The filter to search for the Product to update in case it exists.
      */
-    where: MachineWhereUniqueInput
+    where: ProductWhereUniqueInput
     /**
-     * In case the Machine found by the `where` argument doesn't exist, create a new Machine with this data.
+     * In case the Product found by the `where` argument doesn't exist, create a new Product with this data.
      */
-    create: XOR<MachineCreateInput, MachineUncheckedCreateInput>
+    create: XOR<ProductCreateInput, ProductUncheckedCreateInput>
     /**
-     * In case the Machine was found with the provided `where` argument, update it with this data.
+     * In case the Product was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<MachineUpdateInput, MachineUncheckedUpdateInput>
+    update: XOR<ProductUpdateInput, ProductUncheckedUpdateInput>
   }
 
   /**
-   * Machine delete
+   * Product delete
    */
-  export type MachineDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the Product
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: ProductSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the Product
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: ProductOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: ProductInclude<ExtArgs> | null
     /**
-     * Filter which Machine to delete.
+     * Filter which Product to delete.
      */
-    where: MachineWhereUniqueInput
+    where: ProductWhereUniqueInput
   }
 
   /**
-   * Machine deleteMany
+   * Product deleteMany
    */
-  export type MachineDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ProductDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Machines to delete
+     * Filter which Products to delete
      */
-    where?: MachineWhereInput
+    where?: ProductWhereInput
     /**
-     * Limit how many Machines to delete.
+     * Limit how many Products to delete.
      */
     limit?: number
   }
 
   /**
-   * Machine.agreements
+   * Product.userProducts
    */
-  export type Machine$agreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Product$userProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    where?: UserProductWhereInput
+    orderBy?: UserProductOrderByWithRelationInput | UserProductOrderByWithRelationInput[]
+    cursor?: UserProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserProductScalarFieldEnum | UserProductScalarFieldEnum[]
+  }
+
+  /**
+   * Product.agreements
+   */
+  export type Product$agreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Agreement
      */
@@ -9626,9 +7311,9 @@ export namespace Prisma {
   }
 
   /**
-   * Machine.rewards
+   * Product.rewards
    */
-  export type Machine$rewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Product$rewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Reward
      */
@@ -9650,9 +7335,9 @@ export namespace Prisma {
   }
 
   /**
-   * Machine.TrialFund
+   * Product.trialFunds
    */
-  export type Machine$TrialFundArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Product$trialFundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the TrialFund
      */
@@ -9674,21 +7359,2278 @@ export namespace Prisma {
   }
 
   /**
-   * Machine without action
+   * Product.saleItems
    */
-  export type MachineDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Product$saleItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Machine
+     * Select specific fields to fetch from the SaleItem
      */
-    select?: MachineSelect<ExtArgs> | null
+    select?: SaleItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Machine
+     * Omit specific fields from the SaleItem
      */
-    omit?: MachineOmit<ExtArgs> | null
+    omit?: SaleItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MachineInclude<ExtArgs> | null
+    include?: SaleItemInclude<ExtArgs> | null
+    where?: SaleItemWhereInput
+    orderBy?: SaleItemOrderByWithRelationInput | SaleItemOrderByWithRelationInput[]
+    cursor?: SaleItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SaleItemScalarFieldEnum | SaleItemScalarFieldEnum[]
+  }
+
+  /**
+   * Product without action
+   */
+  export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserProduct
+   */
+
+  export type AggregateUserProduct = {
+    _count: UserProductCountAggregateOutputType | null
+    _avg: UserProductAvgAggregateOutputType | null
+    _sum: UserProductSumAggregateOutputType | null
+    _min: UserProductMinAggregateOutputType | null
+    _max: UserProductMaxAggregateOutputType | null
+  }
+
+  export type UserProductAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type UserProductSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type UserProductMinAggregateOutputType = {
+    id: number | null
+    acquiredAt: Date | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type UserProductMaxAggregateOutputType = {
+    id: number | null
+    acquiredAt: Date | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type UserProductCountAggregateOutputType = {
+    id: number
+    acquiredAt: number
+    userId: number
+    productId: number
+    _all: number
+  }
+
+
+  export type UserProductAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type UserProductSumAggregateInputType = {
+    id?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type UserProductMinAggregateInputType = {
+    id?: true
+    acquiredAt?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type UserProductMaxAggregateInputType = {
+    id?: true
+    acquiredAt?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type UserProductCountAggregateInputType = {
+    id?: true
+    acquiredAt?: true
+    userId?: true
+    productId?: true
+    _all?: true
+  }
+
+  export type UserProductAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserProduct to aggregate.
+     */
+    where?: UserProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserProducts to fetch.
+     */
+    orderBy?: UserProductOrderByWithRelationInput | UserProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserProducts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserProducts
+    **/
+    _count?: true | UserProductCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserProductAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserProductSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserProductMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserProductMaxAggregateInputType
+  }
+
+  export type GetUserProductAggregateType<T extends UserProductAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserProduct]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserProduct[P]>
+      : GetScalarType<T[P], AggregateUserProduct[P]>
+  }
+
+
+
+
+  export type UserProductGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserProductWhereInput
+    orderBy?: UserProductOrderByWithAggregationInput | UserProductOrderByWithAggregationInput[]
+    by: UserProductScalarFieldEnum[] | UserProductScalarFieldEnum
+    having?: UserProductScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserProductCountAggregateInputType | true
+    _avg?: UserProductAvgAggregateInputType
+    _sum?: UserProductSumAggregateInputType
+    _min?: UserProductMinAggregateInputType
+    _max?: UserProductMaxAggregateInputType
+  }
+
+  export type UserProductGroupByOutputType = {
+    id: number
+    acquiredAt: Date
+    userId: number
+    productId: number
+    _count: UserProductCountAggregateOutputType | null
+    _avg: UserProductAvgAggregateOutputType | null
+    _sum: UserProductSumAggregateOutputType | null
+    _min: UserProductMinAggregateOutputType | null
+    _max: UserProductMaxAggregateOutputType | null
+  }
+
+  type GetUserProductGroupByPayload<T extends UserProductGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserProductGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserProductGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserProductGroupByOutputType[P]>
+            : GetScalarType<T[P], UserProductGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserProductSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    acquiredAt?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userProduct"]>
+
+  export type UserProductSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    acquiredAt?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userProduct"]>
+
+  export type UserProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    acquiredAt?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userProduct"]>
+
+  export type UserProductSelectScalar = {
+    id?: boolean
+    acquiredAt?: boolean
+    userId?: boolean
+    productId?: boolean
+  }
+
+  export type UserProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "acquiredAt" | "userId" | "productId", ExtArgs["result"]["userProduct"]>
+  export type UserProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type UserProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type UserProductIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $UserProductPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserProduct"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      acquiredAt: Date
+      userId: number
+      productId: number
+    }, ExtArgs["result"]["userProduct"]>
+    composites: {}
+  }
+
+  type UserProductGetPayload<S extends boolean | null | undefined | UserProductDefaultArgs> = $Result.GetResult<Prisma.$UserProductPayload, S>
+
+  type UserProductCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserProductFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserProductCountAggregateInputType | true
+    }
+
+  export interface UserProductDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserProduct'], meta: { name: 'UserProduct' } }
+    /**
+     * Find zero or one UserProduct that matches the filter.
+     * @param {UserProductFindUniqueArgs} args - Arguments to find a UserProduct
+     * @example
+     * // Get one UserProduct
+     * const userProduct = await prisma.userProduct.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserProductFindUniqueArgs>(args: SelectSubset<T, UserProductFindUniqueArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserProduct that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserProductFindUniqueOrThrowArgs} args - Arguments to find a UserProduct
+     * @example
+     * // Get one UserProduct
+     * const userProduct = await prisma.userProduct.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserProductFindUniqueOrThrowArgs>(args: SelectSubset<T, UserProductFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserProduct that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserProductFindFirstArgs} args - Arguments to find a UserProduct
+     * @example
+     * // Get one UserProduct
+     * const userProduct = await prisma.userProduct.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserProductFindFirstArgs>(args?: SelectSubset<T, UserProductFindFirstArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserProduct that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserProductFindFirstOrThrowArgs} args - Arguments to find a UserProduct
+     * @example
+     * // Get one UserProduct
+     * const userProduct = await prisma.userProduct.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserProductFindFirstOrThrowArgs>(args?: SelectSubset<T, UserProductFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserProducts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserProductFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserProducts
+     * const userProducts = await prisma.userProduct.findMany()
+     * 
+     * // Get first 10 UserProducts
+     * const userProducts = await prisma.userProduct.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userProductWithIdOnly = await prisma.userProduct.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserProductFindManyArgs>(args?: SelectSubset<T, UserProductFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserProduct.
+     * @param {UserProductCreateArgs} args - Arguments to create a UserProduct.
+     * @example
+     * // Create one UserProduct
+     * const UserProduct = await prisma.userProduct.create({
+     *   data: {
+     *     // ... data to create a UserProduct
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserProductCreateArgs>(args: SelectSubset<T, UserProductCreateArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserProducts.
+     * @param {UserProductCreateManyArgs} args - Arguments to create many UserProducts.
+     * @example
+     * // Create many UserProducts
+     * const userProduct = await prisma.userProduct.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserProductCreateManyArgs>(args?: SelectSubset<T, UserProductCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserProducts and returns the data saved in the database.
+     * @param {UserProductCreateManyAndReturnArgs} args - Arguments to create many UserProducts.
+     * @example
+     * // Create many UserProducts
+     * const userProduct = await prisma.userProduct.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserProducts and only return the `id`
+     * const userProductWithIdOnly = await prisma.userProduct.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserProductCreateManyAndReturnArgs>(args?: SelectSubset<T, UserProductCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserProduct.
+     * @param {UserProductDeleteArgs} args - Arguments to delete one UserProduct.
+     * @example
+     * // Delete one UserProduct
+     * const UserProduct = await prisma.userProduct.delete({
+     *   where: {
+     *     // ... filter to delete one UserProduct
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserProductDeleteArgs>(args: SelectSubset<T, UserProductDeleteArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserProduct.
+     * @param {UserProductUpdateArgs} args - Arguments to update one UserProduct.
+     * @example
+     * // Update one UserProduct
+     * const userProduct = await prisma.userProduct.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserProductUpdateArgs>(args: SelectSubset<T, UserProductUpdateArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserProducts.
+     * @param {UserProductDeleteManyArgs} args - Arguments to filter UserProducts to delete.
+     * @example
+     * // Delete a few UserProducts
+     * const { count } = await prisma.userProduct.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserProductDeleteManyArgs>(args?: SelectSubset<T, UserProductDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserProducts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserProductUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserProducts
+     * const userProduct = await prisma.userProduct.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserProductUpdateManyArgs>(args: SelectSubset<T, UserProductUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserProducts and returns the data updated in the database.
+     * @param {UserProductUpdateManyAndReturnArgs} args - Arguments to update many UserProducts.
+     * @example
+     * // Update many UserProducts
+     * const userProduct = await prisma.userProduct.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserProducts and only return the `id`
+     * const userProductWithIdOnly = await prisma.userProduct.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserProductUpdateManyAndReturnArgs>(args: SelectSubset<T, UserProductUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserProduct.
+     * @param {UserProductUpsertArgs} args - Arguments to update or create a UserProduct.
+     * @example
+     * // Update or create a UserProduct
+     * const userProduct = await prisma.userProduct.upsert({
+     *   create: {
+     *     // ... data to create a UserProduct
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserProduct we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserProductUpsertArgs>(args: SelectSubset<T, UserProductUpsertArgs<ExtArgs>>): Prisma__UserProductClient<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserProducts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserProductCountArgs} args - Arguments to filter UserProducts to count.
+     * @example
+     * // Count the number of UserProducts
+     * const count = await prisma.userProduct.count({
+     *   where: {
+     *     // ... the filter for the UserProducts we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserProductCountArgs>(
+      args?: Subset<T, UserProductCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserProductCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserProduct.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserProductAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserProductAggregateArgs>(args: Subset<T, UserProductAggregateArgs>): Prisma.PrismaPromise<GetUserProductAggregateType<T>>
+
+    /**
+     * Group by UserProduct.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserProductGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserProductGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserProductGroupByArgs['orderBy'] }
+        : { orderBy?: UserProductGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserProductGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserProductGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserProduct model
+   */
+  readonly fields: UserProductFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserProduct.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserProduct model
+   */
+  interface UserProductFieldRefs {
+    readonly id: FieldRef<"UserProduct", 'Int'>
+    readonly acquiredAt: FieldRef<"UserProduct", 'DateTime'>
+    readonly userId: FieldRef<"UserProduct", 'Int'>
+    readonly productId: FieldRef<"UserProduct", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserProduct findUnique
+   */
+  export type UserProductFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * Filter, which UserProduct to fetch.
+     */
+    where: UserProductWhereUniqueInput
+  }
+
+  /**
+   * UserProduct findUniqueOrThrow
+   */
+  export type UserProductFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * Filter, which UserProduct to fetch.
+     */
+    where: UserProductWhereUniqueInput
+  }
+
+  /**
+   * UserProduct findFirst
+   */
+  export type UserProductFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * Filter, which UserProduct to fetch.
+     */
+    where?: UserProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserProducts to fetch.
+     */
+    orderBy?: UserProductOrderByWithRelationInput | UserProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserProducts.
+     */
+    cursor?: UserProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserProducts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserProducts.
+     */
+    distinct?: UserProductScalarFieldEnum | UserProductScalarFieldEnum[]
+  }
+
+  /**
+   * UserProduct findFirstOrThrow
+   */
+  export type UserProductFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * Filter, which UserProduct to fetch.
+     */
+    where?: UserProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserProducts to fetch.
+     */
+    orderBy?: UserProductOrderByWithRelationInput | UserProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserProducts.
+     */
+    cursor?: UserProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserProducts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserProducts.
+     */
+    distinct?: UserProductScalarFieldEnum | UserProductScalarFieldEnum[]
+  }
+
+  /**
+   * UserProduct findMany
+   */
+  export type UserProductFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * Filter, which UserProducts to fetch.
+     */
+    where?: UserProductWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserProducts to fetch.
+     */
+    orderBy?: UserProductOrderByWithRelationInput | UserProductOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserProducts.
+     */
+    cursor?: UserProductWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserProducts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserProducts.
+     */
+    skip?: number
+    distinct?: UserProductScalarFieldEnum | UserProductScalarFieldEnum[]
+  }
+
+  /**
+   * UserProduct create
+   */
+  export type UserProductCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserProduct.
+     */
+    data: XOR<UserProductCreateInput, UserProductUncheckedCreateInput>
+  }
+
+  /**
+   * UserProduct createMany
+   */
+  export type UserProductCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserProducts.
+     */
+    data: UserProductCreateManyInput | UserProductCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserProduct createManyAndReturn
+   */
+  export type UserProductCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserProducts.
+     */
+    data: UserProductCreateManyInput | UserProductCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserProduct update
+   */
+  export type UserProductUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserProduct.
+     */
+    data: XOR<UserProductUpdateInput, UserProductUncheckedUpdateInput>
+    /**
+     * Choose, which UserProduct to update.
+     */
+    where: UserProductWhereUniqueInput
+  }
+
+  /**
+   * UserProduct updateMany
+   */
+  export type UserProductUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserProducts.
+     */
+    data: XOR<UserProductUpdateManyMutationInput, UserProductUncheckedUpdateManyInput>
+    /**
+     * Filter which UserProducts to update
+     */
+    where?: UserProductWhereInput
+    /**
+     * Limit how many UserProducts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserProduct updateManyAndReturn
+   */
+  export type UserProductUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * The data used to update UserProducts.
+     */
+    data: XOR<UserProductUpdateManyMutationInput, UserProductUncheckedUpdateManyInput>
+    /**
+     * Filter which UserProducts to update
+     */
+    where?: UserProductWhereInput
+    /**
+     * Limit how many UserProducts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserProduct upsert
+   */
+  export type UserProductUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserProduct to update in case it exists.
+     */
+    where: UserProductWhereUniqueInput
+    /**
+     * In case the UserProduct found by the `where` argument doesn't exist, create a new UserProduct with this data.
+     */
+    create: XOR<UserProductCreateInput, UserProductUncheckedCreateInput>
+    /**
+     * In case the UserProduct was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserProductUpdateInput, UserProductUncheckedUpdateInput>
+  }
+
+  /**
+   * UserProduct delete
+   */
+  export type UserProductDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+    /**
+     * Filter which UserProduct to delete.
+     */
+    where: UserProductWhereUniqueInput
+  }
+
+  /**
+   * UserProduct deleteMany
+   */
+  export type UserProductDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserProducts to delete
+     */
+    where?: UserProductWhereInput
+    /**
+     * Limit how many UserProducts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserProduct without action
+   */
+  export type UserProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserProduct
+     */
+    select?: UserProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserProduct
+     */
+    omit?: UserProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserProductInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Referral
+   */
+
+  export type AggregateReferral = {
+    _count: ReferralCountAggregateOutputType | null
+    _avg: ReferralAvgAggregateOutputType | null
+    _sum: ReferralSumAggregateOutputType | null
+    _min: ReferralMinAggregateOutputType | null
+    _max: ReferralMaxAggregateOutputType | null
+  }
+
+  export type ReferralAvgAggregateOutputType = {
+    id: number | null
+    referrerId: number | null
+    referredId: number | null
+  }
+
+  export type ReferralSumAggregateOutputType = {
+    id: number | null
+    referrerId: number | null
+    referredId: number | null
+  }
+
+  export type ReferralMinAggregateOutputType = {
+    id: number | null
+    createdAt: Date | null
+    code: string | null
+    referrerId: number | null
+    referredId: number | null
+  }
+
+  export type ReferralMaxAggregateOutputType = {
+    id: number | null
+    createdAt: Date | null
+    code: string | null
+    referrerId: number | null
+    referredId: number | null
+  }
+
+  export type ReferralCountAggregateOutputType = {
+    id: number
+    createdAt: number
+    code: number
+    referrerId: number
+    referredId: number
+    _all: number
+  }
+
+
+  export type ReferralAvgAggregateInputType = {
+    id?: true
+    referrerId?: true
+    referredId?: true
+  }
+
+  export type ReferralSumAggregateInputType = {
+    id?: true
+    referrerId?: true
+    referredId?: true
+  }
+
+  export type ReferralMinAggregateInputType = {
+    id?: true
+    createdAt?: true
+    code?: true
+    referrerId?: true
+    referredId?: true
+  }
+
+  export type ReferralMaxAggregateInputType = {
+    id?: true
+    createdAt?: true
+    code?: true
+    referrerId?: true
+    referredId?: true
+  }
+
+  export type ReferralCountAggregateInputType = {
+    id?: true
+    createdAt?: true
+    code?: true
+    referrerId?: true
+    referredId?: true
+    _all?: true
+  }
+
+  export type ReferralAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Referral to aggregate.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Referrals
+    **/
+    _count?: true | ReferralCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReferralAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReferralSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReferralMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReferralMaxAggregateInputType
+  }
+
+  export type GetReferralAggregateType<T extends ReferralAggregateArgs> = {
+        [P in keyof T & keyof AggregateReferral]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReferral[P]>
+      : GetScalarType<T[P], AggregateReferral[P]>
+  }
+
+
+
+
+  export type ReferralGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReferralWhereInput
+    orderBy?: ReferralOrderByWithAggregationInput | ReferralOrderByWithAggregationInput[]
+    by: ReferralScalarFieldEnum[] | ReferralScalarFieldEnum
+    having?: ReferralScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReferralCountAggregateInputType | true
+    _avg?: ReferralAvgAggregateInputType
+    _sum?: ReferralSumAggregateInputType
+    _min?: ReferralMinAggregateInputType
+    _max?: ReferralMaxAggregateInputType
+  }
+
+  export type ReferralGroupByOutputType = {
+    id: number
+    createdAt: Date
+    code: string
+    referrerId: number
+    referredId: number
+    _count: ReferralCountAggregateOutputType | null
+    _avg: ReferralAvgAggregateOutputType | null
+    _sum: ReferralSumAggregateOutputType | null
+    _min: ReferralMinAggregateOutputType | null
+    _max: ReferralMaxAggregateOutputType | null
+  }
+
+  type GetReferralGroupByPayload<T extends ReferralGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReferralGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReferralGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReferralGroupByOutputType[P]>
+            : GetScalarType<T[P], ReferralGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReferralSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    code?: boolean
+    referrerId?: boolean
+    referredId?: boolean
+    referrer?: boolean | UserDefaultArgs<ExtArgs>
+    referred?: boolean | UserDefaultArgs<ExtArgs>
+    commissions?: boolean | Referral$commissionsArgs<ExtArgs>
+    _count?: boolean | ReferralCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referral"]>
+
+  export type ReferralSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    code?: boolean
+    referrerId?: boolean
+    referredId?: boolean
+    referrer?: boolean | UserDefaultArgs<ExtArgs>
+    referred?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referral"]>
+
+  export type ReferralSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    code?: boolean
+    referrerId?: boolean
+    referredId?: boolean
+    referrer?: boolean | UserDefaultArgs<ExtArgs>
+    referred?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referral"]>
+
+  export type ReferralSelectScalar = {
+    id?: boolean
+    createdAt?: boolean
+    code?: boolean
+    referrerId?: boolean
+    referredId?: boolean
+  }
+
+  export type ReferralOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "code" | "referrerId" | "referredId", ExtArgs["result"]["referral"]>
+  export type ReferralInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referrer?: boolean | UserDefaultArgs<ExtArgs>
+    referred?: boolean | UserDefaultArgs<ExtArgs>
+    commissions?: boolean | Referral$commissionsArgs<ExtArgs>
+    _count?: boolean | ReferralCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ReferralIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referrer?: boolean | UserDefaultArgs<ExtArgs>
+    referred?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ReferralIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referrer?: boolean | UserDefaultArgs<ExtArgs>
+    referred?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ReferralPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Referral"
+    objects: {
+      referrer: Prisma.$UserPayload<ExtArgs>
+      referred: Prisma.$UserPayload<ExtArgs>
+      commissions: Prisma.$CommissionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      createdAt: Date
+      code: string
+      referrerId: number
+      referredId: number
+    }, ExtArgs["result"]["referral"]>
+    composites: {}
+  }
+
+  type ReferralGetPayload<S extends boolean | null | undefined | ReferralDefaultArgs> = $Result.GetResult<Prisma.$ReferralPayload, S>
+
+  type ReferralCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReferralFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReferralCountAggregateInputType | true
+    }
+
+  export interface ReferralDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Referral'], meta: { name: 'Referral' } }
+    /**
+     * Find zero or one Referral that matches the filter.
+     * @param {ReferralFindUniqueArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReferralFindUniqueArgs>(args: SelectSubset<T, ReferralFindUniqueArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Referral that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReferralFindUniqueOrThrowArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReferralFindUniqueOrThrowArgs>(args: SelectSubset<T, ReferralFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Referral that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralFindFirstArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReferralFindFirstArgs>(args?: SelectSubset<T, ReferralFindFirstArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Referral that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralFindFirstOrThrowArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReferralFindFirstOrThrowArgs>(args?: SelectSubset<T, ReferralFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Referrals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Referrals
+     * const referrals = await prisma.referral.findMany()
+     * 
+     * // Get first 10 Referrals
+     * const referrals = await prisma.referral.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const referralWithIdOnly = await prisma.referral.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReferralFindManyArgs>(args?: SelectSubset<T, ReferralFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Referral.
+     * @param {ReferralCreateArgs} args - Arguments to create a Referral.
+     * @example
+     * // Create one Referral
+     * const Referral = await prisma.referral.create({
+     *   data: {
+     *     // ... data to create a Referral
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReferralCreateArgs>(args: SelectSubset<T, ReferralCreateArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Referrals.
+     * @param {ReferralCreateManyArgs} args - Arguments to create many Referrals.
+     * @example
+     * // Create many Referrals
+     * const referral = await prisma.referral.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReferralCreateManyArgs>(args?: SelectSubset<T, ReferralCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Referrals and returns the data saved in the database.
+     * @param {ReferralCreateManyAndReturnArgs} args - Arguments to create many Referrals.
+     * @example
+     * // Create many Referrals
+     * const referral = await prisma.referral.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Referrals and only return the `id`
+     * const referralWithIdOnly = await prisma.referral.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReferralCreateManyAndReturnArgs>(args?: SelectSubset<T, ReferralCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Referral.
+     * @param {ReferralDeleteArgs} args - Arguments to delete one Referral.
+     * @example
+     * // Delete one Referral
+     * const Referral = await prisma.referral.delete({
+     *   where: {
+     *     // ... filter to delete one Referral
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReferralDeleteArgs>(args: SelectSubset<T, ReferralDeleteArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Referral.
+     * @param {ReferralUpdateArgs} args - Arguments to update one Referral.
+     * @example
+     * // Update one Referral
+     * const referral = await prisma.referral.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReferralUpdateArgs>(args: SelectSubset<T, ReferralUpdateArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Referrals.
+     * @param {ReferralDeleteManyArgs} args - Arguments to filter Referrals to delete.
+     * @example
+     * // Delete a few Referrals
+     * const { count } = await prisma.referral.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReferralDeleteManyArgs>(args?: SelectSubset<T, ReferralDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Referrals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Referrals
+     * const referral = await prisma.referral.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReferralUpdateManyArgs>(args: SelectSubset<T, ReferralUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Referrals and returns the data updated in the database.
+     * @param {ReferralUpdateManyAndReturnArgs} args - Arguments to update many Referrals.
+     * @example
+     * // Update many Referrals
+     * const referral = await prisma.referral.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Referrals and only return the `id`
+     * const referralWithIdOnly = await prisma.referral.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReferralUpdateManyAndReturnArgs>(args: SelectSubset<T, ReferralUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Referral.
+     * @param {ReferralUpsertArgs} args - Arguments to update or create a Referral.
+     * @example
+     * // Update or create a Referral
+     * const referral = await prisma.referral.upsert({
+     *   create: {
+     *     // ... data to create a Referral
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Referral we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReferralUpsertArgs>(args: SelectSubset<T, ReferralUpsertArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Referrals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralCountArgs} args - Arguments to filter Referrals to count.
+     * @example
+     * // Count the number of Referrals
+     * const count = await prisma.referral.count({
+     *   where: {
+     *     // ... the filter for the Referrals we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReferralCountArgs>(
+      args?: Subset<T, ReferralCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReferralCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Referral.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReferralAggregateArgs>(args: Subset<T, ReferralAggregateArgs>): Prisma.PrismaPromise<GetReferralAggregateType<T>>
+
+    /**
+     * Group by Referral.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReferralGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReferralGroupByArgs['orderBy'] }
+        : { orderBy?: ReferralGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReferralGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReferralGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Referral model
+   */
+  readonly fields: ReferralFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Referral.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReferralClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    referrer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    referred<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    commissions<T extends Referral$commissionsArgs<ExtArgs> = {}>(args?: Subset<T, Referral$commissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Referral model
+   */
+  interface ReferralFieldRefs {
+    readonly id: FieldRef<"Referral", 'Int'>
+    readonly createdAt: FieldRef<"Referral", 'DateTime'>
+    readonly code: FieldRef<"Referral", 'String'>
+    readonly referrerId: FieldRef<"Referral", 'Int'>
+    readonly referredId: FieldRef<"Referral", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Referral findUnique
+   */
+  export type ReferralFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral findUniqueOrThrow
+   */
+  export type ReferralFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral findFirst
+   */
+  export type ReferralFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Referrals.
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Referrals.
+     */
+    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+  }
+
+  /**
+   * Referral findFirstOrThrow
+   */
+  export type ReferralFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Referrals.
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Referrals.
+     */
+    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+  }
+
+  /**
+   * Referral findMany
+   */
+  export type ReferralFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referrals to fetch.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Referrals.
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+  }
+
+  /**
+   * Referral create
+   */
+  export type ReferralCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Referral.
+     */
+    data: XOR<ReferralCreateInput, ReferralUncheckedCreateInput>
+  }
+
+  /**
+   * Referral createMany
+   */
+  export type ReferralCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Referrals.
+     */
+    data: ReferralCreateManyInput | ReferralCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Referral createManyAndReturn
+   */
+  export type ReferralCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * The data used to create many Referrals.
+     */
+    data: ReferralCreateManyInput | ReferralCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Referral update
+   */
+  export type ReferralUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Referral.
+     */
+    data: XOR<ReferralUpdateInput, ReferralUncheckedUpdateInput>
+    /**
+     * Choose, which Referral to update.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral updateMany
+   */
+  export type ReferralUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Referrals.
+     */
+    data: XOR<ReferralUpdateManyMutationInput, ReferralUncheckedUpdateManyInput>
+    /**
+     * Filter which Referrals to update
+     */
+    where?: ReferralWhereInput
+    /**
+     * Limit how many Referrals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Referral updateManyAndReturn
+   */
+  export type ReferralUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * The data used to update Referrals.
+     */
+    data: XOR<ReferralUpdateManyMutationInput, ReferralUncheckedUpdateManyInput>
+    /**
+     * Filter which Referrals to update
+     */
+    where?: ReferralWhereInput
+    /**
+     * Limit how many Referrals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Referral upsert
+   */
+  export type ReferralUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Referral to update in case it exists.
+     */
+    where: ReferralWhereUniqueInput
+    /**
+     * In case the Referral found by the `where` argument doesn't exist, create a new Referral with this data.
+     */
+    create: XOR<ReferralCreateInput, ReferralUncheckedCreateInput>
+    /**
+     * In case the Referral was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReferralUpdateInput, ReferralUncheckedUpdateInput>
+  }
+
+  /**
+   * Referral delete
+   */
+  export type ReferralDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter which Referral to delete.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral deleteMany
+   */
+  export type ReferralDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Referrals to delete
+     */
+    where?: ReferralWhereInput
+    /**
+     * Limit how many Referrals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Referral.commissions
+   */
+  export type Referral$commissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Commission
+     */
+    select?: CommissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Commission
+     */
+    omit?: CommissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommissionInclude<ExtArgs> | null
+    where?: CommissionWhereInput
+    orderBy?: CommissionOrderByWithRelationInput | CommissionOrderByWithRelationInput[]
+    cursor?: CommissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommissionScalarFieldEnum | CommissionScalarFieldEnum[]
+  }
+
+  /**
+   * Referral without action
+   */
+  export type ReferralDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
   }
 
 
@@ -9707,13 +9649,13 @@ export namespace Prisma {
   export type AgreementAvgAggregateOutputType = {
     id: number | null
     userId: number | null
-    machineId: number | null
+    productId: number | null
   }
 
   export type AgreementSumAggregateOutputType = {
     id: number | null
     userId: number | null
-    machineId: number | null
+    productId: number | null
   }
 
   export type AgreementMinAggregateOutputType = {
@@ -9724,7 +9666,7 @@ export namespace Prisma {
     endDate: Date | null
     status: $Enums.AgreementStatus | null
     userId: number | null
-    machineId: number | null
+    productId: number | null
   }
 
   export type AgreementMaxAggregateOutputType = {
@@ -9735,7 +9677,7 @@ export namespace Prisma {
     endDate: Date | null
     status: $Enums.AgreementStatus | null
     userId: number | null
-    machineId: number | null
+    productId: number | null
   }
 
   export type AgreementCountAggregateOutputType = {
@@ -9746,7 +9688,7 @@ export namespace Prisma {
     endDate: number
     status: number
     userId: number
-    machineId: number
+    productId: number
     _all: number
   }
 
@@ -9754,13 +9696,13 @@ export namespace Prisma {
   export type AgreementAvgAggregateInputType = {
     id?: true
     userId?: true
-    machineId?: true
+    productId?: true
   }
 
   export type AgreementSumAggregateInputType = {
     id?: true
     userId?: true
-    machineId?: true
+    productId?: true
   }
 
   export type AgreementMinAggregateInputType = {
@@ -9771,7 +9713,7 @@ export namespace Prisma {
     endDate?: true
     status?: true
     userId?: true
-    machineId?: true
+    productId?: true
   }
 
   export type AgreementMaxAggregateInputType = {
@@ -9782,7 +9724,7 @@ export namespace Prisma {
     endDate?: true
     status?: true
     userId?: true
-    machineId?: true
+    productId?: true
   }
 
   export type AgreementCountAggregateInputType = {
@@ -9793,7 +9735,7 @@ export namespace Prisma {
     endDate?: true
     status?: true
     userId?: true
-    machineId?: true
+    productId?: true
     _all?: true
   }
 
@@ -9891,7 +9833,7 @@ export namespace Prisma {
     endDate: Date
     status: $Enums.AgreementStatus
     userId: number
-    machineId: number
+    productId: number
     _count: AgreementCountAggregateOutputType | null
     _avg: AgreementAvgAggregateOutputType | null
     _sum: AgreementSumAggregateOutputType | null
@@ -9921,9 +9863,9 @@ export namespace Prisma {
     endDate?: boolean
     status?: boolean
     userId?: boolean
-    machineId?: boolean
+    productId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agreement"]>
 
   export type AgreementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9934,9 +9876,9 @@ export namespace Prisma {
     endDate?: boolean
     status?: boolean
     userId?: boolean
-    machineId?: boolean
+    productId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agreement"]>
 
   export type AgreementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9947,9 +9889,9 @@ export namespace Prisma {
     endDate?: boolean
     status?: boolean
     userId?: boolean
-    machineId?: boolean
+    productId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agreement"]>
 
   export type AgreementSelectScalar = {
@@ -9960,28 +9902,28 @@ export namespace Prisma {
     endDate?: boolean
     status?: boolean
     userId?: boolean
-    machineId?: boolean
+    productId?: boolean
   }
 
-  export type AgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "startDate" | "endDate" | "status" | "userId" | "machineId", ExtArgs["result"]["agreement"]>
+  export type AgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "startDate" | "endDate" | "status" | "userId" | "productId", ExtArgs["result"]["agreement"]>
   export type AgreementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type AgreementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type AgreementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
 
   export type $AgreementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Agreement"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      machine: Prisma.$MachinePayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -9991,7 +9933,7 @@ export namespace Prisma {
       endDate: Date
       status: $Enums.AgreementStatus
       userId: number
-      machineId: number
+      productId: number
     }, ExtArgs["result"]["agreement"]>
     composites: {}
   }
@@ -10387,7 +10329,7 @@ export namespace Prisma {
   export interface Prisma__AgreementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    machine<T extends MachineDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MachineDefaultArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10424,7 +10366,7 @@ export namespace Prisma {
     readonly endDate: FieldRef<"Agreement", 'DateTime'>
     readonly status: FieldRef<"Agreement", 'AgreementStatus'>
     readonly userId: FieldRef<"Agreement", 'Int'>
-    readonly machineId: FieldRef<"Agreement", 'Int'>
+    readonly productId: FieldRef<"Agreement", 'Int'>
   }
     
 
@@ -12021,92 +11963,86 @@ export namespace Prisma {
 
   export type SaleItemAvgAggregateOutputType = {
     id: number | null
+    saleId: number | null
     productId: number | null
     quantity: number | null
-    saleId: number | null
   }
 
   export type SaleItemSumAggregateOutputType = {
     id: number | null
+    saleId: number | null
     productId: number | null
     quantity: number | null
-    saleId: number | null
   }
 
   export type SaleItemMinAggregateOutputType = {
     id: number | null
     createdAt: Date | null
     updatedAt: Date | null
-    productType: $Enums.ProductType | null
+    saleId: number | null
     productId: number | null
     quantity: number | null
-    saleId: number | null
   }
 
   export type SaleItemMaxAggregateOutputType = {
     id: number | null
     createdAt: Date | null
     updatedAt: Date | null
-    productType: $Enums.ProductType | null
+    saleId: number | null
     productId: number | null
     quantity: number | null
-    saleId: number | null
   }
 
   export type SaleItemCountAggregateOutputType = {
     id: number
     createdAt: number
     updatedAt: number
-    productType: number
+    saleId: number
     productId: number
     quantity: number
-    saleId: number
     _all: number
   }
 
 
   export type SaleItemAvgAggregateInputType = {
     id?: true
+    saleId?: true
     productId?: true
     quantity?: true
-    saleId?: true
   }
 
   export type SaleItemSumAggregateInputType = {
     id?: true
+    saleId?: true
     productId?: true
     quantity?: true
-    saleId?: true
   }
 
   export type SaleItemMinAggregateInputType = {
     id?: true
     createdAt?: true
     updatedAt?: true
-    productType?: true
+    saleId?: true
     productId?: true
     quantity?: true
-    saleId?: true
   }
 
   export type SaleItemMaxAggregateInputType = {
     id?: true
     createdAt?: true
     updatedAt?: true
-    productType?: true
+    saleId?: true
     productId?: true
     quantity?: true
-    saleId?: true
   }
 
   export type SaleItemCountAggregateInputType = {
     id?: true
     createdAt?: true
     updatedAt?: true
-    productType?: true
+    saleId?: true
     productId?: true
     quantity?: true
-    saleId?: true
     _all?: true
   }
 
@@ -12200,10 +12136,9 @@ export namespace Prisma {
     id: number
     createdAt: Date
     updatedAt: Date
-    productType: $Enums.ProductType
+    saleId: number
     productId: number
     quantity: number
-    saleId: number
     _count: SaleItemCountAggregateOutputType | null
     _avg: SaleItemAvgAggregateOutputType | null
     _sum: SaleItemSumAggregateOutputType | null
@@ -12229,69 +12164,71 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    productType?: boolean
+    saleId?: boolean
     productId?: boolean
     quantity?: boolean
-    saleId?: boolean
     sale?: boolean | SaleDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["saleItem"]>
 
   export type SaleItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    productType?: boolean
+    saleId?: boolean
     productId?: boolean
     quantity?: boolean
-    saleId?: boolean
     sale?: boolean | SaleDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["saleItem"]>
 
   export type SaleItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    productType?: boolean
+    saleId?: boolean
     productId?: boolean
     quantity?: boolean
-    saleId?: boolean
     sale?: boolean | SaleDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["saleItem"]>
 
   export type SaleItemSelectScalar = {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    productType?: boolean
+    saleId?: boolean
     productId?: boolean
     quantity?: boolean
-    saleId?: boolean
   }
 
-  export type SaleItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "productType" | "productId" | "quantity" | "saleId", ExtArgs["result"]["saleItem"]>
+  export type SaleItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "saleId" | "productId" | "quantity", ExtArgs["result"]["saleItem"]>
   export type SaleItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sale?: boolean | SaleDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type SaleItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sale?: boolean | SaleDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type SaleItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sale?: boolean | SaleDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
 
   export type $SaleItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SaleItem"
     objects: {
       sale: Prisma.$SalePayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       createdAt: Date
       updatedAt: Date
-      productType: $Enums.ProductType
+      saleId: number
       productId: number
       quantity: number
-      saleId: number
     }, ExtArgs["result"]["saleItem"]>
     composites: {}
   }
@@ -12687,6 +12624,7 @@ export namespace Prisma {
   export interface Prisma__SaleItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sale<T extends SaleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SaleDefaultArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12719,10 +12657,9 @@ export namespace Prisma {
     readonly id: FieldRef<"SaleItem", 'Int'>
     readonly createdAt: FieldRef<"SaleItem", 'DateTime'>
     readonly updatedAt: FieldRef<"SaleItem", 'DateTime'>
-    readonly productType: FieldRef<"SaleItem", 'ProductType'>
+    readonly saleId: FieldRef<"SaleItem", 'Int'>
     readonly productId: FieldRef<"SaleItem", 'Int'>
     readonly quantity: FieldRef<"SaleItem", 'Int'>
-    readonly saleId: FieldRef<"SaleItem", 'Int'>
   }
     
 
@@ -13138,404 +13075,439 @@ export namespace Prisma {
 
 
   /**
-   * Model Referral
+   * Model Reward
    */
 
-  export type AggregateReferral = {
-    _count: ReferralCountAggregateOutputType | null
-    _avg: ReferralAvgAggregateOutputType | null
-    _sum: ReferralSumAggregateOutputType | null
-    _min: ReferralMinAggregateOutputType | null
-    _max: ReferralMaxAggregateOutputType | null
+  export type AggregateReward = {
+    _count: RewardCountAggregateOutputType | null
+    _avg: RewardAvgAggregateOutputType | null
+    _sum: RewardSumAggregateOutputType | null
+    _min: RewardMinAggregateOutputType | null
+    _max: RewardMaxAggregateOutputType | null
   }
 
-  export type ReferralAvgAggregateOutputType = {
+  export type RewardAvgAggregateOutputType = {
     id: number | null
-    referrerId: number | null
-    referredId: number | null
+    reward: Decimal | null
+    userId: number | null
+    productId: number | null
   }
 
-  export type ReferralSumAggregateOutputType = {
+  export type RewardSumAggregateOutputType = {
     id: number | null
-    referrerId: number | null
-    referredId: number | null
+    reward: Decimal | null
+    userId: number | null
+    productId: number | null
   }
 
-  export type ReferralMinAggregateOutputType = {
-    id: number | null
-    createdAt: Date | null
-    code: string | null
-    referrerId: number | null
-    referredId: number | null
-  }
-
-  export type ReferralMaxAggregateOutputType = {
+  export type RewardMinAggregateOutputType = {
     id: number | null
     createdAt: Date | null
-    code: string | null
-    referrerId: number | null
-    referredId: number | null
+    updatedAt: Date | null
+    reward: Decimal | null
+    date: Date | null
+    status: $Enums.RewardStatus | null
+    userId: number | null
+    productId: number | null
   }
 
-  export type ReferralCountAggregateOutputType = {
+  export type RewardMaxAggregateOutputType = {
+    id: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    reward: Decimal | null
+    date: Date | null
+    status: $Enums.RewardStatus | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type RewardCountAggregateOutputType = {
     id: number
     createdAt: number
-    code: number
-    referrerId: number
-    referredId: number
+    updatedAt: number
+    reward: number
+    date: number
+    status: number
+    userId: number
+    productId: number
     _all: number
   }
 
 
-  export type ReferralAvgAggregateInputType = {
+  export type RewardAvgAggregateInputType = {
     id?: true
-    referrerId?: true
-    referredId?: true
+    reward?: true
+    userId?: true
+    productId?: true
   }
 
-  export type ReferralSumAggregateInputType = {
+  export type RewardSumAggregateInputType = {
     id?: true
-    referrerId?: true
-    referredId?: true
+    reward?: true
+    userId?: true
+    productId?: true
   }
 
-  export type ReferralMinAggregateInputType = {
+  export type RewardMinAggregateInputType = {
     id?: true
     createdAt?: true
-    code?: true
-    referrerId?: true
-    referredId?: true
+    updatedAt?: true
+    reward?: true
+    date?: true
+    status?: true
+    userId?: true
+    productId?: true
   }
 
-  export type ReferralMaxAggregateInputType = {
+  export type RewardMaxAggregateInputType = {
     id?: true
     createdAt?: true
-    code?: true
-    referrerId?: true
-    referredId?: true
+    updatedAt?: true
+    reward?: true
+    date?: true
+    status?: true
+    userId?: true
+    productId?: true
   }
 
-  export type ReferralCountAggregateInputType = {
+  export type RewardCountAggregateInputType = {
     id?: true
     createdAt?: true
-    code?: true
-    referrerId?: true
-    referredId?: true
+    updatedAt?: true
+    reward?: true
+    date?: true
+    status?: true
+    userId?: true
+    productId?: true
     _all?: true
   }
 
-  export type ReferralAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Referral to aggregate.
+     * Filter which Reward to aggregate.
      */
-    where?: ReferralWhereInput
+    where?: RewardWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Referrals to fetch.
+     * Determine the order of Rewards to fetch.
      */
-    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ReferralWhereUniqueInput
+    cursor?: RewardWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Referrals from the position of the cursor.
+     * Take `±n` Rewards from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Referrals.
+     * Skip the first `n` Rewards.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Referrals
+     * Count returned Rewards
     **/
-    _count?: true | ReferralCountAggregateInputType
+    _count?: true | RewardCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: ReferralAvgAggregateInputType
+    _avg?: RewardAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: ReferralSumAggregateInputType
+    _sum?: RewardSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ReferralMinAggregateInputType
+    _min?: RewardMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ReferralMaxAggregateInputType
+    _max?: RewardMaxAggregateInputType
   }
 
-  export type GetReferralAggregateType<T extends ReferralAggregateArgs> = {
-        [P in keyof T & keyof AggregateReferral]: P extends '_count' | 'count'
+  export type GetRewardAggregateType<T extends RewardAggregateArgs> = {
+        [P in keyof T & keyof AggregateReward]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateReferral[P]>
-      : GetScalarType<T[P], AggregateReferral[P]>
+        : GetScalarType<T[P], AggregateReward[P]>
+      : GetScalarType<T[P], AggregateReward[P]>
   }
 
 
 
 
-  export type ReferralGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ReferralWhereInput
-    orderBy?: ReferralOrderByWithAggregationInput | ReferralOrderByWithAggregationInput[]
-    by: ReferralScalarFieldEnum[] | ReferralScalarFieldEnum
-    having?: ReferralScalarWhereWithAggregatesInput
+  export type RewardGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RewardWhereInput
+    orderBy?: RewardOrderByWithAggregationInput | RewardOrderByWithAggregationInput[]
+    by: RewardScalarFieldEnum[] | RewardScalarFieldEnum
+    having?: RewardScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ReferralCountAggregateInputType | true
-    _avg?: ReferralAvgAggregateInputType
-    _sum?: ReferralSumAggregateInputType
-    _min?: ReferralMinAggregateInputType
-    _max?: ReferralMaxAggregateInputType
+    _count?: RewardCountAggregateInputType | true
+    _avg?: RewardAvgAggregateInputType
+    _sum?: RewardSumAggregateInputType
+    _min?: RewardMinAggregateInputType
+    _max?: RewardMaxAggregateInputType
   }
 
-  export type ReferralGroupByOutputType = {
+  export type RewardGroupByOutputType = {
     id: number
     createdAt: Date
-    code: string
-    referrerId: number
-    referredId: number
-    _count: ReferralCountAggregateOutputType | null
-    _avg: ReferralAvgAggregateOutputType | null
-    _sum: ReferralSumAggregateOutputType | null
-    _min: ReferralMinAggregateOutputType | null
-    _max: ReferralMaxAggregateOutputType | null
+    updatedAt: Date
+    reward: Decimal
+    date: Date
+    status: $Enums.RewardStatus
+    userId: number
+    productId: number
+    _count: RewardCountAggregateOutputType | null
+    _avg: RewardAvgAggregateOutputType | null
+    _sum: RewardSumAggregateOutputType | null
+    _min: RewardMinAggregateOutputType | null
+    _max: RewardMaxAggregateOutputType | null
   }
 
-  type GetReferralGroupByPayload<T extends ReferralGroupByArgs> = Prisma.PrismaPromise<
+  type GetRewardGroupByPayload<T extends RewardGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<ReferralGroupByOutputType, T['by']> &
+      PickEnumerable<RewardGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ReferralGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof RewardGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ReferralGroupByOutputType[P]>
-            : GetScalarType<T[P], ReferralGroupByOutputType[P]>
+              : GetScalarType<T[P], RewardGroupByOutputType[P]>
+            : GetScalarType<T[P], RewardGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ReferralSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RewardSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
-    code?: boolean
-    referrerId?: boolean
-    referredId?: boolean
-    referrer?: boolean | UserDefaultArgs<ExtArgs>
-    referred?: boolean | UserDefaultArgs<ExtArgs>
-    commissions?: boolean | Referral$commissionsArgs<ExtArgs>
-    _count?: boolean | ReferralCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["referral"]>
+    updatedAt?: boolean
+    reward?: boolean
+    date?: boolean
+    status?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["reward"]>
 
-  export type ReferralSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RewardSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
-    code?: boolean
-    referrerId?: boolean
-    referredId?: boolean
-    referrer?: boolean | UserDefaultArgs<ExtArgs>
-    referred?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["referral"]>
+    updatedAt?: boolean
+    reward?: boolean
+    date?: boolean
+    status?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["reward"]>
 
-  export type ReferralSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RewardSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
-    code?: boolean
-    referrerId?: boolean
-    referredId?: boolean
-    referrer?: boolean | UserDefaultArgs<ExtArgs>
-    referred?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["referral"]>
+    updatedAt?: boolean
+    reward?: boolean
+    date?: boolean
+    status?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["reward"]>
 
-  export type ReferralSelectScalar = {
+  export type RewardSelectScalar = {
     id?: boolean
     createdAt?: boolean
-    code?: boolean
-    referrerId?: boolean
-    referredId?: boolean
+    updatedAt?: boolean
+    reward?: boolean
+    date?: boolean
+    status?: boolean
+    userId?: boolean
+    productId?: boolean
   }
 
-  export type ReferralOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "code" | "referrerId" | "referredId", ExtArgs["result"]["referral"]>
-  export type ReferralInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    referrer?: boolean | UserDefaultArgs<ExtArgs>
-    referred?: boolean | UserDefaultArgs<ExtArgs>
-    commissions?: boolean | Referral$commissionsArgs<ExtArgs>
-    _count?: boolean | ReferralCountOutputTypeDefaultArgs<ExtArgs>
+  export type RewardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "reward" | "date" | "status" | "userId" | "productId", ExtArgs["result"]["reward"]>
+  export type RewardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
-  export type ReferralIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    referrer?: boolean | UserDefaultArgs<ExtArgs>
-    referred?: boolean | UserDefaultArgs<ExtArgs>
+  export type RewardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
-  export type ReferralIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    referrer?: boolean | UserDefaultArgs<ExtArgs>
-    referred?: boolean | UserDefaultArgs<ExtArgs>
+  export type RewardIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
 
-  export type $ReferralPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Referral"
+  export type $RewardPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Reward"
     objects: {
-      referrer: Prisma.$UserPayload<ExtArgs>
-      referred: Prisma.$UserPayload<ExtArgs>
-      commissions: Prisma.$CommissionPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       createdAt: Date
-      code: string
-      referrerId: number
-      referredId: number
-    }, ExtArgs["result"]["referral"]>
+      updatedAt: Date
+      reward: Prisma.Decimal
+      date: Date
+      status: $Enums.RewardStatus
+      userId: number
+      productId: number
+    }, ExtArgs["result"]["reward"]>
     composites: {}
   }
 
-  type ReferralGetPayload<S extends boolean | null | undefined | ReferralDefaultArgs> = $Result.GetResult<Prisma.$ReferralPayload, S>
+  type RewardGetPayload<S extends boolean | null | undefined | RewardDefaultArgs> = $Result.GetResult<Prisma.$RewardPayload, S>
 
-  type ReferralCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ReferralFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ReferralCountAggregateInputType | true
+  type RewardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RewardFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RewardCountAggregateInputType | true
     }
 
-  export interface ReferralDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Referral'], meta: { name: 'Referral' } }
+  export interface RewardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Reward'], meta: { name: 'Reward' } }
     /**
-     * Find zero or one Referral that matches the filter.
-     * @param {ReferralFindUniqueArgs} args - Arguments to find a Referral
+     * Find zero or one Reward that matches the filter.
+     * @param {RewardFindUniqueArgs} args - Arguments to find a Reward
      * @example
-     * // Get one Referral
-     * const referral = await prisma.referral.findUnique({
+     * // Get one Reward
+     * const reward = await prisma.reward.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends ReferralFindUniqueArgs>(args: SelectSubset<T, ReferralFindUniqueArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends RewardFindUniqueArgs>(args: SelectSubset<T, RewardFindUniqueArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Referral that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Reward that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {ReferralFindUniqueOrThrowArgs} args - Arguments to find a Referral
+     * @param {RewardFindUniqueOrThrowArgs} args - Arguments to find a Reward
      * @example
-     * // Get one Referral
-     * const referral = await prisma.referral.findUniqueOrThrow({
+     * // Get one Reward
+     * const reward = await prisma.reward.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends ReferralFindUniqueOrThrowArgs>(args: SelectSubset<T, ReferralFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends RewardFindUniqueOrThrowArgs>(args: SelectSubset<T, RewardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Referral that matches the filter.
+     * Find the first Reward that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ReferralFindFirstArgs} args - Arguments to find a Referral
+     * @param {RewardFindFirstArgs} args - Arguments to find a Reward
      * @example
-     * // Get one Referral
-     * const referral = await prisma.referral.findFirst({
+     * // Get one Reward
+     * const reward = await prisma.reward.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends ReferralFindFirstArgs>(args?: SelectSubset<T, ReferralFindFirstArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends RewardFindFirstArgs>(args?: SelectSubset<T, RewardFindFirstArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Referral that matches the filter or
+     * Find the first Reward that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ReferralFindFirstOrThrowArgs} args - Arguments to find a Referral
+     * @param {RewardFindFirstOrThrowArgs} args - Arguments to find a Reward
      * @example
-     * // Get one Referral
-     * const referral = await prisma.referral.findFirstOrThrow({
+     * // Get one Reward
+     * const reward = await prisma.reward.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends ReferralFindFirstOrThrowArgs>(args?: SelectSubset<T, ReferralFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends RewardFindFirstOrThrowArgs>(args?: SelectSubset<T, RewardFindFirstOrThrowArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Referrals that matches the filter.
+     * Find zero or more Rewards that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ReferralFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {RewardFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Referrals
-     * const referrals = await prisma.referral.findMany()
+     * // Get all Rewards
+     * const rewards = await prisma.reward.findMany()
      * 
-     * // Get first 10 Referrals
-     * const referrals = await prisma.referral.findMany({ take: 10 })
+     * // Get first 10 Rewards
+     * const rewards = await prisma.reward.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const referralWithIdOnly = await prisma.referral.findMany({ select: { id: true } })
+     * const rewardWithIdOnly = await prisma.reward.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends ReferralFindManyArgs>(args?: SelectSubset<T, ReferralFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends RewardFindManyArgs>(args?: SelectSubset<T, RewardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Referral.
-     * @param {ReferralCreateArgs} args - Arguments to create a Referral.
+     * Create a Reward.
+     * @param {RewardCreateArgs} args - Arguments to create a Reward.
      * @example
-     * // Create one Referral
-     * const Referral = await prisma.referral.create({
+     * // Create one Reward
+     * const Reward = await prisma.reward.create({
      *   data: {
-     *     // ... data to create a Referral
+     *     // ... data to create a Reward
      *   }
      * })
      * 
      */
-    create<T extends ReferralCreateArgs>(args: SelectSubset<T, ReferralCreateArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends RewardCreateArgs>(args: SelectSubset<T, RewardCreateArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Referrals.
-     * @param {ReferralCreateManyArgs} args - Arguments to create many Referrals.
+     * Create many Rewards.
+     * @param {RewardCreateManyArgs} args - Arguments to create many Rewards.
      * @example
-     * // Create many Referrals
-     * const referral = await prisma.referral.createMany({
+     * // Create many Rewards
+     * const reward = await prisma.reward.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends ReferralCreateManyArgs>(args?: SelectSubset<T, ReferralCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends RewardCreateManyArgs>(args?: SelectSubset<T, RewardCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Referrals and returns the data saved in the database.
-     * @param {ReferralCreateManyAndReturnArgs} args - Arguments to create many Referrals.
+     * Create many Rewards and returns the data saved in the database.
+     * @param {RewardCreateManyAndReturnArgs} args - Arguments to create many Rewards.
      * @example
-     * // Create many Referrals
-     * const referral = await prisma.referral.createManyAndReturn({
+     * // Create many Rewards
+     * const reward = await prisma.reward.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Referrals and only return the `id`
-     * const referralWithIdOnly = await prisma.referral.createManyAndReturn({
+     * // Create many Rewards and only return the `id`
+     * const rewardWithIdOnly = await prisma.reward.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -13545,28 +13517,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends ReferralCreateManyAndReturnArgs>(args?: SelectSubset<T, ReferralCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends RewardCreateManyAndReturnArgs>(args?: SelectSubset<T, RewardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Referral.
-     * @param {ReferralDeleteArgs} args - Arguments to delete one Referral.
+     * Delete a Reward.
+     * @param {RewardDeleteArgs} args - Arguments to delete one Reward.
      * @example
-     * // Delete one Referral
-     * const Referral = await prisma.referral.delete({
+     * // Delete one Reward
+     * const Reward = await prisma.reward.delete({
      *   where: {
-     *     // ... filter to delete one Referral
+     *     // ... filter to delete one Reward
      *   }
      * })
      * 
      */
-    delete<T extends ReferralDeleteArgs>(args: SelectSubset<T, ReferralDeleteArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends RewardDeleteArgs>(args: SelectSubset<T, RewardDeleteArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Referral.
-     * @param {ReferralUpdateArgs} args - Arguments to update one Referral.
+     * Update one Reward.
+     * @param {RewardUpdateArgs} args - Arguments to update one Reward.
      * @example
-     * // Update one Referral
-     * const referral = await prisma.referral.update({
+     * // Update one Reward
+     * const reward = await prisma.reward.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13576,30 +13548,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends ReferralUpdateArgs>(args: SelectSubset<T, ReferralUpdateArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends RewardUpdateArgs>(args: SelectSubset<T, RewardUpdateArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Referrals.
-     * @param {ReferralDeleteManyArgs} args - Arguments to filter Referrals to delete.
+     * Delete zero or more Rewards.
+     * @param {RewardDeleteManyArgs} args - Arguments to filter Rewards to delete.
      * @example
-     * // Delete a few Referrals
-     * const { count } = await prisma.referral.deleteMany({
+     * // Delete a few Rewards
+     * const { count } = await prisma.reward.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends ReferralDeleteManyArgs>(args?: SelectSubset<T, ReferralDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends RewardDeleteManyArgs>(args?: SelectSubset<T, RewardDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Referrals.
+     * Update zero or more Rewards.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ReferralUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {RewardUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Referrals
-     * const referral = await prisma.referral.updateMany({
+     * // Update many Rewards
+     * const reward = await prisma.reward.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13609,14 +13581,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends ReferralUpdateManyArgs>(args: SelectSubset<T, ReferralUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends RewardUpdateManyArgs>(args: SelectSubset<T, RewardUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Referrals and returns the data updated in the database.
-     * @param {ReferralUpdateManyAndReturnArgs} args - Arguments to update many Referrals.
+     * Update zero or more Rewards and returns the data updated in the database.
+     * @param {RewardUpdateManyAndReturnArgs} args - Arguments to update many Rewards.
      * @example
-     * // Update many Referrals
-     * const referral = await prisma.referral.updateManyAndReturn({
+     * // Update many Rewards
+     * const reward = await prisma.reward.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -13625,8 +13597,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Referrals and only return the `id`
-     * const referralWithIdOnly = await prisma.referral.updateManyAndReturn({
+     * // Update zero or more Rewards and only return the `id`
+     * const rewardWithIdOnly = await prisma.reward.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -13639,56 +13611,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends ReferralUpdateManyAndReturnArgs>(args: SelectSubset<T, ReferralUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends RewardUpdateManyAndReturnArgs>(args: SelectSubset<T, RewardUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Referral.
-     * @param {ReferralUpsertArgs} args - Arguments to update or create a Referral.
+     * Create or update one Reward.
+     * @param {RewardUpsertArgs} args - Arguments to update or create a Reward.
      * @example
-     * // Update or create a Referral
-     * const referral = await prisma.referral.upsert({
+     * // Update or create a Reward
+     * const reward = await prisma.reward.upsert({
      *   create: {
-     *     // ... data to create a Referral
+     *     // ... data to create a Reward
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Referral we want to update
+     *     // ... the filter for the Reward we want to update
      *   }
      * })
      */
-    upsert<T extends ReferralUpsertArgs>(args: SelectSubset<T, ReferralUpsertArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends RewardUpsertArgs>(args: SelectSubset<T, RewardUpsertArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Referrals.
+     * Count the number of Rewards.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ReferralCountArgs} args - Arguments to filter Referrals to count.
+     * @param {RewardCountArgs} args - Arguments to filter Rewards to count.
      * @example
-     * // Count the number of Referrals
-     * const count = await prisma.referral.count({
+     * // Count the number of Rewards
+     * const count = await prisma.reward.count({
      *   where: {
-     *     // ... the filter for the Referrals we want to count
+     *     // ... the filter for the Rewards we want to count
      *   }
      * })
     **/
-    count<T extends ReferralCountArgs>(
-      args?: Subset<T, ReferralCountArgs>,
+    count<T extends RewardCountArgs>(
+      args?: Subset<T, RewardCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ReferralCountAggregateOutputType>
+          : GetScalarType<T['select'], RewardCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Referral.
+     * Allows you to perform aggregations operations on a Reward.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ReferralAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {RewardAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -13708,13 +13680,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ReferralAggregateArgs>(args: Subset<T, ReferralAggregateArgs>): Prisma.PrismaPromise<GetReferralAggregateType<T>>
+    aggregate<T extends RewardAggregateArgs>(args: Subset<T, RewardAggregateArgs>): Prisma.PrismaPromise<GetRewardAggregateType<T>>
 
     /**
-     * Group by Referral.
+     * Group by Reward.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ReferralGroupByArgs} args - Group by arguments.
+     * @param {RewardGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -13729,14 +13701,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ReferralGroupByArgs,
+      T extends RewardGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ReferralGroupByArgs['orderBy'] }
-        : { orderBy?: ReferralGroupByArgs['orderBy'] },
+        ? { orderBy: RewardGroupByArgs['orderBy'] }
+        : { orderBy?: RewardGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -13785,24 +13757,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ReferralGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReferralGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, RewardGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRewardGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Referral model
+   * Fields of the Reward model
    */
-  readonly fields: ReferralFieldRefs;
+  readonly fields: RewardFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Referral.
+   * The delegate class that acts as a "Promise-like" for Reward.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__ReferralClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__RewardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    referrer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    referred<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    commissions<T extends Referral$commissionsArgs<ExtArgs> = {}>(args?: Subset<T, Referral$commissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13829,449 +13800,428 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Referral model
+   * Fields of the Reward model
    */
-  interface ReferralFieldRefs {
-    readonly id: FieldRef<"Referral", 'Int'>
-    readonly createdAt: FieldRef<"Referral", 'DateTime'>
-    readonly code: FieldRef<"Referral", 'String'>
-    readonly referrerId: FieldRef<"Referral", 'Int'>
-    readonly referredId: FieldRef<"Referral", 'Int'>
+  interface RewardFieldRefs {
+    readonly id: FieldRef<"Reward", 'Int'>
+    readonly createdAt: FieldRef<"Reward", 'DateTime'>
+    readonly updatedAt: FieldRef<"Reward", 'DateTime'>
+    readonly reward: FieldRef<"Reward", 'Decimal'>
+    readonly date: FieldRef<"Reward", 'DateTime'>
+    readonly status: FieldRef<"Reward", 'RewardStatus'>
+    readonly userId: FieldRef<"Reward", 'Int'>
+    readonly productId: FieldRef<"Reward", 'Int'>
   }
     
 
   // Custom InputTypes
   /**
-   * Referral findUnique
+   * Reward findUnique
    */
-  export type ReferralFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * Filter, which Referral to fetch.
+     * Filter, which Reward to fetch.
      */
-    where: ReferralWhereUniqueInput
+    where: RewardWhereUniqueInput
   }
 
   /**
-   * Referral findUniqueOrThrow
+   * Reward findUniqueOrThrow
    */
-  export type ReferralFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * Filter, which Referral to fetch.
+     * Filter, which Reward to fetch.
      */
-    where: ReferralWhereUniqueInput
+    where: RewardWhereUniqueInput
   }
 
   /**
-   * Referral findFirst
+   * Reward findFirst
    */
-  export type ReferralFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * Filter, which Referral to fetch.
+     * Filter, which Reward to fetch.
      */
-    where?: ReferralWhereInput
+    where?: RewardWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Referrals to fetch.
+     * Determine the order of Rewards to fetch.
      */
-    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Referrals.
+     * Sets the position for searching for Rewards.
      */
-    cursor?: ReferralWhereUniqueInput
+    cursor?: RewardWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Referrals from the position of the cursor.
+     * Take `±n` Rewards from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Referrals.
+     * Skip the first `n` Rewards.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Referrals.
+     * Filter by unique combinations of Rewards.
      */
-    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+    distinct?: RewardScalarFieldEnum | RewardScalarFieldEnum[]
   }
 
   /**
-   * Referral findFirstOrThrow
+   * Reward findFirstOrThrow
    */
-  export type ReferralFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * Filter, which Referral to fetch.
+     * Filter, which Reward to fetch.
      */
-    where?: ReferralWhereInput
+    where?: RewardWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Referrals to fetch.
+     * Determine the order of Rewards to fetch.
      */
-    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Referrals.
+     * Sets the position for searching for Rewards.
      */
-    cursor?: ReferralWhereUniqueInput
+    cursor?: RewardWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Referrals from the position of the cursor.
+     * Take `±n` Rewards from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Referrals.
+     * Skip the first `n` Rewards.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Referrals.
+     * Filter by unique combinations of Rewards.
      */
-    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+    distinct?: RewardScalarFieldEnum | RewardScalarFieldEnum[]
   }
 
   /**
-   * Referral findMany
+   * Reward findMany
    */
-  export type ReferralFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * Filter, which Referrals to fetch.
+     * Filter, which Rewards to fetch.
      */
-    where?: ReferralWhereInput
+    where?: RewardWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Referrals to fetch.
+     * Determine the order of Rewards to fetch.
      */
-    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Referrals.
+     * Sets the position for listing Rewards.
      */
-    cursor?: ReferralWhereUniqueInput
+    cursor?: RewardWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Referrals from the position of the cursor.
+     * Take `±n` Rewards from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Referrals.
+     * Skip the first `n` Rewards.
      */
     skip?: number
-    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+    distinct?: RewardScalarFieldEnum | RewardScalarFieldEnum[]
   }
 
   /**
-   * Referral create
+   * Reward create
    */
-  export type ReferralCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * The data needed to create a Referral.
+     * The data needed to create a Reward.
      */
-    data: XOR<ReferralCreateInput, ReferralUncheckedCreateInput>
+    data: XOR<RewardCreateInput, RewardUncheckedCreateInput>
   }
 
   /**
-   * Referral createMany
+   * Reward createMany
    */
-  export type ReferralCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Referrals.
+     * The data used to create many Rewards.
      */
-    data: ReferralCreateManyInput | ReferralCreateManyInput[]
+    data: RewardCreateManyInput | RewardCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Referral createManyAndReturn
+   * Reward createManyAndReturn
    */
-  export type ReferralCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelectCreateManyAndReturn<ExtArgs> | null
+    select?: RewardSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
-     * The data used to create many Referrals.
+     * The data used to create many Rewards.
      */
-    data: ReferralCreateManyInput | ReferralCreateManyInput[]
+    data: RewardCreateManyInput | RewardCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: RewardIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Referral update
+   * Reward update
    */
-  export type ReferralUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * The data needed to update a Referral.
+     * The data needed to update a Reward.
      */
-    data: XOR<ReferralUpdateInput, ReferralUncheckedUpdateInput>
+    data: XOR<RewardUpdateInput, RewardUncheckedUpdateInput>
     /**
-     * Choose, which Referral to update.
+     * Choose, which Reward to update.
      */
-    where: ReferralWhereUniqueInput
+    where: RewardWhereUniqueInput
   }
 
   /**
-   * Referral updateMany
+   * Reward updateMany
    */
-  export type ReferralUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Referrals.
+     * The data used to update Rewards.
      */
-    data: XOR<ReferralUpdateManyMutationInput, ReferralUncheckedUpdateManyInput>
+    data: XOR<RewardUpdateManyMutationInput, RewardUncheckedUpdateManyInput>
     /**
-     * Filter which Referrals to update
+     * Filter which Rewards to update
      */
-    where?: ReferralWhereInput
+    where?: RewardWhereInput
     /**
-     * Limit how many Referrals to update.
+     * Limit how many Rewards to update.
      */
     limit?: number
   }
 
   /**
-   * Referral updateManyAndReturn
+   * Reward updateManyAndReturn
    */
-  export type ReferralUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: RewardSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
-     * The data used to update Referrals.
+     * The data used to update Rewards.
      */
-    data: XOR<ReferralUpdateManyMutationInput, ReferralUncheckedUpdateManyInput>
+    data: XOR<RewardUpdateManyMutationInput, RewardUncheckedUpdateManyInput>
     /**
-     * Filter which Referrals to update
+     * Filter which Rewards to update
      */
-    where?: ReferralWhereInput
+    where?: RewardWhereInput
     /**
-     * Limit how many Referrals to update.
+     * Limit how many Rewards to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: RewardIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Referral upsert
+   * Reward upsert
    */
-  export type ReferralUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * The filter to search for the Referral to update in case it exists.
+     * The filter to search for the Reward to update in case it exists.
      */
-    where: ReferralWhereUniqueInput
+    where: RewardWhereUniqueInput
     /**
-     * In case the Referral found by the `where` argument doesn't exist, create a new Referral with this data.
+     * In case the Reward found by the `where` argument doesn't exist, create a new Reward with this data.
      */
-    create: XOR<ReferralCreateInput, ReferralUncheckedCreateInput>
+    create: XOR<RewardCreateInput, RewardUncheckedCreateInput>
     /**
-     * In case the Referral was found with the provided `where` argument, update it with this data.
+     * In case the Reward was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<ReferralUpdateInput, ReferralUncheckedUpdateInput>
+    update: XOR<RewardUpdateInput, RewardUncheckedUpdateInput>
   }
 
   /**
-   * Referral delete
+   * Reward delete
    */
-  export type ReferralDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Referral
+     * Select specific fields to fetch from the Reward
      */
-    select?: ReferralSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Referral
+     * Omit specific fields from the Reward
      */
-    omit?: ReferralOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
     /**
-     * Filter which Referral to delete.
+     * Filter which Reward to delete.
      */
-    where: ReferralWhereUniqueInput
+    where: RewardWhereUniqueInput
   }
 
   /**
-   * Referral deleteMany
+   * Reward deleteMany
    */
-  export type ReferralDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Referrals to delete
+     * Filter which Rewards to delete
      */
-    where?: ReferralWhereInput
+    where?: RewardWhereInput
     /**
-     * Limit how many Referrals to delete.
+     * Limit how many Rewards to delete.
      */
     limit?: number
   }
 
   /**
-   * Referral.commissions
+   * Reward without action
    */
-  export type Referral$commissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RewardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Commission
+     * Select specific fields to fetch from the Reward
      */
-    select?: CommissionSelect<ExtArgs> | null
+    select?: RewardSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Commission
+     * Omit specific fields from the Reward
      */
-    omit?: CommissionOmit<ExtArgs> | null
+    omit?: RewardOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CommissionInclude<ExtArgs> | null
-    where?: CommissionWhereInput
-    orderBy?: CommissionOrderByWithRelationInput | CommissionOrderByWithRelationInput[]
-    cursor?: CommissionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CommissionScalarFieldEnum | CommissionScalarFieldEnum[]
-  }
-
-  /**
-   * Referral without action
-   */
-  export type ReferralDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Referral
-     */
-    select?: ReferralSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Referral
-     */
-    omit?: ReferralOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ReferralInclude<ExtArgs> | null
+    include?: RewardInclude<ExtArgs> | null
   }
 
 
@@ -15389,1157 +15339,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: CommissionInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Reward
-   */
-
-  export type AggregateReward = {
-    _count: RewardCountAggregateOutputType | null
-    _avg: RewardAvgAggregateOutputType | null
-    _sum: RewardSumAggregateOutputType | null
-    _min: RewardMinAggregateOutputType | null
-    _max: RewardMaxAggregateOutputType | null
-  }
-
-  export type RewardAvgAggregateOutputType = {
-    id: number | null
-    reward: Decimal | null
-    userId: number | null
-    machineId: number | null
-  }
-
-  export type RewardSumAggregateOutputType = {
-    id: number | null
-    reward: Decimal | null
-    userId: number | null
-    machineId: number | null
-  }
-
-  export type RewardMinAggregateOutputType = {
-    id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    reward: Decimal | null
-    date: Date | null
-    status: $Enums.RewardStatus | null
-    userId: number | null
-    machineId: number | null
-  }
-
-  export type RewardMaxAggregateOutputType = {
-    id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    reward: Decimal | null
-    date: Date | null
-    status: $Enums.RewardStatus | null
-    userId: number | null
-    machineId: number | null
-  }
-
-  export type RewardCountAggregateOutputType = {
-    id: number
-    createdAt: number
-    updatedAt: number
-    reward: number
-    date: number
-    status: number
-    userId: number
-    machineId: number
-    _all: number
-  }
-
-
-  export type RewardAvgAggregateInputType = {
-    id?: true
-    reward?: true
-    userId?: true
-    machineId?: true
-  }
-
-  export type RewardSumAggregateInputType = {
-    id?: true
-    reward?: true
-    userId?: true
-    machineId?: true
-  }
-
-  export type RewardMinAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    reward?: true
-    date?: true
-    status?: true
-    userId?: true
-    machineId?: true
-  }
-
-  export type RewardMaxAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    reward?: true
-    date?: true
-    status?: true
-    userId?: true
-    machineId?: true
-  }
-
-  export type RewardCountAggregateInputType = {
-    id?: true
-    createdAt?: true
-    updatedAt?: true
-    reward?: true
-    date?: true
-    status?: true
-    userId?: true
-    machineId?: true
-    _all?: true
-  }
-
-  export type RewardAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Reward to aggregate.
-     */
-    where?: RewardWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Rewards to fetch.
-     */
-    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: RewardWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Rewards from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Rewards.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Rewards
-    **/
-    _count?: true | RewardCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: RewardAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: RewardSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: RewardMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: RewardMaxAggregateInputType
-  }
-
-  export type GetRewardAggregateType<T extends RewardAggregateArgs> = {
-        [P in keyof T & keyof AggregateReward]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateReward[P]>
-      : GetScalarType<T[P], AggregateReward[P]>
-  }
-
-
-
-
-  export type RewardGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RewardWhereInput
-    orderBy?: RewardOrderByWithAggregationInput | RewardOrderByWithAggregationInput[]
-    by: RewardScalarFieldEnum[] | RewardScalarFieldEnum
-    having?: RewardScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: RewardCountAggregateInputType | true
-    _avg?: RewardAvgAggregateInputType
-    _sum?: RewardSumAggregateInputType
-    _min?: RewardMinAggregateInputType
-    _max?: RewardMaxAggregateInputType
-  }
-
-  export type RewardGroupByOutputType = {
-    id: number
-    createdAt: Date
-    updatedAt: Date
-    reward: Decimal
-    date: Date
-    status: $Enums.RewardStatus
-    userId: number
-    machineId: number
-    _count: RewardCountAggregateOutputType | null
-    _avg: RewardAvgAggregateOutputType | null
-    _sum: RewardSumAggregateOutputType | null
-    _min: RewardMinAggregateOutputType | null
-    _max: RewardMaxAggregateOutputType | null
-  }
-
-  type GetRewardGroupByPayload<T extends RewardGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<RewardGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof RewardGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], RewardGroupByOutputType[P]>
-            : GetScalarType<T[P], RewardGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type RewardSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    reward?: boolean
-    date?: boolean
-    status?: boolean
-    userId?: boolean
-    machineId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["reward"]>
-
-  export type RewardSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    reward?: boolean
-    date?: boolean
-    status?: boolean
-    userId?: boolean
-    machineId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["reward"]>
-
-  export type RewardSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    reward?: boolean
-    date?: boolean
-    status?: boolean
-    userId?: boolean
-    machineId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["reward"]>
-
-  export type RewardSelectScalar = {
-    id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    reward?: boolean
-    date?: boolean
-    status?: boolean
-    userId?: boolean
-    machineId?: boolean
-  }
-
-  export type RewardOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "reward" | "date" | "status" | "userId" | "machineId", ExtArgs["result"]["reward"]>
-  export type RewardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
-  }
-  export type RewardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
-  }
-  export type RewardIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | MachineDefaultArgs<ExtArgs>
-  }
-
-  export type $RewardPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Reward"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      machine: Prisma.$MachinePayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      createdAt: Date
-      updatedAt: Date
-      reward: Prisma.Decimal
-      date: Date
-      status: $Enums.RewardStatus
-      userId: number
-      machineId: number
-    }, ExtArgs["result"]["reward"]>
-    composites: {}
-  }
-
-  type RewardGetPayload<S extends boolean | null | undefined | RewardDefaultArgs> = $Result.GetResult<Prisma.$RewardPayload, S>
-
-  type RewardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<RewardFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: RewardCountAggregateInputType | true
-    }
-
-  export interface RewardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Reward'], meta: { name: 'Reward' } }
-    /**
-     * Find zero or one Reward that matches the filter.
-     * @param {RewardFindUniqueArgs} args - Arguments to find a Reward
-     * @example
-     * // Get one Reward
-     * const reward = await prisma.reward.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends RewardFindUniqueArgs>(args: SelectSubset<T, RewardFindUniqueArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Reward that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {RewardFindUniqueOrThrowArgs} args - Arguments to find a Reward
-     * @example
-     * // Get one Reward
-     * const reward = await prisma.reward.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends RewardFindUniqueOrThrowArgs>(args: SelectSubset<T, RewardFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Reward that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RewardFindFirstArgs} args - Arguments to find a Reward
-     * @example
-     * // Get one Reward
-     * const reward = await prisma.reward.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends RewardFindFirstArgs>(args?: SelectSubset<T, RewardFindFirstArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Reward that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RewardFindFirstOrThrowArgs} args - Arguments to find a Reward
-     * @example
-     * // Get one Reward
-     * const reward = await prisma.reward.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends RewardFindFirstOrThrowArgs>(args?: SelectSubset<T, RewardFindFirstOrThrowArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Rewards that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RewardFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Rewards
-     * const rewards = await prisma.reward.findMany()
-     * 
-     * // Get first 10 Rewards
-     * const rewards = await prisma.reward.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const rewardWithIdOnly = await prisma.reward.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends RewardFindManyArgs>(args?: SelectSubset<T, RewardFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Reward.
-     * @param {RewardCreateArgs} args - Arguments to create a Reward.
-     * @example
-     * // Create one Reward
-     * const Reward = await prisma.reward.create({
-     *   data: {
-     *     // ... data to create a Reward
-     *   }
-     * })
-     * 
-     */
-    create<T extends RewardCreateArgs>(args: SelectSubset<T, RewardCreateArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Rewards.
-     * @param {RewardCreateManyArgs} args - Arguments to create many Rewards.
-     * @example
-     * // Create many Rewards
-     * const reward = await prisma.reward.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends RewardCreateManyArgs>(args?: SelectSubset<T, RewardCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Rewards and returns the data saved in the database.
-     * @param {RewardCreateManyAndReturnArgs} args - Arguments to create many Rewards.
-     * @example
-     * // Create many Rewards
-     * const reward = await prisma.reward.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Rewards and only return the `id`
-     * const rewardWithIdOnly = await prisma.reward.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends RewardCreateManyAndReturnArgs>(args?: SelectSubset<T, RewardCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Reward.
-     * @param {RewardDeleteArgs} args - Arguments to delete one Reward.
-     * @example
-     * // Delete one Reward
-     * const Reward = await prisma.reward.delete({
-     *   where: {
-     *     // ... filter to delete one Reward
-     *   }
-     * })
-     * 
-     */
-    delete<T extends RewardDeleteArgs>(args: SelectSubset<T, RewardDeleteArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Reward.
-     * @param {RewardUpdateArgs} args - Arguments to update one Reward.
-     * @example
-     * // Update one Reward
-     * const reward = await prisma.reward.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends RewardUpdateArgs>(args: SelectSubset<T, RewardUpdateArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Rewards.
-     * @param {RewardDeleteManyArgs} args - Arguments to filter Rewards to delete.
-     * @example
-     * // Delete a few Rewards
-     * const { count } = await prisma.reward.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends RewardDeleteManyArgs>(args?: SelectSubset<T, RewardDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Rewards.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RewardUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Rewards
-     * const reward = await prisma.reward.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends RewardUpdateManyArgs>(args: SelectSubset<T, RewardUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Rewards and returns the data updated in the database.
-     * @param {RewardUpdateManyAndReturnArgs} args - Arguments to update many Rewards.
-     * @example
-     * // Update many Rewards
-     * const reward = await prisma.reward.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Rewards and only return the `id`
-     * const rewardWithIdOnly = await prisma.reward.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends RewardUpdateManyAndReturnArgs>(args: SelectSubset<T, RewardUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Reward.
-     * @param {RewardUpsertArgs} args - Arguments to update or create a Reward.
-     * @example
-     * // Update or create a Reward
-     * const reward = await prisma.reward.upsert({
-     *   create: {
-     *     // ... data to create a Reward
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Reward we want to update
-     *   }
-     * })
-     */
-    upsert<T extends RewardUpsertArgs>(args: SelectSubset<T, RewardUpsertArgs<ExtArgs>>): Prisma__RewardClient<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Rewards.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RewardCountArgs} args - Arguments to filter Rewards to count.
-     * @example
-     * // Count the number of Rewards
-     * const count = await prisma.reward.count({
-     *   where: {
-     *     // ... the filter for the Rewards we want to count
-     *   }
-     * })
-    **/
-    count<T extends RewardCountArgs>(
-      args?: Subset<T, RewardCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], RewardCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Reward.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RewardAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends RewardAggregateArgs>(args: Subset<T, RewardAggregateArgs>): Prisma.PrismaPromise<GetRewardAggregateType<T>>
-
-    /**
-     * Group by Reward.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RewardGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends RewardGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: RewardGroupByArgs['orderBy'] }
-        : { orderBy?: RewardGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, RewardGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRewardGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Reward model
-   */
-  readonly fields: RewardFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Reward.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__RewardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    machine<T extends MachineDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MachineDefaultArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Reward model
-   */
-  interface RewardFieldRefs {
-    readonly id: FieldRef<"Reward", 'Int'>
-    readonly createdAt: FieldRef<"Reward", 'DateTime'>
-    readonly updatedAt: FieldRef<"Reward", 'DateTime'>
-    readonly reward: FieldRef<"Reward", 'Decimal'>
-    readonly date: FieldRef<"Reward", 'DateTime'>
-    readonly status: FieldRef<"Reward", 'RewardStatus'>
-    readonly userId: FieldRef<"Reward", 'Int'>
-    readonly machineId: FieldRef<"Reward", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Reward findUnique
-   */
-  export type RewardFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * Filter, which Reward to fetch.
-     */
-    where: RewardWhereUniqueInput
-  }
-
-  /**
-   * Reward findUniqueOrThrow
-   */
-  export type RewardFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * Filter, which Reward to fetch.
-     */
-    where: RewardWhereUniqueInput
-  }
-
-  /**
-   * Reward findFirst
-   */
-  export type RewardFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * Filter, which Reward to fetch.
-     */
-    where?: RewardWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Rewards to fetch.
-     */
-    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Rewards.
-     */
-    cursor?: RewardWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Rewards from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Rewards.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Rewards.
-     */
-    distinct?: RewardScalarFieldEnum | RewardScalarFieldEnum[]
-  }
-
-  /**
-   * Reward findFirstOrThrow
-   */
-  export type RewardFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * Filter, which Reward to fetch.
-     */
-    where?: RewardWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Rewards to fetch.
-     */
-    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Rewards.
-     */
-    cursor?: RewardWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Rewards from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Rewards.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Rewards.
-     */
-    distinct?: RewardScalarFieldEnum | RewardScalarFieldEnum[]
-  }
-
-  /**
-   * Reward findMany
-   */
-  export type RewardFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * Filter, which Rewards to fetch.
-     */
-    where?: RewardWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Rewards to fetch.
-     */
-    orderBy?: RewardOrderByWithRelationInput | RewardOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Rewards.
-     */
-    cursor?: RewardWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Rewards from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Rewards.
-     */
-    skip?: number
-    distinct?: RewardScalarFieldEnum | RewardScalarFieldEnum[]
-  }
-
-  /**
-   * Reward create
-   */
-  export type RewardCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Reward.
-     */
-    data: XOR<RewardCreateInput, RewardUncheckedCreateInput>
-  }
-
-  /**
-   * Reward createMany
-   */
-  export type RewardCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Rewards.
-     */
-    data: RewardCreateManyInput | RewardCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Reward createManyAndReturn
-   */
-  export type RewardCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * The data used to create many Rewards.
-     */
-    data: RewardCreateManyInput | RewardCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Reward update
-   */
-  export type RewardUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Reward.
-     */
-    data: XOR<RewardUpdateInput, RewardUncheckedUpdateInput>
-    /**
-     * Choose, which Reward to update.
-     */
-    where: RewardWhereUniqueInput
-  }
-
-  /**
-   * Reward updateMany
-   */
-  export type RewardUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Rewards.
-     */
-    data: XOR<RewardUpdateManyMutationInput, RewardUncheckedUpdateManyInput>
-    /**
-     * Filter which Rewards to update
-     */
-    where?: RewardWhereInput
-    /**
-     * Limit how many Rewards to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Reward updateManyAndReturn
-   */
-  export type RewardUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * The data used to update Rewards.
-     */
-    data: XOR<RewardUpdateManyMutationInput, RewardUncheckedUpdateManyInput>
-    /**
-     * Filter which Rewards to update
-     */
-    where?: RewardWhereInput
-    /**
-     * Limit how many Rewards to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Reward upsert
-   */
-  export type RewardUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Reward to update in case it exists.
-     */
-    where: RewardWhereUniqueInput
-    /**
-     * In case the Reward found by the `where` argument doesn't exist, create a new Reward with this data.
-     */
-    create: XOR<RewardCreateInput, RewardUncheckedCreateInput>
-    /**
-     * In case the Reward was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<RewardUpdateInput, RewardUncheckedUpdateInput>
-  }
-
-  /**
-   * Reward delete
-   */
-  export type RewardDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
-    /**
-     * Filter which Reward to delete.
-     */
-    where: RewardWhereUniqueInput
-  }
-
-  /**
-   * Reward deleteMany
-   */
-  export type RewardDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Rewards to delete
-     */
-    where?: RewardWhereInput
-    /**
-     * Limit how many Rewards to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Reward without action
-   */
-  export type RewardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Reward
-     */
-    select?: RewardSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Reward
-     */
-    omit?: RewardOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RewardInclude<ExtArgs> | null
   }
 
 
@@ -18818,52 +17617,52 @@ export namespace Prisma {
   export type TrialFundAvgAggregateOutputType = {
     id: number | null
     userId: number | null
+    productId: number | null
     amount: Decimal | null
-    machineId: number | null
     usedAmount: Decimal | null
   }
 
   export type TrialFundSumAggregateOutputType = {
     id: number | null
     userId: number | null
+    productId: number | null
     amount: Decimal | null
-    machineId: number | null
     usedAmount: Decimal | null
   }
 
   export type TrialFundMinAggregateOutputType = {
     id: number | null
     userId: number | null
+    productId: number | null
     amount: Decimal | null
     grantedAt: Date | null
     expiresAt: Date | null
     status: $Enums.TrialFundStatus | null
     recoveredAt: Date | null
-    machineId: number | null
     usedAmount: Decimal | null
   }
 
   export type TrialFundMaxAggregateOutputType = {
     id: number | null
     userId: number | null
+    productId: number | null
     amount: Decimal | null
     grantedAt: Date | null
     expiresAt: Date | null
     status: $Enums.TrialFundStatus | null
     recoveredAt: Date | null
-    machineId: number | null
     usedAmount: Decimal | null
   }
 
   export type TrialFundCountAggregateOutputType = {
     id: number
     userId: number
+    productId: number
     amount: number
     grantedAt: number
     expiresAt: number
     status: number
     recoveredAt: number
-    machineId: number
     usedAmount: number
     _all: number
   }
@@ -18872,52 +17671,52 @@ export namespace Prisma {
   export type TrialFundAvgAggregateInputType = {
     id?: true
     userId?: true
+    productId?: true
     amount?: true
-    machineId?: true
     usedAmount?: true
   }
 
   export type TrialFundSumAggregateInputType = {
     id?: true
     userId?: true
+    productId?: true
     amount?: true
-    machineId?: true
     usedAmount?: true
   }
 
   export type TrialFundMinAggregateInputType = {
     id?: true
     userId?: true
+    productId?: true
     amount?: true
     grantedAt?: true
     expiresAt?: true
     status?: true
     recoveredAt?: true
-    machineId?: true
     usedAmount?: true
   }
 
   export type TrialFundMaxAggregateInputType = {
     id?: true
     userId?: true
+    productId?: true
     amount?: true
     grantedAt?: true
     expiresAt?: true
     status?: true
     recoveredAt?: true
-    machineId?: true
     usedAmount?: true
   }
 
   export type TrialFundCountAggregateInputType = {
     id?: true
     userId?: true
+    productId?: true
     amount?: true
     grantedAt?: true
     expiresAt?: true
     status?: true
     recoveredAt?: true
-    machineId?: true
     usedAmount?: true
     _all?: true
   }
@@ -19011,12 +17810,12 @@ export namespace Prisma {
   export type TrialFundGroupByOutputType = {
     id: number
     userId: number
+    productId: number
     amount: Decimal
     grantedAt: Date
     expiresAt: Date
     status: $Enums.TrialFundStatus
     recoveredAt: Date | null
-    machineId: number | null
     usedAmount: Decimal
     _count: TrialFundCountAggregateOutputType | null
     _avg: TrialFundAvgAggregateOutputType | null
@@ -19042,86 +17841,86 @@ export namespace Prisma {
   export type TrialFundSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    productId?: boolean
     amount?: boolean
     grantedAt?: boolean
     expiresAt?: boolean
     status?: boolean
     recoveredAt?: boolean
-    machineId?: boolean
     usedAmount?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | TrialFund$machineArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trialFund"]>
 
   export type TrialFundSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    productId?: boolean
     amount?: boolean
     grantedAt?: boolean
     expiresAt?: boolean
     status?: boolean
     recoveredAt?: boolean
-    machineId?: boolean
     usedAmount?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | TrialFund$machineArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trialFund"]>
 
   export type TrialFundSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
+    productId?: boolean
     amount?: boolean
     grantedAt?: boolean
     expiresAt?: boolean
     status?: boolean
     recoveredAt?: boolean
-    machineId?: boolean
     usedAmount?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | TrialFund$machineArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trialFund"]>
 
   export type TrialFundSelectScalar = {
     id?: boolean
     userId?: boolean
+    productId?: boolean
     amount?: boolean
     grantedAt?: boolean
     expiresAt?: boolean
     status?: boolean
     recoveredAt?: boolean
-    machineId?: boolean
     usedAmount?: boolean
   }
 
-  export type TrialFundOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "grantedAt" | "expiresAt" | "status" | "recoveredAt" | "machineId" | "usedAmount", ExtArgs["result"]["trialFund"]>
+  export type TrialFundOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "amount" | "grantedAt" | "expiresAt" | "status" | "recoveredAt" | "usedAmount", ExtArgs["result"]["trialFund"]>
   export type TrialFundInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | TrialFund$machineArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type TrialFundIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | TrialFund$machineArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type TrialFundIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    machine?: boolean | TrialFund$machineArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
 
   export type $TrialFundPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TrialFund"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      machine: Prisma.$MachinePayload<ExtArgs> | null
+      product: Prisma.$ProductPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       userId: number
+      productId: number
       amount: Prisma.Decimal
       grantedAt: Date
       expiresAt: Date
       status: $Enums.TrialFundStatus
       recoveredAt: Date | null
-      machineId: number | null
       usedAmount: Prisma.Decimal
     }, ExtArgs["result"]["trialFund"]>
     composites: {}
@@ -19518,7 +18317,7 @@ export namespace Prisma {
   export interface Prisma__TrialFundClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    machine<T extends TrialFund$machineArgs<ExtArgs> = {}>(args?: Subset<T, TrialFund$machineArgs<ExtArgs>>): Prisma__MachineClient<$Result.GetResult<Prisma.$MachinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19550,12 +18349,12 @@ export namespace Prisma {
   interface TrialFundFieldRefs {
     readonly id: FieldRef<"TrialFund", 'Int'>
     readonly userId: FieldRef<"TrialFund", 'Int'>
+    readonly productId: FieldRef<"TrialFund", 'Int'>
     readonly amount: FieldRef<"TrialFund", 'Decimal'>
     readonly grantedAt: FieldRef<"TrialFund", 'DateTime'>
     readonly expiresAt: FieldRef<"TrialFund", 'DateTime'>
     readonly status: FieldRef<"TrialFund", 'TrialFundStatus'>
     readonly recoveredAt: FieldRef<"TrialFund", 'DateTime'>
-    readonly machineId: FieldRef<"TrialFund", 'Int'>
     readonly usedAmount: FieldRef<"TrialFund", 'Decimal'>
   }
     
@@ -19953,25 +18752,6 @@ export namespace Prisma {
   }
 
   /**
-   * TrialFund.machine
-   */
-  export type TrialFund$machineArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Machine
-     */
-    select?: MachineSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Machine
-     */
-    omit?: MachineOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MachineInclude<ExtArgs> | null
-    where?: MachineWhereInput
-  }
-
-  /**
    * TrialFund without action
    */
   export type TrialFundDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20013,7 +18793,8 @@ export namespace Prisma {
     email: 'email',
     emailVerified: 'emailVerified',
     password: 'password',
-    referralCode: 'referralCode'
+    referralCode: 'referralCode',
+    role: 'role'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -20043,32 +18824,7 @@ export namespace Prisma {
   export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum]
 
 
-  export const NFTScalarFieldEnum: {
-    id: 'id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    name: 'name',
-    price: 'price',
-    description: 'description',
-    dailyIncome: 'dailyIncome',
-    fee: 'fee',
-    level: 'level'
-  };
-
-  export type NFTScalarFieldEnum = (typeof NFTScalarFieldEnum)[keyof typeof NFTScalarFieldEnum]
-
-
-  export const UserNFTScalarFieldEnum: {
-    id: 'id',
-    acquiredAt: 'acquiredAt',
-    userId: 'userId',
-    nftId: 'nftId'
-  };
-
-  export type UserNFTScalarFieldEnum = (typeof UserNFTScalarFieldEnum)[keyof typeof UserNFTScalarFieldEnum]
-
-
-  export const MachineScalarFieldEnum: {
+  export const ProductScalarFieldEnum: {
     id: 'id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -20078,11 +18834,33 @@ export namespace Prisma {
     price: 'price',
     dailyIncome: 'dailyIncome',
     fee: 'fee',
+    level: 'level',
     rentalDays: 'rentalDays',
-    level: 'level'
+    deletedAt: 'deletedAt'
   };
 
-  export type MachineScalarFieldEnum = (typeof MachineScalarFieldEnum)[keyof typeof MachineScalarFieldEnum]
+  export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+  export const UserProductScalarFieldEnum: {
+    id: 'id',
+    acquiredAt: 'acquiredAt',
+    userId: 'userId',
+    productId: 'productId'
+  };
+
+  export type UserProductScalarFieldEnum = (typeof UserProductScalarFieldEnum)[keyof typeof UserProductScalarFieldEnum]
+
+
+  export const ReferralScalarFieldEnum: {
+    id: 'id',
+    createdAt: 'createdAt',
+    code: 'code',
+    referrerId: 'referrerId',
+    referredId: 'referredId'
+  };
+
+  export type ReferralScalarFieldEnum = (typeof ReferralScalarFieldEnum)[keyof typeof ReferralScalarFieldEnum]
 
 
   export const AgreementScalarFieldEnum: {
@@ -20093,7 +18871,7 @@ export namespace Prisma {
     endDate: 'endDate',
     status: 'status',
     userId: 'userId',
-    machineId: 'machineId'
+    productId: 'productId'
   };
 
   export type AgreementScalarFieldEnum = (typeof AgreementScalarFieldEnum)[keyof typeof AgreementScalarFieldEnum]
@@ -20116,24 +18894,26 @@ export namespace Prisma {
     id: 'id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    productType: 'productType',
+    saleId: 'saleId',
     productId: 'productId',
-    quantity: 'quantity',
-    saleId: 'saleId'
+    quantity: 'quantity'
   };
 
   export type SaleItemScalarFieldEnum = (typeof SaleItemScalarFieldEnum)[keyof typeof SaleItemScalarFieldEnum]
 
 
-  export const ReferralScalarFieldEnum: {
+  export const RewardScalarFieldEnum: {
     id: 'id',
     createdAt: 'createdAt',
-    code: 'code',
-    referrerId: 'referrerId',
-    referredId: 'referredId'
+    updatedAt: 'updatedAt',
+    reward: 'reward',
+    date: 'date',
+    status: 'status',
+    userId: 'userId',
+    productId: 'productId'
   };
 
-  export type ReferralScalarFieldEnum = (typeof ReferralScalarFieldEnum)[keyof typeof ReferralScalarFieldEnum]
+  export type RewardScalarFieldEnum = (typeof RewardScalarFieldEnum)[keyof typeof RewardScalarFieldEnum]
 
 
   export const CommissionScalarFieldEnum: {
@@ -20146,20 +18926,6 @@ export namespace Prisma {
   };
 
   export type CommissionScalarFieldEnum = (typeof CommissionScalarFieldEnum)[keyof typeof CommissionScalarFieldEnum]
-
-
-  export const RewardScalarFieldEnum: {
-    id: 'id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    reward: 'reward',
-    date: 'date',
-    status: 'status',
-    userId: 'userId',
-    machineId: 'machineId'
-  };
-
-  export type RewardScalarFieldEnum = (typeof RewardScalarFieldEnum)[keyof typeof RewardScalarFieldEnum]
 
 
   export const WalletScalarFieldEnum: {
@@ -20191,12 +18957,12 @@ export namespace Prisma {
   export const TrialFundScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
+    productId: 'productId',
     amount: 'amount',
     grantedAt: 'grantedAt',
     expiresAt: 'expiresAt',
     status: 'status',
     recoveredAt: 'recoveredAt',
-    machineId: 'machineId',
     usedAmount: 'usedAmount'
   };
 
@@ -20282,6 +19048,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Decimal'
    */
   export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -20310,16 +19090,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'ProductType'
+   * Reference to a field of type 'RewardStatus'
    */
-  export type EnumProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductType'>
+  export type EnumRewardStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardStatus'>
     
 
 
   /**
-   * Reference to a field of type 'ProductType[]'
+   * Reference to a field of type 'RewardStatus[]'
    */
-  export type ListEnumProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductType[]'>
+  export type ListEnumRewardStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardStatus[]'>
     
 
 
@@ -20334,20 +19114,6 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'RewardStatus'
-   */
-  export type EnumRewardStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'RewardStatus[]'
-   */
-  export type ListEnumRewardStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardStatus[]'>
     
 
 
@@ -20395,18 +19161,19 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     password?: StringFilter<"User"> | string
     referralCode?: StringNullableFilter<"User"> | string | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     withdraws?: WithdrawListRelationFilter
-    userNFTs?: UserNFTListRelationFilter
+    userProducts?: UserProductListRelationFilter
     agreements?: AgreementListRelationFilter
     salesSold?: SaleListRelationFilter
     salesBought?: SaleListRelationFilter
     referralsMade?: ReferralListRelationFilter
     referralsReceived?: ReferralListRelationFilter
     rewards?: RewardListRelationFilter
-    trialFunds?: TrialFundListRelationFilter
+    trialFund?: XOR<TrialFundNullableScalarRelationFilter, TrialFundWhereInput> | null
     verifications?: VerificationListRelationFilter
-    PasswordReset?: PasswordResetListRelationFilter
+    passwordResets?: PasswordResetListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -20419,18 +19186,19 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrderInput | SortOrder
+    role?: SortOrder
     wallet?: WalletOrderByWithRelationInput
     withdraws?: WithdrawOrderByRelationAggregateInput
-    userNFTs?: UserNFTOrderByRelationAggregateInput
+    userProducts?: UserProductOrderByRelationAggregateInput
     agreements?: AgreementOrderByRelationAggregateInput
     salesSold?: SaleOrderByRelationAggregateInput
     salesBought?: SaleOrderByRelationAggregateInput
     referralsMade?: ReferralOrderByRelationAggregateInput
     referralsReceived?: ReferralOrderByRelationAggregateInput
     rewards?: RewardOrderByRelationAggregateInput
-    trialFunds?: TrialFundOrderByRelationAggregateInput
+    trialFund?: TrialFundOrderByWithRelationInput
     verifications?: VerificationOrderByRelationAggregateInput
-    PasswordReset?: PasswordResetOrderByRelationAggregateInput
+    passwordResets?: PasswordResetOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -20446,18 +19214,19 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     emailVerified?: BoolFilter<"User"> | boolean
     password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     withdraws?: WithdrawListRelationFilter
-    userNFTs?: UserNFTListRelationFilter
+    userProducts?: UserProductListRelationFilter
     agreements?: AgreementListRelationFilter
     salesSold?: SaleListRelationFilter
     salesBought?: SaleListRelationFilter
     referralsMade?: ReferralListRelationFilter
     referralsReceived?: ReferralListRelationFilter
     rewards?: RewardListRelationFilter
-    trialFunds?: TrialFundListRelationFilter
+    trialFund?: XOR<TrialFundNullableScalarRelationFilter, TrialFundWhereInput> | null
     verifications?: VerificationListRelationFilter
-    PasswordReset?: PasswordResetListRelationFilter
+    passwordResets?: PasswordResetListRelationFilter
   }, "id" | "username" | "email" | "referralCode">
 
   export type UserOrderByWithAggregationInput = {
@@ -20470,6 +19239,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrderInput | SortOrder
+    role?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -20490,6 +19260,7 @@ export namespace Prisma {
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     password?: StringWithAggregatesFilter<"User"> | string
     referralCode?: StringNullableWithAggregatesFilter<"User"> | string | null
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   }
 
   export type VerificationWhereInput = {
@@ -20616,159 +19387,30 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"PasswordReset"> | Date | string
   }
 
-  export type NFTWhereInput = {
-    AND?: NFTWhereInput | NFTWhereInput[]
-    OR?: NFTWhereInput[]
-    NOT?: NFTWhereInput | NFTWhereInput[]
-    id?: IntFilter<"NFT"> | number
-    createdAt?: DateTimeFilter<"NFT"> | Date | string
-    updatedAt?: DateTimeFilter<"NFT"> | Date | string
-    name?: StringFilter<"NFT"> | string
-    price?: DecimalFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    description?: StringNullableFilter<"NFT"> | string | null
-    dailyIncome?: DecimalFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    level?: IntFilter<"NFT"> | number
-    userNFTs?: UserNFTListRelationFilter
-  }
-
-  export type NFTOrderByWithRelationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    description?: SortOrderInput | SortOrder
-    dailyIncome?: SortOrder
-    fee?: SortOrder
-    level?: SortOrder
-    userNFTs?: UserNFTOrderByRelationAggregateInput
-  }
-
-  export type NFTWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: NFTWhereInput | NFTWhereInput[]
-    OR?: NFTWhereInput[]
-    NOT?: NFTWhereInput | NFTWhereInput[]
-    createdAt?: DateTimeFilter<"NFT"> | Date | string
-    updatedAt?: DateTimeFilter<"NFT"> | Date | string
-    name?: StringFilter<"NFT"> | string
-    price?: DecimalFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    description?: StringNullableFilter<"NFT"> | string | null
-    dailyIncome?: DecimalFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    level?: IntFilter<"NFT"> | number
-    userNFTs?: UserNFTListRelationFilter
-  }, "id">
-
-  export type NFTOrderByWithAggregationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    description?: SortOrderInput | SortOrder
-    dailyIncome?: SortOrder
-    fee?: SortOrder
-    level?: SortOrder
-    _count?: NFTCountOrderByAggregateInput
-    _avg?: NFTAvgOrderByAggregateInput
-    _max?: NFTMaxOrderByAggregateInput
-    _min?: NFTMinOrderByAggregateInput
-    _sum?: NFTSumOrderByAggregateInput
-  }
-
-  export type NFTScalarWhereWithAggregatesInput = {
-    AND?: NFTScalarWhereWithAggregatesInput | NFTScalarWhereWithAggregatesInput[]
-    OR?: NFTScalarWhereWithAggregatesInput[]
-    NOT?: NFTScalarWhereWithAggregatesInput | NFTScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"NFT"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"NFT"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"NFT"> | Date | string
-    name?: StringWithAggregatesFilter<"NFT"> | string
-    price?: DecimalWithAggregatesFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    description?: StringNullableWithAggregatesFilter<"NFT"> | string | null
-    dailyIncome?: DecimalWithAggregatesFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalWithAggregatesFilter<"NFT"> | Decimal | DecimalJsLike | number | string
-    level?: IntWithAggregatesFilter<"NFT"> | number
-  }
-
-  export type UserNFTWhereInput = {
-    AND?: UserNFTWhereInput | UserNFTWhereInput[]
-    OR?: UserNFTWhereInput[]
-    NOT?: UserNFTWhereInput | UserNFTWhereInput[]
-    id?: IntFilter<"UserNFT"> | number
-    acquiredAt?: DateTimeFilter<"UserNFT"> | Date | string
-    userId?: IntFilter<"UserNFT"> | number
-    nftId?: IntFilter<"UserNFT"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    nft?: XOR<NFTScalarRelationFilter, NFTWhereInput>
-  }
-
-  export type UserNFTOrderByWithRelationInput = {
-    id?: SortOrder
-    acquiredAt?: SortOrder
-    userId?: SortOrder
-    nftId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    nft?: NFTOrderByWithRelationInput
-  }
-
-  export type UserNFTWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: UserNFTWhereInput | UserNFTWhereInput[]
-    OR?: UserNFTWhereInput[]
-    NOT?: UserNFTWhereInput | UserNFTWhereInput[]
-    acquiredAt?: DateTimeFilter<"UserNFT"> | Date | string
-    userId?: IntFilter<"UserNFT"> | number
-    nftId?: IntFilter<"UserNFT"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    nft?: XOR<NFTScalarRelationFilter, NFTWhereInput>
-  }, "id">
-
-  export type UserNFTOrderByWithAggregationInput = {
-    id?: SortOrder
-    acquiredAt?: SortOrder
-    userId?: SortOrder
-    nftId?: SortOrder
-    _count?: UserNFTCountOrderByAggregateInput
-    _avg?: UserNFTAvgOrderByAggregateInput
-    _max?: UserNFTMaxOrderByAggregateInput
-    _min?: UserNFTMinOrderByAggregateInput
-    _sum?: UserNFTSumOrderByAggregateInput
-  }
-
-  export type UserNFTScalarWhereWithAggregatesInput = {
-    AND?: UserNFTScalarWhereWithAggregatesInput | UserNFTScalarWhereWithAggregatesInput[]
-    OR?: UserNFTScalarWhereWithAggregatesInput[]
-    NOT?: UserNFTScalarWhereWithAggregatesInput | UserNFTScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"UserNFT"> | number
-    acquiredAt?: DateTimeWithAggregatesFilter<"UserNFT"> | Date | string
-    userId?: IntWithAggregatesFilter<"UserNFT"> | number
-    nftId?: IntWithAggregatesFilter<"UserNFT"> | number
-  }
-
-  export type MachineWhereInput = {
-    AND?: MachineWhereInput | MachineWhereInput[]
-    OR?: MachineWhereInput[]
-    NOT?: MachineWhereInput | MachineWhereInput[]
-    id?: IntFilter<"Machine"> | number
-    createdAt?: DateTimeFilter<"Machine"> | Date | string
-    updatedAt?: DateTimeFilter<"Machine"> | Date | string
-    title?: StringFilter<"Machine"> | string
-    description?: StringNullableFilter<"Machine"> | string | null
-    image?: StringFilter<"Machine"> | string
-    price?: DecimalFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFilter<"Machine"> | number
-    level?: IntFilter<"Machine"> | number
+  export type ProductWhereInput = {
+    AND?: ProductWhereInput | ProductWhereInput[]
+    OR?: ProductWhereInput[]
+    NOT?: ProductWhereInput | ProductWhereInput[]
+    id?: IntFilter<"Product"> | number
+    createdAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeFilter<"Product"> | Date | string
+    title?: StringFilter<"Product"> | string
+    description?: StringNullableFilter<"Product"> | string | null
+    image?: StringFilter<"Product"> | string
+    price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    level?: IntFilter<"Product"> | number
+    rentalDays?: IntNullableFilter<"Product"> | number | null
+    deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+    userProducts?: UserProductListRelationFilter
     agreements?: AgreementListRelationFilter
     rewards?: RewardListRelationFilter
-    TrialFund?: TrialFundListRelationFilter
+    trialFunds?: TrialFundListRelationFilter
+    saleItems?: SaleItemListRelationFilter
   }
 
-  export type MachineOrderByWithRelationInput = {
+  export type ProductOrderByWithRelationInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20778,34 +19420,40 @@ export namespace Prisma {
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    rentalDays?: SortOrder
     level?: SortOrder
+    rentalDays?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    userProducts?: UserProductOrderByRelationAggregateInput
     agreements?: AgreementOrderByRelationAggregateInput
     rewards?: RewardOrderByRelationAggregateInput
-    TrialFund?: TrialFundOrderByRelationAggregateInput
+    trialFunds?: TrialFundOrderByRelationAggregateInput
+    saleItems?: SaleItemOrderByRelationAggregateInput
   }
 
-  export type MachineWhereUniqueInput = Prisma.AtLeast<{
+  export type ProductWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    AND?: MachineWhereInput | MachineWhereInput[]
-    OR?: MachineWhereInput[]
-    NOT?: MachineWhereInput | MachineWhereInput[]
-    createdAt?: DateTimeFilter<"Machine"> | Date | string
-    updatedAt?: DateTimeFilter<"Machine"> | Date | string
-    title?: StringFilter<"Machine"> | string
-    description?: StringNullableFilter<"Machine"> | string | null
-    image?: StringFilter<"Machine"> | string
-    price?: DecimalFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFilter<"Machine"> | number
-    level?: IntFilter<"Machine"> | number
+    AND?: ProductWhereInput | ProductWhereInput[]
+    OR?: ProductWhereInput[]
+    NOT?: ProductWhereInput | ProductWhereInput[]
+    createdAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeFilter<"Product"> | Date | string
+    title?: StringFilter<"Product"> | string
+    description?: StringNullableFilter<"Product"> | string | null
+    image?: StringFilter<"Product"> | string
+    price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    level?: IntFilter<"Product"> | number
+    rentalDays?: IntNullableFilter<"Product"> | number | null
+    deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+    userProducts?: UserProductListRelationFilter
     agreements?: AgreementListRelationFilter
     rewards?: RewardListRelationFilter
-    TrialFund?: TrialFundListRelationFilter
+    trialFunds?: TrialFundListRelationFilter
+    saleItems?: SaleItemListRelationFilter
   }, "id">
 
-  export type MachineOrderByWithAggregationInput = {
+  export type ProductOrderByWithAggregationInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20815,30 +19463,151 @@ export namespace Prisma {
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    rentalDays?: SortOrder
     level?: SortOrder
-    _count?: MachineCountOrderByAggregateInput
-    _avg?: MachineAvgOrderByAggregateInput
-    _max?: MachineMaxOrderByAggregateInput
-    _min?: MachineMinOrderByAggregateInput
-    _sum?: MachineSumOrderByAggregateInput
+    rentalDays?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: ProductCountOrderByAggregateInput
+    _avg?: ProductAvgOrderByAggregateInput
+    _max?: ProductMaxOrderByAggregateInput
+    _min?: ProductMinOrderByAggregateInput
+    _sum?: ProductSumOrderByAggregateInput
   }
 
-  export type MachineScalarWhereWithAggregatesInput = {
-    AND?: MachineScalarWhereWithAggregatesInput | MachineScalarWhereWithAggregatesInput[]
-    OR?: MachineScalarWhereWithAggregatesInput[]
-    NOT?: MachineScalarWhereWithAggregatesInput | MachineScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Machine"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"Machine"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Machine"> | Date | string
-    title?: StringWithAggregatesFilter<"Machine"> | string
-    description?: StringNullableWithAggregatesFilter<"Machine"> | string | null
-    image?: StringWithAggregatesFilter<"Machine"> | string
-    price?: DecimalWithAggregatesFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalWithAggregatesFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalWithAggregatesFilter<"Machine"> | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntWithAggregatesFilter<"Machine"> | number
-    level?: IntWithAggregatesFilter<"Machine"> | number
+  export type ProductScalarWhereWithAggregatesInput = {
+    AND?: ProductScalarWhereWithAggregatesInput | ProductScalarWhereWithAggregatesInput[]
+    OR?: ProductScalarWhereWithAggregatesInput[]
+    NOT?: ProductScalarWhereWithAggregatesInput | ProductScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Product"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+    title?: StringWithAggregatesFilter<"Product"> | string
+    description?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    image?: StringWithAggregatesFilter<"Product"> | string
+    price?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
+    level?: IntWithAggregatesFilter<"Product"> | number
+    rentalDays?: IntNullableWithAggregatesFilter<"Product"> | number | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
+  }
+
+  export type UserProductWhereInput = {
+    AND?: UserProductWhereInput | UserProductWhereInput[]
+    OR?: UserProductWhereInput[]
+    NOT?: UserProductWhereInput | UserProductWhereInput[]
+    id?: IntFilter<"UserProduct"> | number
+    acquiredAt?: DateTimeFilter<"UserProduct"> | Date | string
+    userId?: IntFilter<"UserProduct"> | number
+    productId?: IntFilter<"UserProduct"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }
+
+  export type UserProductOrderByWithRelationInput = {
+    id?: SortOrder
+    acquiredAt?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
+  }
+
+  export type UserProductWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userId_productId?: UserProductUserIdProductIdCompoundUniqueInput
+    AND?: UserProductWhereInput | UserProductWhereInput[]
+    OR?: UserProductWhereInput[]
+    NOT?: UserProductWhereInput | UserProductWhereInput[]
+    acquiredAt?: DateTimeFilter<"UserProduct"> | Date | string
+    userId?: IntFilter<"UserProduct"> | number
+    productId?: IntFilter<"UserProduct"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id" | "userId_productId">
+
+  export type UserProductOrderByWithAggregationInput = {
+    id?: SortOrder
+    acquiredAt?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+    _count?: UserProductCountOrderByAggregateInput
+    _avg?: UserProductAvgOrderByAggregateInput
+    _max?: UserProductMaxOrderByAggregateInput
+    _min?: UserProductMinOrderByAggregateInput
+    _sum?: UserProductSumOrderByAggregateInput
+  }
+
+  export type UserProductScalarWhereWithAggregatesInput = {
+    AND?: UserProductScalarWhereWithAggregatesInput | UserProductScalarWhereWithAggregatesInput[]
+    OR?: UserProductScalarWhereWithAggregatesInput[]
+    NOT?: UserProductScalarWhereWithAggregatesInput | UserProductScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"UserProduct"> | number
+    acquiredAt?: DateTimeWithAggregatesFilter<"UserProduct"> | Date | string
+    userId?: IntWithAggregatesFilter<"UserProduct"> | number
+    productId?: IntWithAggregatesFilter<"UserProduct"> | number
+  }
+
+  export type ReferralWhereInput = {
+    AND?: ReferralWhereInput | ReferralWhereInput[]
+    OR?: ReferralWhereInput[]
+    NOT?: ReferralWhereInput | ReferralWhereInput[]
+    id?: IntFilter<"Referral"> | number
+    createdAt?: DateTimeFilter<"Referral"> | Date | string
+    code?: StringFilter<"Referral"> | string
+    referrerId?: IntFilter<"Referral"> | number
+    referredId?: IntFilter<"Referral"> | number
+    referrer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    referred?: XOR<UserScalarRelationFilter, UserWhereInput>
+    commissions?: CommissionListRelationFilter
+  }
+
+  export type ReferralOrderByWithRelationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    code?: SortOrder
+    referrerId?: SortOrder
+    referredId?: SortOrder
+    referrer?: UserOrderByWithRelationInput
+    referred?: UserOrderByWithRelationInput
+    commissions?: CommissionOrderByRelationAggregateInput
+  }
+
+  export type ReferralWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    code?: string
+    AND?: ReferralWhereInput | ReferralWhereInput[]
+    OR?: ReferralWhereInput[]
+    NOT?: ReferralWhereInput | ReferralWhereInput[]
+    createdAt?: DateTimeFilter<"Referral"> | Date | string
+    referrerId?: IntFilter<"Referral"> | number
+    referredId?: IntFilter<"Referral"> | number
+    referrer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    referred?: XOR<UserScalarRelationFilter, UserWhereInput>
+    commissions?: CommissionListRelationFilter
+  }, "id" | "code">
+
+  export type ReferralOrderByWithAggregationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    code?: SortOrder
+    referrerId?: SortOrder
+    referredId?: SortOrder
+    _count?: ReferralCountOrderByAggregateInput
+    _avg?: ReferralAvgOrderByAggregateInput
+    _max?: ReferralMaxOrderByAggregateInput
+    _min?: ReferralMinOrderByAggregateInput
+    _sum?: ReferralSumOrderByAggregateInput
+  }
+
+  export type ReferralScalarWhereWithAggregatesInput = {
+    AND?: ReferralScalarWhereWithAggregatesInput | ReferralScalarWhereWithAggregatesInput[]
+    OR?: ReferralScalarWhereWithAggregatesInput[]
+    NOT?: ReferralScalarWhereWithAggregatesInput | ReferralScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Referral"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Referral"> | Date | string
+    code?: StringWithAggregatesFilter<"Referral"> | string
+    referrerId?: IntWithAggregatesFilter<"Referral"> | number
+    referredId?: IntWithAggregatesFilter<"Referral"> | number
   }
 
   export type AgreementWhereInput = {
@@ -20852,9 +19621,9 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Agreement"> | Date | string
     status?: EnumAgreementStatusFilter<"Agreement"> | $Enums.AgreementStatus
     userId?: IntFilter<"Agreement"> | number
-    machineId?: IntFilter<"Agreement"> | number
+    productId?: IntFilter<"Agreement"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    machine?: XOR<MachineScalarRelationFilter, MachineWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
 
   export type AgreementOrderByWithRelationInput = {
@@ -20865,9 +19634,9 @@ export namespace Prisma {
     endDate?: SortOrder
     status?: SortOrder
     userId?: SortOrder
-    machineId?: SortOrder
+    productId?: SortOrder
     user?: UserOrderByWithRelationInput
-    machine?: MachineOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
   }
 
   export type AgreementWhereUniqueInput = Prisma.AtLeast<{
@@ -20881,9 +19650,9 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Agreement"> | Date | string
     status?: EnumAgreementStatusFilter<"Agreement"> | $Enums.AgreementStatus
     userId?: IntFilter<"Agreement"> | number
-    machineId?: IntFilter<"Agreement"> | number
+    productId?: IntFilter<"Agreement"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    machine?: XOR<MachineScalarRelationFilter, MachineWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id">
 
   export type AgreementOrderByWithAggregationInput = {
@@ -20894,7 +19663,7 @@ export namespace Prisma {
     endDate?: SortOrder
     status?: SortOrder
     userId?: SortOrder
-    machineId?: SortOrder
+    productId?: SortOrder
     _count?: AgreementCountOrderByAggregateInput
     _avg?: AgreementAvgOrderByAggregateInput
     _max?: AgreementMaxOrderByAggregateInput
@@ -20913,7 +19682,7 @@ export namespace Prisma {
     endDate?: DateTimeWithAggregatesFilter<"Agreement"> | Date | string
     status?: EnumAgreementStatusWithAggregatesFilter<"Agreement"> | $Enums.AgreementStatus
     userId?: IntWithAggregatesFilter<"Agreement"> | number
-    machineId?: IntWithAggregatesFilter<"Agreement"> | number
+    productId?: IntWithAggregatesFilter<"Agreement"> | number
   }
 
   export type SaleWhereInput = {
@@ -20996,22 +19765,22 @@ export namespace Prisma {
     id?: IntFilter<"SaleItem"> | number
     createdAt?: DateTimeFilter<"SaleItem"> | Date | string
     updatedAt?: DateTimeFilter<"SaleItem"> | Date | string
-    productType?: EnumProductTypeFilter<"SaleItem"> | $Enums.ProductType
+    saleId?: IntFilter<"SaleItem"> | number
     productId?: IntFilter<"SaleItem"> | number
     quantity?: IntFilter<"SaleItem"> | number
-    saleId?: IntFilter<"SaleItem"> | number
     sale?: XOR<SaleScalarRelationFilter, SaleWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
 
   export type SaleItemOrderByWithRelationInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    productType?: SortOrder
+    saleId?: SortOrder
     productId?: SortOrder
     quantity?: SortOrder
-    saleId?: SortOrder
     sale?: SaleOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
   }
 
   export type SaleItemWhereUniqueInput = Prisma.AtLeast<{
@@ -21021,21 +19790,20 @@ export namespace Prisma {
     NOT?: SaleItemWhereInput | SaleItemWhereInput[]
     createdAt?: DateTimeFilter<"SaleItem"> | Date | string
     updatedAt?: DateTimeFilter<"SaleItem"> | Date | string
-    productType?: EnumProductTypeFilter<"SaleItem"> | $Enums.ProductType
+    saleId?: IntFilter<"SaleItem"> | number
     productId?: IntFilter<"SaleItem"> | number
     quantity?: IntFilter<"SaleItem"> | number
-    saleId?: IntFilter<"SaleItem"> | number
     sale?: XOR<SaleScalarRelationFilter, SaleWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id">
 
   export type SaleItemOrderByWithAggregationInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    productType?: SortOrder
+    saleId?: SortOrder
     productId?: SortOrder
     quantity?: SortOrder
-    saleId?: SortOrder
     _count?: SaleItemCountOrderByAggregateInput
     _avg?: SaleItemAvgOrderByAggregateInput
     _max?: SaleItemMaxOrderByAggregateInput
@@ -21050,73 +19818,84 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"SaleItem"> | number
     createdAt?: DateTimeWithAggregatesFilter<"SaleItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SaleItem"> | Date | string
-    productType?: EnumProductTypeWithAggregatesFilter<"SaleItem"> | $Enums.ProductType
+    saleId?: IntWithAggregatesFilter<"SaleItem"> | number
     productId?: IntWithAggregatesFilter<"SaleItem"> | number
     quantity?: IntWithAggregatesFilter<"SaleItem"> | number
-    saleId?: IntWithAggregatesFilter<"SaleItem"> | number
   }
 
-  export type ReferralWhereInput = {
-    AND?: ReferralWhereInput | ReferralWhereInput[]
-    OR?: ReferralWhereInput[]
-    NOT?: ReferralWhereInput | ReferralWhereInput[]
-    id?: IntFilter<"Referral"> | number
-    createdAt?: DateTimeFilter<"Referral"> | Date | string
-    code?: StringFilter<"Referral"> | string
-    referrerId?: IntFilter<"Referral"> | number
-    referredId?: IntFilter<"Referral"> | number
-    referrer?: XOR<UserScalarRelationFilter, UserWhereInput>
-    referred?: XOR<UserScalarRelationFilter, UserWhereInput>
-    commissions?: CommissionListRelationFilter
+  export type RewardWhereInput = {
+    AND?: RewardWhereInput | RewardWhereInput[]
+    OR?: RewardWhereInput[]
+    NOT?: RewardWhereInput | RewardWhereInput[]
+    id?: IntFilter<"Reward"> | number
+    createdAt?: DateTimeFilter<"Reward"> | Date | string
+    updatedAt?: DateTimeFilter<"Reward"> | Date | string
+    reward?: DecimalFilter<"Reward"> | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFilter<"Reward"> | Date | string
+    status?: EnumRewardStatusFilter<"Reward"> | $Enums.RewardStatus
+    userId?: IntFilter<"Reward"> | number
+    productId?: IntFilter<"Reward"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
 
-  export type ReferralOrderByWithRelationInput = {
+  export type RewardOrderByWithRelationInput = {
     id?: SortOrder
     createdAt?: SortOrder
-    code?: SortOrder
-    referrerId?: SortOrder
-    referredId?: SortOrder
-    referrer?: UserOrderByWithRelationInput
-    referred?: UserOrderByWithRelationInput
-    commissions?: CommissionOrderByRelationAggregateInput
+    updatedAt?: SortOrder
+    reward?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
   }
 
-  export type ReferralWhereUniqueInput = Prisma.AtLeast<{
+  export type RewardWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    code?: string
-    AND?: ReferralWhereInput | ReferralWhereInput[]
-    OR?: ReferralWhereInput[]
-    NOT?: ReferralWhereInput | ReferralWhereInput[]
-    createdAt?: DateTimeFilter<"Referral"> | Date | string
-    referrerId?: IntFilter<"Referral"> | number
-    referredId?: IntFilter<"Referral"> | number
-    referrer?: XOR<UserScalarRelationFilter, UserWhereInput>
-    referred?: XOR<UserScalarRelationFilter, UserWhereInput>
-    commissions?: CommissionListRelationFilter
-  }, "id" | "code">
+    AND?: RewardWhereInput | RewardWhereInput[]
+    OR?: RewardWhereInput[]
+    NOT?: RewardWhereInput | RewardWhereInput[]
+    createdAt?: DateTimeFilter<"Reward"> | Date | string
+    updatedAt?: DateTimeFilter<"Reward"> | Date | string
+    reward?: DecimalFilter<"Reward"> | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFilter<"Reward"> | Date | string
+    status?: EnumRewardStatusFilter<"Reward"> | $Enums.RewardStatus
+    userId?: IntFilter<"Reward"> | number
+    productId?: IntFilter<"Reward"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id">
 
-  export type ReferralOrderByWithAggregationInput = {
+  export type RewardOrderByWithAggregationInput = {
     id?: SortOrder
     createdAt?: SortOrder
-    code?: SortOrder
-    referrerId?: SortOrder
-    referredId?: SortOrder
-    _count?: ReferralCountOrderByAggregateInput
-    _avg?: ReferralAvgOrderByAggregateInput
-    _max?: ReferralMaxOrderByAggregateInput
-    _min?: ReferralMinOrderByAggregateInput
-    _sum?: ReferralSumOrderByAggregateInput
+    updatedAt?: SortOrder
+    reward?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+    _count?: RewardCountOrderByAggregateInput
+    _avg?: RewardAvgOrderByAggregateInput
+    _max?: RewardMaxOrderByAggregateInput
+    _min?: RewardMinOrderByAggregateInput
+    _sum?: RewardSumOrderByAggregateInput
   }
 
-  export type ReferralScalarWhereWithAggregatesInput = {
-    AND?: ReferralScalarWhereWithAggregatesInput | ReferralScalarWhereWithAggregatesInput[]
-    OR?: ReferralScalarWhereWithAggregatesInput[]
-    NOT?: ReferralScalarWhereWithAggregatesInput | ReferralScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Referral"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"Referral"> | Date | string
-    code?: StringWithAggregatesFilter<"Referral"> | string
-    referrerId?: IntWithAggregatesFilter<"Referral"> | number
-    referredId?: IntWithAggregatesFilter<"Referral"> | number
+  export type RewardScalarWhereWithAggregatesInput = {
+    AND?: RewardScalarWhereWithAggregatesInput | RewardScalarWhereWithAggregatesInput[]
+    OR?: RewardScalarWhereWithAggregatesInput[]
+    NOT?: RewardScalarWhereWithAggregatesInput | RewardScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Reward"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Reward"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Reward"> | Date | string
+    reward?: DecimalWithAggregatesFilter<"Reward"> | Decimal | DecimalJsLike | number | string
+    date?: DateTimeWithAggregatesFilter<"Reward"> | Date | string
+    status?: EnumRewardStatusWithAggregatesFilter<"Reward"> | $Enums.RewardStatus
+    userId?: IntWithAggregatesFilter<"Reward"> | number
+    productId?: IntWithAggregatesFilter<"Reward"> | number
   }
 
   export type CommissionWhereInput = {
@@ -21179,81 +19958,6 @@ export namespace Prisma {
     amount?: DecimalWithAggregatesFilter<"Commission"> | Decimal | DecimalJsLike | number | string
     percentage?: FloatWithAggregatesFilter<"Commission"> | number
     referralId?: IntWithAggregatesFilter<"Commission"> | number
-  }
-
-  export type RewardWhereInput = {
-    AND?: RewardWhereInput | RewardWhereInput[]
-    OR?: RewardWhereInput[]
-    NOT?: RewardWhereInput | RewardWhereInput[]
-    id?: IntFilter<"Reward"> | number
-    createdAt?: DateTimeFilter<"Reward"> | Date | string
-    updatedAt?: DateTimeFilter<"Reward"> | Date | string
-    reward?: DecimalFilter<"Reward"> | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFilter<"Reward"> | Date | string
-    status?: EnumRewardStatusFilter<"Reward"> | $Enums.RewardStatus
-    userId?: IntFilter<"Reward"> | number
-    machineId?: IntFilter<"Reward"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    machine?: XOR<MachineScalarRelationFilter, MachineWhereInput>
-  }
-
-  export type RewardOrderByWithRelationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    reward?: SortOrder
-    date?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    machine?: MachineOrderByWithRelationInput
-  }
-
-  export type RewardWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: RewardWhereInput | RewardWhereInput[]
-    OR?: RewardWhereInput[]
-    NOT?: RewardWhereInput | RewardWhereInput[]
-    createdAt?: DateTimeFilter<"Reward"> | Date | string
-    updatedAt?: DateTimeFilter<"Reward"> | Date | string
-    reward?: DecimalFilter<"Reward"> | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFilter<"Reward"> | Date | string
-    status?: EnumRewardStatusFilter<"Reward"> | $Enums.RewardStatus
-    userId?: IntFilter<"Reward"> | number
-    machineId?: IntFilter<"Reward"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    machine?: XOR<MachineScalarRelationFilter, MachineWhereInput>
-  }, "id">
-
-  export type RewardOrderByWithAggregationInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    reward?: SortOrder
-    date?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-    _count?: RewardCountOrderByAggregateInput
-    _avg?: RewardAvgOrderByAggregateInput
-    _max?: RewardMaxOrderByAggregateInput
-    _min?: RewardMinOrderByAggregateInput
-    _sum?: RewardSumOrderByAggregateInput
-  }
-
-  export type RewardScalarWhereWithAggregatesInput = {
-    AND?: RewardScalarWhereWithAggregatesInput | RewardScalarWhereWithAggregatesInput[]
-    OR?: RewardScalarWhereWithAggregatesInput[]
-    NOT?: RewardScalarWhereWithAggregatesInput | RewardScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Reward"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"Reward"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Reward"> | Date | string
-    reward?: DecimalWithAggregatesFilter<"Reward"> | Decimal | DecimalJsLike | number | string
-    date?: DateTimeWithAggregatesFilter<"Reward"> | Date | string
-    status?: EnumRewardStatusWithAggregatesFilter<"Reward"> | $Enums.RewardStatus
-    userId?: IntWithAggregatesFilter<"Reward"> | number
-    machineId?: IntWithAggregatesFilter<"Reward"> | number
   }
 
   export type WalletWhereInput = {
@@ -21396,29 +20100,29 @@ export namespace Prisma {
     NOT?: TrialFundWhereInput | TrialFundWhereInput[]
     id?: IntFilter<"TrialFund"> | number
     userId?: IntFilter<"TrialFund"> | number
+    productId?: IntFilter<"TrialFund"> | number
     amount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFilter<"TrialFund"> | Date | string
     expiresAt?: DateTimeFilter<"TrialFund"> | Date | string
     status?: EnumTrialFundStatusFilter<"TrialFund"> | $Enums.TrialFundStatus
     recoveredAt?: DateTimeNullableFilter<"TrialFund"> | Date | string | null
-    machineId?: IntNullableFilter<"TrialFund"> | number | null
     usedAmount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    machine?: XOR<MachineNullableScalarRelationFilter, MachineWhereInput> | null
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
 
   export type TrialFundOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
+    productId?: SortOrder
     amount?: SortOrder
     grantedAt?: SortOrder
     expiresAt?: SortOrder
     status?: SortOrder
     recoveredAt?: SortOrderInput | SortOrder
-    machineId?: SortOrderInput | SortOrder
     usedAmount?: SortOrder
     user?: UserOrderByWithRelationInput
-    machine?: MachineOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
   }
 
   export type TrialFundWhereUniqueInput = Prisma.AtLeast<{
@@ -21427,26 +20131,26 @@ export namespace Prisma {
     AND?: TrialFundWhereInput | TrialFundWhereInput[]
     OR?: TrialFundWhereInput[]
     NOT?: TrialFundWhereInput | TrialFundWhereInput[]
+    productId?: IntFilter<"TrialFund"> | number
     amount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFilter<"TrialFund"> | Date | string
     expiresAt?: DateTimeFilter<"TrialFund"> | Date | string
     status?: EnumTrialFundStatusFilter<"TrialFund"> | $Enums.TrialFundStatus
     recoveredAt?: DateTimeNullableFilter<"TrialFund"> | Date | string | null
-    machineId?: IntNullableFilter<"TrialFund"> | number | null
     usedAmount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    machine?: XOR<MachineNullableScalarRelationFilter, MachineWhereInput> | null
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id" | "userId">
 
   export type TrialFundOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
+    productId?: SortOrder
     amount?: SortOrder
     grantedAt?: SortOrder
     expiresAt?: SortOrder
     status?: SortOrder
     recoveredAt?: SortOrderInput | SortOrder
-    machineId?: SortOrderInput | SortOrder
     usedAmount?: SortOrder
     _count?: TrialFundCountOrderByAggregateInput
     _avg?: TrialFundAvgOrderByAggregateInput
@@ -21461,12 +20165,12 @@ export namespace Prisma {
     NOT?: TrialFundScalarWhereWithAggregatesInput | TrialFundScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"TrialFund"> | number
     userId?: IntWithAggregatesFilter<"TrialFund"> | number
+    productId?: IntWithAggregatesFilter<"TrialFund"> | number
     amount?: DecimalWithAggregatesFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeWithAggregatesFilter<"TrialFund"> | Date | string
     expiresAt?: DateTimeWithAggregatesFilter<"TrialFund"> | Date | string
     status?: EnumTrialFundStatusWithAggregatesFilter<"TrialFund"> | $Enums.TrialFundStatus
     recoveredAt?: DateTimeNullableWithAggregatesFilter<"TrialFund"> | Date | string | null
-    machineId?: IntNullableWithAggregatesFilter<"TrialFund"> | number | null
     usedAmount?: DecimalWithAggregatesFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
   }
 
@@ -21479,18 +20183,19 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
     rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -21503,18 +20208,19 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -21526,18 +20232,19 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -21550,18 +20257,19 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21574,6 +20282,7 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
   }
 
   export type UserUpdateManyMutationInput = {
@@ -21585,6 +20294,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -21597,6 +20307,7 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type VerificationCreateInput = {
@@ -21663,7 +20374,7 @@ export namespace Prisma {
     expiresAt: Date | string
     used?: boolean
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutPasswordResetInput
+    user: UserCreateNestedOneWithoutPasswordResetsInput
   }
 
   export type PasswordResetUncheckedCreateInput = {
@@ -21680,7 +20391,7 @@ export namespace Prisma {
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     used?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutPasswordResetNestedInput
+    user?: UserUpdateOneRequiredWithoutPasswordResetsNestedInput
   }
 
   export type PasswordResetUncheckedUpdateInput = {
@@ -21717,240 +20428,225 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NFTCreateInput = {
+  export type ProductCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    name: string
-    price: Decimal | DecimalJsLike | number | string
+    title: string
     description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    userNFTs?: UserNFTCreateNestedManyWithoutNftInput
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductCreateNestedManyWithoutProductInput
+    agreements?: AgreementCreateNestedManyWithoutProductInput
+    rewards?: RewardCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemCreateNestedManyWithoutProductInput
   }
 
-  export type NFTUncheckedCreateInput = {
+  export type ProductUncheckedCreateInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    name: string
-    price: Decimal | DecimalJsLike | number | string
+    title: string
     description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutNftInput
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
   }
 
-  export type NFTUpdateInput = {
+  export type ProductUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    userNFTs?: UserNFTUpdateManyWithoutNftNestedInput
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUpdateManyWithoutProductNestedInput
+    rewards?: RewardUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUpdateManyWithoutProductNestedInput
   }
 
-  export type NFTUncheckedUpdateInput = {
+  export type ProductUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutNftNestedInput
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
-  export type NFTCreateManyInput = {
+  export type ProductCreateManyInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    name: string
-    price: Decimal | DecimalJsLike | number | string
+    title: string
     description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
   }
 
-  export type NFTUpdateManyMutationInput = {
+  export type ProductUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type NFTUncheckedUpdateManyInput = {
+  export type ProductUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type UserNFTCreateInput = {
+  export type UserProductCreateInput = {
     acquiredAt?: Date | string
-    user: UserCreateNestedOneWithoutUserNFTsInput
-    nft: NFTCreateNestedOneWithoutUserNFTsInput
+    user: UserCreateNestedOneWithoutUserProductsInput
+    product: ProductCreateNestedOneWithoutUserProductsInput
   }
 
-  export type UserNFTUncheckedCreateInput = {
+  export type UserProductUncheckedCreateInput = {
     id?: number
     acquiredAt?: Date | string
     userId: number
-    nftId: number
+    productId: number
   }
 
-  export type UserNFTUpdateInput = {
+  export type UserProductUpdateInput = {
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserNFTsNestedInput
-    nft?: NFTUpdateOneRequiredWithoutUserNFTsNestedInput
+    user?: UserUpdateOneRequiredWithoutUserProductsNestedInput
+    product?: ProductUpdateOneRequiredWithoutUserProductsNestedInput
   }
 
-  export type UserNFTUncheckedUpdateInput = {
+  export type UserProductUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: IntFieldUpdateOperationsInput | number
-    nftId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type UserNFTCreateManyInput = {
+  export type UserProductCreateManyInput = {
     id?: number
     acquiredAt?: Date | string
     userId: number
-    nftId: number
+    productId: number
   }
 
-  export type UserNFTUpdateManyMutationInput = {
+  export type UserProductUpdateManyMutationInput = {
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserNFTUncheckedUpdateManyInput = {
+  export type UserProductUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: IntFieldUpdateOperationsInput | number
-    nftId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type MachineCreateInput = {
+  export type ReferralCreateInput = {
     createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
-    level: number
-    agreements?: AgreementCreateNestedManyWithoutMachineInput
-    rewards?: RewardCreateNestedManyWithoutMachineInput
-    TrialFund?: TrialFundCreateNestedManyWithoutMachineInput
+    code: string
+    referrer: UserCreateNestedOneWithoutReferralsMadeInput
+    referred: UserCreateNestedOneWithoutReferralsReceivedInput
+    commissions?: CommissionCreateNestedManyWithoutReferralInput
   }
 
-  export type MachineUncheckedCreateInput = {
+  export type ReferralUncheckedCreateInput = {
     id?: number
     createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
-    level: number
-    agreements?: AgreementUncheckedCreateNestedManyWithoutMachineInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutMachineInput
-    TrialFund?: TrialFundUncheckedCreateNestedManyWithoutMachineInput
+    code: string
+    referrerId: number
+    referredId: number
+    commissions?: CommissionUncheckedCreateNestedManyWithoutReferralInput
   }
 
-  export type MachineUpdateInput = {
+  export type ReferralUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    agreements?: AgreementUpdateManyWithoutMachineNestedInput
-    rewards?: RewardUpdateManyWithoutMachineNestedInput
-    TrialFund?: TrialFundUpdateManyWithoutMachineNestedInput
+    code?: StringFieldUpdateOperationsInput | string
+    referrer?: UserUpdateOneRequiredWithoutReferralsMadeNestedInput
+    referred?: UserUpdateOneRequiredWithoutReferralsReceivedNestedInput
+    commissions?: CommissionUpdateManyWithoutReferralNestedInput
   }
 
-  export type MachineUncheckedUpdateInput = {
+  export type ReferralUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    agreements?: AgreementUncheckedUpdateManyWithoutMachineNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutMachineNestedInput
-    TrialFund?: TrialFundUncheckedUpdateManyWithoutMachineNestedInput
+    code?: StringFieldUpdateOperationsInput | string
+    referrerId?: IntFieldUpdateOperationsInput | number
+    referredId?: IntFieldUpdateOperationsInput | number
+    commissions?: CommissionUncheckedUpdateManyWithoutReferralNestedInput
   }
 
-  export type MachineCreateManyInput = {
+  export type ReferralCreateManyInput = {
     id?: number
     createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
-    level: number
+    code: string
+    referrerId: number
+    referredId: number
   }
 
-  export type MachineUpdateManyMutationInput = {
+  export type ReferralUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
   }
 
-  export type MachineUncheckedUpdateManyInput = {
+  export type ReferralUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    referrerId?: IntFieldUpdateOperationsInput | number
+    referredId?: IntFieldUpdateOperationsInput | number
   }
 
   export type AgreementCreateInput = {
@@ -21960,7 +20656,7 @@ export namespace Prisma {
     endDate: Date | string
     status?: $Enums.AgreementStatus
     user: UserCreateNestedOneWithoutAgreementsInput
-    machine: MachineCreateNestedOneWithoutAgreementsInput
+    product: ProductCreateNestedOneWithoutAgreementsInput
   }
 
   export type AgreementUncheckedCreateInput = {
@@ -21971,7 +20667,7 @@ export namespace Prisma {
     endDate: Date | string
     status?: $Enums.AgreementStatus
     userId: number
-    machineId: number
+    productId: number
   }
 
   export type AgreementUpdateInput = {
@@ -21981,7 +20677,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
     user?: UserUpdateOneRequiredWithoutAgreementsNestedInput
-    machine?: MachineUpdateOneRequiredWithoutAgreementsNestedInput
+    product?: ProductUpdateOneRequiredWithoutAgreementsNestedInput
   }
 
   export type AgreementUncheckedUpdateInput = {
@@ -21992,7 +20688,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
     userId?: IntFieldUpdateOperationsInput | number
-    machineId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type AgreementCreateManyInput = {
@@ -22003,7 +20699,7 @@ export namespace Prisma {
     endDate: Date | string
     status?: $Enums.AgreementStatus
     userId: number
-    machineId: number
+    productId: number
   }
 
   export type AgreementUpdateManyMutationInput = {
@@ -22022,7 +20718,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
     userId?: IntFieldUpdateOperationsInput | number
-    machineId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleCreateInput = {
@@ -22097,56 +20793,49 @@ export namespace Prisma {
   export type SaleItemCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    productType: $Enums.ProductType
-    productId: number
     quantity: number
     sale: SaleCreateNestedOneWithoutItemsInput
+    product: ProductCreateNestedOneWithoutSaleItemsInput
   }
 
   export type SaleItemUncheckedCreateInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    productType: $Enums.ProductType
+    saleId: number
     productId: number
     quantity: number
-    saleId: number
   }
 
   export type SaleItemUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productType?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
     sale?: SaleUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutSaleItemsNestedInput
   }
 
   export type SaleItemUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productType?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    saleId?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    saleId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleItemCreateManyInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    productType: $Enums.ProductType
+    saleId: number
     productId: number
     quantity: number
-    saleId: number
   }
 
   export type SaleItemUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productType?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
   }
 
@@ -22154,65 +20843,81 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productType?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    saleId?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    saleId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type ReferralCreateInput = {
+  export type RewardCreateInput = {
     createdAt?: Date | string
-    code: string
-    referrer: UserCreateNestedOneWithoutReferralsMadeInput
-    referred: UserCreateNestedOneWithoutReferralsReceivedInput
-    commissions?: CommissionCreateNestedManyWithoutReferralInput
+    updatedAt?: Date | string
+    reward: Decimal | DecimalJsLike | number | string
+    date?: Date | string
+    status?: $Enums.RewardStatus
+    user: UserCreateNestedOneWithoutRewardsInput
+    product: ProductCreateNestedOneWithoutRewardsInput
   }
 
-  export type ReferralUncheckedCreateInput = {
+  export type RewardUncheckedCreateInput = {
     id?: number
     createdAt?: Date | string
-    code: string
-    referrerId: number
-    referredId: number
-    commissions?: CommissionUncheckedCreateNestedManyWithoutReferralInput
+    updatedAt?: Date | string
+    reward: Decimal | DecimalJsLike | number | string
+    date?: Date | string
+    status?: $Enums.RewardStatus
+    userId: number
+    productId: number
   }
 
-  export type ReferralUpdateInput = {
+  export type RewardUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    code?: StringFieldUpdateOperationsInput | string
-    referrer?: UserUpdateOneRequiredWithoutReferralsMadeNestedInput
-    referred?: UserUpdateOneRequiredWithoutReferralsReceivedNestedInput
-    commissions?: CommissionUpdateManyWithoutReferralNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
+    user?: UserUpdateOneRequiredWithoutRewardsNestedInput
+    product?: ProductUpdateOneRequiredWithoutRewardsNestedInput
   }
 
-  export type ReferralUncheckedUpdateInput = {
+  export type RewardUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    code?: StringFieldUpdateOperationsInput | string
-    referrerId?: IntFieldUpdateOperationsInput | number
-    referredId?: IntFieldUpdateOperationsInput | number
-    commissions?: CommissionUncheckedUpdateManyWithoutReferralNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
+    userId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type ReferralCreateManyInput = {
+  export type RewardCreateManyInput = {
     id?: number
     createdAt?: Date | string
-    code: string
-    referrerId: number
-    referredId: number
+    updatedAt?: Date | string
+    reward: Decimal | DecimalJsLike | number | string
+    date?: Date | string
+    status?: $Enums.RewardStatus
+    userId: number
+    productId: number
   }
 
-  export type ReferralUpdateManyMutationInput = {
+  export type RewardUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    code?: StringFieldUpdateOperationsInput | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
   }
 
-  export type ReferralUncheckedUpdateManyInput = {
+  export type RewardUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    code?: StringFieldUpdateOperationsInput | string
-    referrerId?: IntFieldUpdateOperationsInput | number
-    referredId?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
+    userId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type CommissionCreateInput = {
@@ -22272,78 +20977,6 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     percentage?: FloatFieldUpdateOperationsInput | number
     referralId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type RewardCreateInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
-    status?: $Enums.RewardStatus
-    user: UserCreateNestedOneWithoutRewardsInput
-    machine: MachineCreateNestedOneWithoutRewardsInput
-  }
-
-  export type RewardUncheckedCreateInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
-    status?: $Enums.RewardStatus
-    userId: number
-    machineId: number
-  }
-
-  export type RewardUpdateInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
-    user?: UserUpdateOneRequiredWithoutRewardsNestedInput
-    machine?: MachineUpdateOneRequiredWithoutRewardsNestedInput
-  }
-
-  export type RewardUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
-    userId?: IntFieldUpdateOperationsInput | number
-    machineId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type RewardCreateManyInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
-    status?: $Enums.RewardStatus
-    userId: number
-    machineId: number
-  }
-
-  export type RewardUpdateManyMutationInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
-  }
-
-  export type RewardUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
-    userId?: IntFieldUpdateOperationsInput | number
-    machineId?: IntFieldUpdateOperationsInput | number
   }
 
   export type WalletCreateInput = {
@@ -22485,19 +21118,19 @@ export namespace Prisma {
     status?: $Enums.TrialFundStatus
     recoveredAt?: Date | string | null
     usedAmount?: Decimal | DecimalJsLike | number | string
-    user: UserCreateNestedOneWithoutTrialFundsInput
-    machine?: MachineCreateNestedOneWithoutTrialFundInput
+    user: UserCreateNestedOneWithoutTrialFundInput
+    product: ProductCreateNestedOneWithoutTrialFundsInput
   }
 
   export type TrialFundUncheckedCreateInput = {
     id?: number
     userId: number
+    productId: number
     amount?: Decimal | DecimalJsLike | number | string
     grantedAt?: Date | string
     expiresAt: Date | string
     status?: $Enums.TrialFundStatus
     recoveredAt?: Date | string | null
-    machineId?: number | null
     usedAmount?: Decimal | DecimalJsLike | number | string
   }
 
@@ -22508,31 +21141,31 @@ export namespace Prisma {
     status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
     recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    user?: UserUpdateOneRequiredWithoutTrialFundsNestedInput
-    machine?: MachineUpdateOneWithoutTrialFundNestedInput
+    user?: UserUpdateOneRequiredWithoutTrialFundNestedInput
+    product?: ProductUpdateOneRequiredWithoutTrialFundsNestedInput
   }
 
   export type TrialFundUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
     recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    machineId?: NullableIntFieldUpdateOperationsInput | number | null
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type TrialFundCreateManyInput = {
     id?: number
     userId: number
+    productId: number
     amount?: Decimal | DecimalJsLike | number | string
     grantedAt?: Date | string
     expiresAt: Date | string
     status?: $Enums.TrialFundStatus
     recoveredAt?: Date | string | null
-    machineId?: number | null
     usedAmount?: Decimal | DecimalJsLike | number | string
   }
 
@@ -22548,12 +21181,12 @@ export namespace Prisma {
   export type TrialFundUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
     recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    machineId?: NullableIntFieldUpdateOperationsInput | number | null
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
@@ -22614,6 +21247,13 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type WalletNullableScalarRelationFilter = {
     is?: WalletWhereInput | null
     isNot?: WalletWhereInput | null
@@ -22625,10 +21265,10 @@ export namespace Prisma {
     none?: WithdrawWhereInput
   }
 
-  export type UserNFTListRelationFilter = {
-    every?: UserNFTWhereInput
-    some?: UserNFTWhereInput
-    none?: UserNFTWhereInput
+  export type UserProductListRelationFilter = {
+    every?: UserProductWhereInput
+    some?: UserProductWhereInput
+    none?: UserProductWhereInput
   }
 
   export type AgreementListRelationFilter = {
@@ -22655,10 +21295,9 @@ export namespace Prisma {
     none?: RewardWhereInput
   }
 
-  export type TrialFundListRelationFilter = {
-    every?: TrialFundWhereInput
-    some?: TrialFundWhereInput
-    none?: TrialFundWhereInput
+  export type TrialFundNullableScalarRelationFilter = {
+    is?: TrialFundWhereInput | null
+    isNot?: TrialFundWhereInput | null
   }
 
   export type VerificationListRelationFilter = {
@@ -22682,7 +21321,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type UserNFTOrderByRelationAggregateInput = {
+  export type UserProductOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22699,10 +21338,6 @@ export namespace Prisma {
   }
 
   export type RewardOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TrialFundOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22724,6 +21359,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrder
+    role?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -22740,6 +21376,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrder
+    role?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -22752,6 +21389,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrder
+    role?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -22830,6 +21468,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -22954,56 +21602,98 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type NFTCountOrderByAggregateInput = {
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type TrialFundListRelationFilter = {
+    every?: TrialFundWhereInput
+    some?: TrialFundWhereInput
+    none?: TrialFundWhereInput
+  }
+
+  export type SaleItemListRelationFilter = {
+    every?: SaleItemWhereInput
+    some?: SaleItemWhereInput
+    none?: SaleItemWhereInput
+  }
+
+  export type TrialFundOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SaleItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProductCountOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
+    title?: SortOrder
     description?: SortOrder
+    image?: SortOrder
+    price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
+    rentalDays?: SortOrder
+    deletedAt?: SortOrder
   }
 
-  export type NFTAvgOrderByAggregateInput = {
+  export type ProductAvgOrderByAggregateInput = {
     id?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
+    rentalDays?: SortOrder
   }
 
-  export type NFTMaxOrderByAggregateInput = {
+  export type ProductMaxOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
+    title?: SortOrder
     description?: SortOrder
+    image?: SortOrder
+    price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
+    rentalDays?: SortOrder
+    deletedAt?: SortOrder
   }
 
-  export type NFTMinOrderByAggregateInput = {
+  export type ProductMinOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
+    title?: SortOrder
     description?: SortOrder
+    image?: SortOrder
+    price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
+    rentalDays?: SortOrder
+    deletedAt?: SortOrder
   }
 
-  export type NFTSumOrderByAggregateInput = {
+  export type ProductSumOrderByAggregateInput = {
     id?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
+    rentalDays?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -23022,289 +21712,61 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
-  export type NFTScalarRelationFilter = {
-    is?: NFTWhereInput
-    isNot?: NFTWhereInput
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type UserNFTCountOrderByAggregateInput = {
+  export type ProductScalarRelationFilter = {
+    is?: ProductWhereInput
+    isNot?: ProductWhereInput
+  }
+
+  export type UserProductUserIdProductIdCompoundUniqueInput = {
+    userId: number
+    productId: number
+  }
+
+  export type UserProductCountOrderByAggregateInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
     userId?: SortOrder
-    nftId?: SortOrder
+    productId?: SortOrder
   }
 
-  export type UserNFTAvgOrderByAggregateInput = {
+  export type UserProductAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    nftId?: SortOrder
+    productId?: SortOrder
   }
 
-  export type UserNFTMaxOrderByAggregateInput = {
+  export type UserProductMaxOrderByAggregateInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
     userId?: SortOrder
-    nftId?: SortOrder
+    productId?: SortOrder
   }
 
-  export type UserNFTMinOrderByAggregateInput = {
+  export type UserProductMinOrderByAggregateInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
     userId?: SortOrder
-    nftId?: SortOrder
-  }
-
-  export type UserNFTSumOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    nftId?: SortOrder
-  }
-
-  export type MachineCountOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
-    image?: SortOrder
-    price?: SortOrder
-    dailyIncome?: SortOrder
-    fee?: SortOrder
-    rentalDays?: SortOrder
-    level?: SortOrder
-  }
-
-  export type MachineAvgOrderByAggregateInput = {
-    id?: SortOrder
-    price?: SortOrder
-    dailyIncome?: SortOrder
-    fee?: SortOrder
-    rentalDays?: SortOrder
-    level?: SortOrder
-  }
-
-  export type MachineMaxOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
-    image?: SortOrder
-    price?: SortOrder
-    dailyIncome?: SortOrder
-    fee?: SortOrder
-    rentalDays?: SortOrder
-    level?: SortOrder
-  }
-
-  export type MachineMinOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
-    image?: SortOrder
-    price?: SortOrder
-    dailyIncome?: SortOrder
-    fee?: SortOrder
-    rentalDays?: SortOrder
-    level?: SortOrder
-  }
-
-  export type MachineSumOrderByAggregateInput = {
-    id?: SortOrder
-    price?: SortOrder
-    dailyIncome?: SortOrder
-    fee?: SortOrder
-    rentalDays?: SortOrder
-    level?: SortOrder
-  }
-
-  export type EnumAgreementStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
-  }
-
-  export type MachineScalarRelationFilter = {
-    is?: MachineWhereInput
-    isNot?: MachineWhereInput
-  }
-
-  export type AgreementCountOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type AgreementAvgOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type AgreementMaxOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type AgreementMinOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type AgreementSumOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type EnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
-    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
-  }
-
-  export type SaleItemListRelationFilter = {
-    every?: SaleItemWhereInput
-    some?: SaleItemWhereInput
-    none?: SaleItemWhereInput
-  }
-
-  export type SaleItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SaleCountOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
-    date?: SortOrder
-    sellerId?: SortOrder
-    buyerId?: SortOrder
-  }
-
-  export type SaleAvgOrderByAggregateInput = {
-    id?: SortOrder
-    amount?: SortOrder
-    sellerId?: SortOrder
-    buyerId?: SortOrder
-  }
-
-  export type SaleMaxOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
-    date?: SortOrder
-    sellerId?: SortOrder
-    buyerId?: SortOrder
-  }
-
-  export type SaleMinOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
-    date?: SortOrder
-    sellerId?: SortOrder
-    buyerId?: SortOrder
-  }
-
-  export type SaleSumOrderByAggregateInput = {
-    id?: SortOrder
-    amount?: SortOrder
-    sellerId?: SortOrder
-    buyerId?: SortOrder
-  }
-
-  export type EnumProductTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.ProductType | EnumProductTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumProductTypeFilter<$PrismaModel> | $Enums.ProductType
-  }
-
-  export type SaleScalarRelationFilter = {
-    is?: SaleWhereInput
-    isNot?: SaleWhereInput
-  }
-
-  export type SaleItemCountOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    productType?: SortOrder
     productId?: SortOrder
-    quantity?: SortOrder
-    saleId?: SortOrder
   }
 
-  export type SaleItemAvgOrderByAggregateInput = {
+  export type UserProductSumOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     productId?: SortOrder
-    quantity?: SortOrder
-    saleId?: SortOrder
-  }
-
-  export type SaleItemMaxOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    productType?: SortOrder
-    productId?: SortOrder
-    quantity?: SortOrder
-    saleId?: SortOrder
-  }
-
-  export type SaleItemMinOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    productType?: SortOrder
-    productId?: SortOrder
-    quantity?: SortOrder
-    saleId?: SortOrder
-  }
-
-  export type SaleItemSumOrderByAggregateInput = {
-    id?: SortOrder
-    productId?: SortOrder
-    quantity?: SortOrder
-    saleId?: SortOrder
-  }
-
-  export type EnumProductTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ProductType | EnumProductTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumProductTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProductType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumProductTypeFilter<$PrismaModel>
-    _max?: NestedEnumProductTypeFilter<$PrismaModel>
   }
 
   export type CommissionListRelationFilter = {
@@ -23351,6 +21813,222 @@ export namespace Prisma {
     id?: SortOrder
     referrerId?: SortOrder
     referredId?: SortOrder
+  }
+
+  export type EnumAgreementStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
+  }
+
+  export type AgreementCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type AgreementAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type AgreementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type AgreementMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type AgreementSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type EnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
+    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
+  }
+
+  export type SaleCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    amount?: SortOrder
+    date?: SortOrder
+    sellerId?: SortOrder
+    buyerId?: SortOrder
+  }
+
+  export type SaleAvgOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    sellerId?: SortOrder
+    buyerId?: SortOrder
+  }
+
+  export type SaleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    amount?: SortOrder
+    date?: SortOrder
+    sellerId?: SortOrder
+    buyerId?: SortOrder
+  }
+
+  export type SaleMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    amount?: SortOrder
+    date?: SortOrder
+    sellerId?: SortOrder
+    buyerId?: SortOrder
+  }
+
+  export type SaleSumOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    sellerId?: SortOrder
+    buyerId?: SortOrder
+  }
+
+  export type SaleScalarRelationFilter = {
+    is?: SaleWhereInput
+    isNot?: SaleWhereInput
+  }
+
+  export type SaleItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    saleId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type SaleItemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    saleId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type SaleItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    saleId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type SaleItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    saleId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type SaleItemSumOrderByAggregateInput = {
+    id?: SortOrder
+    saleId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type EnumRewardStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRewardStatusFilter<$PrismaModel> | $Enums.RewardStatus
+  }
+
+  export type RewardCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    reward?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RewardAvgOrderByAggregateInput = {
+    id?: SortOrder
+    reward?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RewardMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    reward?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RewardMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    reward?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RewardSumOrderByAggregateInput = {
+    id?: SortOrder
+    reward?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type EnumRewardStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRewardStatusWithAggregatesFilter<$PrismaModel> | $Enums.RewardStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRewardStatusFilter<$PrismaModel>
+    _max?: NestedEnumRewardStatusFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -23424,70 +22102,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type EnumRewardStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRewardStatusFilter<$PrismaModel> | $Enums.RewardStatus
-  }
-
-  export type RewardCountOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    reward?: SortOrder
-    date?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type RewardAvgOrderByAggregateInput = {
-    id?: SortOrder
-    reward?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type RewardMaxOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    reward?: SortOrder
-    date?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type RewardMinOrderByAggregateInput = {
-    id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    reward?: SortOrder
-    date?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type RewardSumOrderByAggregateInput = {
-    id?: SortOrder
-    reward?: SortOrder
-    userId?: SortOrder
-    machineId?: SortOrder
-  }
-
-  export type EnumRewardStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRewardStatusWithAggregatesFilter<$PrismaModel> | $Enums.RewardStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRewardStatusFilter<$PrismaModel>
-    _max?: NestedEnumRewardStatusFilter<$PrismaModel>
   }
 
   export type WalletCountOrderByAggregateInput = {
@@ -23602,71 +22216,55 @@ export namespace Prisma {
     not?: NestedEnumTrialFundStatusFilter<$PrismaModel> | $Enums.TrialFundStatus
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type MachineNullableScalarRelationFilter = {
-    is?: MachineWhereInput | null
-    isNot?: MachineWhereInput | null
-  }
-
   export type TrialFundCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    productId?: SortOrder
     amount?: SortOrder
     grantedAt?: SortOrder
     expiresAt?: SortOrder
     status?: SortOrder
     recoveredAt?: SortOrder
-    machineId?: SortOrder
     usedAmount?: SortOrder
   }
 
   export type TrialFundAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    productId?: SortOrder
     amount?: SortOrder
-    machineId?: SortOrder
     usedAmount?: SortOrder
   }
 
   export type TrialFundMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    productId?: SortOrder
     amount?: SortOrder
     grantedAt?: SortOrder
     expiresAt?: SortOrder
     status?: SortOrder
     recoveredAt?: SortOrder
-    machineId?: SortOrder
     usedAmount?: SortOrder
   }
 
   export type TrialFundMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    productId?: SortOrder
     amount?: SortOrder
     grantedAt?: SortOrder
     expiresAt?: SortOrder
     status?: SortOrder
     recoveredAt?: SortOrder
-    machineId?: SortOrder
     usedAmount?: SortOrder
   }
 
   export type TrialFundSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    productId?: SortOrder
     amount?: SortOrder
-    machineId?: SortOrder
     usedAmount?: SortOrder
   }
 
@@ -23678,20 +22276,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTrialFundStatusFilter<$PrismaModel>
     _max?: NestedEnumTrialFundStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type WalletCreateNestedOneWithoutUserInput = {
@@ -23707,11 +22291,11 @@ export namespace Prisma {
     connect?: WithdrawWhereUniqueInput | WithdrawWhereUniqueInput[]
   }
 
-  export type UserNFTCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserNFTCreateWithoutUserInput, UserNFTUncheckedCreateWithoutUserInput> | UserNFTCreateWithoutUserInput[] | UserNFTUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutUserInput | UserNFTCreateOrConnectWithoutUserInput[]
-    createMany?: UserNFTCreateManyUserInputEnvelope
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
+  export type UserProductCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserProductCreateWithoutUserInput, UserProductUncheckedCreateWithoutUserInput> | UserProductCreateWithoutUserInput[] | UserProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutUserInput | UserProductCreateOrConnectWithoutUserInput[]
+    createMany?: UserProductCreateManyUserInputEnvelope
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
   }
 
   export type AgreementCreateNestedManyWithoutUserInput = {
@@ -23756,11 +22340,10 @@ export namespace Prisma {
     connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
   }
 
-  export type TrialFundCreateNestedManyWithoutUserInput = {
-    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput> | TrialFundCreateWithoutUserInput[] | TrialFundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput | TrialFundCreateOrConnectWithoutUserInput[]
-    createMany?: TrialFundCreateManyUserInputEnvelope
-    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
+  export type TrialFundCreateNestedOneWithoutUserInput = {
+    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput
+    connect?: TrialFundWhereUniqueInput
   }
 
   export type VerificationCreateNestedManyWithoutUserInput = {
@@ -23790,11 +22373,11 @@ export namespace Prisma {
     connect?: WithdrawWhereUniqueInput | WithdrawWhereUniqueInput[]
   }
 
-  export type UserNFTUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserNFTCreateWithoutUserInput, UserNFTUncheckedCreateWithoutUserInput> | UserNFTCreateWithoutUserInput[] | UserNFTUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutUserInput | UserNFTCreateOrConnectWithoutUserInput[]
-    createMany?: UserNFTCreateManyUserInputEnvelope
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
+  export type UserProductUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserProductCreateWithoutUserInput, UserProductUncheckedCreateWithoutUserInput> | UserProductCreateWithoutUserInput[] | UserProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutUserInput | UserProductCreateOrConnectWithoutUserInput[]
+    createMany?: UserProductCreateManyUserInputEnvelope
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
   }
 
   export type AgreementUncheckedCreateNestedManyWithoutUserInput = {
@@ -23839,11 +22422,10 @@ export namespace Prisma {
     connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
   }
 
-  export type TrialFundUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput> | TrialFundCreateWithoutUserInput[] | TrialFundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput | TrialFundCreateOrConnectWithoutUserInput[]
-    createMany?: TrialFundCreateManyUserInputEnvelope
-    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
+  export type TrialFundUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput
+    connect?: TrialFundWhereUniqueInput
   }
 
   export type VerificationUncheckedCreateNestedManyWithoutUserInput = {
@@ -23876,6 +22458,10 @@ export namespace Prisma {
     set?: boolean
   }
 
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
+  }
+
   export type WalletUpdateOneWithoutUserNestedInput = {
     create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
     connectOrCreate?: WalletCreateOrConnectWithoutUserInput
@@ -23900,18 +22486,18 @@ export namespace Prisma {
     deleteMany?: WithdrawScalarWhereInput | WithdrawScalarWhereInput[]
   }
 
-  export type UserNFTUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserNFTCreateWithoutUserInput, UserNFTUncheckedCreateWithoutUserInput> | UserNFTCreateWithoutUserInput[] | UserNFTUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutUserInput | UserNFTCreateOrConnectWithoutUserInput[]
-    upsert?: UserNFTUpsertWithWhereUniqueWithoutUserInput | UserNFTUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserNFTCreateManyUserInputEnvelope
-    set?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    disconnect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    delete?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    update?: UserNFTUpdateWithWhereUniqueWithoutUserInput | UserNFTUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserNFTUpdateManyWithWhereWithoutUserInput | UserNFTUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserNFTScalarWhereInput | UserNFTScalarWhereInput[]
+  export type UserProductUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserProductCreateWithoutUserInput, UserProductUncheckedCreateWithoutUserInput> | UserProductCreateWithoutUserInput[] | UserProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutUserInput | UserProductCreateOrConnectWithoutUserInput[]
+    upsert?: UserProductUpsertWithWhereUniqueWithoutUserInput | UserProductUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserProductCreateManyUserInputEnvelope
+    set?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    disconnect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    delete?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    update?: UserProductUpdateWithWhereUniqueWithoutUserInput | UserProductUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserProductUpdateManyWithWhereWithoutUserInput | UserProductUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
   }
 
   export type AgreementUpdateManyWithoutUserNestedInput = {
@@ -23998,18 +22584,14 @@ export namespace Prisma {
     deleteMany?: RewardScalarWhereInput | RewardScalarWhereInput[]
   }
 
-  export type TrialFundUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput> | TrialFundCreateWithoutUserInput[] | TrialFundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput | TrialFundCreateOrConnectWithoutUserInput[]
-    upsert?: TrialFundUpsertWithWhereUniqueWithoutUserInput | TrialFundUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TrialFundCreateManyUserInputEnvelope
-    set?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    disconnect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    delete?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    update?: TrialFundUpdateWithWhereUniqueWithoutUserInput | TrialFundUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TrialFundUpdateManyWithWhereWithoutUserInput | TrialFundUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
+  export type TrialFundUpdateOneWithoutUserNestedInput = {
+    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput
+    upsert?: TrialFundUpsertWithoutUserInput
+    disconnect?: TrialFundWhereInput | boolean
+    delete?: TrialFundWhereInput | boolean
+    connect?: TrialFundWhereUniqueInput
+    update?: XOR<XOR<TrialFundUpdateToOneWithWhereWithoutUserInput, TrialFundUpdateWithoutUserInput>, TrialFundUncheckedUpdateWithoutUserInput>
   }
 
   export type VerificationUpdateManyWithoutUserNestedInput = {
@@ -24072,18 +22654,18 @@ export namespace Prisma {
     deleteMany?: WithdrawScalarWhereInput | WithdrawScalarWhereInput[]
   }
 
-  export type UserNFTUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserNFTCreateWithoutUserInput, UserNFTUncheckedCreateWithoutUserInput> | UserNFTCreateWithoutUserInput[] | UserNFTUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutUserInput | UserNFTCreateOrConnectWithoutUserInput[]
-    upsert?: UserNFTUpsertWithWhereUniqueWithoutUserInput | UserNFTUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserNFTCreateManyUserInputEnvelope
-    set?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    disconnect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    delete?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    update?: UserNFTUpdateWithWhereUniqueWithoutUserInput | UserNFTUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserNFTUpdateManyWithWhereWithoutUserInput | UserNFTUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserNFTScalarWhereInput | UserNFTScalarWhereInput[]
+  export type UserProductUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserProductCreateWithoutUserInput, UserProductUncheckedCreateWithoutUserInput> | UserProductCreateWithoutUserInput[] | UserProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutUserInput | UserProductCreateOrConnectWithoutUserInput[]
+    upsert?: UserProductUpsertWithWhereUniqueWithoutUserInput | UserProductUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserProductCreateManyUserInputEnvelope
+    set?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    disconnect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    delete?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    update?: UserProductUpdateWithWhereUniqueWithoutUserInput | UserProductUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserProductUpdateManyWithWhereWithoutUserInput | UserProductUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
   }
 
   export type AgreementUncheckedUpdateManyWithoutUserNestedInput = {
@@ -24170,18 +22752,14 @@ export namespace Prisma {
     deleteMany?: RewardScalarWhereInput | RewardScalarWhereInput[]
   }
 
-  export type TrialFundUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput> | TrialFundCreateWithoutUserInput[] | TrialFundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput | TrialFundCreateOrConnectWithoutUserInput[]
-    upsert?: TrialFundUpsertWithWhereUniqueWithoutUserInput | TrialFundUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TrialFundCreateManyUserInputEnvelope
-    set?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    disconnect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    delete?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    update?: TrialFundUpdateWithWhereUniqueWithoutUserInput | TrialFundUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TrialFundUpdateManyWithWhereWithoutUserInput | TrialFundUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
+  export type TrialFundUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput>
+    connectOrCreate?: TrialFundCreateOrConnectWithoutUserInput
+    upsert?: TrialFundUpsertWithoutUserInput
+    disconnect?: TrialFundWhereInput | boolean
+    delete?: TrialFundWhereInput | boolean
+    connect?: TrialFundWhereUniqueInput
+    update?: XOR<XOR<TrialFundUpdateToOneWithWhereWithoutUserInput, TrialFundUpdateWithoutUserInput>, TrialFundUncheckedUpdateWithoutUserInput>
   }
 
   export type VerificationUncheckedUpdateManyWithoutUserNestedInput = {
@@ -24236,32 +22814,88 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserCreateNestedOneWithoutPasswordResetInput = {
-    create?: XOR<UserCreateWithoutPasswordResetInput, UserUncheckedCreateWithoutPasswordResetInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetInput
+  export type UserCreateNestedOneWithoutPasswordResetsInput = {
+    create?: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutPasswordResetNestedInput = {
-    create?: XOR<UserCreateWithoutPasswordResetInput, UserUncheckedCreateWithoutPasswordResetInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetInput
-    upsert?: UserUpsertWithoutPasswordResetInput
+  export type UserUpdateOneRequiredWithoutPasswordResetsNestedInput = {
+    create?: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetsInput
+    upsert?: UserUpsertWithoutPasswordResetsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetInput, UserUpdateWithoutPasswordResetInput>, UserUncheckedUpdateWithoutPasswordResetInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetsInput, UserUpdateWithoutPasswordResetsInput>, UserUncheckedUpdateWithoutPasswordResetsInput>
   }
 
-  export type UserNFTCreateNestedManyWithoutNftInput = {
-    create?: XOR<UserNFTCreateWithoutNftInput, UserNFTUncheckedCreateWithoutNftInput> | UserNFTCreateWithoutNftInput[] | UserNFTUncheckedCreateWithoutNftInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutNftInput | UserNFTCreateOrConnectWithoutNftInput[]
-    createMany?: UserNFTCreateManyNftInputEnvelope
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
+  export type UserProductCreateNestedManyWithoutProductInput = {
+    create?: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput> | UserProductCreateWithoutProductInput[] | UserProductUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutProductInput | UserProductCreateOrConnectWithoutProductInput[]
+    createMany?: UserProductCreateManyProductInputEnvelope
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
   }
 
-  export type UserNFTUncheckedCreateNestedManyWithoutNftInput = {
-    create?: XOR<UserNFTCreateWithoutNftInput, UserNFTUncheckedCreateWithoutNftInput> | UserNFTCreateWithoutNftInput[] | UserNFTUncheckedCreateWithoutNftInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutNftInput | UserNFTCreateOrConnectWithoutNftInput[]
-    createMany?: UserNFTCreateManyNftInputEnvelope
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
+  export type AgreementCreateNestedManyWithoutProductInput = {
+    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
+    createMany?: AgreementCreateManyProductInputEnvelope
+    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
+  }
+
+  export type RewardCreateNestedManyWithoutProductInput = {
+    create?: XOR<RewardCreateWithoutProductInput, RewardUncheckedCreateWithoutProductInput> | RewardCreateWithoutProductInput[] | RewardUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RewardCreateOrConnectWithoutProductInput | RewardCreateOrConnectWithoutProductInput[]
+    createMany?: RewardCreateManyProductInputEnvelope
+    connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
+  }
+
+  export type TrialFundCreateNestedManyWithoutProductInput = {
+    create?: XOR<TrialFundCreateWithoutProductInput, TrialFundUncheckedCreateWithoutProductInput> | TrialFundCreateWithoutProductInput[] | TrialFundUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TrialFundCreateOrConnectWithoutProductInput | TrialFundCreateOrConnectWithoutProductInput[]
+    createMany?: TrialFundCreateManyProductInputEnvelope
+    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
+  }
+
+  export type SaleItemCreateNestedManyWithoutProductInput = {
+    create?: XOR<SaleItemCreateWithoutProductInput, SaleItemUncheckedCreateWithoutProductInput> | SaleItemCreateWithoutProductInput[] | SaleItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SaleItemCreateOrConnectWithoutProductInput | SaleItemCreateOrConnectWithoutProductInput[]
+    createMany?: SaleItemCreateManyProductInputEnvelope
+    connect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+  }
+
+  export type UserProductUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput> | UserProductCreateWithoutProductInput[] | UserProductUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutProductInput | UserProductCreateOrConnectWithoutProductInput[]
+    createMany?: UserProductCreateManyProductInputEnvelope
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+  }
+
+  export type AgreementUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
+    createMany?: AgreementCreateManyProductInputEnvelope
+    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
+  }
+
+  export type RewardUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<RewardCreateWithoutProductInput, RewardUncheckedCreateWithoutProductInput> | RewardCreateWithoutProductInput[] | RewardUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RewardCreateOrConnectWithoutProductInput | RewardCreateOrConnectWithoutProductInput[]
+    createMany?: RewardCreateManyProductInputEnvelope
+    connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
+  }
+
+  export type TrialFundUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<TrialFundCreateWithoutProductInput, TrialFundUncheckedCreateWithoutProductInput> | TrialFundCreateWithoutProductInput[] | TrialFundUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TrialFundCreateOrConnectWithoutProductInput | TrialFundCreateOrConnectWithoutProductInput[]
+    createMany?: TrialFundCreateManyProductInputEnvelope
+    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
+  }
+
+  export type SaleItemUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<SaleItemCreateWithoutProductInput, SaleItemUncheckedCreateWithoutProductInput> | SaleItemCreateWithoutProductInput[] | SaleItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SaleItemCreateOrConnectWithoutProductInput | SaleItemCreateOrConnectWithoutProductInput[]
+    createMany?: SaleItemCreateManyProductInputEnvelope
+    connect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -24272,186 +22906,246 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
-  export type UserNFTUpdateManyWithoutNftNestedInput = {
-    create?: XOR<UserNFTCreateWithoutNftInput, UserNFTUncheckedCreateWithoutNftInput> | UserNFTCreateWithoutNftInput[] | UserNFTUncheckedCreateWithoutNftInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutNftInput | UserNFTCreateOrConnectWithoutNftInput[]
-    upsert?: UserNFTUpsertWithWhereUniqueWithoutNftInput | UserNFTUpsertWithWhereUniqueWithoutNftInput[]
-    createMany?: UserNFTCreateManyNftInputEnvelope
-    set?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    disconnect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    delete?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    update?: UserNFTUpdateWithWhereUniqueWithoutNftInput | UserNFTUpdateWithWhereUniqueWithoutNftInput[]
-    updateMany?: UserNFTUpdateManyWithWhereWithoutNftInput | UserNFTUpdateManyWithWhereWithoutNftInput[]
-    deleteMany?: UserNFTScalarWhereInput | UserNFTScalarWhereInput[]
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
-  export type UserNFTUncheckedUpdateManyWithoutNftNestedInput = {
-    create?: XOR<UserNFTCreateWithoutNftInput, UserNFTUncheckedCreateWithoutNftInput> | UserNFTCreateWithoutNftInput[] | UserNFTUncheckedCreateWithoutNftInput[]
-    connectOrCreate?: UserNFTCreateOrConnectWithoutNftInput | UserNFTCreateOrConnectWithoutNftInput[]
-    upsert?: UserNFTUpsertWithWhereUniqueWithoutNftInput | UserNFTUpsertWithWhereUniqueWithoutNftInput[]
-    createMany?: UserNFTCreateManyNftInputEnvelope
-    set?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    disconnect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    delete?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    connect?: UserNFTWhereUniqueInput | UserNFTWhereUniqueInput[]
-    update?: UserNFTUpdateWithWhereUniqueWithoutNftInput | UserNFTUpdateWithWhereUniqueWithoutNftInput[]
-    updateMany?: UserNFTUpdateManyWithWhereWithoutNftInput | UserNFTUpdateManyWithWhereWithoutNftInput[]
-    deleteMany?: UserNFTScalarWhereInput | UserNFTScalarWhereInput[]
+  export type UserProductUpdateManyWithoutProductNestedInput = {
+    create?: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput> | UserProductCreateWithoutProductInput[] | UserProductUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutProductInput | UserProductCreateOrConnectWithoutProductInput[]
+    upsert?: UserProductUpsertWithWhereUniqueWithoutProductInput | UserProductUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: UserProductCreateManyProductInputEnvelope
+    set?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    disconnect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    delete?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    update?: UserProductUpdateWithWhereUniqueWithoutProductInput | UserProductUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: UserProductUpdateManyWithWhereWithoutProductInput | UserProductUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutUserNFTsInput = {
-    create?: XOR<UserCreateWithoutUserNFTsInput, UserUncheckedCreateWithoutUserNFTsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUserNFTsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type NFTCreateNestedOneWithoutUserNFTsInput = {
-    create?: XOR<NFTCreateWithoutUserNFTsInput, NFTUncheckedCreateWithoutUserNFTsInput>
-    connectOrCreate?: NFTCreateOrConnectWithoutUserNFTsInput
-    connect?: NFTWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutUserNFTsNestedInput = {
-    create?: XOR<UserCreateWithoutUserNFTsInput, UserUncheckedCreateWithoutUserNFTsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUserNFTsInput
-    upsert?: UserUpsertWithoutUserNFTsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserNFTsInput, UserUpdateWithoutUserNFTsInput>, UserUncheckedUpdateWithoutUserNFTsInput>
-  }
-
-  export type NFTUpdateOneRequiredWithoutUserNFTsNestedInput = {
-    create?: XOR<NFTCreateWithoutUserNFTsInput, NFTUncheckedCreateWithoutUserNFTsInput>
-    connectOrCreate?: NFTCreateOrConnectWithoutUserNFTsInput
-    upsert?: NFTUpsertWithoutUserNFTsInput
-    connect?: NFTWhereUniqueInput
-    update?: XOR<XOR<NFTUpdateToOneWithWhereWithoutUserNFTsInput, NFTUpdateWithoutUserNFTsInput>, NFTUncheckedUpdateWithoutUserNFTsInput>
-  }
-
-  export type AgreementCreateNestedManyWithoutMachineInput = {
-    create?: XOR<AgreementCreateWithoutMachineInput, AgreementUncheckedCreateWithoutMachineInput> | AgreementCreateWithoutMachineInput[] | AgreementUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutMachineInput | AgreementCreateOrConnectWithoutMachineInput[]
-    createMany?: AgreementCreateManyMachineInputEnvelope
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-  }
-
-  export type RewardCreateNestedManyWithoutMachineInput = {
-    create?: XOR<RewardCreateWithoutMachineInput, RewardUncheckedCreateWithoutMachineInput> | RewardCreateWithoutMachineInput[] | RewardUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: RewardCreateOrConnectWithoutMachineInput | RewardCreateOrConnectWithoutMachineInput[]
-    createMany?: RewardCreateManyMachineInputEnvelope
-    connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
-  }
-
-  export type TrialFundCreateNestedManyWithoutMachineInput = {
-    create?: XOR<TrialFundCreateWithoutMachineInput, TrialFundUncheckedCreateWithoutMachineInput> | TrialFundCreateWithoutMachineInput[] | TrialFundUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutMachineInput | TrialFundCreateOrConnectWithoutMachineInput[]
-    createMany?: TrialFundCreateManyMachineInputEnvelope
-    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-  }
-
-  export type AgreementUncheckedCreateNestedManyWithoutMachineInput = {
-    create?: XOR<AgreementCreateWithoutMachineInput, AgreementUncheckedCreateWithoutMachineInput> | AgreementCreateWithoutMachineInput[] | AgreementUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutMachineInput | AgreementCreateOrConnectWithoutMachineInput[]
-    createMany?: AgreementCreateManyMachineInputEnvelope
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-  }
-
-  export type RewardUncheckedCreateNestedManyWithoutMachineInput = {
-    create?: XOR<RewardCreateWithoutMachineInput, RewardUncheckedCreateWithoutMachineInput> | RewardCreateWithoutMachineInput[] | RewardUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: RewardCreateOrConnectWithoutMachineInput | RewardCreateOrConnectWithoutMachineInput[]
-    createMany?: RewardCreateManyMachineInputEnvelope
-    connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
-  }
-
-  export type TrialFundUncheckedCreateNestedManyWithoutMachineInput = {
-    create?: XOR<TrialFundCreateWithoutMachineInput, TrialFundUncheckedCreateWithoutMachineInput> | TrialFundCreateWithoutMachineInput[] | TrialFundUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutMachineInput | TrialFundCreateOrConnectWithoutMachineInput[]
-    createMany?: TrialFundCreateManyMachineInputEnvelope
-    connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-  }
-
-  export type AgreementUpdateManyWithoutMachineNestedInput = {
-    create?: XOR<AgreementCreateWithoutMachineInput, AgreementUncheckedCreateWithoutMachineInput> | AgreementCreateWithoutMachineInput[] | AgreementUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutMachineInput | AgreementCreateOrConnectWithoutMachineInput[]
-    upsert?: AgreementUpsertWithWhereUniqueWithoutMachineInput | AgreementUpsertWithWhereUniqueWithoutMachineInput[]
-    createMany?: AgreementCreateManyMachineInputEnvelope
+  export type AgreementUpdateManyWithoutProductNestedInput = {
+    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
+    upsert?: AgreementUpsertWithWhereUniqueWithoutProductInput | AgreementUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: AgreementCreateManyProductInputEnvelope
     set?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
     disconnect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
     delete?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
     connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    update?: AgreementUpdateWithWhereUniqueWithoutMachineInput | AgreementUpdateWithWhereUniqueWithoutMachineInput[]
-    updateMany?: AgreementUpdateManyWithWhereWithoutMachineInput | AgreementUpdateManyWithWhereWithoutMachineInput[]
+    update?: AgreementUpdateWithWhereUniqueWithoutProductInput | AgreementUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: AgreementUpdateManyWithWhereWithoutProductInput | AgreementUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
   }
 
-  export type RewardUpdateManyWithoutMachineNestedInput = {
-    create?: XOR<RewardCreateWithoutMachineInput, RewardUncheckedCreateWithoutMachineInput> | RewardCreateWithoutMachineInput[] | RewardUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: RewardCreateOrConnectWithoutMachineInput | RewardCreateOrConnectWithoutMachineInput[]
-    upsert?: RewardUpsertWithWhereUniqueWithoutMachineInput | RewardUpsertWithWhereUniqueWithoutMachineInput[]
-    createMany?: RewardCreateManyMachineInputEnvelope
+  export type RewardUpdateManyWithoutProductNestedInput = {
+    create?: XOR<RewardCreateWithoutProductInput, RewardUncheckedCreateWithoutProductInput> | RewardCreateWithoutProductInput[] | RewardUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RewardCreateOrConnectWithoutProductInput | RewardCreateOrConnectWithoutProductInput[]
+    upsert?: RewardUpsertWithWhereUniqueWithoutProductInput | RewardUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: RewardCreateManyProductInputEnvelope
     set?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
     disconnect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
     delete?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
     connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
-    update?: RewardUpdateWithWhereUniqueWithoutMachineInput | RewardUpdateWithWhereUniqueWithoutMachineInput[]
-    updateMany?: RewardUpdateManyWithWhereWithoutMachineInput | RewardUpdateManyWithWhereWithoutMachineInput[]
+    update?: RewardUpdateWithWhereUniqueWithoutProductInput | RewardUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: RewardUpdateManyWithWhereWithoutProductInput | RewardUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: RewardScalarWhereInput | RewardScalarWhereInput[]
   }
 
-  export type TrialFundUpdateManyWithoutMachineNestedInput = {
-    create?: XOR<TrialFundCreateWithoutMachineInput, TrialFundUncheckedCreateWithoutMachineInput> | TrialFundCreateWithoutMachineInput[] | TrialFundUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutMachineInput | TrialFundCreateOrConnectWithoutMachineInput[]
-    upsert?: TrialFundUpsertWithWhereUniqueWithoutMachineInput | TrialFundUpsertWithWhereUniqueWithoutMachineInput[]
-    createMany?: TrialFundCreateManyMachineInputEnvelope
+  export type TrialFundUpdateManyWithoutProductNestedInput = {
+    create?: XOR<TrialFundCreateWithoutProductInput, TrialFundUncheckedCreateWithoutProductInput> | TrialFundCreateWithoutProductInput[] | TrialFundUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TrialFundCreateOrConnectWithoutProductInput | TrialFundCreateOrConnectWithoutProductInput[]
+    upsert?: TrialFundUpsertWithWhereUniqueWithoutProductInput | TrialFundUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: TrialFundCreateManyProductInputEnvelope
     set?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
     disconnect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
     delete?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
     connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    update?: TrialFundUpdateWithWhereUniqueWithoutMachineInput | TrialFundUpdateWithWhereUniqueWithoutMachineInput[]
-    updateMany?: TrialFundUpdateManyWithWhereWithoutMachineInput | TrialFundUpdateManyWithWhereWithoutMachineInput[]
+    update?: TrialFundUpdateWithWhereUniqueWithoutProductInput | TrialFundUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: TrialFundUpdateManyWithWhereWithoutProductInput | TrialFundUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
   }
 
-  export type AgreementUncheckedUpdateManyWithoutMachineNestedInput = {
-    create?: XOR<AgreementCreateWithoutMachineInput, AgreementUncheckedCreateWithoutMachineInput> | AgreementCreateWithoutMachineInput[] | AgreementUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutMachineInput | AgreementCreateOrConnectWithoutMachineInput[]
-    upsert?: AgreementUpsertWithWhereUniqueWithoutMachineInput | AgreementUpsertWithWhereUniqueWithoutMachineInput[]
-    createMany?: AgreementCreateManyMachineInputEnvelope
+  export type SaleItemUpdateManyWithoutProductNestedInput = {
+    create?: XOR<SaleItemCreateWithoutProductInput, SaleItemUncheckedCreateWithoutProductInput> | SaleItemCreateWithoutProductInput[] | SaleItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SaleItemCreateOrConnectWithoutProductInput | SaleItemCreateOrConnectWithoutProductInput[]
+    upsert?: SaleItemUpsertWithWhereUniqueWithoutProductInput | SaleItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: SaleItemCreateManyProductInputEnvelope
+    set?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    disconnect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    delete?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    connect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    update?: SaleItemUpdateWithWhereUniqueWithoutProductInput | SaleItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: SaleItemUpdateManyWithWhereWithoutProductInput | SaleItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: SaleItemScalarWhereInput | SaleItemScalarWhereInput[]
+  }
+
+  export type UserProductUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput> | UserProductCreateWithoutProductInput[] | UserProductUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: UserProductCreateOrConnectWithoutProductInput | UserProductCreateOrConnectWithoutProductInput[]
+    upsert?: UserProductUpsertWithWhereUniqueWithoutProductInput | UserProductUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: UserProductCreateManyProductInputEnvelope
+    set?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    disconnect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    delete?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
+    update?: UserProductUpdateWithWhereUniqueWithoutProductInput | UserProductUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: UserProductUpdateManyWithWhereWithoutProductInput | UserProductUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
+  }
+
+  export type AgreementUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
+    upsert?: AgreementUpsertWithWhereUniqueWithoutProductInput | AgreementUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: AgreementCreateManyProductInputEnvelope
     set?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
     disconnect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
     delete?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
     connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    update?: AgreementUpdateWithWhereUniqueWithoutMachineInput | AgreementUpdateWithWhereUniqueWithoutMachineInput[]
-    updateMany?: AgreementUpdateManyWithWhereWithoutMachineInput | AgreementUpdateManyWithWhereWithoutMachineInput[]
+    update?: AgreementUpdateWithWhereUniqueWithoutProductInput | AgreementUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: AgreementUpdateManyWithWhereWithoutProductInput | AgreementUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
   }
 
-  export type RewardUncheckedUpdateManyWithoutMachineNestedInput = {
-    create?: XOR<RewardCreateWithoutMachineInput, RewardUncheckedCreateWithoutMachineInput> | RewardCreateWithoutMachineInput[] | RewardUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: RewardCreateOrConnectWithoutMachineInput | RewardCreateOrConnectWithoutMachineInput[]
-    upsert?: RewardUpsertWithWhereUniqueWithoutMachineInput | RewardUpsertWithWhereUniqueWithoutMachineInput[]
-    createMany?: RewardCreateManyMachineInputEnvelope
+  export type RewardUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<RewardCreateWithoutProductInput, RewardUncheckedCreateWithoutProductInput> | RewardCreateWithoutProductInput[] | RewardUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RewardCreateOrConnectWithoutProductInput | RewardCreateOrConnectWithoutProductInput[]
+    upsert?: RewardUpsertWithWhereUniqueWithoutProductInput | RewardUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: RewardCreateManyProductInputEnvelope
     set?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
     disconnect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
     delete?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
     connect?: RewardWhereUniqueInput | RewardWhereUniqueInput[]
-    update?: RewardUpdateWithWhereUniqueWithoutMachineInput | RewardUpdateWithWhereUniqueWithoutMachineInput[]
-    updateMany?: RewardUpdateManyWithWhereWithoutMachineInput | RewardUpdateManyWithWhereWithoutMachineInput[]
+    update?: RewardUpdateWithWhereUniqueWithoutProductInput | RewardUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: RewardUpdateManyWithWhereWithoutProductInput | RewardUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: RewardScalarWhereInput | RewardScalarWhereInput[]
   }
 
-  export type TrialFundUncheckedUpdateManyWithoutMachineNestedInput = {
-    create?: XOR<TrialFundCreateWithoutMachineInput, TrialFundUncheckedCreateWithoutMachineInput> | TrialFundCreateWithoutMachineInput[] | TrialFundUncheckedCreateWithoutMachineInput[]
-    connectOrCreate?: TrialFundCreateOrConnectWithoutMachineInput | TrialFundCreateOrConnectWithoutMachineInput[]
-    upsert?: TrialFundUpsertWithWhereUniqueWithoutMachineInput | TrialFundUpsertWithWhereUniqueWithoutMachineInput[]
-    createMany?: TrialFundCreateManyMachineInputEnvelope
+  export type TrialFundUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<TrialFundCreateWithoutProductInput, TrialFundUncheckedCreateWithoutProductInput> | TrialFundCreateWithoutProductInput[] | TrialFundUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TrialFundCreateOrConnectWithoutProductInput | TrialFundCreateOrConnectWithoutProductInput[]
+    upsert?: TrialFundUpsertWithWhereUniqueWithoutProductInput | TrialFundUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: TrialFundCreateManyProductInputEnvelope
     set?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
     disconnect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
     delete?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
     connect?: TrialFundWhereUniqueInput | TrialFundWhereUniqueInput[]
-    update?: TrialFundUpdateWithWhereUniqueWithoutMachineInput | TrialFundUpdateWithWhereUniqueWithoutMachineInput[]
-    updateMany?: TrialFundUpdateManyWithWhereWithoutMachineInput | TrialFundUpdateManyWithWhereWithoutMachineInput[]
+    update?: TrialFundUpdateWithWhereUniqueWithoutProductInput | TrialFundUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: TrialFundUpdateManyWithWhereWithoutProductInput | TrialFundUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
+  }
+
+  export type SaleItemUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<SaleItemCreateWithoutProductInput, SaleItemUncheckedCreateWithoutProductInput> | SaleItemCreateWithoutProductInput[] | SaleItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: SaleItemCreateOrConnectWithoutProductInput | SaleItemCreateOrConnectWithoutProductInput[]
+    upsert?: SaleItemUpsertWithWhereUniqueWithoutProductInput | SaleItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: SaleItemCreateManyProductInputEnvelope
+    set?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    disconnect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    delete?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    connect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+    update?: SaleItemUpdateWithWhereUniqueWithoutProductInput | SaleItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: SaleItemUpdateManyWithWhereWithoutProductInput | SaleItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: SaleItemScalarWhereInput | SaleItemScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutUserProductsInput = {
+    create?: XOR<UserCreateWithoutUserProductsInput, UserUncheckedCreateWithoutUserProductsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserProductsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutUserProductsInput = {
+    create?: XOR<ProductCreateWithoutUserProductsInput, ProductUncheckedCreateWithoutUserProductsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutUserProductsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutUserProductsNestedInput = {
+    create?: XOR<UserCreateWithoutUserProductsInput, UserUncheckedCreateWithoutUserProductsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserProductsInput
+    upsert?: UserUpsertWithoutUserProductsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserProductsInput, UserUpdateWithoutUserProductsInput>, UserUncheckedUpdateWithoutUserProductsInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutUserProductsNestedInput = {
+    create?: XOR<ProductCreateWithoutUserProductsInput, ProductUncheckedCreateWithoutUserProductsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutUserProductsInput
+    upsert?: ProductUpsertWithoutUserProductsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutUserProductsInput, ProductUpdateWithoutUserProductsInput>, ProductUncheckedUpdateWithoutUserProductsInput>
+  }
+
+  export type UserCreateNestedOneWithoutReferralsMadeInput = {
+    create?: XOR<UserCreateWithoutReferralsMadeInput, UserUncheckedCreateWithoutReferralsMadeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReferralsMadeInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReferralsReceivedInput = {
+    create?: XOR<UserCreateWithoutReferralsReceivedInput, UserUncheckedCreateWithoutReferralsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReferralsReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CommissionCreateNestedManyWithoutReferralInput = {
+    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
+    createMany?: CommissionCreateManyReferralInputEnvelope
+    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+  }
+
+  export type CommissionUncheckedCreateNestedManyWithoutReferralInput = {
+    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
+    createMany?: CommissionCreateManyReferralInputEnvelope
+    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutReferralsMadeNestedInput = {
+    create?: XOR<UserCreateWithoutReferralsMadeInput, UserUncheckedCreateWithoutReferralsMadeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReferralsMadeInput
+    upsert?: UserUpsertWithoutReferralsMadeInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReferralsMadeInput, UserUpdateWithoutReferralsMadeInput>, UserUncheckedUpdateWithoutReferralsMadeInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutReferralsReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutReferralsReceivedInput, UserUncheckedCreateWithoutReferralsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReferralsReceivedInput
+    upsert?: UserUpsertWithoutReferralsReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReferralsReceivedInput, UserUpdateWithoutReferralsReceivedInput>, UserUncheckedUpdateWithoutReferralsReceivedInput>
+  }
+
+  export type CommissionUpdateManyWithoutReferralNestedInput = {
+    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
+    upsert?: CommissionUpsertWithWhereUniqueWithoutReferralInput | CommissionUpsertWithWhereUniqueWithoutReferralInput[]
+    createMany?: CommissionCreateManyReferralInputEnvelope
+    set?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    disconnect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    delete?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    update?: CommissionUpdateWithWhereUniqueWithoutReferralInput | CommissionUpdateWithWhereUniqueWithoutReferralInput[]
+    updateMany?: CommissionUpdateManyWithWhereWithoutReferralInput | CommissionUpdateManyWithWhereWithoutReferralInput[]
+    deleteMany?: CommissionScalarWhereInput | CommissionScalarWhereInput[]
+  }
+
+  export type CommissionUncheckedUpdateManyWithoutReferralNestedInput = {
+    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
+    upsert?: CommissionUpsertWithWhereUniqueWithoutReferralInput | CommissionUpsertWithWhereUniqueWithoutReferralInput[]
+    createMany?: CommissionCreateManyReferralInputEnvelope
+    set?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    disconnect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    delete?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
+    update?: CommissionUpdateWithWhereUniqueWithoutReferralInput | CommissionUpdateWithWhereUniqueWithoutReferralInput[]
+    updateMany?: CommissionUpdateManyWithWhereWithoutReferralInput | CommissionUpdateManyWithWhereWithoutReferralInput[]
+    deleteMany?: CommissionScalarWhereInput | CommissionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAgreementsInput = {
@@ -24460,10 +23154,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type MachineCreateNestedOneWithoutAgreementsInput = {
-    create?: XOR<MachineCreateWithoutAgreementsInput, MachineUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: MachineCreateOrConnectWithoutAgreementsInput
-    connect?: MachineWhereUniqueInput
+  export type ProductCreateNestedOneWithoutAgreementsInput = {
+    create?: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAgreementsInput
+    connect?: ProductWhereUniqueInput
   }
 
   export type EnumAgreementStatusFieldUpdateOperationsInput = {
@@ -24478,12 +23172,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAgreementsInput, UserUpdateWithoutAgreementsInput>, UserUncheckedUpdateWithoutAgreementsInput>
   }
 
-  export type MachineUpdateOneRequiredWithoutAgreementsNestedInput = {
-    create?: XOR<MachineCreateWithoutAgreementsInput, MachineUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: MachineCreateOrConnectWithoutAgreementsInput
-    upsert?: MachineUpsertWithoutAgreementsInput
-    connect?: MachineWhereUniqueInput
-    update?: XOR<XOR<MachineUpdateToOneWithWhereWithoutAgreementsInput, MachineUpdateWithoutAgreementsInput>, MachineUncheckedUpdateWithoutAgreementsInput>
+  export type ProductUpdateOneRequiredWithoutAgreementsNestedInput = {
+    create?: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAgreementsInput
+    upsert?: ProductUpsertWithoutAgreementsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAgreementsInput, ProductUpdateWithoutAgreementsInput>, ProductUncheckedUpdateWithoutAgreementsInput>
   }
 
   export type UserCreateNestedOneWithoutSalesSoldInput = {
@@ -24562,8 +23256,10 @@ export namespace Prisma {
     connect?: SaleWhereUniqueInput
   }
 
-  export type EnumProductTypeFieldUpdateOperationsInput = {
-    set?: $Enums.ProductType
+  export type ProductCreateNestedOneWithoutSaleItemsInput = {
+    create?: XOR<ProductCreateWithoutSaleItemsInput, ProductUncheckedCreateWithoutSaleItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutSaleItemsInput
+    connect?: ProductWhereUniqueInput
   }
 
   export type SaleUpdateOneRequiredWithoutItemsNestedInput = {
@@ -24574,74 +23270,44 @@ export namespace Prisma {
     update?: XOR<XOR<SaleUpdateToOneWithWhereWithoutItemsInput, SaleUpdateWithoutItemsInput>, SaleUncheckedUpdateWithoutItemsInput>
   }
 
-  export type UserCreateNestedOneWithoutReferralsMadeInput = {
-    create?: XOR<UserCreateWithoutReferralsMadeInput, UserUncheckedCreateWithoutReferralsMadeInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReferralsMadeInput
+  export type ProductUpdateOneRequiredWithoutSaleItemsNestedInput = {
+    create?: XOR<ProductCreateWithoutSaleItemsInput, ProductUncheckedCreateWithoutSaleItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutSaleItemsInput
+    upsert?: ProductUpsertWithoutSaleItemsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutSaleItemsInput, ProductUpdateWithoutSaleItemsInput>, ProductUncheckedUpdateWithoutSaleItemsInput>
+  }
+
+  export type UserCreateNestedOneWithoutRewardsInput = {
+    create?: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRewardsInput
     connect?: UserWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutReferralsReceivedInput = {
-    create?: XOR<UserCreateWithoutReferralsReceivedInput, UserUncheckedCreateWithoutReferralsReceivedInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReferralsReceivedInput
+  export type ProductCreateNestedOneWithoutRewardsInput = {
+    create?: XOR<ProductCreateWithoutRewardsInput, ProductUncheckedCreateWithoutRewardsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutRewardsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type EnumRewardStatusFieldUpdateOperationsInput = {
+    set?: $Enums.RewardStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutRewardsNestedInput = {
+    create?: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRewardsInput
+    upsert?: UserUpsertWithoutRewardsInput
     connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRewardsInput, UserUpdateWithoutRewardsInput>, UserUncheckedUpdateWithoutRewardsInput>
   }
 
-  export type CommissionCreateNestedManyWithoutReferralInput = {
-    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
-    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
-    createMany?: CommissionCreateManyReferralInputEnvelope
-    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-  }
-
-  export type CommissionUncheckedCreateNestedManyWithoutReferralInput = {
-    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
-    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
-    createMany?: CommissionCreateManyReferralInputEnvelope
-    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutReferralsMadeNestedInput = {
-    create?: XOR<UserCreateWithoutReferralsMadeInput, UserUncheckedCreateWithoutReferralsMadeInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReferralsMadeInput
-    upsert?: UserUpsertWithoutReferralsMadeInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReferralsMadeInput, UserUpdateWithoutReferralsMadeInput>, UserUncheckedUpdateWithoutReferralsMadeInput>
-  }
-
-  export type UserUpdateOneRequiredWithoutReferralsReceivedNestedInput = {
-    create?: XOR<UserCreateWithoutReferralsReceivedInput, UserUncheckedCreateWithoutReferralsReceivedInput>
-    connectOrCreate?: UserCreateOrConnectWithoutReferralsReceivedInput
-    upsert?: UserUpsertWithoutReferralsReceivedInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReferralsReceivedInput, UserUpdateWithoutReferralsReceivedInput>, UserUncheckedUpdateWithoutReferralsReceivedInput>
-  }
-
-  export type CommissionUpdateManyWithoutReferralNestedInput = {
-    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
-    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
-    upsert?: CommissionUpsertWithWhereUniqueWithoutReferralInput | CommissionUpsertWithWhereUniqueWithoutReferralInput[]
-    createMany?: CommissionCreateManyReferralInputEnvelope
-    set?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    disconnect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    delete?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    update?: CommissionUpdateWithWhereUniqueWithoutReferralInput | CommissionUpdateWithWhereUniqueWithoutReferralInput[]
-    updateMany?: CommissionUpdateManyWithWhereWithoutReferralInput | CommissionUpdateManyWithWhereWithoutReferralInput[]
-    deleteMany?: CommissionScalarWhereInput | CommissionScalarWhereInput[]
-  }
-
-  export type CommissionUncheckedUpdateManyWithoutReferralNestedInput = {
-    create?: XOR<CommissionCreateWithoutReferralInput, CommissionUncheckedCreateWithoutReferralInput> | CommissionCreateWithoutReferralInput[] | CommissionUncheckedCreateWithoutReferralInput[]
-    connectOrCreate?: CommissionCreateOrConnectWithoutReferralInput | CommissionCreateOrConnectWithoutReferralInput[]
-    upsert?: CommissionUpsertWithWhereUniqueWithoutReferralInput | CommissionUpsertWithWhereUniqueWithoutReferralInput[]
-    createMany?: CommissionCreateManyReferralInputEnvelope
-    set?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    disconnect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    delete?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    connect?: CommissionWhereUniqueInput | CommissionWhereUniqueInput[]
-    update?: CommissionUpdateWithWhereUniqueWithoutReferralInput | CommissionUpdateWithWhereUniqueWithoutReferralInput[]
-    updateMany?: CommissionUpdateManyWithWhereWithoutReferralInput | CommissionUpdateManyWithWhereWithoutReferralInput[]
-    deleteMany?: CommissionScalarWhereInput | CommissionScalarWhereInput[]
+  export type ProductUpdateOneRequiredWithoutRewardsNestedInput = {
+    create?: XOR<ProductCreateWithoutRewardsInput, ProductUncheckedCreateWithoutRewardsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutRewardsInput
+    upsert?: ProductUpsertWithoutRewardsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutRewardsInput, ProductUpdateWithoutRewardsInput>, ProductUncheckedUpdateWithoutRewardsInput>
   }
 
   export type ReferralCreateNestedOneWithoutCommissionsInput = {
@@ -24664,38 +23330,6 @@ export namespace Prisma {
     upsert?: ReferralUpsertWithoutCommissionsInput
     connect?: ReferralWhereUniqueInput
     update?: XOR<XOR<ReferralUpdateToOneWithWhereWithoutCommissionsInput, ReferralUpdateWithoutCommissionsInput>, ReferralUncheckedUpdateWithoutCommissionsInput>
-  }
-
-  export type UserCreateNestedOneWithoutRewardsInput = {
-    create?: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutRewardsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type MachineCreateNestedOneWithoutRewardsInput = {
-    create?: XOR<MachineCreateWithoutRewardsInput, MachineUncheckedCreateWithoutRewardsInput>
-    connectOrCreate?: MachineCreateOrConnectWithoutRewardsInput
-    connect?: MachineWhereUniqueInput
-  }
-
-  export type EnumRewardStatusFieldUpdateOperationsInput = {
-    set?: $Enums.RewardStatus
-  }
-
-  export type UserUpdateOneRequiredWithoutRewardsNestedInput = {
-    create?: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutRewardsInput
-    upsert?: UserUpsertWithoutRewardsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRewardsInput, UserUpdateWithoutRewardsInput>, UserUncheckedUpdateWithoutRewardsInput>
-  }
-
-  export type MachineUpdateOneRequiredWithoutRewardsNestedInput = {
-    create?: XOR<MachineCreateWithoutRewardsInput, MachineUncheckedCreateWithoutRewardsInput>
-    connectOrCreate?: MachineCreateOrConnectWithoutRewardsInput
-    upsert?: MachineUpsertWithoutRewardsInput
-    connect?: MachineWhereUniqueInput
-    update?: XOR<XOR<MachineUpdateToOneWithWhereWithoutRewardsInput, MachineUpdateWithoutRewardsInput>, MachineUncheckedUpdateWithoutRewardsInput>
   }
 
   export type UserCreateNestedOneWithoutWalletInput = {
@@ -24730,42 +23364,36 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWithdrawsInput, UserUpdateWithoutWithdrawsInput>, UserUncheckedUpdateWithoutWithdrawsInput>
   }
 
-  export type UserCreateNestedOneWithoutTrialFundsInput = {
-    create?: XOR<UserCreateWithoutTrialFundsInput, UserUncheckedCreateWithoutTrialFundsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTrialFundsInput
+  export type UserCreateNestedOneWithoutTrialFundInput = {
+    create?: XOR<UserCreateWithoutTrialFundInput, UserUncheckedCreateWithoutTrialFundInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrialFundInput
     connect?: UserWhereUniqueInput
   }
 
-  export type MachineCreateNestedOneWithoutTrialFundInput = {
-    create?: XOR<MachineCreateWithoutTrialFundInput, MachineUncheckedCreateWithoutTrialFundInput>
-    connectOrCreate?: MachineCreateOrConnectWithoutTrialFundInput
-    connect?: MachineWhereUniqueInput
+  export type ProductCreateNestedOneWithoutTrialFundsInput = {
+    create?: XOR<ProductCreateWithoutTrialFundsInput, ProductUncheckedCreateWithoutTrialFundsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutTrialFundsInput
+    connect?: ProductWhereUniqueInput
   }
 
   export type EnumTrialFundStatusFieldUpdateOperationsInput = {
     set?: $Enums.TrialFundStatus
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type UserUpdateOneRequiredWithoutTrialFundsNestedInput = {
-    create?: XOR<UserCreateWithoutTrialFundsInput, UserUncheckedCreateWithoutTrialFundsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTrialFundsInput
-    upsert?: UserUpsertWithoutTrialFundsInput
+  export type UserUpdateOneRequiredWithoutTrialFundNestedInput = {
+    create?: XOR<UserCreateWithoutTrialFundInput, UserUncheckedCreateWithoutTrialFundInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrialFundInput
+    upsert?: UserUpsertWithoutTrialFundInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrialFundsInput, UserUpdateWithoutTrialFundsInput>, UserUncheckedUpdateWithoutTrialFundsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrialFundInput, UserUpdateWithoutTrialFundInput>, UserUncheckedUpdateWithoutTrialFundInput>
   }
 
-  export type MachineUpdateOneWithoutTrialFundNestedInput = {
-    create?: XOR<MachineCreateWithoutTrialFundInput, MachineUncheckedCreateWithoutTrialFundInput>
-    connectOrCreate?: MachineCreateOrConnectWithoutTrialFundInput
-    upsert?: MachineUpsertWithoutTrialFundInput
-    disconnect?: MachineWhereInput | boolean
-    delete?: MachineWhereInput | boolean
-    connect?: MachineWhereUniqueInput
-    update?: XOR<XOR<MachineUpdateToOneWithWhereWithoutTrialFundInput, MachineUpdateWithoutTrialFundInput>, MachineUncheckedUpdateWithoutTrialFundInput>
+  export type ProductUpdateOneRequiredWithoutTrialFundsNestedInput = {
+    create?: XOR<ProductCreateWithoutTrialFundsInput, ProductUncheckedCreateWithoutTrialFundsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutTrialFundsInput
+    upsert?: ProductUpsertWithoutTrialFundsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutTrialFundsInput, ProductUpdateWithoutTrialFundsInput>, ProductUncheckedUpdateWithoutTrialFundsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -24821,6 +23449,13 @@ export namespace Prisma {
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -24917,6 +23552,16 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -24955,6 +23600,17 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -24969,6 +23625,20 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumAgreementStatusFilter<$PrismaModel = never> = {
@@ -24988,21 +23658,21 @@ export namespace Prisma {
     _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumProductTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.ProductType | EnumProductTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumProductTypeFilter<$PrismaModel> | $Enums.ProductType
+  export type NestedEnumRewardStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRewardStatusFilter<$PrismaModel> | $Enums.RewardStatus
   }
 
-  export type NestedEnumProductTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ProductType | EnumProductTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumProductTypeWithAggregatesFilter<$PrismaModel> | $Enums.ProductType
+  export type NestedEnumRewardStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumRewardStatusWithAggregatesFilter<$PrismaModel> | $Enums.RewardStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumProductTypeFilter<$PrismaModel>
-    _max?: NestedEnumProductTypeFilter<$PrismaModel>
+    _min?: NestedEnumRewardStatusFilter<$PrismaModel>
+    _max?: NestedEnumRewardStatusFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -25019,23 +23689,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedEnumRewardStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRewardStatusFilter<$PrismaModel> | $Enums.RewardStatus
-  }
-
-  export type NestedEnumRewardStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumRewardStatusWithAggregatesFilter<$PrismaModel> | $Enums.RewardStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRewardStatusFilter<$PrismaModel>
-    _max?: NestedEnumRewardStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumWithdrawStatusFilter<$PrismaModel = never> = {
@@ -25062,17 +23715,6 @@ export namespace Prisma {
     not?: NestedEnumTrialFundStatusFilter<$PrismaModel> | $Enums.TrialFundStatus
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedEnumTrialFundStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TrialFundStatus | EnumTrialFundStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TrialFundStatus[] | ListEnumTrialFundStatusFieldRefInput<$PrismaModel>
@@ -25081,20 +23723,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTrialFundStatusFilter<$PrismaModel>
     _max?: NestedEnumTrialFundStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type WalletCreateWithoutUserInput = {
@@ -25146,24 +23774,24 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserNFTCreateWithoutUserInput = {
+  export type UserProductCreateWithoutUserInput = {
     acquiredAt?: Date | string
-    nft: NFTCreateNestedOneWithoutUserNFTsInput
+    product: ProductCreateNestedOneWithoutUserProductsInput
   }
 
-  export type UserNFTUncheckedCreateWithoutUserInput = {
+  export type UserProductUncheckedCreateWithoutUserInput = {
     id?: number
     acquiredAt?: Date | string
-    nftId: number
+    productId: number
   }
 
-  export type UserNFTCreateOrConnectWithoutUserInput = {
-    where: UserNFTWhereUniqueInput
-    create: XOR<UserNFTCreateWithoutUserInput, UserNFTUncheckedCreateWithoutUserInput>
+  export type UserProductCreateOrConnectWithoutUserInput = {
+    where: UserProductWhereUniqueInput
+    create: XOR<UserProductCreateWithoutUserInput, UserProductUncheckedCreateWithoutUserInput>
   }
 
-  export type UserNFTCreateManyUserInputEnvelope = {
-    data: UserNFTCreateManyUserInput | UserNFTCreateManyUserInput[]
+  export type UserProductCreateManyUserInputEnvelope = {
+    data: UserProductCreateManyUserInput | UserProductCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -25173,7 +23801,7 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     status?: $Enums.AgreementStatus
-    machine: MachineCreateNestedOneWithoutAgreementsInput
+    product: ProductCreateNestedOneWithoutAgreementsInput
   }
 
   export type AgreementUncheckedCreateWithoutUserInput = {
@@ -25183,7 +23811,7 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     status?: $Enums.AgreementStatus
-    machineId: number
+    productId: number
   }
 
   export type AgreementCreateOrConnectWithoutUserInput = {
@@ -25310,7 +23938,7 @@ export namespace Prisma {
     reward: Decimal | DecimalJsLike | number | string
     date?: Date | string
     status?: $Enums.RewardStatus
-    machine: MachineCreateNestedOneWithoutRewardsInput
+    product: ProductCreateNestedOneWithoutRewardsInput
   }
 
   export type RewardUncheckedCreateWithoutUserInput = {
@@ -25320,7 +23948,7 @@ export namespace Prisma {
     reward: Decimal | DecimalJsLike | number | string
     date?: Date | string
     status?: $Enums.RewardStatus
-    machineId: number
+    productId: number
   }
 
   export type RewardCreateOrConnectWithoutUserInput = {
@@ -25340,28 +23968,23 @@ export namespace Prisma {
     status?: $Enums.TrialFundStatus
     recoveredAt?: Date | string | null
     usedAmount?: Decimal | DecimalJsLike | number | string
-    machine?: MachineCreateNestedOneWithoutTrialFundInput
+    product: ProductCreateNestedOneWithoutTrialFundsInput
   }
 
   export type TrialFundUncheckedCreateWithoutUserInput = {
     id?: number
+    productId: number
     amount?: Decimal | DecimalJsLike | number | string
     grantedAt?: Date | string
     expiresAt: Date | string
     status?: $Enums.TrialFundStatus
     recoveredAt?: Date | string | null
-    machineId?: number | null
     usedAmount?: Decimal | DecimalJsLike | number | string
   }
 
   export type TrialFundCreateOrConnectWithoutUserInput = {
     where: TrialFundWhereUniqueInput
     create: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput>
-  }
-
-  export type TrialFundCreateManyUserInputEnvelope = {
-    data: TrialFundCreateManyUserInput | TrialFundCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type VerificationCreateWithoutUserInput = {
@@ -25469,30 +24092,30 @@ export namespace Prisma {
     userId?: IntFilter<"Withdraw"> | number
   }
 
-  export type UserNFTUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserNFTWhereUniqueInput
-    update: XOR<UserNFTUpdateWithoutUserInput, UserNFTUncheckedUpdateWithoutUserInput>
-    create: XOR<UserNFTCreateWithoutUserInput, UserNFTUncheckedCreateWithoutUserInput>
+  export type UserProductUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserProductWhereUniqueInput
+    update: XOR<UserProductUpdateWithoutUserInput, UserProductUncheckedUpdateWithoutUserInput>
+    create: XOR<UserProductCreateWithoutUserInput, UserProductUncheckedCreateWithoutUserInput>
   }
 
-  export type UserNFTUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserNFTWhereUniqueInput
-    data: XOR<UserNFTUpdateWithoutUserInput, UserNFTUncheckedUpdateWithoutUserInput>
+  export type UserProductUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserProductWhereUniqueInput
+    data: XOR<UserProductUpdateWithoutUserInput, UserProductUncheckedUpdateWithoutUserInput>
   }
 
-  export type UserNFTUpdateManyWithWhereWithoutUserInput = {
-    where: UserNFTScalarWhereInput
-    data: XOR<UserNFTUpdateManyMutationInput, UserNFTUncheckedUpdateManyWithoutUserInput>
+  export type UserProductUpdateManyWithWhereWithoutUserInput = {
+    where: UserProductScalarWhereInput
+    data: XOR<UserProductUpdateManyMutationInput, UserProductUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type UserNFTScalarWhereInput = {
-    AND?: UserNFTScalarWhereInput | UserNFTScalarWhereInput[]
-    OR?: UserNFTScalarWhereInput[]
-    NOT?: UserNFTScalarWhereInput | UserNFTScalarWhereInput[]
-    id?: IntFilter<"UserNFT"> | number
-    acquiredAt?: DateTimeFilter<"UserNFT"> | Date | string
-    userId?: IntFilter<"UserNFT"> | number
-    nftId?: IntFilter<"UserNFT"> | number
+  export type UserProductScalarWhereInput = {
+    AND?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
+    OR?: UserProductScalarWhereInput[]
+    NOT?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
+    id?: IntFilter<"UserProduct"> | number
+    acquiredAt?: DateTimeFilter<"UserProduct"> | Date | string
+    userId?: IntFilter<"UserProduct"> | number
+    productId?: IntFilter<"UserProduct"> | number
   }
 
   export type AgreementUpsertWithWhereUniqueWithoutUserInput = {
@@ -25522,7 +24145,7 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Agreement"> | Date | string
     status?: EnumAgreementStatusFilter<"Agreement"> | $Enums.AgreementStatus
     userId?: IntFilter<"Agreement"> | number
-    machineId?: IntFilter<"Agreement"> | number
+    productId?: IntFilter<"Agreement"> | number
   }
 
   export type SaleUpsertWithWhereUniqueWithoutSellerInput = {
@@ -25640,38 +24263,39 @@ export namespace Prisma {
     date?: DateTimeFilter<"Reward"> | Date | string
     status?: EnumRewardStatusFilter<"Reward"> | $Enums.RewardStatus
     userId?: IntFilter<"Reward"> | number
-    machineId?: IntFilter<"Reward"> | number
+    productId?: IntFilter<"Reward"> | number
   }
 
-  export type TrialFundUpsertWithWhereUniqueWithoutUserInput = {
-    where: TrialFundWhereUniqueInput
+  export type TrialFundUpsertWithoutUserInput = {
     update: XOR<TrialFundUpdateWithoutUserInput, TrialFundUncheckedUpdateWithoutUserInput>
     create: XOR<TrialFundCreateWithoutUserInput, TrialFundUncheckedCreateWithoutUserInput>
+    where?: TrialFundWhereInput
   }
 
-  export type TrialFundUpdateWithWhereUniqueWithoutUserInput = {
-    where: TrialFundWhereUniqueInput
+  export type TrialFundUpdateToOneWithWhereWithoutUserInput = {
+    where?: TrialFundWhereInput
     data: XOR<TrialFundUpdateWithoutUserInput, TrialFundUncheckedUpdateWithoutUserInput>
   }
 
-  export type TrialFundUpdateManyWithWhereWithoutUserInput = {
-    where: TrialFundScalarWhereInput
-    data: XOR<TrialFundUpdateManyMutationInput, TrialFundUncheckedUpdateManyWithoutUserInput>
+  export type TrialFundUpdateWithoutUserInput = {
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
+    recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    product?: ProductUpdateOneRequiredWithoutTrialFundsNestedInput
   }
 
-  export type TrialFundScalarWhereInput = {
-    AND?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
-    OR?: TrialFundScalarWhereInput[]
-    NOT?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
-    id?: IntFilter<"TrialFund"> | number
-    userId?: IntFilter<"TrialFund"> | number
-    amount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
-    grantedAt?: DateTimeFilter<"TrialFund"> | Date | string
-    expiresAt?: DateTimeFilter<"TrialFund"> | Date | string
-    status?: EnumTrialFundStatusFilter<"TrialFund"> | $Enums.TrialFundStatus
-    recoveredAt?: DateTimeNullableFilter<"TrialFund"> | Date | string | null
-    machineId?: IntNullableFilter<"TrialFund"> | number | null
-    usedAmount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
+  export type TrialFundUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
+    recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type VerificationUpsertWithWhereUniqueWithoutUserInput = {
@@ -25739,17 +24363,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
     rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -25762,17 +24387,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -25800,17 +24426,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -25823,20 +24450,21 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutPasswordResetInput = {
+  export type UserCreateWithoutPasswordResetsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     username: string
@@ -25845,20 +24473,21 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
     rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutPasswordResetInput = {
+  export type UserUncheckedCreateWithoutPasswordResetsInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25868,36 +24497,37 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutPasswordResetInput = {
+  export type UserCreateOrConnectWithoutPasswordResetsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutPasswordResetInput, UserUncheckedCreateWithoutPasswordResetInput>
+    create: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
   }
 
-  export type UserUpsertWithoutPasswordResetInput = {
-    update: XOR<UserUpdateWithoutPasswordResetInput, UserUncheckedUpdateWithoutPasswordResetInput>
-    create: XOR<UserCreateWithoutPasswordResetInput, UserUncheckedCreateWithoutPasswordResetInput>
+  export type UserUpsertWithoutPasswordResetsInput = {
+    update: XOR<UserUpdateWithoutPasswordResetsInput, UserUncheckedUpdateWithoutPasswordResetsInput>
+    create: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutPasswordResetInput = {
+  export type UserUpdateToOneWithWhereWithoutPasswordResetsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutPasswordResetInput, UserUncheckedUpdateWithoutPasswordResetInput>
+    data: XOR<UserUpdateWithoutPasswordResetsInput, UserUncheckedUpdateWithoutPasswordResetsInput>
   }
 
-  export type UserUpdateWithoutPasswordResetInput = {
+  export type UserUpdateWithoutPasswordResetsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
@@ -25906,20 +24536,21 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutPasswordResetInput = {
+  export type UserUncheckedUpdateWithoutPasswordResetsInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25929,225 +24560,42 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserNFTCreateWithoutNftInput = {
+  export type UserProductCreateWithoutProductInput = {
     acquiredAt?: Date | string
-    user: UserCreateNestedOneWithoutUserNFTsInput
+    user: UserCreateNestedOneWithoutUserProductsInput
   }
 
-  export type UserNFTUncheckedCreateWithoutNftInput = {
+  export type UserProductUncheckedCreateWithoutProductInput = {
     id?: number
     acquiredAt?: Date | string
     userId: number
   }
 
-  export type UserNFTCreateOrConnectWithoutNftInput = {
-    where: UserNFTWhereUniqueInput
-    create: XOR<UserNFTCreateWithoutNftInput, UserNFTUncheckedCreateWithoutNftInput>
+  export type UserProductCreateOrConnectWithoutProductInput = {
+    where: UserProductWhereUniqueInput
+    create: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput>
   }
 
-  export type UserNFTCreateManyNftInputEnvelope = {
-    data: UserNFTCreateManyNftInput | UserNFTCreateManyNftInput[]
+  export type UserProductCreateManyProductInputEnvelope = {
+    data: UserProductCreateManyProductInput | UserProductCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
-  export type UserNFTUpsertWithWhereUniqueWithoutNftInput = {
-    where: UserNFTWhereUniqueInput
-    update: XOR<UserNFTUpdateWithoutNftInput, UserNFTUncheckedUpdateWithoutNftInput>
-    create: XOR<UserNFTCreateWithoutNftInput, UserNFTUncheckedCreateWithoutNftInput>
-  }
-
-  export type UserNFTUpdateWithWhereUniqueWithoutNftInput = {
-    where: UserNFTWhereUniqueInput
-    data: XOR<UserNFTUpdateWithoutNftInput, UserNFTUncheckedUpdateWithoutNftInput>
-  }
-
-  export type UserNFTUpdateManyWithWhereWithoutNftInput = {
-    where: UserNFTScalarWhereInput
-    data: XOR<UserNFTUpdateManyMutationInput, UserNFTUncheckedUpdateManyWithoutNftInput>
-  }
-
-  export type UserCreateWithoutUserNFTsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
-    salesSold?: SaleCreateNestedManyWithoutSellerInput
-    salesBought?: SaleCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
-    rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
-    verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutUserNFTsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
-    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
-    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
-    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutUserNFTsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUserNFTsInput, UserUncheckedCreateWithoutUserNFTsInput>
-  }
-
-  export type NFTCreateWithoutUserNFTsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    name: string
-    price: Decimal | DecimalJsLike | number | string
-    description?: string | null
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    level: number
-  }
-
-  export type NFTUncheckedCreateWithoutUserNFTsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    name: string
-    price: Decimal | DecimalJsLike | number | string
-    description?: string | null
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    level: number
-  }
-
-  export type NFTCreateOrConnectWithoutUserNFTsInput = {
-    where: NFTWhereUniqueInput
-    create: XOR<NFTCreateWithoutUserNFTsInput, NFTUncheckedCreateWithoutUserNFTsInput>
-  }
-
-  export type UserUpsertWithoutUserNFTsInput = {
-    update: XOR<UserUpdateWithoutUserNFTsInput, UserUncheckedUpdateWithoutUserNFTsInput>
-    create: XOR<UserCreateWithoutUserNFTsInput, UserUncheckedCreateWithoutUserNFTsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutUserNFTsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutUserNFTsInput, UserUncheckedUpdateWithoutUserNFTsInput>
-  }
-
-  export type UserUpdateWithoutUserNFTsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutUserNFTsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type NFTUpsertWithoutUserNFTsInput = {
-    update: XOR<NFTUpdateWithoutUserNFTsInput, NFTUncheckedUpdateWithoutUserNFTsInput>
-    create: XOR<NFTCreateWithoutUserNFTsInput, NFTUncheckedCreateWithoutUserNFTsInput>
-    where?: NFTWhereInput
-  }
-
-  export type NFTUpdateToOneWithWhereWithoutUserNFTsInput = {
-    where?: NFTWhereInput
-    data: XOR<NFTUpdateWithoutUserNFTsInput, NFTUncheckedUpdateWithoutUserNFTsInput>
-  }
-
-  export type NFTUpdateWithoutUserNFTsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type NFTUncheckedUpdateWithoutUserNFTsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type AgreementCreateWithoutMachineInput = {
+  export type AgreementCreateWithoutProductInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     startDate: Date | string
@@ -26156,7 +24604,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutAgreementsInput
   }
 
-  export type AgreementUncheckedCreateWithoutMachineInput = {
+  export type AgreementUncheckedCreateWithoutProductInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26166,17 +24614,17 @@ export namespace Prisma {
     userId: number
   }
 
-  export type AgreementCreateOrConnectWithoutMachineInput = {
+  export type AgreementCreateOrConnectWithoutProductInput = {
     where: AgreementWhereUniqueInput
-    create: XOR<AgreementCreateWithoutMachineInput, AgreementUncheckedCreateWithoutMachineInput>
+    create: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput>
   }
 
-  export type AgreementCreateManyMachineInputEnvelope = {
-    data: AgreementCreateManyMachineInput | AgreementCreateManyMachineInput[]
+  export type AgreementCreateManyProductInputEnvelope = {
+    data: AgreementCreateManyProductInput | AgreementCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
-  export type RewardCreateWithoutMachineInput = {
+  export type RewardCreateWithoutProductInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
@@ -26185,7 +24633,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutRewardsInput
   }
 
-  export type RewardUncheckedCreateWithoutMachineInput = {
+  export type RewardUncheckedCreateWithoutProductInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26195,27 +24643,27 @@ export namespace Prisma {
     userId: number
   }
 
-  export type RewardCreateOrConnectWithoutMachineInput = {
+  export type RewardCreateOrConnectWithoutProductInput = {
     where: RewardWhereUniqueInput
-    create: XOR<RewardCreateWithoutMachineInput, RewardUncheckedCreateWithoutMachineInput>
+    create: XOR<RewardCreateWithoutProductInput, RewardUncheckedCreateWithoutProductInput>
   }
 
-  export type RewardCreateManyMachineInputEnvelope = {
-    data: RewardCreateManyMachineInput | RewardCreateManyMachineInput[]
+  export type RewardCreateManyProductInputEnvelope = {
+    data: RewardCreateManyProductInput | RewardCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
-  export type TrialFundCreateWithoutMachineInput = {
+  export type TrialFundCreateWithoutProductInput = {
     amount?: Decimal | DecimalJsLike | number | string
     grantedAt?: Date | string
     expiresAt: Date | string
     status?: $Enums.TrialFundStatus
     recoveredAt?: Date | string | null
     usedAmount?: Decimal | DecimalJsLike | number | string
-    user: UserCreateNestedOneWithoutTrialFundsInput
+    user: UserCreateNestedOneWithoutTrialFundInput
   }
 
-  export type TrialFundUncheckedCreateWithoutMachineInput = {
+  export type TrialFundUncheckedCreateWithoutProductInput = {
     id?: number
     userId: number
     amount?: Decimal | DecimalJsLike | number | string
@@ -26226,501 +24674,134 @@ export namespace Prisma {
     usedAmount?: Decimal | DecimalJsLike | number | string
   }
 
-  export type TrialFundCreateOrConnectWithoutMachineInput = {
+  export type TrialFundCreateOrConnectWithoutProductInput = {
     where: TrialFundWhereUniqueInput
-    create: XOR<TrialFundCreateWithoutMachineInput, TrialFundUncheckedCreateWithoutMachineInput>
+    create: XOR<TrialFundCreateWithoutProductInput, TrialFundUncheckedCreateWithoutProductInput>
   }
 
-  export type TrialFundCreateManyMachineInputEnvelope = {
-    data: TrialFundCreateManyMachineInput | TrialFundCreateManyMachineInput[]
+  export type TrialFundCreateManyProductInputEnvelope = {
+    data: TrialFundCreateManyProductInput | TrialFundCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
-  export type AgreementUpsertWithWhereUniqueWithoutMachineInput = {
-    where: AgreementWhereUniqueInput
-    update: XOR<AgreementUpdateWithoutMachineInput, AgreementUncheckedUpdateWithoutMachineInput>
-    create: XOR<AgreementCreateWithoutMachineInput, AgreementUncheckedCreateWithoutMachineInput>
+  export type SaleItemCreateWithoutProductInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    quantity: number
+    sale: SaleCreateNestedOneWithoutItemsInput
   }
 
-  export type AgreementUpdateWithWhereUniqueWithoutMachineInput = {
-    where: AgreementWhereUniqueInput
-    data: XOR<AgreementUpdateWithoutMachineInput, AgreementUncheckedUpdateWithoutMachineInput>
+  export type SaleItemUncheckedCreateWithoutProductInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    saleId: number
+    quantity: number
   }
 
-  export type AgreementUpdateManyWithWhereWithoutMachineInput = {
+  export type SaleItemCreateOrConnectWithoutProductInput = {
+    where: SaleItemWhereUniqueInput
+    create: XOR<SaleItemCreateWithoutProductInput, SaleItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type SaleItemCreateManyProductInputEnvelope = {
+    data: SaleItemCreateManyProductInput | SaleItemCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserProductUpsertWithWhereUniqueWithoutProductInput = {
+    where: UserProductWhereUniqueInput
+    update: XOR<UserProductUpdateWithoutProductInput, UserProductUncheckedUpdateWithoutProductInput>
+    create: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput>
+  }
+
+  export type UserProductUpdateWithWhereUniqueWithoutProductInput = {
+    where: UserProductWhereUniqueInput
+    data: XOR<UserProductUpdateWithoutProductInput, UserProductUncheckedUpdateWithoutProductInput>
+  }
+
+  export type UserProductUpdateManyWithWhereWithoutProductInput = {
+    where: UserProductScalarWhereInput
+    data: XOR<UserProductUpdateManyMutationInput, UserProductUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type AgreementUpsertWithWhereUniqueWithoutProductInput = {
+    where: AgreementWhereUniqueInput
+    update: XOR<AgreementUpdateWithoutProductInput, AgreementUncheckedUpdateWithoutProductInput>
+    create: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput>
+  }
+
+  export type AgreementUpdateWithWhereUniqueWithoutProductInput = {
+    where: AgreementWhereUniqueInput
+    data: XOR<AgreementUpdateWithoutProductInput, AgreementUncheckedUpdateWithoutProductInput>
+  }
+
+  export type AgreementUpdateManyWithWhereWithoutProductInput = {
     where: AgreementScalarWhereInput
-    data: XOR<AgreementUpdateManyMutationInput, AgreementUncheckedUpdateManyWithoutMachineInput>
+    data: XOR<AgreementUpdateManyMutationInput, AgreementUncheckedUpdateManyWithoutProductInput>
   }
 
-  export type RewardUpsertWithWhereUniqueWithoutMachineInput = {
+  export type RewardUpsertWithWhereUniqueWithoutProductInput = {
     where: RewardWhereUniqueInput
-    update: XOR<RewardUpdateWithoutMachineInput, RewardUncheckedUpdateWithoutMachineInput>
-    create: XOR<RewardCreateWithoutMachineInput, RewardUncheckedCreateWithoutMachineInput>
+    update: XOR<RewardUpdateWithoutProductInput, RewardUncheckedUpdateWithoutProductInput>
+    create: XOR<RewardCreateWithoutProductInput, RewardUncheckedCreateWithoutProductInput>
   }
 
-  export type RewardUpdateWithWhereUniqueWithoutMachineInput = {
+  export type RewardUpdateWithWhereUniqueWithoutProductInput = {
     where: RewardWhereUniqueInput
-    data: XOR<RewardUpdateWithoutMachineInput, RewardUncheckedUpdateWithoutMachineInput>
+    data: XOR<RewardUpdateWithoutProductInput, RewardUncheckedUpdateWithoutProductInput>
   }
 
-  export type RewardUpdateManyWithWhereWithoutMachineInput = {
+  export type RewardUpdateManyWithWhereWithoutProductInput = {
     where: RewardScalarWhereInput
-    data: XOR<RewardUpdateManyMutationInput, RewardUncheckedUpdateManyWithoutMachineInput>
+    data: XOR<RewardUpdateManyMutationInput, RewardUncheckedUpdateManyWithoutProductInput>
   }
 
-  export type TrialFundUpsertWithWhereUniqueWithoutMachineInput = {
+  export type TrialFundUpsertWithWhereUniqueWithoutProductInput = {
     where: TrialFundWhereUniqueInput
-    update: XOR<TrialFundUpdateWithoutMachineInput, TrialFundUncheckedUpdateWithoutMachineInput>
-    create: XOR<TrialFundCreateWithoutMachineInput, TrialFundUncheckedCreateWithoutMachineInput>
+    update: XOR<TrialFundUpdateWithoutProductInput, TrialFundUncheckedUpdateWithoutProductInput>
+    create: XOR<TrialFundCreateWithoutProductInput, TrialFundUncheckedCreateWithoutProductInput>
   }
 
-  export type TrialFundUpdateWithWhereUniqueWithoutMachineInput = {
+  export type TrialFundUpdateWithWhereUniqueWithoutProductInput = {
     where: TrialFundWhereUniqueInput
-    data: XOR<TrialFundUpdateWithoutMachineInput, TrialFundUncheckedUpdateWithoutMachineInput>
+    data: XOR<TrialFundUpdateWithoutProductInput, TrialFundUncheckedUpdateWithoutProductInput>
   }
 
-  export type TrialFundUpdateManyWithWhereWithoutMachineInput = {
+  export type TrialFundUpdateManyWithWhereWithoutProductInput = {
     where: TrialFundScalarWhereInput
-    data: XOR<TrialFundUpdateManyMutationInput, TrialFundUncheckedUpdateManyWithoutMachineInput>
+    data: XOR<TrialFundUpdateManyMutationInput, TrialFundUncheckedUpdateManyWithoutProductInput>
   }
 
-  export type UserCreateWithoutAgreementsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
-    salesSold?: SaleCreateNestedManyWithoutSellerInput
-    salesBought?: SaleCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
-    rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
-    verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+  export type TrialFundScalarWhereInput = {
+    AND?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
+    OR?: TrialFundScalarWhereInput[]
+    NOT?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
+    id?: IntFilter<"TrialFund"> | number
+    userId?: IntFilter<"TrialFund"> | number
+    productId?: IntFilter<"TrialFund"> | number
+    amount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
+    grantedAt?: DateTimeFilter<"TrialFund"> | Date | string
+    expiresAt?: DateTimeFilter<"TrialFund"> | Date | string
+    status?: EnumTrialFundStatusFilter<"TrialFund"> | $Enums.TrialFundStatus
+    recoveredAt?: DateTimeNullableFilter<"TrialFund"> | Date | string | null
+    usedAmount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
   }
 
-  export type UserUncheckedCreateWithoutAgreementsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
-    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
-    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
-    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAgreementsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
-  }
-
-  export type MachineCreateWithoutAgreementsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
-    level: number
-    rewards?: RewardCreateNestedManyWithoutMachineInput
-    TrialFund?: TrialFundCreateNestedManyWithoutMachineInput
-  }
-
-  export type MachineUncheckedCreateWithoutAgreementsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
-    level: number
-    rewards?: RewardUncheckedCreateNestedManyWithoutMachineInput
-    TrialFund?: TrialFundUncheckedCreateNestedManyWithoutMachineInput
-  }
-
-  export type MachineCreateOrConnectWithoutAgreementsInput = {
-    where: MachineWhereUniqueInput
-    create: XOR<MachineCreateWithoutAgreementsInput, MachineUncheckedCreateWithoutAgreementsInput>
-  }
-
-  export type UserUpsertWithoutAgreementsInput = {
-    update: XOR<UserUpdateWithoutAgreementsInput, UserUncheckedUpdateWithoutAgreementsInput>
-    create: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAgreementsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAgreementsInput, UserUncheckedUpdateWithoutAgreementsInput>
-  }
-
-  export type UserUpdateWithoutAgreementsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAgreementsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type MachineUpsertWithoutAgreementsInput = {
-    update: XOR<MachineUpdateWithoutAgreementsInput, MachineUncheckedUpdateWithoutAgreementsInput>
-    create: XOR<MachineCreateWithoutAgreementsInput, MachineUncheckedCreateWithoutAgreementsInput>
-    where?: MachineWhereInput
-  }
-
-  export type MachineUpdateToOneWithWhereWithoutAgreementsInput = {
-    where?: MachineWhereInput
-    data: XOR<MachineUpdateWithoutAgreementsInput, MachineUncheckedUpdateWithoutAgreementsInput>
-  }
-
-  export type MachineUpdateWithoutAgreementsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    rewards?: RewardUpdateManyWithoutMachineNestedInput
-    TrialFund?: TrialFundUpdateManyWithoutMachineNestedInput
-  }
-
-  export type MachineUncheckedUpdateWithoutAgreementsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    rewards?: RewardUncheckedUpdateManyWithoutMachineNestedInput
-    TrialFund?: TrialFundUncheckedUpdateManyWithoutMachineNestedInput
-  }
-
-  export type UserCreateWithoutSalesSoldInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
-    salesBought?: SaleCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
-    rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
-    verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSalesSoldInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
-    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
-    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSalesSoldInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSalesSoldInput, UserUncheckedCreateWithoutSalesSoldInput>
-  }
-
-  export type UserCreateWithoutSalesBoughtInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
-    salesSold?: SaleCreateNestedManyWithoutSellerInput
-    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
-    rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
-    verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSalesBoughtInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
-    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
-    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
-    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSalesBoughtInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSalesBoughtInput, UserUncheckedCreateWithoutSalesBoughtInput>
-  }
-
-  export type SaleItemCreateWithoutSaleInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    productType: $Enums.ProductType
-    productId: number
-    quantity: number
-  }
-
-  export type SaleItemUncheckedCreateWithoutSaleInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    productType: $Enums.ProductType
-    productId: number
-    quantity: number
-  }
-
-  export type SaleItemCreateOrConnectWithoutSaleInput = {
+  export type SaleItemUpsertWithWhereUniqueWithoutProductInput = {
     where: SaleItemWhereUniqueInput
-    create: XOR<SaleItemCreateWithoutSaleInput, SaleItemUncheckedCreateWithoutSaleInput>
+    update: XOR<SaleItemUpdateWithoutProductInput, SaleItemUncheckedUpdateWithoutProductInput>
+    create: XOR<SaleItemCreateWithoutProductInput, SaleItemUncheckedCreateWithoutProductInput>
   }
 
-  export type SaleItemCreateManySaleInputEnvelope = {
-    data: SaleItemCreateManySaleInput | SaleItemCreateManySaleInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutSalesSoldInput = {
-    update: XOR<UserUpdateWithoutSalesSoldInput, UserUncheckedUpdateWithoutSalesSoldInput>
-    create: XOR<UserCreateWithoutSalesSoldInput, UserUncheckedCreateWithoutSalesSoldInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutSalesSoldInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSalesSoldInput, UserUncheckedUpdateWithoutSalesSoldInput>
-  }
-
-  export type UserUpdateWithoutSalesSoldInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
-    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSalesSoldInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
-    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUpsertWithoutSalesBoughtInput = {
-    update: XOR<UserUpdateWithoutSalesBoughtInput, UserUncheckedUpdateWithoutSalesBoughtInput>
-    create: XOR<UserCreateWithoutSalesBoughtInput, UserUncheckedCreateWithoutSalesBoughtInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutSalesBoughtInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSalesBoughtInput, UserUncheckedUpdateWithoutSalesBoughtInput>
-  }
-
-  export type UserUpdateWithoutSalesBoughtInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUpdateManyWithoutSellerNestedInput
-    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSalesBoughtInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
-    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type SaleItemUpsertWithWhereUniqueWithoutSaleInput = {
+  export type SaleItemUpdateWithWhereUniqueWithoutProductInput = {
     where: SaleItemWhereUniqueInput
-    update: XOR<SaleItemUpdateWithoutSaleInput, SaleItemUncheckedUpdateWithoutSaleInput>
-    create: XOR<SaleItemCreateWithoutSaleInput, SaleItemUncheckedCreateWithoutSaleInput>
+    data: XOR<SaleItemUpdateWithoutProductInput, SaleItemUncheckedUpdateWithoutProductInput>
   }
 
-  export type SaleItemUpdateWithWhereUniqueWithoutSaleInput = {
-    where: SaleItemWhereUniqueInput
-    data: XOR<SaleItemUpdateWithoutSaleInput, SaleItemUncheckedUpdateWithoutSaleInput>
-  }
-
-  export type SaleItemUpdateManyWithWhereWithoutSaleInput = {
+  export type SaleItemUpdateManyWithWhereWithoutProductInput = {
     where: SaleItemScalarWhereInput
-    data: XOR<SaleItemUpdateManyMutationInput, SaleItemUncheckedUpdateManyWithoutSaleInput>
+    data: XOR<SaleItemUpdateManyMutationInput, SaleItemUncheckedUpdateManyWithoutProductInput>
   }
 
   export type SaleItemScalarWhereInput = {
@@ -26730,64 +24811,209 @@ export namespace Prisma {
     id?: IntFilter<"SaleItem"> | number
     createdAt?: DateTimeFilter<"SaleItem"> | Date | string
     updatedAt?: DateTimeFilter<"SaleItem"> | Date | string
-    productType?: EnumProductTypeFilter<"SaleItem"> | $Enums.ProductType
+    saleId?: IntFilter<"SaleItem"> | number
     productId?: IntFilter<"SaleItem"> | number
     quantity?: IntFilter<"SaleItem"> | number
-    saleId?: IntFilter<"SaleItem"> | number
   }
 
-  export type SaleCreateWithoutItemsInput = {
+  export type UserCreateWithoutUserProductsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
-    date?: Date | string
-    seller: UserCreateNestedOneWithoutSalesSoldInput
-    buyer: UserCreateNestedOneWithoutSalesBoughtInput
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    agreements?: AgreementCreateNestedManyWithoutUserInput
+    salesSold?: SaleCreateNestedManyWithoutSellerInput
+    salesBought?: SaleCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    rewards?: RewardCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
-  export type SaleUncheckedCreateWithoutItemsInput = {
+  export type UserUncheckedCreateWithoutUserProductsInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
-    date?: Date | string
-    sellerId: number
-    buyerId: number
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
+    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type SaleCreateOrConnectWithoutItemsInput = {
-    where: SaleWhereUniqueInput
-    create: XOR<SaleCreateWithoutItemsInput, SaleUncheckedCreateWithoutItemsInput>
+  export type UserCreateOrConnectWithoutUserProductsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUserProductsInput, UserUncheckedCreateWithoutUserProductsInput>
   }
 
-  export type SaleUpsertWithoutItemsInput = {
-    update: XOR<SaleUpdateWithoutItemsInput, SaleUncheckedUpdateWithoutItemsInput>
-    create: XOR<SaleCreateWithoutItemsInput, SaleUncheckedCreateWithoutItemsInput>
-    where?: SaleWhereInput
+  export type ProductCreateWithoutUserProductsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    agreements?: AgreementCreateNestedManyWithoutProductInput
+    rewards?: RewardCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemCreateNestedManyWithoutProductInput
   }
 
-  export type SaleUpdateToOneWithWhereWithoutItemsInput = {
-    where?: SaleWhereInput
-    data: XOR<SaleUpdateWithoutItemsInput, SaleUncheckedUpdateWithoutItemsInput>
+  export type ProductUncheckedCreateWithoutUserProductsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
   }
 
-  export type SaleUpdateWithoutItemsInput = {
+  export type ProductCreateOrConnectWithoutUserProductsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutUserProductsInput, ProductUncheckedCreateWithoutUserProductsInput>
+  }
+
+  export type UserUpsertWithoutUserProductsInput = {
+    update: XOR<UserUpdateWithoutUserProductsInput, UserUncheckedUpdateWithoutUserProductsInput>
+    create: XOR<UserCreateWithoutUserProductsInput, UserUncheckedCreateWithoutUserProductsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserProductsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserProductsInput, UserUncheckedUpdateWithoutUserProductsInput>
+  }
+
+  export type UserUpdateWithoutUserProductsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    seller?: UserUpdateOneRequiredWithoutSalesSoldNestedInput
-    buyer?: UserUpdateOneRequiredWithoutSalesBoughtNestedInput
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
-  export type SaleUncheckedUpdateWithoutItemsInput = {
+  export type UserUncheckedUpdateWithoutUserProductsInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    sellerId?: IntFieldUpdateOperationsInput | number
-    buyerId?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProductUpsertWithoutUserProductsInput = {
+    update: XOR<ProductUpdateWithoutUserProductsInput, ProductUncheckedUpdateWithoutUserProductsInput>
+    create: XOR<ProductCreateWithoutUserProductsInput, ProductUncheckedCreateWithoutUserProductsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutUserProductsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutUserProductsInput, ProductUncheckedUpdateWithoutUserProductsInput>
+  }
+
+  export type ProductUpdateWithoutUserProductsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    agreements?: AgreementUpdateManyWithoutProductNestedInput
+    rewards?: RewardUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutUserProductsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutReferralsMadeInput = {
@@ -26799,17 +25025,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
     rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsMadeInput = {
@@ -26822,17 +25049,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsMadeInput = {
@@ -26849,17 +25077,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsReceivedInput = {
@@ -26872,17 +25101,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsReceivedInput = {
@@ -26935,17 +25165,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsMadeInput = {
@@ -26958,17 +25189,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReferralsReceivedInput = {
@@ -26991,17 +25223,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsReceivedInput = {
@@ -27014,17 +25247,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommissionUpsertWithWhereUniqueWithoutReferralInput = {
@@ -27053,6 +25287,811 @@ export namespace Prisma {
     amount?: DecimalFilter<"Commission"> | Decimal | DecimalJsLike | number | string
     percentage?: FloatFilter<"Commission"> | number
     referralId?: IntFilter<"Commission"> | number
+  }
+
+  export type UserCreateWithoutAgreementsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
+    salesSold?: SaleCreateNestedManyWithoutSellerInput
+    salesBought?: SaleCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    rewards?: RewardCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAgreementsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
+    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
+    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAgreementsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
+  }
+
+  export type ProductCreateWithoutAgreementsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductCreateNestedManyWithoutProductInput
+    rewards?: RewardCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutAgreementsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutAgreementsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
+  }
+
+  export type UserUpsertWithoutAgreementsInput = {
+    update: XOR<UserUpdateWithoutAgreementsInput, UserUncheckedUpdateWithoutAgreementsInput>
+    create: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAgreementsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAgreementsInput, UserUncheckedUpdateWithoutAgreementsInput>
+  }
+
+  export type UserUpdateWithoutAgreementsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAgreementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProductUpsertWithoutAgreementsInput = {
+    update: XOR<ProductUpdateWithoutAgreementsInput, ProductUncheckedUpdateWithoutAgreementsInput>
+    create: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutAgreementsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutAgreementsInput, ProductUncheckedUpdateWithoutAgreementsInput>
+  }
+
+  export type ProductUpdateWithoutAgreementsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUpdateManyWithoutProductNestedInput
+    rewards?: RewardUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutAgreementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type UserCreateWithoutSalesSoldInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
+    agreements?: AgreementCreateNestedManyWithoutUserInput
+    salesBought?: SaleCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    rewards?: RewardCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSalesSoldInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSalesSoldInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSalesSoldInput, UserUncheckedCreateWithoutSalesSoldInput>
+  }
+
+  export type UserCreateWithoutSalesBoughtInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
+    agreements?: AgreementCreateNestedManyWithoutUserInput
+    salesSold?: SaleCreateNestedManyWithoutSellerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    rewards?: RewardCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSalesBoughtInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSalesBoughtInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSalesBoughtInput, UserUncheckedCreateWithoutSalesBoughtInput>
+  }
+
+  export type SaleItemCreateWithoutSaleInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    quantity: number
+    product: ProductCreateNestedOneWithoutSaleItemsInput
+  }
+
+  export type SaleItemUncheckedCreateWithoutSaleInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productId: number
+    quantity: number
+  }
+
+  export type SaleItemCreateOrConnectWithoutSaleInput = {
+    where: SaleItemWhereUniqueInput
+    create: XOR<SaleItemCreateWithoutSaleInput, SaleItemUncheckedCreateWithoutSaleInput>
+  }
+
+  export type SaleItemCreateManySaleInputEnvelope = {
+    data: SaleItemCreateManySaleInput | SaleItemCreateManySaleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutSalesSoldInput = {
+    update: XOR<UserUpdateWithoutSalesSoldInput, UserUncheckedUpdateWithoutSalesSoldInput>
+    create: XOR<UserCreateWithoutSalesSoldInput, UserUncheckedCreateWithoutSalesSoldInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSalesSoldInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSalesSoldInput, UserUncheckedUpdateWithoutSalesSoldInput>
+  }
+
+  export type UserUpdateWithoutSalesSoldInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSalesSoldInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutSalesBoughtInput = {
+    update: XOR<UserUpdateWithoutSalesBoughtInput, UserUncheckedUpdateWithoutSalesBoughtInput>
+    create: XOR<UserCreateWithoutSalesBoughtInput, UserUncheckedCreateWithoutSalesBoughtInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSalesBoughtInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSalesBoughtInput, UserUncheckedUpdateWithoutSalesBoughtInput>
+  }
+
+  export type UserUpdateWithoutSalesBoughtInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUpdateManyWithoutSellerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSalesBoughtInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type SaleItemUpsertWithWhereUniqueWithoutSaleInput = {
+    where: SaleItemWhereUniqueInput
+    update: XOR<SaleItemUpdateWithoutSaleInput, SaleItemUncheckedUpdateWithoutSaleInput>
+    create: XOR<SaleItemCreateWithoutSaleInput, SaleItemUncheckedCreateWithoutSaleInput>
+  }
+
+  export type SaleItemUpdateWithWhereUniqueWithoutSaleInput = {
+    where: SaleItemWhereUniqueInput
+    data: XOR<SaleItemUpdateWithoutSaleInput, SaleItemUncheckedUpdateWithoutSaleInput>
+  }
+
+  export type SaleItemUpdateManyWithWhereWithoutSaleInput = {
+    where: SaleItemScalarWhereInput
+    data: XOR<SaleItemUpdateManyMutationInput, SaleItemUncheckedUpdateManyWithoutSaleInput>
+  }
+
+  export type SaleCreateWithoutItemsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    date?: Date | string
+    seller: UserCreateNestedOneWithoutSalesSoldInput
+    buyer: UserCreateNestedOneWithoutSalesBoughtInput
+  }
+
+  export type SaleUncheckedCreateWithoutItemsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    date?: Date | string
+    sellerId: number
+    buyerId: number
+  }
+
+  export type SaleCreateOrConnectWithoutItemsInput = {
+    where: SaleWhereUniqueInput
+    create: XOR<SaleCreateWithoutItemsInput, SaleUncheckedCreateWithoutItemsInput>
+  }
+
+  export type ProductCreateWithoutSaleItemsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductCreateNestedManyWithoutProductInput
+    agreements?: AgreementCreateNestedManyWithoutProductInput
+    rewards?: RewardCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutSaleItemsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutSaleItemsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutSaleItemsInput, ProductUncheckedCreateWithoutSaleItemsInput>
+  }
+
+  export type SaleUpsertWithoutItemsInput = {
+    update: XOR<SaleUpdateWithoutItemsInput, SaleUncheckedUpdateWithoutItemsInput>
+    create: XOR<SaleCreateWithoutItemsInput, SaleUncheckedCreateWithoutItemsInput>
+    where?: SaleWhereInput
+  }
+
+  export type SaleUpdateToOneWithWhereWithoutItemsInput = {
+    where?: SaleWhereInput
+    data: XOR<SaleUpdateWithoutItemsInput, SaleUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type SaleUpdateWithoutItemsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    seller?: UserUpdateOneRequiredWithoutSalesSoldNestedInput
+    buyer?: UserUpdateOneRequiredWithoutSalesBoughtNestedInput
+  }
+
+  export type SaleUncheckedUpdateWithoutItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    sellerId?: IntFieldUpdateOperationsInput | number
+    buyerId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ProductUpsertWithoutSaleItemsInput = {
+    update: XOR<ProductUpdateWithoutSaleItemsInput, ProductUncheckedUpdateWithoutSaleItemsInput>
+    create: XOR<ProductCreateWithoutSaleItemsInput, ProductUncheckedCreateWithoutSaleItemsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutSaleItemsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutSaleItemsInput, ProductUncheckedUpdateWithoutSaleItemsInput>
+  }
+
+  export type ProductUpdateWithoutSaleItemsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUpdateManyWithoutProductNestedInput
+    rewards?: RewardUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutSaleItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type UserCreateWithoutRewardsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
+    agreements?: AgreementCreateNestedManyWithoutUserInput
+    salesSold?: SaleCreateNestedManyWithoutSellerInput
+    salesBought?: SaleCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRewardsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
+    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRewardsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
+  }
+
+  export type ProductCreateWithoutRewardsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductCreateNestedManyWithoutProductInput
+    agreements?: AgreementCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutRewardsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutRewardsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutRewardsInput, ProductUncheckedCreateWithoutRewardsInput>
+  }
+
+  export type UserUpsertWithoutRewardsInput = {
+    update: XOR<UserUpdateWithoutRewardsInput, UserUncheckedUpdateWithoutRewardsInput>
+    create: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRewardsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRewardsInput, UserUncheckedUpdateWithoutRewardsInput>
+  }
+
+  export type UserUpdateWithoutRewardsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRewardsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProductUpsertWithoutRewardsInput = {
+    update: XOR<ProductUpdateWithoutRewardsInput, ProductUncheckedUpdateWithoutRewardsInput>
+    create: XOR<ProductCreateWithoutRewardsInput, ProductUncheckedCreateWithoutRewardsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutRewardsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutRewardsInput, ProductUncheckedUpdateWithoutRewardsInput>
+  }
+
+  export type ProductUpdateWithoutRewardsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutRewardsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ReferralCreateWithoutCommissionsInput = {
@@ -27101,190 +26140,6 @@ export namespace Prisma {
     referredId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type UserCreateWithoutRewardsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
-    salesSold?: SaleCreateNestedManyWithoutSellerInput
-    salesBought?: SaleCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
-    verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutRewardsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
-    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
-    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
-    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutRewardsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
-  }
-
-  export type MachineCreateWithoutRewardsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
-    level: number
-    agreements?: AgreementCreateNestedManyWithoutMachineInput
-    TrialFund?: TrialFundCreateNestedManyWithoutMachineInput
-  }
-
-  export type MachineUncheckedCreateWithoutRewardsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
-    level: number
-    agreements?: AgreementUncheckedCreateNestedManyWithoutMachineInput
-    TrialFund?: TrialFundUncheckedCreateNestedManyWithoutMachineInput
-  }
-
-  export type MachineCreateOrConnectWithoutRewardsInput = {
-    where: MachineWhereUniqueInput
-    create: XOR<MachineCreateWithoutRewardsInput, MachineUncheckedCreateWithoutRewardsInput>
-  }
-
-  export type UserUpsertWithoutRewardsInput = {
-    update: XOR<UserUpdateWithoutRewardsInput, UserUncheckedUpdateWithoutRewardsInput>
-    create: XOR<UserCreateWithoutRewardsInput, UserUncheckedCreateWithoutRewardsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutRewardsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutRewardsInput, UserUncheckedUpdateWithoutRewardsInput>
-  }
-
-  export type UserUpdateWithoutRewardsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutRewardsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
-    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type MachineUpsertWithoutRewardsInput = {
-    update: XOR<MachineUpdateWithoutRewardsInput, MachineUncheckedUpdateWithoutRewardsInput>
-    create: XOR<MachineCreateWithoutRewardsInput, MachineUncheckedCreateWithoutRewardsInput>
-    where?: MachineWhereInput
-  }
-
-  export type MachineUpdateToOneWithWhereWithoutRewardsInput = {
-    where?: MachineWhereInput
-    data: XOR<MachineUpdateWithoutRewardsInput, MachineUncheckedUpdateWithoutRewardsInput>
-  }
-
-  export type MachineUpdateWithoutRewardsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    agreements?: AgreementUpdateManyWithoutMachineNestedInput
-    TrialFund?: TrialFundUpdateManyWithoutMachineNestedInput
-  }
-
-  export type MachineUncheckedUpdateWithoutRewardsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
-    level?: IntFieldUpdateOperationsInput | number
-    agreements?: AgreementUncheckedUpdateManyWithoutMachineNestedInput
-    TrialFund?: TrialFundUncheckedUpdateManyWithoutMachineNestedInput
-  }
-
   export type UserCreateWithoutWalletInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27294,17 +26149,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
     rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWalletInput = {
@@ -27317,17 +26173,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWalletInput = {
@@ -27355,17 +26212,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletInput = {
@@ -27378,17 +26236,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWithdrawsInput = {
@@ -27400,17 +26259,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
     rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawsInput = {
@@ -27423,17 +26283,18 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawsInput = {
@@ -27461,17 +26322,18 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawsInput = {
@@ -27484,20 +26346,21 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutTrialFundsInput = {
+  export type UserCreateWithoutTrialFundInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     username: string
@@ -27506,9 +26369,10 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
     agreements?: AgreementCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
@@ -27516,10 +26380,10 @@ export namespace Prisma {
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
     rewards?: RewardCreateNestedManyWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutTrialFundsInput = {
+  export type UserUncheckedCreateWithoutTrialFundInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27529,9 +26393,10 @@ export namespace Prisma {
     emailVerified?: boolean
     password: string
     referralCode?: string | null
+    role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userNFTs?: UserNFTUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
@@ -27539,15 +26404,15 @@ export namespace Prisma {
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    PasswordReset?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutTrialFundsInput = {
+  export type UserCreateOrConnectWithoutTrialFundInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTrialFundsInput, UserUncheckedCreateWithoutTrialFundsInput>
+    create: XOR<UserCreateWithoutTrialFundInput, UserUncheckedCreateWithoutTrialFundInput>
   }
 
-  export type MachineCreateWithoutTrialFundInput = {
+  export type ProductCreateWithoutTrialFundsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     title: string
@@ -27556,13 +26421,16 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
     level: number
-    agreements?: AgreementCreateNestedManyWithoutMachineInput
-    rewards?: RewardCreateNestedManyWithoutMachineInput
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductCreateNestedManyWithoutProductInput
+    agreements?: AgreementCreateNestedManyWithoutProductInput
+    rewards?: RewardCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemCreateNestedManyWithoutProductInput
   }
 
-  export type MachineUncheckedCreateWithoutTrialFundInput = {
+  export type ProductUncheckedCreateWithoutTrialFundsInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27572,29 +26440,32 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    rentalDays: number
     level: number
-    agreements?: AgreementUncheckedCreateNestedManyWithoutMachineInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutMachineInput
+    rentalDays?: number | null
+    deletedAt?: Date | string | null
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
+    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
   }
 
-  export type MachineCreateOrConnectWithoutTrialFundInput = {
-    where: MachineWhereUniqueInput
-    create: XOR<MachineCreateWithoutTrialFundInput, MachineUncheckedCreateWithoutTrialFundInput>
+  export type ProductCreateOrConnectWithoutTrialFundsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutTrialFundsInput, ProductUncheckedCreateWithoutTrialFundsInput>
   }
 
-  export type UserUpsertWithoutTrialFundsInput = {
-    update: XOR<UserUpdateWithoutTrialFundsInput, UserUncheckedUpdateWithoutTrialFundsInput>
-    create: XOR<UserCreateWithoutTrialFundsInput, UserUncheckedCreateWithoutTrialFundsInput>
+  export type UserUpsertWithoutTrialFundInput = {
+    update: XOR<UserUpdateWithoutTrialFundInput, UserUncheckedUpdateWithoutTrialFundInput>
+    create: XOR<UserCreateWithoutTrialFundInput, UserUncheckedCreateWithoutTrialFundInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutTrialFundsInput = {
+  export type UserUpdateToOneWithWhereWithoutTrialFundInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutTrialFundsInput, UserUncheckedUpdateWithoutTrialFundsInput>
+    data: XOR<UserUpdateWithoutTrialFundInput, UserUncheckedUpdateWithoutTrialFundInput>
   }
 
-  export type UserUpdateWithoutTrialFundsInput = {
+  export type UserUpdateWithoutTrialFundInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
@@ -27603,9 +26474,10 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
     agreements?: AgreementUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
@@ -27613,10 +26485,10 @@ export namespace Prisma {
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
     rewards?: RewardUpdateManyWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutTrialFundsInput = {
+  export type UserUncheckedUpdateWithoutTrialFundInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27626,9 +26498,10 @@ export namespace Prisma {
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userNFTs?: UserNFTUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
@@ -27636,21 +26509,21 @@ export namespace Prisma {
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    PasswordReset?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type MachineUpsertWithoutTrialFundInput = {
-    update: XOR<MachineUpdateWithoutTrialFundInput, MachineUncheckedUpdateWithoutTrialFundInput>
-    create: XOR<MachineCreateWithoutTrialFundInput, MachineUncheckedCreateWithoutTrialFundInput>
-    where?: MachineWhereInput
+  export type ProductUpsertWithoutTrialFundsInput = {
+    update: XOR<ProductUpdateWithoutTrialFundsInput, ProductUncheckedUpdateWithoutTrialFundsInput>
+    create: XOR<ProductCreateWithoutTrialFundsInput, ProductUncheckedCreateWithoutTrialFundsInput>
+    where?: ProductWhereInput
   }
 
-  export type MachineUpdateToOneWithWhereWithoutTrialFundInput = {
-    where?: MachineWhereInput
-    data: XOR<MachineUpdateWithoutTrialFundInput, MachineUncheckedUpdateWithoutTrialFundInput>
+  export type ProductUpdateToOneWithWhereWithoutTrialFundsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutTrialFundsInput, ProductUncheckedUpdateWithoutTrialFundsInput>
   }
 
-  export type MachineUpdateWithoutTrialFundInput = {
+  export type ProductUpdateWithoutTrialFundsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     title?: StringFieldUpdateOperationsInput | string
@@ -27659,13 +26532,16 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
-    agreements?: AgreementUpdateManyWithoutMachineNestedInput
-    rewards?: RewardUpdateManyWithoutMachineNestedInput
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUpdateManyWithoutProductNestedInput
+    rewards?: RewardUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUpdateManyWithoutProductNestedInput
   }
 
-  export type MachineUncheckedUpdateWithoutTrialFundInput = {
+  export type ProductUncheckedUpdateWithoutTrialFundsInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27675,10 +26551,13 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    rentalDays?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
-    agreements?: AgreementUncheckedUpdateManyWithoutMachineNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutMachineNestedInput
+    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
+    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type WithdrawCreateManyUserInput = {
@@ -27692,10 +26571,10 @@ export namespace Prisma {
     date?: Date | string
   }
 
-  export type UserNFTCreateManyUserInput = {
+  export type UserProductCreateManyUserInput = {
     id?: number
     acquiredAt?: Date | string
-    nftId: number
+    productId: number
   }
 
   export type AgreementCreateManyUserInput = {
@@ -27705,7 +26584,7 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     status?: $Enums.AgreementStatus
-    machineId: number
+    productId: number
   }
 
   export type SaleCreateManySellerInput = {
@@ -27747,18 +26626,7 @@ export namespace Prisma {
     reward: Decimal | DecimalJsLike | number | string
     date?: Date | string
     status?: $Enums.RewardStatus
-    machineId: number
-  }
-
-  export type TrialFundCreateManyUserInput = {
-    id?: number
-    amount?: Decimal | DecimalJsLike | number | string
-    grantedAt?: Date | string
-    expiresAt: Date | string
-    status?: $Enums.TrialFundStatus
-    recoveredAt?: Date | string | null
-    machineId?: number | null
-    usedAmount?: Decimal | DecimalJsLike | number | string
+    productId: number
   }
 
   export type VerificationCreateManyUserInput = {
@@ -27809,21 +26677,21 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserNFTUpdateWithoutUserInput = {
+  export type UserProductUpdateWithoutUserInput = {
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    nft?: NFTUpdateOneRequiredWithoutUserNFTsNestedInput
+    product?: ProductUpdateOneRequiredWithoutUserProductsNestedInput
   }
 
-  export type UserNFTUncheckedUpdateWithoutUserInput = {
+  export type UserProductUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    nftId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type UserNFTUncheckedUpdateManyWithoutUserInput = {
+  export type UserProductUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    nftId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type AgreementUpdateWithoutUserInput = {
@@ -27832,7 +26700,7 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    machine?: MachineUpdateOneRequiredWithoutAgreementsNestedInput
+    product?: ProductUpdateOneRequiredWithoutAgreementsNestedInput
   }
 
   export type AgreementUncheckedUpdateWithoutUserInput = {
@@ -27842,7 +26710,7 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    machineId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type AgreementUncheckedUpdateManyWithoutUserInput = {
@@ -27852,7 +26720,7 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    machineId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleUpdateWithoutSellerInput = {
@@ -27961,7 +26829,7 @@ export namespace Prisma {
     reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
-    machine?: MachineUpdateOneRequiredWithoutRewardsNestedInput
+    product?: ProductUpdateOneRequiredWithoutRewardsNestedInput
   }
 
   export type RewardUncheckedUpdateWithoutUserInput = {
@@ -27971,7 +26839,7 @@ export namespace Prisma {
     reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
-    machineId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type RewardUncheckedUpdateManyWithoutUserInput = {
@@ -27981,39 +26849,7 @@ export namespace Prisma {
     reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRewardStatusFieldUpdateOperationsInput | $Enums.RewardStatus
-    machineId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type TrialFundUpdateWithoutUserInput = {
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
-    recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    machine?: MachineUpdateOneWithoutTrialFundNestedInput
-  }
-
-  export type TrialFundUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
-    recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    machineId?: NullableIntFieldUpdateOperationsInput | number | null
-    usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-  }
-
-  export type TrialFundUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
-    recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    machineId?: NullableIntFieldUpdateOperationsInput | number | null
-    usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type VerificationUpdateWithoutUserInput = {
@@ -28062,30 +26898,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserNFTCreateManyNftInput = {
+  export type UserProductCreateManyProductInput = {
     id?: number
     acquiredAt?: Date | string
     userId: number
   }
 
-  export type UserNFTUpdateWithoutNftInput = {
-    acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserNFTsNestedInput
-  }
-
-  export type UserNFTUncheckedUpdateWithoutNftInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UserNFTUncheckedUpdateManyWithoutNftInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type AgreementCreateManyMachineInput = {
+  export type AgreementCreateManyProductInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28095,7 +26914,7 @@ export namespace Prisma {
     userId: number
   }
 
-  export type RewardCreateManyMachineInput = {
+  export type RewardCreateManyProductInput = {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28105,7 +26924,7 @@ export namespace Prisma {
     userId: number
   }
 
-  export type TrialFundCreateManyMachineInput = {
+  export type TrialFundCreateManyProductInput = {
     id?: number
     userId: number
     amount?: Decimal | DecimalJsLike | number | string
@@ -28116,7 +26935,32 @@ export namespace Prisma {
     usedAmount?: Decimal | DecimalJsLike | number | string
   }
 
-  export type AgreementUpdateWithoutMachineInput = {
+  export type SaleItemCreateManyProductInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    saleId: number
+    quantity: number
+  }
+
+  export type UserProductUpdateWithoutProductInput = {
+    acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserProductsNestedInput
+  }
+
+  export type UserProductUncheckedUpdateWithoutProductInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserProductUncheckedUpdateManyWithoutProductInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AgreementUpdateWithoutProductInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28125,7 +26969,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutAgreementsNestedInput
   }
 
-  export type AgreementUncheckedUpdateWithoutMachineInput = {
+  export type AgreementUncheckedUpdateWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28135,7 +26979,7 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type AgreementUncheckedUpdateManyWithoutMachineInput = {
+  export type AgreementUncheckedUpdateManyWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28145,7 +26989,7 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type RewardUpdateWithoutMachineInput = {
+  export type RewardUpdateWithoutProductInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reward?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -28154,7 +26998,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutRewardsNestedInput
   }
 
-  export type RewardUncheckedUpdateWithoutMachineInput = {
+  export type RewardUncheckedUpdateWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28164,7 +27008,7 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type RewardUncheckedUpdateManyWithoutMachineInput = {
+  export type RewardUncheckedUpdateManyWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -28174,17 +27018,17 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type TrialFundUpdateWithoutMachineInput = {
+  export type TrialFundUpdateWithoutProductInput = {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
     recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    user?: UserUpdateOneRequiredWithoutTrialFundsNestedInput
+    user?: UserUpdateOneRequiredWithoutTrialFundNestedInput
   }
 
-  export type TrialFundUncheckedUpdateWithoutMachineInput = {
+  export type TrialFundUncheckedUpdateWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -28195,7 +27039,7 @@ export namespace Prisma {
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
-  export type TrialFundUncheckedUpdateManyWithoutMachineInput = {
+  export type TrialFundUncheckedUpdateManyWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -28206,38 +27050,26 @@ export namespace Prisma {
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
-  export type SaleItemCreateManySaleInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    productType: $Enums.ProductType
-    productId: number
-    quantity: number
-  }
-
-  export type SaleItemUpdateWithoutSaleInput = {
+  export type SaleItemUpdateWithoutProductInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productType?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
+    sale?: SaleUpdateOneRequiredWithoutItemsNestedInput
   }
 
-  export type SaleItemUncheckedUpdateWithoutSaleInput = {
+  export type SaleItemUncheckedUpdateWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productType?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    productId?: IntFieldUpdateOperationsInput | number
+    saleId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
   }
 
-  export type SaleItemUncheckedUpdateManyWithoutSaleInput = {
+  export type SaleItemUncheckedUpdateManyWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    productType?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    productId?: IntFieldUpdateOperationsInput | number
+    saleId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
   }
 
@@ -28270,6 +27102,37 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     percentage?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type SaleItemCreateManySaleInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    productId: number
+    quantity: number
+  }
+
+  export type SaleItemUpdateWithoutSaleInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    product?: ProductUpdateOneRequiredWithoutSaleItemsNestedInput
+  }
+
+  export type SaleItemUncheckedUpdateWithoutSaleInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SaleItemUncheckedUpdateManyWithoutSaleInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productId?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
   }
 
 
