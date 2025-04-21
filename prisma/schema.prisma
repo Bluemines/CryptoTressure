@@ -31,7 +31,7 @@ model User {
   wallet            Wallet?
   withdraws         Withdraw[]
   userProducts      UserProduct[]      
-  agreements        Agreement[]        
+  rentals           Rental[]       
   salesSold         Sale[]             @relation("SaleSeller")
   salesBought       Sale[]             @relation("SaleBuyer")
   referralsMade     Referral[]         @relation("UserReferralsMade")
@@ -80,14 +80,14 @@ model Product {
   dailyIncome  Decimal
   fee          Decimal
   level        Int
-  rentalDays   Int?
   deletedAt    DateTime?
 
-  userProducts UserProduct[]  
-  agreements   Agreement[]    
+  userProducts UserProduct[]    
   rewards      Reward[]       
   trialFunds   TrialFund[]    
-  saleItems    SaleItem[]     
+  saleItems    SaleItem[]   
+    
+  rentals    Rental[] 
 }
 
 model UserProduct {
@@ -101,6 +101,18 @@ model UserProduct {
   productId  Int
 
   @@unique([userId, productId]) 
+}
+
+model Rental {
+  id         Int      @id @default(autoincrement())
+  rentedAt   DateTime @default(now())
+  duration   Int      
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  Int
 }
 
 model Referral {
@@ -119,49 +131,29 @@ model Referral {
 }
 
 model Agreement {
-  id           Int             @id @default(autoincrement())
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-
-  startDate    DateTime
-  endDate      DateTime
-  status       AgreementStatus @default(ACTIVE)
-
-  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       Int
-
-  product      Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId    Int
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
 }
 
 model Sale {
-  id           Int        @id @default(autoincrement())
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-
-  amount       Decimal
-  date         DateTime   @default(now())
-
-  seller       User       @relation("SaleSeller", fields: [sellerId], references: [id], onDelete: Cascade)
-  sellerId     Int
-
-  buyer        User       @relation("SaleBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
-  buyerId      Int
-
-  items        SaleItem[]
+  id         Int        @id @default(autoincrement())
+  total      Decimal
+  date       DateTime   @default(now())
+  seller     User       @relation("SaleSeller", fields: [sellerId], references: [id])
+  sellerId   Int
+  buyer      User       @relation("SaleBuyer",  fields: [buyerId],  references: [id])
+  buyerId    Int
+  items      SaleItem[]
 }
 
 model SaleItem {
   id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-
   sale       Sale      @relation(fields: [saleId], references: [id], onDelete: Cascade)
   saleId     Int
-
   product    Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId  Int
-
   quantity   Int
 }
 

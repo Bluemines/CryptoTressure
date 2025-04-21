@@ -14,7 +14,7 @@ import {
 export class ProductService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // ─── ADMIN────────────────────────────────────────────
+  // ────────────────── ADMIN─────────────────────────────
   async createProduct(input: ProductCreateInput): Promise<Product> {
     const {
       title,
@@ -37,7 +37,6 @@ export class ProductService {
         dailyIncome,
         fee,
         level,
-        rentalDays,
       },
     });
   }
@@ -97,5 +96,90 @@ export class ProductService {
     });
   }
 
-  // ─── CUSTOMER methods (rent/buy) could be added here ──────────────────────
+  // ────────────── CUSTOMER  ──────────────────────
+  async getPopularProducts(limit = 3): Promise<Product[]> {
+    const products = await this.prisma.product.findMany({
+      where: { deletedAt: null },
+      include: {
+        _count: {
+          select: { rentals: true, saleItems: true },
+        },
+      },
+    });
+
+    type WithCount = Product & {
+      _count: { rentals: number; saleItems: number };
+      popularity: number;
+    };
+    const withPop: WithCount[] = products.map((p) => ({
+      ...p,
+      _count: p._count,
+      popularity: p._count.rentals + p._count.saleItems,
+    }));
+
+    // Pick the ones with any activity
+    const activeProducts: Product[] = withPop
+      .filter((p) => p.popularity > 0)
+      .sort((a, b) => b.popularity - a.popularity)
+      .slice(0, limit)
+      .map(({ _count, popularity, ...rest }) => rest);
+
+    if (activeProducts.length > 0) {
+      return activeProducts;
+    }
+
+    // Random products
+    const pool: Product[] = withPop.map(
+      ({ _count, popularity, ...rest }) => rest,
+    );
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, limit);
+  }
+
+  async getUserProducts(userId: number): Promise<Product[]> {
+    return this.prisma.product.findMany({
+      where: {
+        deletedAt: null,
+        OR: [
+          { userProducts: { some: { userId } } },
+          { rentals: { some: { userId } } },
+          {
+            saleItems: {
+              some: {
+                sale: { buyerId: userId },
+              },
+            },
+          },
+        ],
+      },
+    });
+  }
+
+  async viewProduct(
+    id: number,
+  ): Promise<Product & { _count: { rentals: number; saleItems: number } }> {
+    const product = await this.prisma.product.findFirst({
+      where: { id, deletedAt: null },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        image: true,
+        price: true,
+        dailyIncome: true, 
+        fee: true, 
+        level: true,
+        deletedAt: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: { select: { rentals: true, saleItems: true } },
+      },
+    });
+
+    if (!product) throw new ApiError(404, 'Product not found');
+    return product;
+  }
 }

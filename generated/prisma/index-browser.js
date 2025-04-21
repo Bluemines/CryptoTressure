@@ -159,13 +159,20 @@ exports.Prisma.ProductScalarFieldEnum = {
   dailyIncome: 'dailyIncome',
   fee: 'fee',
   level: 'level',
-  rentalDays: 'rentalDays',
   deletedAt: 'deletedAt'
 };
 
 exports.Prisma.UserProductScalarFieldEnum = {
   id: 'id',
   acquiredAt: 'acquiredAt',
+  userId: 'userId',
+  productId: 'productId'
+};
+
+exports.Prisma.RentalScalarFieldEnum = {
+  id: 'id',
+  rentedAt: 'rentedAt',
+  duration: 'duration',
   userId: 'userId',
   productId: 'productId'
 };
@@ -180,20 +187,14 @@ exports.Prisma.ReferralScalarFieldEnum = {
 
 exports.Prisma.AgreementScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  status: 'status',
-  userId: 'userId',
-  productId: 'productId'
+  title: 'title',
+  content: 'content',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SaleScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  amount: 'amount',
+  total: 'total',
   date: 'date',
   sellerId: 'sellerId',
   buyerId: 'buyerId'
@@ -201,8 +202,6 @@ exports.Prisma.SaleScalarFieldEnum = {
 
 exports.Prisma.SaleItemScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   saleId: 'saleId',
   productId: 'productId',
   quantity: 'quantity'
@@ -279,11 +278,6 @@ exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN'
 };
 
-exports.AgreementStatus = exports.$Enums.AgreementStatus = {
-  ACTIVE: 'ACTIVE',
-  CLOSED: 'CLOSED'
-};
-
 exports.RewardStatus = exports.$Enums.RewardStatus = {
   FAILED: 'FAILED',
   SUCCESS: 'SUCCESS'
@@ -306,6 +300,7 @@ exports.Prisma.ModelName = {
   PasswordReset: 'PasswordReset',
   Product: 'Product',
   UserProduct: 'UserProduct',
+  Rental: 'Rental',
   Referral: 'Referral',
   Agreement: 'Agreement',
   Sale: 'Sale',

@@ -39,6 +39,11 @@ export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
  */
 export type UserProduct = $Result.DefaultSelection<Prisma.$UserProductPayload>
 /**
+ * Model Rental
+ * 
+ */
+export type Rental = $Result.DefaultSelection<Prisma.$RentalPayload>
+/**
  * Model Referral
  * 
  */
@@ -336,6 +341,16 @@ export class PrismaClient<
     * ```
     */
   get userProduct(): Prisma.UserProductDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rental`: Exposes CRUD operations for the **Rental** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Rentals
+    * const rentals = await prisma.rental.findMany()
+    * ```
+    */
+  get rental(): Prisma.RentalDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.referral`: Exposes CRUD operations for the **Referral** model.
@@ -871,6 +886,7 @@ export namespace Prisma {
     PasswordReset: 'PasswordReset',
     Product: 'Product',
     UserProduct: 'UserProduct',
+    Rental: 'Rental',
     Referral: 'Referral',
     Agreement: 'Agreement',
     Sale: 'Sale',
@@ -898,7 +914,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "verification" | "passwordReset" | "product" | "userProduct" | "referral" | "agreement" | "sale" | "saleItem" | "reward" | "commission" | "wallet" | "withdraw" | "trialFund"
+      modelProps: "user" | "verification" | "passwordReset" | "product" | "userProduct" | "rental" | "referral" | "agreement" | "sale" | "saleItem" | "reward" | "commission" | "wallet" | "withdraw" | "trialFund"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1269,6 +1285,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserProductCountArgs<ExtArgs>
             result: $Utils.Optional<UserProductCountAggregateOutputType> | number
+          }
+        }
+      }
+      Rental: {
+        payload: Prisma.$RentalPayload<ExtArgs>
+        fields: Prisma.RentalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RentalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RentalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          findFirst: {
+            args: Prisma.RentalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RentalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          findMany: {
+            args: Prisma.RentalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>[]
+          }
+          create: {
+            args: Prisma.RentalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          createMany: {
+            args: Prisma.RentalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RentalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>[]
+          }
+          delete: {
+            args: Prisma.RentalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          update: {
+            args: Prisma.RentalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          deleteMany: {
+            args: Prisma.RentalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RentalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RentalUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>[]
+          }
+          upsert: {
+            args: Prisma.RentalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RentalPayload>
+          }
+          aggregate: {
+            args: Prisma.RentalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRental>
+          }
+          groupBy: {
+            args: Prisma.RentalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RentalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RentalCountArgs<ExtArgs>
+            result: $Utils.Optional<RentalCountAggregateOutputType> | number
           }
         }
       }
@@ -2027,6 +2117,7 @@ export namespace Prisma {
     passwordReset?: PasswordResetOmit
     product?: ProductOmit
     userProduct?: UserProductOmit
+    rental?: RentalOmit
     referral?: ReferralOmit
     agreement?: AgreementOmit
     sale?: SaleOmit
@@ -2132,7 +2223,7 @@ export namespace Prisma {
   export type UserCountOutputType = {
     withdraws: number
     userProducts: number
-    agreements: number
+    rentals: number
     salesSold: number
     salesBought: number
     referralsMade: number
@@ -2145,7 +2236,7 @@ export namespace Prisma {
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     withdraws?: boolean | UserCountOutputTypeCountWithdrawsArgs
     userProducts?: boolean | UserCountOutputTypeCountUserProductsArgs
-    agreements?: boolean | UserCountOutputTypeCountAgreementsArgs
+    rentals?: boolean | UserCountOutputTypeCountRentalsArgs
     salesSold?: boolean | UserCountOutputTypeCountSalesSoldArgs
     salesBought?: boolean | UserCountOutputTypeCountSalesBoughtArgs
     referralsMade?: boolean | UserCountOutputTypeCountReferralsMadeArgs
@@ -2183,8 +2274,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AgreementWhereInput
+  export type UserCountOutputTypeCountRentalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RentalWhereInput
   }
 
   /**
@@ -2243,18 +2334,18 @@ export namespace Prisma {
 
   export type ProductCountOutputType = {
     userProducts: number
-    agreements: number
     rewards: number
     trialFunds: number
     saleItems: number
+    rentals: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userProducts?: boolean | ProductCountOutputTypeCountUserProductsArgs
-    agreements?: boolean | ProductCountOutputTypeCountAgreementsArgs
     rewards?: boolean | ProductCountOutputTypeCountRewardsArgs
     trialFunds?: boolean | ProductCountOutputTypeCountTrialFundsArgs
     saleItems?: boolean | ProductCountOutputTypeCountSaleItemsArgs
+    rentals?: boolean | ProductCountOutputTypeCountRentalsArgs
   }
 
   // Custom InputTypes
@@ -2278,13 +2369,6 @@ export namespace Prisma {
   /**
    * ProductCountOutputType without action
    */
-  export type ProductCountOutputTypeCountAgreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AgreementWhereInput
-  }
-
-  /**
-   * ProductCountOutputType without action
-   */
   export type ProductCountOutputTypeCountRewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RewardWhereInput
   }
@@ -2301,6 +2385,13 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountSaleItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SaleItemWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountRentalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RentalWhereInput
   }
 
 
@@ -2611,7 +2702,7 @@ export namespace Prisma {
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdraws?: boolean | User$withdrawsArgs<ExtArgs>
     userProducts?: boolean | User$userProductsArgs<ExtArgs>
-    agreements?: boolean | User$agreementsArgs<ExtArgs>
+    rentals?: boolean | User$rentalsArgs<ExtArgs>
     salesSold?: boolean | User$salesSoldArgs<ExtArgs>
     salesBought?: boolean | User$salesBoughtArgs<ExtArgs>
     referralsMade?: boolean | User$referralsMadeArgs<ExtArgs>
@@ -2667,7 +2758,7 @@ export namespace Prisma {
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdraws?: boolean | User$withdrawsArgs<ExtArgs>
     userProducts?: boolean | User$userProductsArgs<ExtArgs>
-    agreements?: boolean | User$agreementsArgs<ExtArgs>
+    rentals?: boolean | User$rentalsArgs<ExtArgs>
     salesSold?: boolean | User$salesSoldArgs<ExtArgs>
     salesBought?: boolean | User$salesBoughtArgs<ExtArgs>
     referralsMade?: boolean | User$referralsMadeArgs<ExtArgs>
@@ -2687,7 +2778,7 @@ export namespace Prisma {
       wallet: Prisma.$WalletPayload<ExtArgs> | null
       withdraws: Prisma.$WithdrawPayload<ExtArgs>[]
       userProducts: Prisma.$UserProductPayload<ExtArgs>[]
-      agreements: Prisma.$AgreementPayload<ExtArgs>[]
+      rentals: Prisma.$RentalPayload<ExtArgs>[]
       salesSold: Prisma.$SalePayload<ExtArgs>[]
       salesBought: Prisma.$SalePayload<ExtArgs>[]
       referralsMade: Prisma.$ReferralPayload<ExtArgs>[]
@@ -3105,7 +3196,7 @@ export namespace Prisma {
     wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     withdraws<T extends User$withdrawsArgs<ExtArgs> = {}>(args?: Subset<T, User$withdrawsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userProducts<T extends User$userProductsArgs<ExtArgs> = {}>(args?: Subset<T, User$userProductsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    agreements<T extends User$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, User$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rentals<T extends User$rentalsArgs<ExtArgs> = {}>(args?: Subset<T, User$rentalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesSold<T extends User$salesSoldArgs<ExtArgs> = {}>(args?: Subset<T, User$salesSoldArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesBought<T extends User$salesBoughtArgs<ExtArgs> = {}>(args?: Subset<T, User$salesBoughtArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     referralsMade<T extends User$referralsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$referralsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3608,27 +3699,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.agreements
+   * User.rentals
    */
-  export type User$agreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$rentalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Agreement
+     * Select specific fields to fetch from the Rental
      */
-    select?: AgreementSelect<ExtArgs> | null
+    select?: RentalSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Agreement
+     * Omit specific fields from the Rental
      */
-    omit?: AgreementOmit<ExtArgs> | null
+    omit?: RentalOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AgreementInclude<ExtArgs> | null
-    where?: AgreementWhereInput
-    orderBy?: AgreementOrderByWithRelationInput | AgreementOrderByWithRelationInput[]
-    cursor?: AgreementWhereUniqueInput
+    include?: RentalInclude<ExtArgs> | null
+    where?: RentalWhereInput
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    cursor?: RentalWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: AgreementScalarFieldEnum | AgreementScalarFieldEnum[]
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
   }
 
   /**
@@ -6092,7 +6183,6 @@ export namespace Prisma {
     dailyIncome: Decimal | null
     fee: Decimal | null
     level: number | null
-    rentalDays: number | null
   }
 
   export type ProductSumAggregateOutputType = {
@@ -6101,7 +6191,6 @@ export namespace Prisma {
     dailyIncome: Decimal | null
     fee: Decimal | null
     level: number | null
-    rentalDays: number | null
   }
 
   export type ProductMinAggregateOutputType = {
@@ -6115,7 +6204,6 @@ export namespace Prisma {
     dailyIncome: Decimal | null
     fee: Decimal | null
     level: number | null
-    rentalDays: number | null
     deletedAt: Date | null
   }
 
@@ -6130,7 +6218,6 @@ export namespace Prisma {
     dailyIncome: Decimal | null
     fee: Decimal | null
     level: number | null
-    rentalDays: number | null
     deletedAt: Date | null
   }
 
@@ -6145,7 +6232,6 @@ export namespace Prisma {
     dailyIncome: number
     fee: number
     level: number
-    rentalDays: number
     deletedAt: number
     _all: number
   }
@@ -6157,7 +6243,6 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     level?: true
-    rentalDays?: true
   }
 
   export type ProductSumAggregateInputType = {
@@ -6166,7 +6251,6 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     level?: true
-    rentalDays?: true
   }
 
   export type ProductMinAggregateInputType = {
@@ -6180,7 +6264,6 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     level?: true
-    rentalDays?: true
     deletedAt?: true
   }
 
@@ -6195,7 +6278,6 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     level?: true
-    rentalDays?: true
     deletedAt?: true
   }
 
@@ -6210,7 +6292,6 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     level?: true
-    rentalDays?: true
     deletedAt?: true
     _all?: true
   }
@@ -6312,7 +6393,6 @@ export namespace Prisma {
     dailyIncome: Decimal
     fee: Decimal
     level: number
-    rentalDays: number | null
     deletedAt: Date | null
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
@@ -6346,13 +6426,12 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     level?: boolean
-    rentalDays?: boolean
     deletedAt?: boolean
     userProducts?: boolean | Product$userProductsArgs<ExtArgs>
-    agreements?: boolean | Product$agreementsArgs<ExtArgs>
     rewards?: boolean | Product$rewardsArgs<ExtArgs>
     trialFunds?: boolean | Product$trialFundsArgs<ExtArgs>
     saleItems?: boolean | Product$saleItemsArgs<ExtArgs>
+    rentals?: boolean | Product$rentalsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -6367,7 +6446,6 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     level?: boolean
-    rentalDays?: boolean
     deletedAt?: boolean
   }, ExtArgs["result"]["product"]>
 
@@ -6382,7 +6460,6 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     level?: boolean
-    rentalDays?: boolean
     deletedAt?: boolean
   }, ExtArgs["result"]["product"]>
 
@@ -6397,17 +6474,16 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     level?: boolean
-    rentalDays?: boolean
     deletedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "level" | "rentalDays" | "deletedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "level" | "deletedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userProducts?: boolean | Product$userProductsArgs<ExtArgs>
-    agreements?: boolean | Product$agreementsArgs<ExtArgs>
     rewards?: boolean | Product$rewardsArgs<ExtArgs>
     trialFunds?: boolean | Product$trialFundsArgs<ExtArgs>
     saleItems?: boolean | Product$saleItemsArgs<ExtArgs>
+    rentals?: boolean | Product$rentalsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6417,10 +6493,10 @@ export namespace Prisma {
     name: "Product"
     objects: {
       userProducts: Prisma.$UserProductPayload<ExtArgs>[]
-      agreements: Prisma.$AgreementPayload<ExtArgs>[]
       rewards: Prisma.$RewardPayload<ExtArgs>[]
       trialFunds: Prisma.$TrialFundPayload<ExtArgs>[]
       saleItems: Prisma.$SaleItemPayload<ExtArgs>[]
+      rentals: Prisma.$RentalPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6433,7 +6509,6 @@ export namespace Prisma {
       dailyIncome: Prisma.Decimal
       fee: Prisma.Decimal
       level: number
-      rentalDays: number | null
       deletedAt: Date | null
     }, ExtArgs["result"]["product"]>
     composites: {}
@@ -6830,10 +6905,10 @@ export namespace Prisma {
   export interface Prisma__ProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     userProducts<T extends Product$userProductsArgs<ExtArgs> = {}>(args?: Subset<T, Product$userProductsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    agreements<T extends Product$agreementsArgs<ExtArgs> = {}>(args?: Subset<T, Product$agreementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgreementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rewards<T extends Product$rewardsArgs<ExtArgs> = {}>(args?: Subset<T, Product$rewardsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RewardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     trialFunds<T extends Product$trialFundsArgs<ExtArgs> = {}>(args?: Subset<T, Product$trialFundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrialFundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     saleItems<T extends Product$saleItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$saleItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SaleItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rentals<T extends Product$rentalsArgs<ExtArgs> = {}>(args?: Subset<T, Product$rentalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6873,7 +6948,6 @@ export namespace Prisma {
     readonly dailyIncome: FieldRef<"Product", 'Decimal'>
     readonly fee: FieldRef<"Product", 'Decimal'>
     readonly level: FieldRef<"Product", 'Int'>
-    readonly rentalDays: FieldRef<"Product", 'Int'>
     readonly deletedAt: FieldRef<"Product", 'DateTime'>
   }
     
@@ -7287,30 +7361,6 @@ export namespace Prisma {
   }
 
   /**
-   * Product.agreements
-   */
-  export type Product$agreementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Agreement
-     */
-    select?: AgreementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Agreement
-     */
-    omit?: AgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
-    where?: AgreementWhereInput
-    orderBy?: AgreementOrderByWithRelationInput | AgreementOrderByWithRelationInput[]
-    cursor?: AgreementWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AgreementScalarFieldEnum | AgreementScalarFieldEnum[]
-  }
-
-  /**
    * Product.rewards
    */
   export type Product$rewardsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7380,6 +7430,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SaleItemScalarFieldEnum | SaleItemScalarFieldEnum[]
+  }
+
+  /**
+   * Product.rentals
+   */
+  export type Product$rentalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    where?: RentalWhereInput
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    cursor?: RentalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
   }
 
   /**
@@ -8493,6 +8567,1118 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserProductInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Rental
+   */
+
+  export type AggregateRental = {
+    _count: RentalCountAggregateOutputType | null
+    _avg: RentalAvgAggregateOutputType | null
+    _sum: RentalSumAggregateOutputType | null
+    _min: RentalMinAggregateOutputType | null
+    _max: RentalMaxAggregateOutputType | null
+  }
+
+  export type RentalAvgAggregateOutputType = {
+    id: number | null
+    duration: number | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type RentalSumAggregateOutputType = {
+    id: number | null
+    duration: number | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type RentalMinAggregateOutputType = {
+    id: number | null
+    rentedAt: Date | null
+    duration: number | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type RentalMaxAggregateOutputType = {
+    id: number | null
+    rentedAt: Date | null
+    duration: number | null
+    userId: number | null
+    productId: number | null
+  }
+
+  export type RentalCountAggregateOutputType = {
+    id: number
+    rentedAt: number
+    duration: number
+    userId: number
+    productId: number
+    _all: number
+  }
+
+
+  export type RentalAvgAggregateInputType = {
+    id?: true
+    duration?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type RentalSumAggregateInputType = {
+    id?: true
+    duration?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type RentalMinAggregateInputType = {
+    id?: true
+    rentedAt?: true
+    duration?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type RentalMaxAggregateInputType = {
+    id?: true
+    rentedAt?: true
+    duration?: true
+    userId?: true
+    productId?: true
+  }
+
+  export type RentalCountAggregateInputType = {
+    id?: true
+    rentedAt?: true
+    duration?: true
+    userId?: true
+    productId?: true
+    _all?: true
+  }
+
+  export type RentalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Rental to aggregate.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Rentals
+    **/
+    _count?: true | RentalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RentalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RentalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RentalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RentalMaxAggregateInputType
+  }
+
+  export type GetRentalAggregateType<T extends RentalAggregateArgs> = {
+        [P in keyof T & keyof AggregateRental]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRental[P]>
+      : GetScalarType<T[P], AggregateRental[P]>
+  }
+
+
+
+
+  export type RentalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RentalWhereInput
+    orderBy?: RentalOrderByWithAggregationInput | RentalOrderByWithAggregationInput[]
+    by: RentalScalarFieldEnum[] | RentalScalarFieldEnum
+    having?: RentalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RentalCountAggregateInputType | true
+    _avg?: RentalAvgAggregateInputType
+    _sum?: RentalSumAggregateInputType
+    _min?: RentalMinAggregateInputType
+    _max?: RentalMaxAggregateInputType
+  }
+
+  export type RentalGroupByOutputType = {
+    id: number
+    rentedAt: Date
+    duration: number
+    userId: number
+    productId: number
+    _count: RentalCountAggregateOutputType | null
+    _avg: RentalAvgAggregateOutputType | null
+    _sum: RentalSumAggregateOutputType | null
+    _min: RentalMinAggregateOutputType | null
+    _max: RentalMaxAggregateOutputType | null
+  }
+
+  type GetRentalGroupByPayload<T extends RentalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RentalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RentalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RentalGroupByOutputType[P]>
+            : GetScalarType<T[P], RentalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RentalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rentedAt?: boolean
+    duration?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rental"]>
+
+  export type RentalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rentedAt?: boolean
+    duration?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rental"]>
+
+  export type RentalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rentedAt?: boolean
+    duration?: boolean
+    userId?: boolean
+    productId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rental"]>
+
+  export type RentalSelectScalar = {
+    id?: boolean
+    rentedAt?: boolean
+    duration?: boolean
+    userId?: boolean
+    productId?: boolean
+  }
+
+  export type RentalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rentedAt" | "duration" | "userId" | "productId", ExtArgs["result"]["rental"]>
+  export type RentalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type RentalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type RentalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $RentalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Rental"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      rentedAt: Date
+      duration: number
+      userId: number
+      productId: number
+    }, ExtArgs["result"]["rental"]>
+    composites: {}
+  }
+
+  type RentalGetPayload<S extends boolean | null | undefined | RentalDefaultArgs> = $Result.GetResult<Prisma.$RentalPayload, S>
+
+  type RentalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RentalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RentalCountAggregateInputType | true
+    }
+
+  export interface RentalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Rental'], meta: { name: 'Rental' } }
+    /**
+     * Find zero or one Rental that matches the filter.
+     * @param {RentalFindUniqueArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RentalFindUniqueArgs>(args: SelectSubset<T, RentalFindUniqueArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Rental that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RentalFindUniqueOrThrowArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RentalFindUniqueOrThrowArgs>(args: SelectSubset<T, RentalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Rental that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalFindFirstArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RentalFindFirstArgs>(args?: SelectSubset<T, RentalFindFirstArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Rental that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalFindFirstOrThrowArgs} args - Arguments to find a Rental
+     * @example
+     * // Get one Rental
+     * const rental = await prisma.rental.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RentalFindFirstOrThrowArgs>(args?: SelectSubset<T, RentalFindFirstOrThrowArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Rentals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Rentals
+     * const rentals = await prisma.rental.findMany()
+     * 
+     * // Get first 10 Rentals
+     * const rentals = await prisma.rental.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rentalWithIdOnly = await prisma.rental.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RentalFindManyArgs>(args?: SelectSubset<T, RentalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Rental.
+     * @param {RentalCreateArgs} args - Arguments to create a Rental.
+     * @example
+     * // Create one Rental
+     * const Rental = await prisma.rental.create({
+     *   data: {
+     *     // ... data to create a Rental
+     *   }
+     * })
+     * 
+     */
+    create<T extends RentalCreateArgs>(args: SelectSubset<T, RentalCreateArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Rentals.
+     * @param {RentalCreateManyArgs} args - Arguments to create many Rentals.
+     * @example
+     * // Create many Rentals
+     * const rental = await prisma.rental.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RentalCreateManyArgs>(args?: SelectSubset<T, RentalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Rentals and returns the data saved in the database.
+     * @param {RentalCreateManyAndReturnArgs} args - Arguments to create many Rentals.
+     * @example
+     * // Create many Rentals
+     * const rental = await prisma.rental.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Rentals and only return the `id`
+     * const rentalWithIdOnly = await prisma.rental.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RentalCreateManyAndReturnArgs>(args?: SelectSubset<T, RentalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Rental.
+     * @param {RentalDeleteArgs} args - Arguments to delete one Rental.
+     * @example
+     * // Delete one Rental
+     * const Rental = await prisma.rental.delete({
+     *   where: {
+     *     // ... filter to delete one Rental
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RentalDeleteArgs>(args: SelectSubset<T, RentalDeleteArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Rental.
+     * @param {RentalUpdateArgs} args - Arguments to update one Rental.
+     * @example
+     * // Update one Rental
+     * const rental = await prisma.rental.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RentalUpdateArgs>(args: SelectSubset<T, RentalUpdateArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Rentals.
+     * @param {RentalDeleteManyArgs} args - Arguments to filter Rentals to delete.
+     * @example
+     * // Delete a few Rentals
+     * const { count } = await prisma.rental.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RentalDeleteManyArgs>(args?: SelectSubset<T, RentalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rentals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Rentals
+     * const rental = await prisma.rental.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RentalUpdateManyArgs>(args: SelectSubset<T, RentalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Rentals and returns the data updated in the database.
+     * @param {RentalUpdateManyAndReturnArgs} args - Arguments to update many Rentals.
+     * @example
+     * // Update many Rentals
+     * const rental = await prisma.rental.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Rentals and only return the `id`
+     * const rentalWithIdOnly = await prisma.rental.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RentalUpdateManyAndReturnArgs>(args: SelectSubset<T, RentalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Rental.
+     * @param {RentalUpsertArgs} args - Arguments to update or create a Rental.
+     * @example
+     * // Update or create a Rental
+     * const rental = await prisma.rental.upsert({
+     *   create: {
+     *     // ... data to create a Rental
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Rental we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RentalUpsertArgs>(args: SelectSubset<T, RentalUpsertArgs<ExtArgs>>): Prisma__RentalClient<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Rentals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalCountArgs} args - Arguments to filter Rentals to count.
+     * @example
+     * // Count the number of Rentals
+     * const count = await prisma.rental.count({
+     *   where: {
+     *     // ... the filter for the Rentals we want to count
+     *   }
+     * })
+    **/
+    count<T extends RentalCountArgs>(
+      args?: Subset<T, RentalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RentalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Rental.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RentalAggregateArgs>(args: Subset<T, RentalAggregateArgs>): Prisma.PrismaPromise<GetRentalAggregateType<T>>
+
+    /**
+     * Group by Rental.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RentalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RentalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RentalGroupByArgs['orderBy'] }
+        : { orderBy?: RentalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RentalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRentalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Rental model
+   */
+  readonly fields: RentalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Rental.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RentalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Rental model
+   */
+  interface RentalFieldRefs {
+    readonly id: FieldRef<"Rental", 'Int'>
+    readonly rentedAt: FieldRef<"Rental", 'DateTime'>
+    readonly duration: FieldRef<"Rental", 'Int'>
+    readonly userId: FieldRef<"Rental", 'Int'>
+    readonly productId: FieldRef<"Rental", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Rental findUnique
+   */
+  export type RentalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental findUniqueOrThrow
+   */
+  export type RentalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental findFirst
+   */
+  export type RentalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rentals.
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rentals.
+     */
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
+  }
+
+  /**
+   * Rental findFirstOrThrow
+   */
+  export type RentalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * Filter, which Rental to fetch.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Rentals.
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Rentals.
+     */
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
+  }
+
+  /**
+   * Rental findMany
+   */
+  export type RentalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * Filter, which Rentals to fetch.
+     */
+    where?: RentalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Rentals to fetch.
+     */
+    orderBy?: RentalOrderByWithRelationInput | RentalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Rentals.
+     */
+    cursor?: RentalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Rentals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Rentals.
+     */
+    skip?: number
+    distinct?: RentalScalarFieldEnum | RentalScalarFieldEnum[]
+  }
+
+  /**
+   * Rental create
+   */
+  export type RentalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Rental.
+     */
+    data: XOR<RentalCreateInput, RentalUncheckedCreateInput>
+  }
+
+  /**
+   * Rental createMany
+   */
+  export type RentalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Rentals.
+     */
+    data: RentalCreateManyInput | RentalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Rental createManyAndReturn
+   */
+  export type RentalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * The data used to create many Rentals.
+     */
+    data: RentalCreateManyInput | RentalCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Rental update
+   */
+  export type RentalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Rental.
+     */
+    data: XOR<RentalUpdateInput, RentalUncheckedUpdateInput>
+    /**
+     * Choose, which Rental to update.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental updateMany
+   */
+  export type RentalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Rentals.
+     */
+    data: XOR<RentalUpdateManyMutationInput, RentalUncheckedUpdateManyInput>
+    /**
+     * Filter which Rentals to update
+     */
+    where?: RentalWhereInput
+    /**
+     * Limit how many Rentals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Rental updateManyAndReturn
+   */
+  export type RentalUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * The data used to update Rentals.
+     */
+    data: XOR<RentalUpdateManyMutationInput, RentalUncheckedUpdateManyInput>
+    /**
+     * Filter which Rentals to update
+     */
+    where?: RentalWhereInput
+    /**
+     * Limit how many Rentals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Rental upsert
+   */
+  export type RentalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Rental to update in case it exists.
+     */
+    where: RentalWhereUniqueInput
+    /**
+     * In case the Rental found by the `where` argument doesn't exist, create a new Rental with this data.
+     */
+    create: XOR<RentalCreateInput, RentalUncheckedCreateInput>
+    /**
+     * In case the Rental was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RentalUpdateInput, RentalUncheckedUpdateInput>
+  }
+
+  /**
+   * Rental delete
+   */
+  export type RentalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
+    /**
+     * Filter which Rental to delete.
+     */
+    where: RentalWhereUniqueInput
+  }
+
+  /**
+   * Rental deleteMany
+   */
+  export type RentalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Rentals to delete
+     */
+    where?: RentalWhereInput
+    /**
+     * Limit how many Rentals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Rental without action
+   */
+  export type RentalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Rental
+     */
+    select?: RentalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Rental
+     */
+    omit?: RentalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RentalInclude<ExtArgs> | null
   }
 
 
@@ -9648,94 +10834,62 @@ export namespace Prisma {
 
   export type AgreementAvgAggregateOutputType = {
     id: number | null
-    userId: number | null
-    productId: number | null
   }
 
   export type AgreementSumAggregateOutputType = {
     id: number | null
-    userId: number | null
-    productId: number | null
   }
 
   export type AgreementMinAggregateOutputType = {
     id: number | null
+    title: string | null
+    content: string | null
     createdAt: Date | null
-    updatedAt: Date | null
-    startDate: Date | null
-    endDate: Date | null
-    status: $Enums.AgreementStatus | null
-    userId: number | null
-    productId: number | null
   }
 
   export type AgreementMaxAggregateOutputType = {
     id: number | null
+    title: string | null
+    content: string | null
     createdAt: Date | null
-    updatedAt: Date | null
-    startDate: Date | null
-    endDate: Date | null
-    status: $Enums.AgreementStatus | null
-    userId: number | null
-    productId: number | null
   }
 
   export type AgreementCountAggregateOutputType = {
     id: number
+    title: number
+    content: number
     createdAt: number
-    updatedAt: number
-    startDate: number
-    endDate: number
-    status: number
-    userId: number
-    productId: number
     _all: number
   }
 
 
   export type AgreementAvgAggregateInputType = {
     id?: true
-    userId?: true
-    productId?: true
   }
 
   export type AgreementSumAggregateInputType = {
     id?: true
-    userId?: true
-    productId?: true
   }
 
   export type AgreementMinAggregateInputType = {
     id?: true
+    title?: true
+    content?: true
     createdAt?: true
-    updatedAt?: true
-    startDate?: true
-    endDate?: true
-    status?: true
-    userId?: true
-    productId?: true
   }
 
   export type AgreementMaxAggregateInputType = {
     id?: true
+    title?: true
+    content?: true
     createdAt?: true
-    updatedAt?: true
-    startDate?: true
-    endDate?: true
-    status?: true
-    userId?: true
-    productId?: true
   }
 
   export type AgreementCountAggregateInputType = {
     id?: true
+    title?: true
+    content?: true
     createdAt?: true
-    updatedAt?: true
-    startDate?: true
-    endDate?: true
-    status?: true
-    userId?: true
-    productId?: true
     _all?: true
   }
 
@@ -9827,13 +10981,9 @@ export namespace Prisma {
 
   export type AgreementGroupByOutputType = {
     id: number
+    title: string
+    content: string
     createdAt: Date
-    updatedAt: Date
-    startDate: Date
-    endDate: Date
-    status: $Enums.AgreementStatus
-    userId: number
-    productId: number
     _count: AgreementCountAggregateOutputType | null
     _avg: AgreementAvgAggregateOutputType | null
     _sum: AgreementSumAggregateOutputType | null
@@ -9857,83 +11007,42 @@ export namespace Prisma {
 
   export type AgreementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    title?: boolean
+    content?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
-    startDate?: boolean
-    endDate?: boolean
-    status?: boolean
-    userId?: boolean
-    productId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agreement"]>
 
   export type AgreementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    title?: boolean
+    content?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
-    startDate?: boolean
-    endDate?: boolean
-    status?: boolean
-    userId?: boolean
-    productId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agreement"]>
 
   export type AgreementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    title?: boolean
+    content?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
-    startDate?: boolean
-    endDate?: boolean
-    status?: boolean
-    userId?: boolean
-    productId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agreement"]>
 
   export type AgreementSelectScalar = {
     id?: boolean
+    title?: boolean
+    content?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
-    startDate?: boolean
-    endDate?: boolean
-    status?: boolean
-    userId?: boolean
-    productId?: boolean
   }
 
-  export type AgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "startDate" | "endDate" | "status" | "userId" | "productId", ExtArgs["result"]["agreement"]>
-  export type AgreementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-  }
-  export type AgreementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-  }
-  export type AgreementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-  }
+  export type AgreementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdAt", ExtArgs["result"]["agreement"]>
 
   export type $AgreementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Agreement"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      product: Prisma.$ProductPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      title: string
+      content: string
       createdAt: Date
-      updatedAt: Date
-      startDate: Date
-      endDate: Date
-      status: $Enums.AgreementStatus
-      userId: number
-      productId: number
     }, ExtArgs["result"]["agreement"]>
     composites: {}
   }
@@ -10328,8 +11437,6 @@ export namespace Prisma {
    */
   export interface Prisma__AgreementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10360,13 +11467,9 @@ export namespace Prisma {
    */
   interface AgreementFieldRefs {
     readonly id: FieldRef<"Agreement", 'Int'>
+    readonly title: FieldRef<"Agreement", 'String'>
+    readonly content: FieldRef<"Agreement", 'String'>
     readonly createdAt: FieldRef<"Agreement", 'DateTime'>
-    readonly updatedAt: FieldRef<"Agreement", 'DateTime'>
-    readonly startDate: FieldRef<"Agreement", 'DateTime'>
-    readonly endDate: FieldRef<"Agreement", 'DateTime'>
-    readonly status: FieldRef<"Agreement", 'AgreementStatus'>
-    readonly userId: FieldRef<"Agreement", 'Int'>
-    readonly productId: FieldRef<"Agreement", 'Int'>
   }
     
 
@@ -10383,10 +11486,6 @@ export namespace Prisma {
      * Omit specific fields from the Agreement
      */
     omit?: AgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
     /**
      * Filter, which Agreement to fetch.
      */
@@ -10406,10 +11505,6 @@ export namespace Prisma {
      */
     omit?: AgreementOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
-    /**
      * Filter, which Agreement to fetch.
      */
     where: AgreementWhereUniqueInput
@@ -10427,10 +11522,6 @@ export namespace Prisma {
      * Omit specific fields from the Agreement
      */
     omit?: AgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
     /**
      * Filter, which Agreement to fetch.
      */
@@ -10480,10 +11571,6 @@ export namespace Prisma {
      */
     omit?: AgreementOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
-    /**
      * Filter, which Agreement to fetch.
      */
     where?: AgreementWhereInput
@@ -10532,10 +11619,6 @@ export namespace Prisma {
      */
     omit?: AgreementOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
-    /**
      * Filter, which Agreements to fetch.
      */
     where?: AgreementWhereInput
@@ -10579,10 +11662,6 @@ export namespace Prisma {
      */
     omit?: AgreementOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
-    /**
      * The data needed to create a Agreement.
      */
     data: XOR<AgreementCreateInput, AgreementUncheckedCreateInput>
@@ -10616,10 +11695,6 @@ export namespace Prisma {
      */
     data: AgreementCreateManyInput | AgreementCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10634,10 +11709,6 @@ export namespace Prisma {
      * Omit specific fields from the Agreement
      */
     omit?: AgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
     /**
      * The data needed to update a Agreement.
      */
@@ -10690,10 +11761,6 @@ export namespace Prisma {
      * Limit how many Agreements to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -10708,10 +11775,6 @@ export namespace Prisma {
      * Omit specific fields from the Agreement
      */
     omit?: AgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
     /**
      * The filter to search for the Agreement to update in case it exists.
      */
@@ -10738,10 +11801,6 @@ export namespace Prisma {
      * Omit specific fields from the Agreement
      */
     omit?: AgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
     /**
      * Filter which Agreement to delete.
      */
@@ -10774,10 +11833,6 @@ export namespace Prisma {
      * Omit specific fields from the Agreement
      */
     omit?: AgreementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AgreementInclude<ExtArgs> | null
   }
 
 
@@ -10795,23 +11850,21 @@ export namespace Prisma {
 
   export type SaleAvgAggregateOutputType = {
     id: number | null
-    amount: Decimal | null
+    total: Decimal | null
     sellerId: number | null
     buyerId: number | null
   }
 
   export type SaleSumAggregateOutputType = {
     id: number | null
-    amount: Decimal | null
+    total: Decimal | null
     sellerId: number | null
     buyerId: number | null
   }
 
   export type SaleMinAggregateOutputType = {
     id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    amount: Decimal | null
+    total: Decimal | null
     date: Date | null
     sellerId: number | null
     buyerId: number | null
@@ -10819,9 +11872,7 @@ export namespace Prisma {
 
   export type SaleMaxAggregateOutputType = {
     id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    amount: Decimal | null
+    total: Decimal | null
     date: Date | null
     sellerId: number | null
     buyerId: number | null
@@ -10829,9 +11880,7 @@ export namespace Prisma {
 
   export type SaleCountAggregateOutputType = {
     id: number
-    createdAt: number
-    updatedAt: number
-    amount: number
+    total: number
     date: number
     sellerId: number
     buyerId: number
@@ -10841,23 +11890,21 @@ export namespace Prisma {
 
   export type SaleAvgAggregateInputType = {
     id?: true
-    amount?: true
+    total?: true
     sellerId?: true
     buyerId?: true
   }
 
   export type SaleSumAggregateInputType = {
     id?: true
-    amount?: true
+    total?: true
     sellerId?: true
     buyerId?: true
   }
 
   export type SaleMinAggregateInputType = {
     id?: true
-    createdAt?: true
-    updatedAt?: true
-    amount?: true
+    total?: true
     date?: true
     sellerId?: true
     buyerId?: true
@@ -10865,9 +11912,7 @@ export namespace Prisma {
 
   export type SaleMaxAggregateInputType = {
     id?: true
-    createdAt?: true
-    updatedAt?: true
-    amount?: true
+    total?: true
     date?: true
     sellerId?: true
     buyerId?: true
@@ -10875,9 +11920,7 @@ export namespace Prisma {
 
   export type SaleCountAggregateInputType = {
     id?: true
-    createdAt?: true
-    updatedAt?: true
-    amount?: true
+    total?: true
     date?: true
     sellerId?: true
     buyerId?: true
@@ -10972,9 +12015,7 @@ export namespace Prisma {
 
   export type SaleGroupByOutputType = {
     id: number
-    createdAt: Date
-    updatedAt: Date
-    amount: Decimal
+    total: Decimal
     date: Date
     sellerId: number
     buyerId: number
@@ -11001,9 +12042,7 @@ export namespace Prisma {
 
   export type SaleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    amount?: boolean
+    total?: boolean
     date?: boolean
     sellerId?: boolean
     buyerId?: boolean
@@ -11015,9 +12054,7 @@ export namespace Prisma {
 
   export type SaleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    amount?: boolean
+    total?: boolean
     date?: boolean
     sellerId?: boolean
     buyerId?: boolean
@@ -11027,9 +12064,7 @@ export namespace Prisma {
 
   export type SaleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    amount?: boolean
+    total?: boolean
     date?: boolean
     sellerId?: boolean
     buyerId?: boolean
@@ -11039,15 +12074,13 @@ export namespace Prisma {
 
   export type SaleSelectScalar = {
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    amount?: boolean
+    total?: boolean
     date?: boolean
     sellerId?: boolean
     buyerId?: boolean
   }
 
-  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "amount" | "date" | "sellerId" | "buyerId", ExtArgs["result"]["sale"]>
+  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "total" | "date" | "sellerId" | "buyerId", ExtArgs["result"]["sale"]>
   export type SaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     seller?: boolean | UserDefaultArgs<ExtArgs>
     buyer?: boolean | UserDefaultArgs<ExtArgs>
@@ -11072,9 +12105,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      createdAt: Date
-      updatedAt: Date
-      amount: Prisma.Decimal
+      total: Prisma.Decimal
       date: Date
       sellerId: number
       buyerId: number
@@ -11505,9 +12536,7 @@ export namespace Prisma {
    */
   interface SaleFieldRefs {
     readonly id: FieldRef<"Sale", 'Int'>
-    readonly createdAt: FieldRef<"Sale", 'DateTime'>
-    readonly updatedAt: FieldRef<"Sale", 'DateTime'>
-    readonly amount: FieldRef<"Sale", 'Decimal'>
+    readonly total: FieldRef<"Sale", 'Decimal'>
     readonly date: FieldRef<"Sale", 'DateTime'>
     readonly sellerId: FieldRef<"Sale", 'Int'>
     readonly buyerId: FieldRef<"Sale", 'Int'>
@@ -11977,8 +13006,6 @@ export namespace Prisma {
 
   export type SaleItemMinAggregateOutputType = {
     id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
     saleId: number | null
     productId: number | null
     quantity: number | null
@@ -11986,8 +13013,6 @@ export namespace Prisma {
 
   export type SaleItemMaxAggregateOutputType = {
     id: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
     saleId: number | null
     productId: number | null
     quantity: number | null
@@ -11995,8 +13020,6 @@ export namespace Prisma {
 
   export type SaleItemCountAggregateOutputType = {
     id: number
-    createdAt: number
-    updatedAt: number
     saleId: number
     productId: number
     quantity: number
@@ -12020,8 +13043,6 @@ export namespace Prisma {
 
   export type SaleItemMinAggregateInputType = {
     id?: true
-    createdAt?: true
-    updatedAt?: true
     saleId?: true
     productId?: true
     quantity?: true
@@ -12029,8 +13050,6 @@ export namespace Prisma {
 
   export type SaleItemMaxAggregateInputType = {
     id?: true
-    createdAt?: true
-    updatedAt?: true
     saleId?: true
     productId?: true
     quantity?: true
@@ -12038,8 +13057,6 @@ export namespace Prisma {
 
   export type SaleItemCountAggregateInputType = {
     id?: true
-    createdAt?: true
-    updatedAt?: true
     saleId?: true
     productId?: true
     quantity?: true
@@ -12134,8 +13151,6 @@ export namespace Prisma {
 
   export type SaleItemGroupByOutputType = {
     id: number
-    createdAt: Date
-    updatedAt: Date
     saleId: number
     productId: number
     quantity: number
@@ -12162,8 +13177,6 @@ export namespace Prisma {
 
   export type SaleItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     saleId?: boolean
     productId?: boolean
     quantity?: boolean
@@ -12173,8 +13186,6 @@ export namespace Prisma {
 
   export type SaleItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     saleId?: boolean
     productId?: boolean
     quantity?: boolean
@@ -12184,8 +13195,6 @@ export namespace Prisma {
 
   export type SaleItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     saleId?: boolean
     productId?: boolean
     quantity?: boolean
@@ -12195,14 +13204,12 @@ export namespace Prisma {
 
   export type SaleItemSelectScalar = {
     id?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
     saleId?: boolean
     productId?: boolean
     quantity?: boolean
   }
 
-  export type SaleItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "saleId" | "productId" | "quantity", ExtArgs["result"]["saleItem"]>
+  export type SaleItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "saleId" | "productId" | "quantity", ExtArgs["result"]["saleItem"]>
   export type SaleItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sale?: boolean | SaleDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -12224,8 +13231,6 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      createdAt: Date
-      updatedAt: Date
       saleId: number
       productId: number
       quantity: number
@@ -12655,8 +13660,6 @@ export namespace Prisma {
    */
   interface SaleItemFieldRefs {
     readonly id: FieldRef<"SaleItem", 'Int'>
-    readonly createdAt: FieldRef<"SaleItem", 'DateTime'>
-    readonly updatedAt: FieldRef<"SaleItem", 'DateTime'>
     readonly saleId: FieldRef<"SaleItem", 'Int'>
     readonly productId: FieldRef<"SaleItem", 'Int'>
     readonly quantity: FieldRef<"SaleItem", 'Int'>
@@ -18835,7 +19838,6 @@ export namespace Prisma {
     dailyIncome: 'dailyIncome',
     fee: 'fee',
     level: 'level',
-    rentalDays: 'rentalDays',
     deletedAt: 'deletedAt'
   };
 
@@ -18852,6 +19854,17 @@ export namespace Prisma {
   export type UserProductScalarFieldEnum = (typeof UserProductScalarFieldEnum)[keyof typeof UserProductScalarFieldEnum]
 
 
+  export const RentalScalarFieldEnum: {
+    id: 'id',
+    rentedAt: 'rentedAt',
+    duration: 'duration',
+    userId: 'userId',
+    productId: 'productId'
+  };
+
+  export type RentalScalarFieldEnum = (typeof RentalScalarFieldEnum)[keyof typeof RentalScalarFieldEnum]
+
+
   export const ReferralScalarFieldEnum: {
     id: 'id',
     createdAt: 'createdAt',
@@ -18865,13 +19878,9 @@ export namespace Prisma {
 
   export const AgreementScalarFieldEnum: {
     id: 'id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    startDate: 'startDate',
-    endDate: 'endDate',
-    status: 'status',
-    userId: 'userId',
-    productId: 'productId'
+    title: 'title',
+    content: 'content',
+    createdAt: 'createdAt'
   };
 
   export type AgreementScalarFieldEnum = (typeof AgreementScalarFieldEnum)[keyof typeof AgreementScalarFieldEnum]
@@ -18879,9 +19888,7 @@ export namespace Prisma {
 
   export const SaleScalarFieldEnum: {
     id: 'id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    amount: 'amount',
+    total: 'total',
     date: 'date',
     sellerId: 'sellerId',
     buyerId: 'buyerId'
@@ -18892,8 +19899,6 @@ export namespace Prisma {
 
   export const SaleItemScalarFieldEnum: {
     id: 'id',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
     saleId: 'saleId',
     productId: 'productId',
     quantity: 'quantity'
@@ -19076,20 +20081,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'AgreementStatus'
-   */
-  export type EnumAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'AgreementStatus[]'
-   */
-  export type ListEnumAgreementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgreementStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'RewardStatus'
    */
   export type EnumRewardStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardStatus'>
@@ -19165,7 +20156,7 @@ export namespace Prisma {
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     withdraws?: WithdrawListRelationFilter
     userProducts?: UserProductListRelationFilter
-    agreements?: AgreementListRelationFilter
+    rentals?: RentalListRelationFilter
     salesSold?: SaleListRelationFilter
     salesBought?: SaleListRelationFilter
     referralsMade?: ReferralListRelationFilter
@@ -19190,7 +20181,7 @@ export namespace Prisma {
     wallet?: WalletOrderByWithRelationInput
     withdraws?: WithdrawOrderByRelationAggregateInput
     userProducts?: UserProductOrderByRelationAggregateInput
-    agreements?: AgreementOrderByRelationAggregateInput
+    rentals?: RentalOrderByRelationAggregateInput
     salesSold?: SaleOrderByRelationAggregateInput
     salesBought?: SaleOrderByRelationAggregateInput
     referralsMade?: ReferralOrderByRelationAggregateInput
@@ -19218,7 +20209,7 @@ export namespace Prisma {
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     withdraws?: WithdrawListRelationFilter
     userProducts?: UserProductListRelationFilter
-    agreements?: AgreementListRelationFilter
+    rentals?: RentalListRelationFilter
     salesSold?: SaleListRelationFilter
     salesBought?: SaleListRelationFilter
     referralsMade?: ReferralListRelationFilter
@@ -19401,13 +20392,12 @@ export namespace Prisma {
     dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     level?: IntFilter<"Product"> | number
-    rentalDays?: IntNullableFilter<"Product"> | number | null
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     userProducts?: UserProductListRelationFilter
-    agreements?: AgreementListRelationFilter
     rewards?: RewardListRelationFilter
     trialFunds?: TrialFundListRelationFilter
     saleItems?: SaleItemListRelationFilter
+    rentals?: RentalListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -19421,13 +20411,12 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
-    rentalDays?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     userProducts?: UserProductOrderByRelationAggregateInput
-    agreements?: AgreementOrderByRelationAggregateInput
     rewards?: RewardOrderByRelationAggregateInput
     trialFunds?: TrialFundOrderByRelationAggregateInput
     saleItems?: SaleItemOrderByRelationAggregateInput
+    rentals?: RentalOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -19444,13 +20433,12 @@ export namespace Prisma {
     dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     level?: IntFilter<"Product"> | number
-    rentalDays?: IntNullableFilter<"Product"> | number | null
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     userProducts?: UserProductListRelationFilter
-    agreements?: AgreementListRelationFilter
     rewards?: RewardListRelationFilter
     trialFunds?: TrialFundListRelationFilter
     saleItems?: SaleItemListRelationFilter
+    rentals?: RentalListRelationFilter
   }, "id">
 
   export type ProductOrderByWithAggregationInput = {
@@ -19464,7 +20452,6 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
-    rentalDays?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
@@ -19487,7 +20474,6 @@ export namespace Prisma {
     dailyIncome?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     level?: IntWithAggregatesFilter<"Product"> | number
-    rentalDays?: IntNullableWithAggregatesFilter<"Product"> | number | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
   }
 
@@ -19545,6 +20531,66 @@ export namespace Prisma {
     acquiredAt?: DateTimeWithAggregatesFilter<"UserProduct"> | Date | string
     userId?: IntWithAggregatesFilter<"UserProduct"> | number
     productId?: IntWithAggregatesFilter<"UserProduct"> | number
+  }
+
+  export type RentalWhereInput = {
+    AND?: RentalWhereInput | RentalWhereInput[]
+    OR?: RentalWhereInput[]
+    NOT?: RentalWhereInput | RentalWhereInput[]
+    id?: IntFilter<"Rental"> | number
+    rentedAt?: DateTimeFilter<"Rental"> | Date | string
+    duration?: IntFilter<"Rental"> | number
+    userId?: IntFilter<"Rental"> | number
+    productId?: IntFilter<"Rental"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }
+
+  export type RentalOrderByWithRelationInput = {
+    id?: SortOrder
+    rentedAt?: SortOrder
+    duration?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
+  }
+
+  export type RentalWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: RentalWhereInput | RentalWhereInput[]
+    OR?: RentalWhereInput[]
+    NOT?: RentalWhereInput | RentalWhereInput[]
+    rentedAt?: DateTimeFilter<"Rental"> | Date | string
+    duration?: IntFilter<"Rental"> | number
+    userId?: IntFilter<"Rental"> | number
+    productId?: IntFilter<"Rental"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id">
+
+  export type RentalOrderByWithAggregationInput = {
+    id?: SortOrder
+    rentedAt?: SortOrder
+    duration?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+    _count?: RentalCountOrderByAggregateInput
+    _avg?: RentalAvgOrderByAggregateInput
+    _max?: RentalMaxOrderByAggregateInput
+    _min?: RentalMinOrderByAggregateInput
+    _sum?: RentalSumOrderByAggregateInput
+  }
+
+  export type RentalScalarWhereWithAggregatesInput = {
+    AND?: RentalScalarWhereWithAggregatesInput | RentalScalarWhereWithAggregatesInput[]
+    OR?: RentalScalarWhereWithAggregatesInput[]
+    NOT?: RentalScalarWhereWithAggregatesInput | RentalScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Rental"> | number
+    rentedAt?: DateTimeWithAggregatesFilter<"Rental"> | Date | string
+    duration?: IntWithAggregatesFilter<"Rental"> | number
+    userId?: IntWithAggregatesFilter<"Rental"> | number
+    productId?: IntWithAggregatesFilter<"Rental"> | number
   }
 
   export type ReferralWhereInput = {
@@ -19615,28 +20661,16 @@ export namespace Prisma {
     OR?: AgreementWhereInput[]
     NOT?: AgreementWhereInput | AgreementWhereInput[]
     id?: IntFilter<"Agreement"> | number
+    title?: StringFilter<"Agreement"> | string
+    content?: StringFilter<"Agreement"> | string
     createdAt?: DateTimeFilter<"Agreement"> | Date | string
-    updatedAt?: DateTimeFilter<"Agreement"> | Date | string
-    startDate?: DateTimeFilter<"Agreement"> | Date | string
-    endDate?: DateTimeFilter<"Agreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"Agreement"> | $Enums.AgreementStatus
-    userId?: IntFilter<"Agreement"> | number
-    productId?: IntFilter<"Agreement"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
 
   export type AgreementOrderByWithRelationInput = {
     id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    productId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    product?: ProductOrderByWithRelationInput
   }
 
   export type AgreementWhereUniqueInput = Prisma.AtLeast<{
@@ -19644,26 +20678,16 @@ export namespace Prisma {
     AND?: AgreementWhereInput | AgreementWhereInput[]
     OR?: AgreementWhereInput[]
     NOT?: AgreementWhereInput | AgreementWhereInput[]
+    title?: StringFilter<"Agreement"> | string
+    content?: StringFilter<"Agreement"> | string
     createdAt?: DateTimeFilter<"Agreement"> | Date | string
-    updatedAt?: DateTimeFilter<"Agreement"> | Date | string
-    startDate?: DateTimeFilter<"Agreement"> | Date | string
-    endDate?: DateTimeFilter<"Agreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"Agreement"> | $Enums.AgreementStatus
-    userId?: IntFilter<"Agreement"> | number
-    productId?: IntFilter<"Agreement"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id">
 
   export type AgreementOrderByWithAggregationInput = {
     id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    productId?: SortOrder
     _count?: AgreementCountOrderByAggregateInput
     _avg?: AgreementAvgOrderByAggregateInput
     _max?: AgreementMaxOrderByAggregateInput
@@ -19676,13 +20700,9 @@ export namespace Prisma {
     OR?: AgreementScalarWhereWithAggregatesInput[]
     NOT?: AgreementScalarWhereWithAggregatesInput | AgreementScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Agreement"> | number
+    title?: StringWithAggregatesFilter<"Agreement"> | string
+    content?: StringWithAggregatesFilter<"Agreement"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Agreement"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Agreement"> | Date | string
-    startDate?: DateTimeWithAggregatesFilter<"Agreement"> | Date | string
-    endDate?: DateTimeWithAggregatesFilter<"Agreement"> | Date | string
-    status?: EnumAgreementStatusWithAggregatesFilter<"Agreement"> | $Enums.AgreementStatus
-    userId?: IntWithAggregatesFilter<"Agreement"> | number
-    productId?: IntWithAggregatesFilter<"Agreement"> | number
   }
 
   export type SaleWhereInput = {
@@ -19690,9 +20710,7 @@ export namespace Prisma {
     OR?: SaleWhereInput[]
     NOT?: SaleWhereInput | SaleWhereInput[]
     id?: IntFilter<"Sale"> | number
-    createdAt?: DateTimeFilter<"Sale"> | Date | string
-    updatedAt?: DateTimeFilter<"Sale"> | Date | string
-    amount?: DecimalFilter<"Sale"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalFilter<"Sale"> | Decimal | DecimalJsLike | number | string
     date?: DateTimeFilter<"Sale"> | Date | string
     sellerId?: IntFilter<"Sale"> | number
     buyerId?: IntFilter<"Sale"> | number
@@ -19703,9 +20721,7 @@ export namespace Prisma {
 
   export type SaleOrderByWithRelationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
+    total?: SortOrder
     date?: SortOrder
     sellerId?: SortOrder
     buyerId?: SortOrder
@@ -19719,9 +20735,7 @@ export namespace Prisma {
     AND?: SaleWhereInput | SaleWhereInput[]
     OR?: SaleWhereInput[]
     NOT?: SaleWhereInput | SaleWhereInput[]
-    createdAt?: DateTimeFilter<"Sale"> | Date | string
-    updatedAt?: DateTimeFilter<"Sale"> | Date | string
-    amount?: DecimalFilter<"Sale"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalFilter<"Sale"> | Decimal | DecimalJsLike | number | string
     date?: DateTimeFilter<"Sale"> | Date | string
     sellerId?: IntFilter<"Sale"> | number
     buyerId?: IntFilter<"Sale"> | number
@@ -19732,9 +20746,7 @@ export namespace Prisma {
 
   export type SaleOrderByWithAggregationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
+    total?: SortOrder
     date?: SortOrder
     sellerId?: SortOrder
     buyerId?: SortOrder
@@ -19750,9 +20762,7 @@ export namespace Prisma {
     OR?: SaleScalarWhereWithAggregatesInput[]
     NOT?: SaleScalarWhereWithAggregatesInput | SaleScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Sale"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
-    amount?: DecimalWithAggregatesFilter<"Sale"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalWithAggregatesFilter<"Sale"> | Decimal | DecimalJsLike | number | string
     date?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
     sellerId?: IntWithAggregatesFilter<"Sale"> | number
     buyerId?: IntWithAggregatesFilter<"Sale"> | number
@@ -19763,8 +20773,6 @@ export namespace Prisma {
     OR?: SaleItemWhereInput[]
     NOT?: SaleItemWhereInput | SaleItemWhereInput[]
     id?: IntFilter<"SaleItem"> | number
-    createdAt?: DateTimeFilter<"SaleItem"> | Date | string
-    updatedAt?: DateTimeFilter<"SaleItem"> | Date | string
     saleId?: IntFilter<"SaleItem"> | number
     productId?: IntFilter<"SaleItem"> | number
     quantity?: IntFilter<"SaleItem"> | number
@@ -19774,8 +20782,6 @@ export namespace Prisma {
 
   export type SaleItemOrderByWithRelationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     saleId?: SortOrder
     productId?: SortOrder
     quantity?: SortOrder
@@ -19788,8 +20794,6 @@ export namespace Prisma {
     AND?: SaleItemWhereInput | SaleItemWhereInput[]
     OR?: SaleItemWhereInput[]
     NOT?: SaleItemWhereInput | SaleItemWhereInput[]
-    createdAt?: DateTimeFilter<"SaleItem"> | Date | string
-    updatedAt?: DateTimeFilter<"SaleItem"> | Date | string
     saleId?: IntFilter<"SaleItem"> | number
     productId?: IntFilter<"SaleItem"> | number
     quantity?: IntFilter<"SaleItem"> | number
@@ -19799,8 +20803,6 @@ export namespace Prisma {
 
   export type SaleItemOrderByWithAggregationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     saleId?: SortOrder
     productId?: SortOrder
     quantity?: SortOrder
@@ -19816,8 +20818,6 @@ export namespace Prisma {
     OR?: SaleItemScalarWhereWithAggregatesInput[]
     NOT?: SaleItemScalarWhereWithAggregatesInput | SaleItemScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"SaleItem"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"SaleItem"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"SaleItem"> | Date | string
     saleId?: IntWithAggregatesFilter<"SaleItem"> | number
     productId?: IntWithAggregatesFilter<"SaleItem"> | number
     quantity?: IntWithAggregatesFilter<"SaleItem"> | number
@@ -20187,7 +21187,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -20212,7 +21212,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -20236,7 +21236,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -20261,7 +21261,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -20438,13 +21438,12 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
-    agreements?: AgreementCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
     saleItems?: SaleItemCreateNestedManyWithoutProductInput
+    rentals?: RentalCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -20458,13 +21457,12 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -20477,13 +21475,12 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+    rentals?: RentalUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -20497,13 +21494,12 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -20517,7 +21513,6 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
   }
 
@@ -20531,7 +21526,6 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -20546,7 +21540,6 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -20590,6 +21583,57 @@ export namespace Prisma {
   export type UserProductUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RentalCreateInput = {
+    rentedAt?: Date | string
+    duration: number
+    user: UserCreateNestedOneWithoutRentalsInput
+    product: ProductCreateNestedOneWithoutRentalsInput
+  }
+
+  export type RentalUncheckedCreateInput = {
+    id?: number
+    rentedAt?: Date | string
+    duration: number
+    userId: number
+    productId: number
+  }
+
+  export type RentalUpdateInput = {
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutRentalsNestedInput
+    product?: ProductUpdateOneRequiredWithoutRentalsNestedInput
+  }
+
+  export type RentalUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    productId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RentalCreateManyInput = {
+    id?: number
+    rentedAt?: Date | string
+    duration: number
+    userId: number
+    productId: number
+  }
+
+  export type RentalUpdateManyMutationInput = {
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RentalUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
   }
@@ -20650,81 +21694,53 @@ export namespace Prisma {
   }
 
   export type AgreementCreateInput = {
+    title: string
+    content: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
-    user: UserCreateNestedOneWithoutAgreementsInput
-    product: ProductCreateNestedOneWithoutAgreementsInput
   }
 
   export type AgreementUncheckedCreateInput = {
     id?: number
+    title: string
+    content: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
-    userId: number
-    productId: number
   }
 
   export type AgreementUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    user?: UserUpdateOneRequiredWithoutAgreementsNestedInput
-    product?: ProductUpdateOneRequiredWithoutAgreementsNestedInput
   }
 
   export type AgreementUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    userId?: IntFieldUpdateOperationsInput | number
-    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type AgreementCreateManyInput = {
     id?: number
+    title: string
+    content: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
-    userId: number
-    productId: number
   }
 
   export type AgreementUpdateManyMutationInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
   }
 
   export type AgreementUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    userId?: IntFieldUpdateOperationsInput | number
-    productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleCreateInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     seller: UserCreateNestedOneWithoutSalesSoldInput
     buyer: UserCreateNestedOneWithoutSalesBoughtInput
@@ -20733,9 +21749,7 @@ export namespace Prisma {
 
   export type SaleUncheckedCreateInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     sellerId: number
     buyerId: number
@@ -20743,9 +21757,7 @@ export namespace Prisma {
   }
 
   export type SaleUpdateInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     seller?: UserUpdateOneRequiredWithoutSalesSoldNestedInput
     buyer?: UserUpdateOneRequiredWithoutSalesBoughtNestedInput
@@ -20754,9 +21766,7 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: IntFieldUpdateOperationsInput | number
@@ -20765,34 +21775,26 @@ export namespace Prisma {
 
   export type SaleCreateManyInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     sellerId: number
     buyerId: number
   }
 
   export type SaleUpdateManyMutationInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SaleUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleItemCreateInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
     quantity: number
     sale: SaleCreateNestedOneWithoutItemsInput
     product: ProductCreateNestedOneWithoutSaleItemsInput
@@ -20800,16 +21802,12 @@ export namespace Prisma {
 
   export type SaleItemUncheckedCreateInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
     saleId: number
     productId: number
     quantity: number
   }
 
   export type SaleItemUpdateInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quantity?: IntFieldUpdateOperationsInput | number
     sale?: SaleUpdateOneRequiredWithoutItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutSaleItemsNestedInput
@@ -20817,8 +21815,6 @@ export namespace Prisma {
 
   export type SaleItemUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     saleId?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
@@ -20826,23 +21822,17 @@ export namespace Prisma {
 
   export type SaleItemCreateManyInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
     saleId: number
     productId: number
     quantity: number
   }
 
   export type SaleItemUpdateManyMutationInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quantity?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleItemUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     saleId?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
@@ -21271,10 +22261,10 @@ export namespace Prisma {
     none?: UserProductWhereInput
   }
 
-  export type AgreementListRelationFilter = {
-    every?: AgreementWhereInput
-    some?: AgreementWhereInput
-    none?: AgreementWhereInput
+  export type RentalListRelationFilter = {
+    every?: RentalWhereInput
+    some?: RentalWhereInput
+    none?: RentalWhereInput
   }
 
   export type SaleListRelationFilter = {
@@ -21325,7 +22315,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type AgreementOrderByRelationAggregateInput = {
+  export type RentalOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21644,7 +22634,6 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
-    rentalDays?: SortOrder
     deletedAt?: SortOrder
   }
 
@@ -21654,7 +22643,6 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
-    rentalDays?: SortOrder
   }
 
   export type ProductMaxOrderByAggregateInput = {
@@ -21668,7 +22656,6 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
-    rentalDays?: SortOrder
     deletedAt?: SortOrder
   }
 
@@ -21683,7 +22670,6 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
-    rentalDays?: SortOrder
     deletedAt?: SortOrder
   }
 
@@ -21693,7 +22679,6 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     level?: SortOrder
-    rentalDays?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -21769,6 +22754,44 @@ export namespace Prisma {
     productId?: SortOrder
   }
 
+  export type RentalCountOrderByAggregateInput = {
+    id?: SortOrder
+    rentedAt?: SortOrder
+    duration?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RentalAvgOrderByAggregateInput = {
+    id?: SortOrder
+    duration?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RentalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    rentedAt?: SortOrder
+    duration?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RentalMinOrderByAggregateInput = {
+    id?: SortOrder
+    rentedAt?: SortOrder
+    duration?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
+  export type RentalSumOrderByAggregateInput = {
+    id?: SortOrder
+    duration?: SortOrder
+    userId?: SortOrder
+    productId?: SortOrder
+  }
+
   export type CommissionListRelationFilter = {
     every?: CommissionWhereInput
     some?: CommissionWhereInput
@@ -21815,73 +22838,38 @@ export namespace Prisma {
     referredId?: SortOrder
   }
 
-  export type EnumAgreementStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
-  }
-
   export type AgreementCountOrderByAggregateInput = {
     id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    productId?: SortOrder
   }
 
   export type AgreementAvgOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    productId?: SortOrder
   }
 
   export type AgreementMaxOrderByAggregateInput = {
     id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    productId?: SortOrder
   }
 
   export type AgreementMinOrderByAggregateInput = {
     id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    startDate?: SortOrder
-    endDate?: SortOrder
-    status?: SortOrder
-    userId?: SortOrder
-    productId?: SortOrder
   }
 
   export type AgreementSumOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    productId?: SortOrder
-  }
-
-  export type EnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
-    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
   }
 
   export type SaleCountOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
+    total?: SortOrder
     date?: SortOrder
     sellerId?: SortOrder
     buyerId?: SortOrder
@@ -21889,16 +22877,14 @@ export namespace Prisma {
 
   export type SaleAvgOrderByAggregateInput = {
     id?: SortOrder
-    amount?: SortOrder
+    total?: SortOrder
     sellerId?: SortOrder
     buyerId?: SortOrder
   }
 
   export type SaleMaxOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
+    total?: SortOrder
     date?: SortOrder
     sellerId?: SortOrder
     buyerId?: SortOrder
@@ -21906,9 +22892,7 @@ export namespace Prisma {
 
   export type SaleMinOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    amount?: SortOrder
+    total?: SortOrder
     date?: SortOrder
     sellerId?: SortOrder
     buyerId?: SortOrder
@@ -21916,7 +22900,7 @@ export namespace Prisma {
 
   export type SaleSumOrderByAggregateInput = {
     id?: SortOrder
-    amount?: SortOrder
+    total?: SortOrder
     sellerId?: SortOrder
     buyerId?: SortOrder
   }
@@ -21928,8 +22912,6 @@ export namespace Prisma {
 
   export type SaleItemCountOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     saleId?: SortOrder
     productId?: SortOrder
     quantity?: SortOrder
@@ -21944,8 +22926,6 @@ export namespace Prisma {
 
   export type SaleItemMaxOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     saleId?: SortOrder
     productId?: SortOrder
     quantity?: SortOrder
@@ -21953,8 +22933,6 @@ export namespace Prisma {
 
   export type SaleItemMinOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     saleId?: SortOrder
     productId?: SortOrder
     quantity?: SortOrder
@@ -22298,11 +23276,11 @@ export namespace Prisma {
     connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
   }
 
-  export type AgreementCreateNestedManyWithoutUserInput = {
-    create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput> | AgreementCreateWithoutUserInput[] | AgreementUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutUserInput | AgreementCreateOrConnectWithoutUserInput[]
-    createMany?: AgreementCreateManyUserInputEnvelope
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
+  export type RentalCreateNestedManyWithoutUserInput = {
+    create?: XOR<RentalCreateWithoutUserInput, RentalUncheckedCreateWithoutUserInput> | RentalCreateWithoutUserInput[] | RentalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutUserInput | RentalCreateOrConnectWithoutUserInput[]
+    createMany?: RentalCreateManyUserInputEnvelope
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
   }
 
   export type SaleCreateNestedManyWithoutSellerInput = {
@@ -22380,11 +23358,11 @@ export namespace Prisma {
     connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
   }
 
-  export type AgreementUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput> | AgreementCreateWithoutUserInput[] | AgreementUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutUserInput | AgreementCreateOrConnectWithoutUserInput[]
-    createMany?: AgreementCreateManyUserInputEnvelope
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
+  export type RentalUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RentalCreateWithoutUserInput, RentalUncheckedCreateWithoutUserInput> | RentalCreateWithoutUserInput[] | RentalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutUserInput | RentalCreateOrConnectWithoutUserInput[]
+    createMany?: RentalCreateManyUserInputEnvelope
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
   }
 
   export type SaleUncheckedCreateNestedManyWithoutSellerInput = {
@@ -22500,18 +23478,18 @@ export namespace Prisma {
     deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
   }
 
-  export type AgreementUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput> | AgreementCreateWithoutUserInput[] | AgreementUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutUserInput | AgreementCreateOrConnectWithoutUserInput[]
-    upsert?: AgreementUpsertWithWhereUniqueWithoutUserInput | AgreementUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AgreementCreateManyUserInputEnvelope
-    set?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    disconnect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    delete?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    update?: AgreementUpdateWithWhereUniqueWithoutUserInput | AgreementUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AgreementUpdateManyWithWhereWithoutUserInput | AgreementUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
+  export type RentalUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RentalCreateWithoutUserInput, RentalUncheckedCreateWithoutUserInput> | RentalCreateWithoutUserInput[] | RentalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutUserInput | RentalCreateOrConnectWithoutUserInput[]
+    upsert?: RentalUpsertWithWhereUniqueWithoutUserInput | RentalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RentalCreateManyUserInputEnvelope
+    set?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    disconnect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    delete?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    update?: RentalUpdateWithWhereUniqueWithoutUserInput | RentalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RentalUpdateManyWithWhereWithoutUserInput | RentalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RentalScalarWhereInput | RentalScalarWhereInput[]
   }
 
   export type SaleUpdateManyWithoutSellerNestedInput = {
@@ -22668,18 +23646,18 @@ export namespace Prisma {
     deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
   }
 
-  export type AgreementUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput> | AgreementCreateWithoutUserInput[] | AgreementUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutUserInput | AgreementCreateOrConnectWithoutUserInput[]
-    upsert?: AgreementUpsertWithWhereUniqueWithoutUserInput | AgreementUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AgreementCreateManyUserInputEnvelope
-    set?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    disconnect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    delete?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    update?: AgreementUpdateWithWhereUniqueWithoutUserInput | AgreementUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AgreementUpdateManyWithWhereWithoutUserInput | AgreementUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
+  export type RentalUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RentalCreateWithoutUserInput, RentalUncheckedCreateWithoutUserInput> | RentalCreateWithoutUserInput[] | RentalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutUserInput | RentalCreateOrConnectWithoutUserInput[]
+    upsert?: RentalUpsertWithWhereUniqueWithoutUserInput | RentalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RentalCreateManyUserInputEnvelope
+    set?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    disconnect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    delete?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    update?: RentalUpdateWithWhereUniqueWithoutUserInput | RentalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RentalUpdateManyWithWhereWithoutUserInput | RentalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RentalScalarWhereInput | RentalScalarWhereInput[]
   }
 
   export type SaleUncheckedUpdateManyWithoutSellerNestedInput = {
@@ -22835,13 +23813,6 @@ export namespace Prisma {
     connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
   }
 
-  export type AgreementCreateNestedManyWithoutProductInput = {
-    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
-    createMany?: AgreementCreateManyProductInputEnvelope
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-  }
-
   export type RewardCreateNestedManyWithoutProductInput = {
     create?: XOR<RewardCreateWithoutProductInput, RewardUncheckedCreateWithoutProductInput> | RewardCreateWithoutProductInput[] | RewardUncheckedCreateWithoutProductInput[]
     connectOrCreate?: RewardCreateOrConnectWithoutProductInput | RewardCreateOrConnectWithoutProductInput[]
@@ -22863,18 +23834,18 @@ export namespace Prisma {
     connect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
   }
 
+  export type RentalCreateNestedManyWithoutProductInput = {
+    create?: XOR<RentalCreateWithoutProductInput, RentalUncheckedCreateWithoutProductInput> | RentalCreateWithoutProductInput[] | RentalUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutProductInput | RentalCreateOrConnectWithoutProductInput[]
+    createMany?: RentalCreateManyProductInputEnvelope
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+  }
+
   export type UserProductUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput> | UserProductCreateWithoutProductInput[] | UserProductUncheckedCreateWithoutProductInput[]
     connectOrCreate?: UserProductCreateOrConnectWithoutProductInput | UserProductCreateOrConnectWithoutProductInput[]
     createMany?: UserProductCreateManyProductInputEnvelope
     connect?: UserProductWhereUniqueInput | UserProductWhereUniqueInput[]
-  }
-
-  export type AgreementUncheckedCreateNestedManyWithoutProductInput = {
-    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
-    createMany?: AgreementCreateManyProductInputEnvelope
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
   }
 
   export type RewardUncheckedCreateNestedManyWithoutProductInput = {
@@ -22896,6 +23867,13 @@ export namespace Prisma {
     connectOrCreate?: SaleItemCreateOrConnectWithoutProductInput | SaleItemCreateOrConnectWithoutProductInput[]
     createMany?: SaleItemCreateManyProductInputEnvelope
     connect?: SaleItemWhereUniqueInput | SaleItemWhereUniqueInput[]
+  }
+
+  export type RentalUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<RentalCreateWithoutProductInput, RentalUncheckedCreateWithoutProductInput> | RentalCreateWithoutProductInput[] | RentalUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutProductInput | RentalCreateOrConnectWithoutProductInput[]
+    createMany?: RentalCreateManyProductInputEnvelope
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -22922,20 +23900,6 @@ export namespace Prisma {
     update?: UserProductUpdateWithWhereUniqueWithoutProductInput | UserProductUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: UserProductUpdateManyWithWhereWithoutProductInput | UserProductUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
-  }
-
-  export type AgreementUpdateManyWithoutProductNestedInput = {
-    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
-    upsert?: AgreementUpsertWithWhereUniqueWithoutProductInput | AgreementUpsertWithWhereUniqueWithoutProductInput[]
-    createMany?: AgreementCreateManyProductInputEnvelope
-    set?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    disconnect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    delete?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    update?: AgreementUpdateWithWhereUniqueWithoutProductInput | AgreementUpdateWithWhereUniqueWithoutProductInput[]
-    updateMany?: AgreementUpdateManyWithWhereWithoutProductInput | AgreementUpdateManyWithWhereWithoutProductInput[]
-    deleteMany?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
   }
 
   export type RewardUpdateManyWithoutProductNestedInput = {
@@ -22980,6 +23944,20 @@ export namespace Prisma {
     deleteMany?: SaleItemScalarWhereInput | SaleItemScalarWhereInput[]
   }
 
+  export type RentalUpdateManyWithoutProductNestedInput = {
+    create?: XOR<RentalCreateWithoutProductInput, RentalUncheckedCreateWithoutProductInput> | RentalCreateWithoutProductInput[] | RentalUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutProductInput | RentalCreateOrConnectWithoutProductInput[]
+    upsert?: RentalUpsertWithWhereUniqueWithoutProductInput | RentalUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: RentalCreateManyProductInputEnvelope
+    set?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    disconnect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    delete?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    update?: RentalUpdateWithWhereUniqueWithoutProductInput | RentalUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: RentalUpdateManyWithWhereWithoutProductInput | RentalUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: RentalScalarWhereInput | RentalScalarWhereInput[]
+  }
+
   export type UserProductUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<UserProductCreateWithoutProductInput, UserProductUncheckedCreateWithoutProductInput> | UserProductCreateWithoutProductInput[] | UserProductUncheckedCreateWithoutProductInput[]
     connectOrCreate?: UserProductCreateOrConnectWithoutProductInput | UserProductCreateOrConnectWithoutProductInput[]
@@ -22992,20 +23970,6 @@ export namespace Prisma {
     update?: UserProductUpdateWithWhereUniqueWithoutProductInput | UserProductUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: UserProductUpdateManyWithWhereWithoutProductInput | UserProductUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
-  }
-
-  export type AgreementUncheckedUpdateManyWithoutProductNestedInput = {
-    create?: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput> | AgreementCreateWithoutProductInput[] | AgreementUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: AgreementCreateOrConnectWithoutProductInput | AgreementCreateOrConnectWithoutProductInput[]
-    upsert?: AgreementUpsertWithWhereUniqueWithoutProductInput | AgreementUpsertWithWhereUniqueWithoutProductInput[]
-    createMany?: AgreementCreateManyProductInputEnvelope
-    set?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    disconnect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    delete?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    connect?: AgreementWhereUniqueInput | AgreementWhereUniqueInput[]
-    update?: AgreementUpdateWithWhereUniqueWithoutProductInput | AgreementUpdateWithWhereUniqueWithoutProductInput[]
-    updateMany?: AgreementUpdateManyWithWhereWithoutProductInput | AgreementUpdateManyWithWhereWithoutProductInput[]
-    deleteMany?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
   }
 
   export type RewardUncheckedUpdateManyWithoutProductNestedInput = {
@@ -23050,6 +24014,20 @@ export namespace Prisma {
     deleteMany?: SaleItemScalarWhereInput | SaleItemScalarWhereInput[]
   }
 
+  export type RentalUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<RentalCreateWithoutProductInput, RentalUncheckedCreateWithoutProductInput> | RentalCreateWithoutProductInput[] | RentalUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: RentalCreateOrConnectWithoutProductInput | RentalCreateOrConnectWithoutProductInput[]
+    upsert?: RentalUpsertWithWhereUniqueWithoutProductInput | RentalUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: RentalCreateManyProductInputEnvelope
+    set?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    disconnect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    delete?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    connect?: RentalWhereUniqueInput | RentalWhereUniqueInput[]
+    update?: RentalUpdateWithWhereUniqueWithoutProductInput | RentalUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: RentalUpdateManyWithWhereWithoutProductInput | RentalUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: RentalScalarWhereInput | RentalScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutUserProductsInput = {
     create?: XOR<UserCreateWithoutUserProductsInput, UserUncheckedCreateWithoutUserProductsInput>
     connectOrCreate?: UserCreateOrConnectWithoutUserProductsInput
@@ -23076,6 +24054,34 @@ export namespace Prisma {
     upsert?: ProductUpsertWithoutUserProductsInput
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutUserProductsInput, ProductUpdateWithoutUserProductsInput>, ProductUncheckedUpdateWithoutUserProductsInput>
+  }
+
+  export type UserCreateNestedOneWithoutRentalsInput = {
+    create?: XOR<UserCreateWithoutRentalsInput, UserUncheckedCreateWithoutRentalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRentalsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutRentalsInput = {
+    create?: XOR<ProductCreateWithoutRentalsInput, ProductUncheckedCreateWithoutRentalsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutRentalsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutRentalsNestedInput = {
+    create?: XOR<UserCreateWithoutRentalsInput, UserUncheckedCreateWithoutRentalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRentalsInput
+    upsert?: UserUpsertWithoutRentalsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRentalsInput, UserUpdateWithoutRentalsInput>, UserUncheckedUpdateWithoutRentalsInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutRentalsNestedInput = {
+    create?: XOR<ProductCreateWithoutRentalsInput, ProductUncheckedCreateWithoutRentalsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutRentalsInput
+    upsert?: ProductUpsertWithoutRentalsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutRentalsInput, ProductUpdateWithoutRentalsInput>, ProductUncheckedUpdateWithoutRentalsInput>
   }
 
   export type UserCreateNestedOneWithoutReferralsMadeInput = {
@@ -23146,38 +24152,6 @@ export namespace Prisma {
     update?: CommissionUpdateWithWhereUniqueWithoutReferralInput | CommissionUpdateWithWhereUniqueWithoutReferralInput[]
     updateMany?: CommissionUpdateManyWithWhereWithoutReferralInput | CommissionUpdateManyWithWhereWithoutReferralInput[]
     deleteMany?: CommissionScalarWhereInput | CommissionScalarWhereInput[]
-  }
-
-  export type UserCreateNestedOneWithoutAgreementsInput = {
-    create?: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAgreementsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type ProductCreateNestedOneWithoutAgreementsInput = {
-    create?: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAgreementsInput
-    connect?: ProductWhereUniqueInput
-  }
-
-  export type EnumAgreementStatusFieldUpdateOperationsInput = {
-    set?: $Enums.AgreementStatus
-  }
-
-  export type UserUpdateOneRequiredWithoutAgreementsNestedInput = {
-    create?: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAgreementsInput
-    upsert?: UserUpsertWithoutAgreementsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAgreementsInput, UserUpdateWithoutAgreementsInput>, UserUncheckedUpdateWithoutAgreementsInput>
-  }
-
-  export type ProductUpdateOneRequiredWithoutAgreementsNestedInput = {
-    create?: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAgreementsInput
-    upsert?: ProductUpsertWithoutAgreementsInput
-    connect?: ProductWhereUniqueInput
-    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAgreementsInput, ProductUpdateWithoutAgreementsInput>, ProductUncheckedUpdateWithoutAgreementsInput>
   }
 
   export type UserCreateNestedOneWithoutSalesSoldInput = {
@@ -23641,23 +24615,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumAgreementStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusFilter<$PrismaModel> | $Enums.AgreementStatus
-  }
-
-  export type NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AgreementStatus | EnumAgreementStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AgreementStatus[] | ListEnumAgreementStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAgreementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AgreementStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAgreementStatusFilter<$PrismaModel>
-    _max?: NestedEnumAgreementStatusFilter<$PrismaModel>
-  }
-
   export type NestedEnumRewardStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
     in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
@@ -23795,39 +24752,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AgreementCreateWithoutUserInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
-    product: ProductCreateNestedOneWithoutAgreementsInput
+  export type RentalCreateWithoutUserInput = {
+    rentedAt?: Date | string
+    duration: number
+    product: ProductCreateNestedOneWithoutRentalsInput
   }
 
-  export type AgreementUncheckedCreateWithoutUserInput = {
+  export type RentalUncheckedCreateWithoutUserInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
+    rentedAt?: Date | string
+    duration: number
     productId: number
   }
 
-  export type AgreementCreateOrConnectWithoutUserInput = {
-    where: AgreementWhereUniqueInput
-    create: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
+  export type RentalCreateOrConnectWithoutUserInput = {
+    where: RentalWhereUniqueInput
+    create: XOR<RentalCreateWithoutUserInput, RentalUncheckedCreateWithoutUserInput>
   }
 
-  export type AgreementCreateManyUserInputEnvelope = {
-    data: AgreementCreateManyUserInput | AgreementCreateManyUserInput[]
+  export type RentalCreateManyUserInputEnvelope = {
+    data: RentalCreateManyUserInput | RentalCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
   export type SaleCreateWithoutSellerInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     buyer: UserCreateNestedOneWithoutSalesBoughtInput
     items?: SaleItemCreateNestedManyWithoutSaleInput
@@ -23835,9 +24784,7 @@ export namespace Prisma {
 
   export type SaleUncheckedCreateWithoutSellerInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     buyerId: number
     items?: SaleItemUncheckedCreateNestedManyWithoutSaleInput
@@ -23854,9 +24801,7 @@ export namespace Prisma {
   }
 
   export type SaleCreateWithoutBuyerInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     seller: UserCreateNestedOneWithoutSalesSoldInput
     items?: SaleItemCreateNestedManyWithoutSaleInput
@@ -23864,9 +24809,7 @@ export namespace Prisma {
 
   export type SaleUncheckedCreateWithoutBuyerInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     sellerId: number
     items?: SaleItemUncheckedCreateNestedManyWithoutSaleInput
@@ -24118,34 +25061,31 @@ export namespace Prisma {
     productId?: IntFilter<"UserProduct"> | number
   }
 
-  export type AgreementUpsertWithWhereUniqueWithoutUserInput = {
-    where: AgreementWhereUniqueInput
-    update: XOR<AgreementUpdateWithoutUserInput, AgreementUncheckedUpdateWithoutUserInput>
-    create: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
+  export type RentalUpsertWithWhereUniqueWithoutUserInput = {
+    where: RentalWhereUniqueInput
+    update: XOR<RentalUpdateWithoutUserInput, RentalUncheckedUpdateWithoutUserInput>
+    create: XOR<RentalCreateWithoutUserInput, RentalUncheckedCreateWithoutUserInput>
   }
 
-  export type AgreementUpdateWithWhereUniqueWithoutUserInput = {
-    where: AgreementWhereUniqueInput
-    data: XOR<AgreementUpdateWithoutUserInput, AgreementUncheckedUpdateWithoutUserInput>
+  export type RentalUpdateWithWhereUniqueWithoutUserInput = {
+    where: RentalWhereUniqueInput
+    data: XOR<RentalUpdateWithoutUserInput, RentalUncheckedUpdateWithoutUserInput>
   }
 
-  export type AgreementUpdateManyWithWhereWithoutUserInput = {
-    where: AgreementScalarWhereInput
-    data: XOR<AgreementUpdateManyMutationInput, AgreementUncheckedUpdateManyWithoutUserInput>
+  export type RentalUpdateManyWithWhereWithoutUserInput = {
+    where: RentalScalarWhereInput
+    data: XOR<RentalUpdateManyMutationInput, RentalUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type AgreementScalarWhereInput = {
-    AND?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
-    OR?: AgreementScalarWhereInput[]
-    NOT?: AgreementScalarWhereInput | AgreementScalarWhereInput[]
-    id?: IntFilter<"Agreement"> | number
-    createdAt?: DateTimeFilter<"Agreement"> | Date | string
-    updatedAt?: DateTimeFilter<"Agreement"> | Date | string
-    startDate?: DateTimeFilter<"Agreement"> | Date | string
-    endDate?: DateTimeFilter<"Agreement"> | Date | string
-    status?: EnumAgreementStatusFilter<"Agreement"> | $Enums.AgreementStatus
-    userId?: IntFilter<"Agreement"> | number
-    productId?: IntFilter<"Agreement"> | number
+  export type RentalScalarWhereInput = {
+    AND?: RentalScalarWhereInput | RentalScalarWhereInput[]
+    OR?: RentalScalarWhereInput[]
+    NOT?: RentalScalarWhereInput | RentalScalarWhereInput[]
+    id?: IntFilter<"Rental"> | number
+    rentedAt?: DateTimeFilter<"Rental"> | Date | string
+    duration?: IntFilter<"Rental"> | number
+    userId?: IntFilter<"Rental"> | number
+    productId?: IntFilter<"Rental"> | number
   }
 
   export type SaleUpsertWithWhereUniqueWithoutSellerInput = {
@@ -24169,9 +25109,7 @@ export namespace Prisma {
     OR?: SaleScalarWhereInput[]
     NOT?: SaleScalarWhereInput | SaleScalarWhereInput[]
     id?: IntFilter<"Sale"> | number
-    createdAt?: DateTimeFilter<"Sale"> | Date | string
-    updatedAt?: DateTimeFilter<"Sale"> | Date | string
-    amount?: DecimalFilter<"Sale"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalFilter<"Sale"> | Decimal | DecimalJsLike | number | string
     date?: DateTimeFilter<"Sale"> | Date | string
     sellerId?: IntFilter<"Sale"> | number
     buyerId?: IntFilter<"Sale"> | number
@@ -24367,7 +25305,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -24391,7 +25329,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -24430,7 +25368,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -24454,7 +25392,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -24477,7 +25415,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -24501,7 +25439,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -24540,7 +25478,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -24564,7 +25502,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -24592,35 +25530,6 @@ export namespace Prisma {
 
   export type UserProductCreateManyProductInputEnvelope = {
     data: UserProductCreateManyProductInput | UserProductCreateManyProductInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AgreementCreateWithoutProductInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
-    user: UserCreateNestedOneWithoutAgreementsInput
-  }
-
-  export type AgreementUncheckedCreateWithoutProductInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
-    userId: number
-  }
-
-  export type AgreementCreateOrConnectWithoutProductInput = {
-    where: AgreementWhereUniqueInput
-    create: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput>
-  }
-
-  export type AgreementCreateManyProductInputEnvelope = {
-    data: AgreementCreateManyProductInput | AgreementCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
@@ -24685,16 +25594,12 @@ export namespace Prisma {
   }
 
   export type SaleItemCreateWithoutProductInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
     quantity: number
     sale: SaleCreateNestedOneWithoutItemsInput
   }
 
   export type SaleItemUncheckedCreateWithoutProductInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
     saleId: number
     quantity: number
   }
@@ -24706,6 +25611,29 @@ export namespace Prisma {
 
   export type SaleItemCreateManyProductInputEnvelope = {
     data: SaleItemCreateManyProductInput | SaleItemCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RentalCreateWithoutProductInput = {
+    rentedAt?: Date | string
+    duration: number
+    user: UserCreateNestedOneWithoutRentalsInput
+  }
+
+  export type RentalUncheckedCreateWithoutProductInput = {
+    id?: number
+    rentedAt?: Date | string
+    duration: number
+    userId: number
+  }
+
+  export type RentalCreateOrConnectWithoutProductInput = {
+    where: RentalWhereUniqueInput
+    create: XOR<RentalCreateWithoutProductInput, RentalUncheckedCreateWithoutProductInput>
+  }
+
+  export type RentalCreateManyProductInputEnvelope = {
+    data: RentalCreateManyProductInput | RentalCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
@@ -24723,22 +25651,6 @@ export namespace Prisma {
   export type UserProductUpdateManyWithWhereWithoutProductInput = {
     where: UserProductScalarWhereInput
     data: XOR<UserProductUpdateManyMutationInput, UserProductUncheckedUpdateManyWithoutProductInput>
-  }
-
-  export type AgreementUpsertWithWhereUniqueWithoutProductInput = {
-    where: AgreementWhereUniqueInput
-    update: XOR<AgreementUpdateWithoutProductInput, AgreementUncheckedUpdateWithoutProductInput>
-    create: XOR<AgreementCreateWithoutProductInput, AgreementUncheckedCreateWithoutProductInput>
-  }
-
-  export type AgreementUpdateWithWhereUniqueWithoutProductInput = {
-    where: AgreementWhereUniqueInput
-    data: XOR<AgreementUpdateWithoutProductInput, AgreementUncheckedUpdateWithoutProductInput>
-  }
-
-  export type AgreementUpdateManyWithWhereWithoutProductInput = {
-    where: AgreementScalarWhereInput
-    data: XOR<AgreementUpdateManyMutationInput, AgreementUncheckedUpdateManyWithoutProductInput>
   }
 
   export type RewardUpsertWithWhereUniqueWithoutProductInput = {
@@ -24809,11 +25721,25 @@ export namespace Prisma {
     OR?: SaleItemScalarWhereInput[]
     NOT?: SaleItemScalarWhereInput | SaleItemScalarWhereInput[]
     id?: IntFilter<"SaleItem"> | number
-    createdAt?: DateTimeFilter<"SaleItem"> | Date | string
-    updatedAt?: DateTimeFilter<"SaleItem"> | Date | string
     saleId?: IntFilter<"SaleItem"> | number
     productId?: IntFilter<"SaleItem"> | number
     quantity?: IntFilter<"SaleItem"> | number
+  }
+
+  export type RentalUpsertWithWhereUniqueWithoutProductInput = {
+    where: RentalWhereUniqueInput
+    update: XOR<RentalUpdateWithoutProductInput, RentalUncheckedUpdateWithoutProductInput>
+    create: XOR<RentalCreateWithoutProductInput, RentalUncheckedCreateWithoutProductInput>
+  }
+
+  export type RentalUpdateWithWhereUniqueWithoutProductInput = {
+    where: RentalWhereUniqueInput
+    data: XOR<RentalUpdateWithoutProductInput, RentalUncheckedUpdateWithoutProductInput>
+  }
+
+  export type RentalUpdateManyWithWhereWithoutProductInput = {
+    where: RentalScalarWhereInput
+    data: XOR<RentalUpdateManyMutationInput, RentalUncheckedUpdateManyWithoutProductInput>
   }
 
   export type UserCreateWithoutUserProductsInput = {
@@ -24828,7 +25754,7 @@ export namespace Prisma {
     role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -24852,7 +25778,7 @@ export namespace Prisma {
     role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -24878,12 +25804,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
-    agreements?: AgreementCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
     saleItems?: SaleItemCreateNestedManyWithoutProductInput
+    rentals?: RentalCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutUserProductsInput = {
@@ -24897,12 +25822,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
-    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutUserProductsInput = {
@@ -24933,7 +25857,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -24957,7 +25881,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -24989,12 +25913,11 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    agreements?: AgreementUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+    rentals?: RentalUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutUserProductsInput = {
@@ -25008,9 +25931,204 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type UserCreateWithoutRentalsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
+    salesSold?: SaleCreateNestedManyWithoutSellerInput
+    salesBought?: SaleCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    rewards?: RewardCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRentalsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
+    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
+    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRentalsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRentalsInput, UserUncheckedCreateWithoutRentalsInput>
+  }
+
+  export type ProductCreateWithoutRentalsInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    deletedAt?: Date | string | null
+    userProducts?: UserProductCreateNestedManyWithoutProductInput
+    rewards?: RewardCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutRentalsInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    image: string
+    price: Decimal | DecimalJsLike | number | string
+    dailyIncome: Decimal | DecimalJsLike | number | string
+    fee: Decimal | DecimalJsLike | number | string
+    level: number
+    deletedAt?: Date | string | null
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
+    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
+    saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutRentalsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutRentalsInput, ProductUncheckedCreateWithoutRentalsInput>
+  }
+
+  export type UserUpsertWithoutRentalsInput = {
+    update: XOR<UserUpdateWithoutRentalsInput, UserUncheckedUpdateWithoutRentalsInput>
+    create: XOR<UserCreateWithoutRentalsInput, UserUncheckedCreateWithoutRentalsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRentalsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRentalsInput, UserUncheckedUpdateWithoutRentalsInput>
+  }
+
+  export type UserUpdateWithoutRentalsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRentalsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProductUpsertWithoutRentalsInput = {
+    update: XOR<ProductUpdateWithoutRentalsInput, ProductUncheckedUpdateWithoutRentalsInput>
+    create: XOR<ProductCreateWithoutRentalsInput, ProductUncheckedCreateWithoutRentalsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutRentalsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutRentalsInput, ProductUncheckedUpdateWithoutRentalsInput>
+  }
+
+  export type ProductUpdateWithoutRentalsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUpdateManyWithoutProductNestedInput
+    rewards?: RewardUpdateManyWithoutProductNestedInput
+    trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
+    saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutRentalsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    level?: IntFieldUpdateOperationsInput | number
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
@@ -25029,7 +26147,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
@@ -25053,7 +26171,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
@@ -25081,7 +26199,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -25105,7 +26223,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -25169,7 +26287,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
@@ -25193,7 +26311,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
@@ -25227,7 +26345,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -25251,7 +26369,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -25289,206 +26407,6 @@ export namespace Prisma {
     referralId?: IntFilter<"Commission"> | number
   }
 
-  export type UserCreateWithoutAgreementsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    role?: $Enums.Role
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawCreateNestedManyWithoutUserInput
-    userProducts?: UserProductCreateNestedManyWithoutUserInput
-    salesSold?: SaleCreateNestedManyWithoutSellerInput
-    salesBought?: SaleCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
-    rewards?: RewardCreateNestedManyWithoutUserInput
-    trialFund?: TrialFundCreateNestedOneWithoutUserInput
-    verifications?: VerificationCreateNestedManyWithoutUserInput
-    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutAgreementsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username: string
-    phone?: string | null
-    email: string
-    emailVerified?: boolean
-    password: string
-    referralCode?: string | null
-    role?: $Enums.Role
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
-    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
-    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
-    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
-    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
-    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
-    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
-    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAgreementsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
-  }
-
-  export type ProductCreateWithoutAgreementsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    level: number
-    rentalDays?: number | null
-    deletedAt?: Date | string | null
-    userProducts?: UserProductCreateNestedManyWithoutProductInput
-    rewards?: RewardCreateNestedManyWithoutProductInput
-    trialFunds?: TrialFundCreateNestedManyWithoutProductInput
-    saleItems?: SaleItemCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductUncheckedCreateWithoutAgreementsInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    title: string
-    description?: string | null
-    image: string
-    price: Decimal | DecimalJsLike | number | string
-    dailyIncome: Decimal | DecimalJsLike | number | string
-    fee: Decimal | DecimalJsLike | number | string
-    level: number
-    rentalDays?: number | null
-    deletedAt?: Date | string | null
-    userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
-    rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
-    trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
-    saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductCreateOrConnectWithoutAgreementsInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
-  }
-
-  export type UserUpsertWithoutAgreementsInput = {
-    update: XOR<UserUpdateWithoutAgreementsInput, UserUncheckedUpdateWithoutAgreementsInput>
-    create: XOR<UserCreateWithoutAgreementsInput, UserUncheckedCreateWithoutAgreementsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAgreementsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAgreementsInput, UserUncheckedUpdateWithoutAgreementsInput>
-  }
-
-  export type UserUpdateWithoutAgreementsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
-    userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUpdateManyWithoutUserNestedInput
-    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
-    verifications?: VerificationUpdateManyWithoutUserNestedInput
-    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAgreementsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    password?: StringFieldUpdateOperationsInput | string
-    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
-    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
-    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
-    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
-    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
-    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
-    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
-    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ProductUpsertWithoutAgreementsInput = {
-    update: XOR<ProductUpdateWithoutAgreementsInput, ProductUncheckedUpdateWithoutAgreementsInput>
-    create: XOR<ProductCreateWithoutAgreementsInput, ProductUncheckedCreateWithoutAgreementsInput>
-    where?: ProductWhereInput
-  }
-
-  export type ProductUpdateToOneWithWhereWithoutAgreementsInput = {
-    where?: ProductWhereInput
-    data: XOR<ProductUpdateWithoutAgreementsInput, ProductUncheckedUpdateWithoutAgreementsInput>
-  }
-
-  export type ProductUpdateWithoutAgreementsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userProducts?: UserProductUpdateManyWithoutProductNestedInput
-    rewards?: RewardUpdateManyWithoutProductNestedInput
-    trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
-    saleItems?: SaleItemUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutAgreementsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
-    rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
-    trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
-    saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
-  }
-
   export type UserCreateWithoutSalesSoldInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -25502,7 +26420,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
@@ -25526,7 +26444,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
@@ -25554,7 +26472,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
@@ -25578,7 +26496,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
     referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
@@ -25594,16 +26512,12 @@ export namespace Prisma {
   }
 
   export type SaleItemCreateWithoutSaleInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
     quantity: number
     product: ProductCreateNestedOneWithoutSaleItemsInput
   }
 
   export type SaleItemUncheckedCreateWithoutSaleInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
     productId: number
     quantity: number
   }
@@ -25642,7 +26556,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
@@ -25666,7 +26580,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
@@ -25700,7 +26614,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
@@ -25724,7 +26638,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
     referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
@@ -25751,9 +26665,7 @@ export namespace Prisma {
   }
 
   export type SaleCreateWithoutItemsInput = {
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     seller: UserCreateNestedOneWithoutSalesSoldInput
     buyer: UserCreateNestedOneWithoutSalesBoughtInput
@@ -25761,9 +26673,7 @@ export namespace Prisma {
 
   export type SaleUncheckedCreateWithoutItemsInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     sellerId: number
     buyerId: number
@@ -25784,12 +26694,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
-    agreements?: AgreementCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
+    rentals?: RentalCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutSaleItemsInput = {
@@ -25803,12 +26712,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutSaleItemsInput = {
@@ -25828,9 +26736,7 @@ export namespace Prisma {
   }
 
   export type SaleUpdateWithoutItemsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     seller?: UserUpdateOneRequiredWithoutSalesSoldNestedInput
     buyer?: UserUpdateOneRequiredWithoutSalesBoughtNestedInput
@@ -25838,9 +26744,7 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateWithoutItemsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sellerId?: IntFieldUpdateOperationsInput | number
     buyerId?: IntFieldUpdateOperationsInput | number
@@ -25867,12 +26771,11 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
+    rentals?: RentalUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutSaleItemsInput = {
@@ -25886,12 +26789,11 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutRewardsInput = {
@@ -25907,7 +26809,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -25931,7 +26833,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -25956,12 +26858,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
-    agreements?: AgreementCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
     saleItems?: SaleItemCreateNestedManyWithoutProductInput
+    rentals?: RentalCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutRewardsInput = {
@@ -25975,12 +26876,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutRewardsInput = {
@@ -26012,7 +26912,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -26036,7 +26936,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -26067,12 +26967,11 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+    rentals?: RentalUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutRewardsInput = {
@@ -26086,12 +26985,11 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ReferralCreateWithoutCommissionsInput = {
@@ -26152,7 +27050,7 @@ export namespace Prisma {
     role?: $Enums.Role
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -26176,7 +27074,7 @@ export namespace Prisma {
     role?: $Enums.Role
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -26215,7 +27113,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -26239,7 +27137,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -26262,7 +27160,7 @@ export namespace Prisma {
     role?: $Enums.Role
     wallet?: WalletCreateNestedOneWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -26286,7 +27184,7 @@ export namespace Prisma {
     role?: $Enums.Role
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -26325,7 +27223,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUpdateOneWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -26349,7 +27247,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -26373,7 +27271,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
-    agreements?: AgreementCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
     salesSold?: SaleCreateNestedManyWithoutSellerInput
     salesBought?: SaleCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
@@ -26397,7 +27295,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
     salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
     salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
     referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
@@ -26422,12 +27320,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
-    agreements?: AgreementCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     saleItems?: SaleItemCreateNestedManyWithoutProductInput
+    rentals?: RentalCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutTrialFundsInput = {
@@ -26441,12 +27338,11 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     level: number
-    rentalDays?: number | null
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
-    agreements?: AgreementUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutTrialFundsInput = {
@@ -26478,7 +27374,7 @@ export namespace Prisma {
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
     salesSold?: SaleUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
@@ -26502,7 +27398,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
     salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
     salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
     referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
@@ -26533,12 +27429,11 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUpdateManyWithoutProductNestedInput
+    rentals?: RentalUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutTrialFundsInput = {
@@ -26552,12 +27447,11 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     level?: IntFieldUpdateOperationsInput | number
-    rentalDays?: NullableIntFieldUpdateOperationsInput | number | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
-    agreements?: AgreementUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type WithdrawCreateManyUserInput = {
@@ -26577,30 +27471,23 @@ export namespace Prisma {
     productId: number
   }
 
-  export type AgreementCreateManyUserInput = {
+  export type RentalCreateManyUserInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
+    rentedAt?: Date | string
+    duration: number
     productId: number
   }
 
   export type SaleCreateManySellerInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     buyerId: number
   }
 
   export type SaleCreateManyBuyerInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    amount: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
     date?: Date | string
     sellerId: number
   }
@@ -26694,39 +27581,28 @@ export namespace Prisma {
     productId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type AgreementUpdateWithoutUserInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    product?: ProductUpdateOneRequiredWithoutAgreementsNestedInput
+  export type RentalUpdateWithoutUserInput = {
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
+    product?: ProductUpdateOneRequiredWithoutRentalsNestedInput
   }
 
-  export type AgreementUncheckedUpdateWithoutUserInput = {
+  export type RentalUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type AgreementUncheckedUpdateManyWithoutUserInput = {
+  export type RentalUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleUpdateWithoutSellerInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     buyer?: UserUpdateOneRequiredWithoutSalesBoughtNestedInput
     items?: SaleItemUpdateManyWithoutSaleNestedInput
@@ -26734,9 +27610,7 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateWithoutSellerInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     buyerId?: IntFieldUpdateOperationsInput | number
     items?: SaleItemUncheckedUpdateManyWithoutSaleNestedInput
@@ -26744,17 +27618,13 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateManyWithoutSellerInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     buyerId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleUpdateWithoutBuyerInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     seller?: UserUpdateOneRequiredWithoutSalesSoldNestedInput
     items?: SaleItemUpdateManyWithoutSaleNestedInput
@@ -26762,9 +27632,7 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateWithoutBuyerInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sellerId?: IntFieldUpdateOperationsInput | number
     items?: SaleItemUncheckedUpdateManyWithoutSaleNestedInput
@@ -26772,9 +27640,7 @@ export namespace Prisma {
 
   export type SaleUncheckedUpdateManyWithoutBuyerInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sellerId?: IntFieldUpdateOperationsInput | number
   }
@@ -26904,16 +27770,6 @@ export namespace Prisma {
     userId: number
   }
 
-  export type AgreementCreateManyProductInput = {
-    id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.AgreementStatus
-    userId: number
-  }
-
   export type RewardCreateManyProductInput = {
     id?: number
     createdAt?: Date | string
@@ -26937,10 +27793,15 @@ export namespace Prisma {
 
   export type SaleItemCreateManyProductInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
     saleId: number
     quantity: number
+  }
+
+  export type RentalCreateManyProductInput = {
+    id?: number
+    rentedAt?: Date | string
+    duration: number
+    userId: number
   }
 
   export type UserProductUpdateWithoutProductInput = {
@@ -26957,35 +27818,6 @@ export namespace Prisma {
   export type UserProductUncheckedUpdateManyWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type AgreementUpdateWithoutProductInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    user?: UserUpdateOneRequiredWithoutAgreementsNestedInput
-  }
-
-  export type AgreementUncheckedUpdateWithoutProductInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
-    userId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type AgreementUncheckedUpdateManyWithoutProductInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumAgreementStatusFieldUpdateOperationsInput | $Enums.AgreementStatus
     userId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -27051,26 +27883,40 @@ export namespace Prisma {
   }
 
   export type SaleItemUpdateWithoutProductInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quantity?: IntFieldUpdateOperationsInput | number
     sale?: SaleUpdateOneRequiredWithoutItemsNestedInput
   }
 
   export type SaleItemUncheckedUpdateWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     saleId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleItemUncheckedUpdateManyWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     saleId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RentalUpdateWithoutProductInput = {
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutRentalsNestedInput
+  }
+
+  export type RentalUncheckedUpdateWithoutProductInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RentalUncheckedUpdateManyWithoutProductInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    rentedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type CommissionCreateManyReferralInput = {
@@ -27106,31 +27952,23 @@ export namespace Prisma {
 
   export type SaleItemCreateManySaleInput = {
     id?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
     productId: number
     quantity: number
   }
 
   export type SaleItemUpdateWithoutSaleInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quantity?: IntFieldUpdateOperationsInput | number
     product?: ProductUpdateOneRequiredWithoutSaleItemsNestedInput
   }
 
   export type SaleItemUncheckedUpdateWithoutSaleInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
   }
 
   export type SaleItemUncheckedUpdateManyWithoutSaleInput = {
     id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     productId?: IntFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
   }

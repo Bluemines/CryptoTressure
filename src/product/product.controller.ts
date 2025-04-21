@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
@@ -103,4 +104,27 @@ export class ProductController {
   }
 
   // ─── PUBLIC / CUSTOMER ─────────────────────────────
+  @Get('popular')
+  async getPopularProducts(
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number,
+  ): Promise<ApiResponse<Product[]>> {
+    const products = await this.productService.getPopularProducts(limit);
+    return new ApiResponse(200, products, 'Popular products retrieved');
+  }
+
+  @Get('user/:userId')
+  async getUserProducts(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<ApiResponse<Product[]>> {
+    const products = await this.productService.getUserProducts(userId);
+    return new ApiResponse(200, products, 'User products retrieved');
+  }
+
+  @Get(':id')
+  async viewProduct(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ApiResponse<Product>> {
+    const product = await this.productService.viewProduct(id);
+    return new ApiResponse(200, product, 'Product retrieved');
+  }
 }
