@@ -66,7 +66,7 @@ export class AuthService {
     }
 
     const hashed = await argon.hash(password);
-    const expires = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
+    const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
 
     // Transaction: create user, delete OTP, grant trial
     const result = await this.prisma.$transaction(async (tx) => {
@@ -76,25 +76,34 @@ export class AuthService {
           username,
           password: hashed,
           emailVerified: true,
+          status: 'APPROVED',
+        },
+      });
+
+      await tx.wallet.create({
+        data: { user: { connect: { id: user.id } }, balance: 0 },
+      });
+
+      await tx.userLevel.create({
+        data: {
+          user: { connect: { id: user.id } },
+          level: { connect: { id: 1 } },
         },
       });
 
       await tx.verification.delete({ where: { email } });
 
-      // Correct that later
-      const defaultProduct = await tx.product.findFirst({
-        where: {},
-      });
-
-      return tx.trialFund.create({
-        data: {
-          user: { connect: { id: user.id } },
-          product: { connect: { id: defaultProduct.id } },
-          amount: 200,
-          grantedAt: new Date(),
-          expiresAt: expires,
-        },
-      });
+      const defaultProduct = await tx.product.findFirst();
+      const tfData: any = {
+        user: { connect: { id: user.id } },
+        amount: 200,
+        grantedAt: new Date(),
+        expiresAt: trialExpiry,
+      };
+      if (defaultProduct) {
+        tfData.product = { connect: { id: defaultProduct.id } };
+      }
+      return tx.trialFund.create({ data: tfData });
     });
 
     // Schedule the auto-recovery

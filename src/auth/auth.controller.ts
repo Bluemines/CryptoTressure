@@ -19,7 +19,7 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() dto: SignupDto): Promise<ApiResponse<null>> {
-    const user = await this.authService.signup(dto);
+    await this.authService.signup(dto);
 
     return new ApiResponse(200, null, 'User Created Successfully');
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Product, Prisma } from '../../generated/prisma/client';
+import { Product, Prisma, Sale } from '../../generated/prisma/client';
 import { ApiError } from 'src/common';
 import { join } from 'path';
 import { unlink } from 'fs/promises';
@@ -16,27 +16,19 @@ export class ProductService {
 
   // ────────────────── ADMIN─────────────────────────────
   async createProduct(input: ProductCreateInput): Promise<Product> {
-    const {
-      title,
-      description,
-      price,
-      dailyIncome,
-      fee,
-      level,
-      rentalDays,
-      image,
-    } = input;
+    const { title, description, price, dailyIncome, fee, image, userId } =
+      input;
     const exists = await this.prisma.product.findFirst({ where: { title } });
     if (exists) throw new ApiError(400, 'Product already exists');
     return this.prisma.product.create({
       data: {
+        userId,
         title,
         description,
         image,
         price,
         dailyIncome,
         fee,
-        level,
       },
     });
   }
@@ -122,15 +114,15 @@ export class ProductService {
       .filter((p) => p.popularity > 0)
       .sort((a, b) => b.popularity - a.popularity)
       .slice(0, limit)
-      .map(({ _count, popularity, ...rest }) => rest);
+      .map(({ _count: _, popularity: __, ...rest }) => rest);
 
     if (activeProducts.length > 0) {
       return activeProducts;
     }
 
-    // Random products
+    // Fallback: random products
     const pool: Product[] = withPop.map(
-      ({ _count, popularity, ...rest }) => rest,
+      ({ _count: _, popularity: __, ...rest }) => rest,
     );
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -166,12 +158,12 @@ export class ProductService {
       select: {
         id: true,
         title: true,
+        userId: true,
         description: true,
         image: true,
         price: true,
-        dailyIncome: true, 
-        fee: true, 
-        level: true,
+        dailyIncome: true,
+        fee: true,
         deletedAt: true,
         createdAt: true,
         updatedAt: true,
@@ -181,5 +173,128 @@ export class ProductService {
 
     if (!product) throw new ApiError(404, 'Product not found');
     return product;
+  }
+
+  async buyProduct(userId: number, productId: number): Promise<Sale> {
+    const [product, buyerWallet] = await Promise.all([
+      this.prisma.product.findUnique({ where: { id: productId } }),
+      this.prisma.wallet.findUnique({ where: { userId } }),
+    ]);
+    if (!product) throw new ApiError(404, 'Product not found');
+    if (!buyerWallet) throw new ApiError(400, 'Buyer wallet missing');
+
+    const balance = buyerWallet.balance.toNumber();
+    const price = product.price.toNumber();
+    const sellerId = product.userId;
+    if (balance < price) {
+      throw new ApiError(400, 'Insufficient funds');
+    }
+
+    await this.prisma.wallet.upsert({
+      where: { userId: sellerId },
+      update: {},
+      create: { user: { connect: { id: sellerId } }, balance: 0 },
+    });
+
+    const [sale] = await this.prisma.$transaction([
+      this.prisma.sale.create({
+        data: {
+          total: price,
+          seller: { connect: { id: sellerId } },
+          buyer: { connect: { id: userId } },
+        },
+      }),
+
+      this.prisma.wallet.update({
+        where: { userId },
+        data: { balance: { decrement: price } },
+      }),
+
+      this.prisma.wallet.update({
+        where: { userId: sellerId },
+        data: { balance: { increment: price } },
+      }),
+
+      this.prisma.userProduct.create({
+        data: {
+          user: { connect: { id: userId } },
+          product: { connect: { id: productId } },
+        },
+      }),
+    ]);
+
+    await this.prisma.saleItem.create({
+      data: {
+        sale: { connect: { id: sale.id } },
+        product: { connect: { id: productId } },
+        quantity: 1,
+      },
+    });
+
+    return sale;
+  }
+
+  async sellToAdmin(userId: number, productId: number): Promise<Sale> {
+    const ownership = await this.prisma.userProduct.findUnique({
+      where: { userId_productId: { userId, productId } },
+    });
+    if (!ownership) {
+      throw new ApiError(400, 'You do not own this product');
+    }
+
+    const product = await this.prisma.product.findUnique({
+      where: { id: productId },
+    });
+    if (!product) throw new ApiError(404, 'Product not found');
+    const price = product.price;
+
+    const admin = await this.prisma.user.findFirst({
+      where: { role: 'ADMIN' },
+    });
+    if (!admin) throw new ApiError(500, 'No admin account configured');
+    const adminId = admin.id;
+
+    const [userWallet, adminWallet] = await Promise.all([
+      this.prisma.wallet.findUnique({ where: { userId } }),
+      this.prisma.wallet.findUnique({ where: { userId: adminId } }),
+    ]);
+    if (!userWallet || !adminWallet) {
+      throw new ApiError(500, 'Wallets not initialized');
+    }
+
+    if (adminWallet.balance.lt(price)) {
+      throw new ApiError(400, 'Platform has insufficient funds');
+    }
+
+    const [sale] = await this.prisma.$transaction([
+      this.prisma.sale.create({
+        data: {
+          total: price,
+          seller: { connect: { id: userId } },
+          buyer: { connect: { id: adminId } },
+        },
+      }),
+      this.prisma.wallet.update({
+        where: { userId: adminId },
+        data: { balance: { decrement: price } },
+      }),
+      this.prisma.wallet.update({
+        where: { userId },
+        data: { balance: { increment: price } },
+      }),
+      this.prisma.userProduct.delete({
+        where: { userId_productId: { userId, productId } },
+      }),
+    ]);
+
+    await this.prisma.saleItem.create({
+      data: {
+        sale: { connect: { id: sale.id } },
+        product: { connect: { id: productId } },
+        quantity: 1,
+      },
+    });
+
+    return sale;
   }
 }

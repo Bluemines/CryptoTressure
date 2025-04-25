@@ -123,11 +123,14 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt',
   username: 'username',
   phone: 'phone',
+  profile: 'profile',
   email: 'email',
   emailVerified: 'emailVerified',
   password: 'password',
   referralCode: 'referralCode',
-  role: 'role'
+  role: 'role',
+  level: 'level',
+  status: 'status'
 };
 
 exports.Prisma.VerificationScalarFieldEnum = {
@@ -148,17 +151,30 @@ exports.Prisma.PasswordResetScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.LevelScalarFieldEnum = {
+  id: 'id',
+  level: 'level',
+  points: 'points'
+};
+
+exports.Prisma.UserLevelScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  levelId: 'levelId',
+  gainedAt: 'gainedAt'
+};
+
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  userId: 'userId',
   title: 'title',
   description: 'description',
   image: 'image',
   price: 'price',
   dailyIncome: 'dailyIncome',
   fee: 'fee',
-  level: 'level',
   deletedAt: 'deletedAt'
 };
 
@@ -278,6 +294,11 @@ exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN'
 };
 
+exports.UserStatus = exports.$Enums.UserStatus = {
+  APPROVED: 'APPROVED',
+  SUSPENDED: 'SUSPENDED'
+};
+
 exports.RewardStatus = exports.$Enums.RewardStatus = {
   FAILED: 'FAILED',
   SUCCESS: 'SUCCESS'
@@ -298,6 +319,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Verification: 'Verification',
   PasswordReset: 'PasswordReset',
+  Level: 'Level',
+  UserLevel: 'UserLevel',
   Product: 'Product',
   UserProduct: 'UserProduct',
   Rental: 'Rental',

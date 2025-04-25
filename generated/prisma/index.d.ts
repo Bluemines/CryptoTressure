@@ -29,6 +29,16 @@ export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
  */
 export type PasswordReset = $Result.DefaultSelection<Prisma.$PasswordResetPayload>
 /**
+ * Model Level
+ * 
+ */
+export type Level = $Result.DefaultSelection<Prisma.$LevelPayload>
+/**
+ * Model UserLevel
+ * 
+ */
+export type UserLevel = $Result.DefaultSelection<Prisma.$UserLevelPayload>
+/**
  * Model Product
  * 
  */
@@ -93,7 +103,15 @@ export type TrialFund = $Result.DefaultSelection<Prisma.$TrialFundPayload>
  * Enums
  */
 export namespace $Enums {
-  export const WithdrawStatus: {
+  export const UserStatus: {
+  APPROVED: 'APPROVED',
+  SUSPENDED: 'SUSPENDED'
+};
+
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
+
+
+export const WithdrawStatus: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   SUSPENDED: 'SUSPENDED'
@@ -142,6 +160,10 @@ export const Role: {
 export type Role = (typeof Role)[keyof typeof Role]
 
 }
+
+export type UserStatus = $Enums.UserStatus
+
+export const UserStatus: typeof $Enums.UserStatus
 
 export type WithdrawStatus = $Enums.WithdrawStatus
 
@@ -321,6 +343,26 @@ export class PrismaClient<
     * ```
     */
   get passwordReset(): Prisma.PasswordResetDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.level`: Exposes CRUD operations for the **Level** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Levels
+    * const levels = await prisma.level.findMany()
+    * ```
+    */
+  get level(): Prisma.LevelDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userLevel`: Exposes CRUD operations for the **UserLevel** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserLevels
+    * const userLevels = await prisma.userLevel.findMany()
+    * ```
+    */
+  get userLevel(): Prisma.UserLevelDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.product`: Exposes CRUD operations for the **Product** model.
@@ -884,6 +926,8 @@ export namespace Prisma {
     User: 'User',
     Verification: 'Verification',
     PasswordReset: 'PasswordReset',
+    Level: 'Level',
+    UserLevel: 'UserLevel',
     Product: 'Product',
     UserProduct: 'UserProduct',
     Rental: 'Rental',
@@ -914,7 +958,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "verification" | "passwordReset" | "product" | "userProduct" | "rental" | "referral" | "agreement" | "sale" | "saleItem" | "reward" | "commission" | "wallet" | "withdraw" | "trialFund"
+      modelProps: "user" | "verification" | "passwordReset" | "level" | "userLevel" | "product" | "userProduct" | "rental" | "referral" | "agreement" | "sale" | "saleItem" | "reward" | "commission" | "wallet" | "withdraw" | "trialFund"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1137,6 +1181,154 @@ export namespace Prisma {
           count: {
             args: Prisma.PasswordResetCountArgs<ExtArgs>
             result: $Utils.Optional<PasswordResetCountAggregateOutputType> | number
+          }
+        }
+      }
+      Level: {
+        payload: Prisma.$LevelPayload<ExtArgs>
+        fields: Prisma.LevelFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LevelFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LevelFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>
+          }
+          findFirst: {
+            args: Prisma.LevelFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LevelFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>
+          }
+          findMany: {
+            args: Prisma.LevelFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>[]
+          }
+          create: {
+            args: Prisma.LevelCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>
+          }
+          createMany: {
+            args: Prisma.LevelCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LevelCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>[]
+          }
+          delete: {
+            args: Prisma.LevelDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>
+          }
+          update: {
+            args: Prisma.LevelUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>
+          }
+          deleteMany: {
+            args: Prisma.LevelDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LevelUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LevelUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>[]
+          }
+          upsert: {
+            args: Prisma.LevelUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LevelPayload>
+          }
+          aggregate: {
+            args: Prisma.LevelAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLevel>
+          }
+          groupBy: {
+            args: Prisma.LevelGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LevelGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LevelCountArgs<ExtArgs>
+            result: $Utils.Optional<LevelCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserLevel: {
+        payload: Prisma.$UserLevelPayload<ExtArgs>
+        fields: Prisma.UserLevelFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserLevelFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserLevelFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>
+          }
+          findFirst: {
+            args: Prisma.UserLevelFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserLevelFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>
+          }
+          findMany: {
+            args: Prisma.UserLevelFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>[]
+          }
+          create: {
+            args: Prisma.UserLevelCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>
+          }
+          createMany: {
+            args: Prisma.UserLevelCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserLevelCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>[]
+          }
+          delete: {
+            args: Prisma.UserLevelDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>
+          }
+          update: {
+            args: Prisma.UserLevelUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserLevelDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserLevelUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserLevelUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserLevelUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserLevelPayload>
+          }
+          aggregate: {
+            args: Prisma.UserLevelAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserLevel>
+          }
+          groupBy: {
+            args: Prisma.UserLevelGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserLevelGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserLevelCountArgs<ExtArgs>
+            result: $Utils.Optional<UserLevelCountAggregateOutputType> | number
           }
         }
       }
@@ -2115,6 +2307,8 @@ export namespace Prisma {
     user?: UserOmit
     verification?: VerificationOmit
     passwordReset?: PasswordResetOmit
+    level?: LevelOmit
+    userLevel?: UserLevelOmit
     product?: ProductOmit
     userProduct?: UserProductOmit
     rental?: RentalOmit
@@ -2231,6 +2425,7 @@ export namespace Prisma {
     rewards: number
     verifications: number
     passwordResets: number
+    UserLevel: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2244,6 +2439,7 @@ export namespace Prisma {
     rewards?: boolean | UserCountOutputTypeCountRewardsArgs
     verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
     passwordResets?: boolean | UserCountOutputTypeCountPasswordResetsArgs
+    UserLevel?: boolean | UserCountOutputTypeCountUserLevelArgs
   }
 
   // Custom InputTypes
@@ -2325,6 +2521,44 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPasswordResetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PasswordResetWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUserLevelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserLevelWhereInput
+  }
+
+
+  /**
+   * Count Type LevelCountOutputType
+   */
+
+  export type LevelCountOutputType = {
+    userLevels: number
+  }
+
+  export type LevelCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userLevels?: boolean | LevelCountOutputTypeCountUserLevelsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LevelCountOutputType without action
+   */
+  export type LevelCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LevelCountOutputType
+     */
+    select?: LevelCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LevelCountOutputType without action
+   */
+  export type LevelCountOutputTypeCountUserLevelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserLevelWhereInput
   }
 
 
@@ -2475,10 +2709,12 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     id: number | null
+    level: number | null
   }
 
   export type UserSumAggregateOutputType = {
     id: number | null
+    level: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -2487,11 +2723,14 @@ export namespace Prisma {
     updatedAt: Date | null
     username: string | null
     phone: string | null
+    profile: string | null
     email: string | null
     emailVerified: boolean | null
     password: string | null
     referralCode: string | null
     role: $Enums.Role | null
+    level: number | null
+    status: $Enums.UserStatus | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2500,11 +2739,14 @@ export namespace Prisma {
     updatedAt: Date | null
     username: string | null
     phone: string | null
+    profile: string | null
     email: string | null
     emailVerified: boolean | null
     password: string | null
     referralCode: string | null
     role: $Enums.Role | null
+    level: number | null
+    status: $Enums.UserStatus | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2513,21 +2755,26 @@ export namespace Prisma {
     updatedAt: number
     username: number
     phone: number
+    profile: number
     email: number
     emailVerified: number
     password: number
     referralCode: number
     role: number
+    level: number
+    status: number
     _all: number
   }
 
 
   export type UserAvgAggregateInputType = {
     id?: true
+    level?: true
   }
 
   export type UserSumAggregateInputType = {
     id?: true
+    level?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -2536,11 +2783,14 @@ export namespace Prisma {
     updatedAt?: true
     username?: true
     phone?: true
+    profile?: true
     email?: true
     emailVerified?: true
     password?: true
     referralCode?: true
     role?: true
+    level?: true
+    status?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2549,11 +2799,14 @@ export namespace Prisma {
     updatedAt?: true
     username?: true
     phone?: true
+    profile?: true
     email?: true
     emailVerified?: true
     password?: true
     referralCode?: true
     role?: true
+    level?: true
+    status?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2562,11 +2815,14 @@ export namespace Prisma {
     updatedAt?: true
     username?: true
     phone?: true
+    profile?: true
     email?: true
     emailVerified?: true
     password?: true
     referralCode?: true
     role?: true
+    level?: true
+    status?: true
     _all?: true
   }
 
@@ -2662,11 +2918,14 @@ export namespace Prisma {
     updatedAt: Date
     username: string
     phone: string | null
+    profile: string | null
     email: string
     emailVerified: boolean
     password: string
     referralCode: string | null
     role: $Enums.Role
+    level: number
+    status: $Enums.UserStatus
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -2694,11 +2953,14 @@ export namespace Prisma {
     updatedAt?: boolean
     username?: boolean
     phone?: boolean
+    profile?: boolean
     email?: boolean
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    level?: boolean
+    status?: boolean
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdraws?: boolean | User$withdrawsArgs<ExtArgs>
     userProducts?: boolean | User$userProductsArgs<ExtArgs>
@@ -2711,6 +2973,7 @@ export namespace Prisma {
     trialFund?: boolean | User$trialFundArgs<ExtArgs>
     verifications?: boolean | User$verificationsArgs<ExtArgs>
     passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
+    UserLevel?: boolean | User$UserLevelArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2720,11 +2983,14 @@ export namespace Prisma {
     updatedAt?: boolean
     username?: boolean
     phone?: boolean
+    profile?: boolean
     email?: boolean
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    level?: boolean
+    status?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2733,11 +2999,14 @@ export namespace Prisma {
     updatedAt?: boolean
     username?: boolean
     phone?: boolean
+    profile?: boolean
     email?: boolean
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    level?: boolean
+    status?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2746,14 +3015,17 @@ export namespace Prisma {
     updatedAt?: boolean
     username?: boolean
     phone?: boolean
+    profile?: boolean
     email?: boolean
     emailVerified?: boolean
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    level?: boolean
+    status?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "username" | "phone" | "email" | "emailVerified" | "password" | "referralCode" | "role", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "username" | "phone" | "profile" | "email" | "emailVerified" | "password" | "referralCode" | "role" | "level" | "status", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdraws?: boolean | User$withdrawsArgs<ExtArgs>
@@ -2767,6 +3039,7 @@ export namespace Prisma {
     trialFund?: boolean | User$trialFundArgs<ExtArgs>
     verifications?: boolean | User$verificationsArgs<ExtArgs>
     passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
+    UserLevel?: boolean | User$UserLevelArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2787,6 +3060,7 @@ export namespace Prisma {
       trialFund: Prisma.$TrialFundPayload<ExtArgs> | null
       verifications: Prisma.$VerificationPayload<ExtArgs>[]
       passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[]
+      UserLevel: Prisma.$UserLevelPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2794,11 +3068,14 @@ export namespace Prisma {
       updatedAt: Date
       username: string
       phone: string | null
+      profile: string | null
       email: string
       emailVerified: boolean
       password: string
       referralCode: string | null
       role: $Enums.Role
+      level: number
+      status: $Enums.UserStatus
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3205,6 +3482,7 @@ export namespace Prisma {
     trialFund<T extends User$trialFundArgs<ExtArgs> = {}>(args?: Subset<T, User$trialFundArgs<ExtArgs>>): Prisma__TrialFundClient<$Result.GetResult<Prisma.$TrialFundPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     verifications<T extends User$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResets<T extends User$passwordResetsArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    UserLevel<T extends User$UserLevelArgs<ExtArgs> = {}>(args?: Subset<T, User$UserLevelArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3239,11 +3517,14 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly username: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
+    readonly profile: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly password: FieldRef<"User", 'String'>
     readonly referralCode: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
+    readonly level: FieldRef<"User", 'Int'>
+    readonly status: FieldRef<"User", 'UserStatus'>
   }
     
 
@@ -3907,6 +4188,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * User.UserLevel
+   */
+  export type User$UserLevelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    where?: UserLevelWhereInput
+    orderBy?: UserLevelOrderByWithRelationInput | UserLevelOrderByWithRelationInput[]
+    cursor?: UserLevelWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserLevelScalarFieldEnum | UserLevelScalarFieldEnum[]
   }
 
   /**
@@ -6166,6 +6471,2187 @@ export namespace Prisma {
 
 
   /**
+   * Model Level
+   */
+
+  export type AggregateLevel = {
+    _count: LevelCountAggregateOutputType | null
+    _avg: LevelAvgAggregateOutputType | null
+    _sum: LevelSumAggregateOutputType | null
+    _min: LevelMinAggregateOutputType | null
+    _max: LevelMaxAggregateOutputType | null
+  }
+
+  export type LevelAvgAggregateOutputType = {
+    id: number | null
+    level: number | null
+    points: number | null
+  }
+
+  export type LevelSumAggregateOutputType = {
+    id: number | null
+    level: number | null
+    points: number | null
+  }
+
+  export type LevelMinAggregateOutputType = {
+    id: number | null
+    level: number | null
+    points: number | null
+  }
+
+  export type LevelMaxAggregateOutputType = {
+    id: number | null
+    level: number | null
+    points: number | null
+  }
+
+  export type LevelCountAggregateOutputType = {
+    id: number
+    level: number
+    points: number
+    _all: number
+  }
+
+
+  export type LevelAvgAggregateInputType = {
+    id?: true
+    level?: true
+    points?: true
+  }
+
+  export type LevelSumAggregateInputType = {
+    id?: true
+    level?: true
+    points?: true
+  }
+
+  export type LevelMinAggregateInputType = {
+    id?: true
+    level?: true
+    points?: true
+  }
+
+  export type LevelMaxAggregateInputType = {
+    id?: true
+    level?: true
+    points?: true
+  }
+
+  export type LevelCountAggregateInputType = {
+    id?: true
+    level?: true
+    points?: true
+    _all?: true
+  }
+
+  export type LevelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Level to aggregate.
+     */
+    where?: LevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Levels to fetch.
+     */
+    orderBy?: LevelOrderByWithRelationInput | LevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Levels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Levels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Levels
+    **/
+    _count?: true | LevelCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LevelAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LevelSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LevelMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LevelMaxAggregateInputType
+  }
+
+  export type GetLevelAggregateType<T extends LevelAggregateArgs> = {
+        [P in keyof T & keyof AggregateLevel]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLevel[P]>
+      : GetScalarType<T[P], AggregateLevel[P]>
+  }
+
+
+
+
+  export type LevelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LevelWhereInput
+    orderBy?: LevelOrderByWithAggregationInput | LevelOrderByWithAggregationInput[]
+    by: LevelScalarFieldEnum[] | LevelScalarFieldEnum
+    having?: LevelScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LevelCountAggregateInputType | true
+    _avg?: LevelAvgAggregateInputType
+    _sum?: LevelSumAggregateInputType
+    _min?: LevelMinAggregateInputType
+    _max?: LevelMaxAggregateInputType
+  }
+
+  export type LevelGroupByOutputType = {
+    id: number
+    level: number
+    points: number
+    _count: LevelCountAggregateOutputType | null
+    _avg: LevelAvgAggregateOutputType | null
+    _sum: LevelSumAggregateOutputType | null
+    _min: LevelMinAggregateOutputType | null
+    _max: LevelMaxAggregateOutputType | null
+  }
+
+  type GetLevelGroupByPayload<T extends LevelGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LevelGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LevelGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LevelGroupByOutputType[P]>
+            : GetScalarType<T[P], LevelGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LevelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    level?: boolean
+    points?: boolean
+    userLevels?: boolean | Level$userLevelsArgs<ExtArgs>
+    _count?: boolean | LevelCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["level"]>
+
+  export type LevelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    level?: boolean
+    points?: boolean
+  }, ExtArgs["result"]["level"]>
+
+  export type LevelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    level?: boolean
+    points?: boolean
+  }, ExtArgs["result"]["level"]>
+
+  export type LevelSelectScalar = {
+    id?: boolean
+    level?: boolean
+    points?: boolean
+  }
+
+  export type LevelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "level" | "points", ExtArgs["result"]["level"]>
+  export type LevelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userLevels?: boolean | Level$userLevelsArgs<ExtArgs>
+    _count?: boolean | LevelCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type LevelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type LevelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $LevelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Level"
+    objects: {
+      userLevels: Prisma.$UserLevelPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      level: number
+      points: number
+    }, ExtArgs["result"]["level"]>
+    composites: {}
+  }
+
+  type LevelGetPayload<S extends boolean | null | undefined | LevelDefaultArgs> = $Result.GetResult<Prisma.$LevelPayload, S>
+
+  type LevelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LevelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LevelCountAggregateInputType | true
+    }
+
+  export interface LevelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Level'], meta: { name: 'Level' } }
+    /**
+     * Find zero or one Level that matches the filter.
+     * @param {LevelFindUniqueArgs} args - Arguments to find a Level
+     * @example
+     * // Get one Level
+     * const level = await prisma.level.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LevelFindUniqueArgs>(args: SelectSubset<T, LevelFindUniqueArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Level that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LevelFindUniqueOrThrowArgs} args - Arguments to find a Level
+     * @example
+     * // Get one Level
+     * const level = await prisma.level.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LevelFindUniqueOrThrowArgs>(args: SelectSubset<T, LevelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Level that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LevelFindFirstArgs} args - Arguments to find a Level
+     * @example
+     * // Get one Level
+     * const level = await prisma.level.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LevelFindFirstArgs>(args?: SelectSubset<T, LevelFindFirstArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Level that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LevelFindFirstOrThrowArgs} args - Arguments to find a Level
+     * @example
+     * // Get one Level
+     * const level = await prisma.level.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LevelFindFirstOrThrowArgs>(args?: SelectSubset<T, LevelFindFirstOrThrowArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Levels that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LevelFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Levels
+     * const levels = await prisma.level.findMany()
+     * 
+     * // Get first 10 Levels
+     * const levels = await prisma.level.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const levelWithIdOnly = await prisma.level.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LevelFindManyArgs>(args?: SelectSubset<T, LevelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Level.
+     * @param {LevelCreateArgs} args - Arguments to create a Level.
+     * @example
+     * // Create one Level
+     * const Level = await prisma.level.create({
+     *   data: {
+     *     // ... data to create a Level
+     *   }
+     * })
+     * 
+     */
+    create<T extends LevelCreateArgs>(args: SelectSubset<T, LevelCreateArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Levels.
+     * @param {LevelCreateManyArgs} args - Arguments to create many Levels.
+     * @example
+     * // Create many Levels
+     * const level = await prisma.level.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LevelCreateManyArgs>(args?: SelectSubset<T, LevelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Levels and returns the data saved in the database.
+     * @param {LevelCreateManyAndReturnArgs} args - Arguments to create many Levels.
+     * @example
+     * // Create many Levels
+     * const level = await prisma.level.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Levels and only return the `id`
+     * const levelWithIdOnly = await prisma.level.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LevelCreateManyAndReturnArgs>(args?: SelectSubset<T, LevelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Level.
+     * @param {LevelDeleteArgs} args - Arguments to delete one Level.
+     * @example
+     * // Delete one Level
+     * const Level = await prisma.level.delete({
+     *   where: {
+     *     // ... filter to delete one Level
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LevelDeleteArgs>(args: SelectSubset<T, LevelDeleteArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Level.
+     * @param {LevelUpdateArgs} args - Arguments to update one Level.
+     * @example
+     * // Update one Level
+     * const level = await prisma.level.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LevelUpdateArgs>(args: SelectSubset<T, LevelUpdateArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Levels.
+     * @param {LevelDeleteManyArgs} args - Arguments to filter Levels to delete.
+     * @example
+     * // Delete a few Levels
+     * const { count } = await prisma.level.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LevelDeleteManyArgs>(args?: SelectSubset<T, LevelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Levels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LevelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Levels
+     * const level = await prisma.level.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LevelUpdateManyArgs>(args: SelectSubset<T, LevelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Levels and returns the data updated in the database.
+     * @param {LevelUpdateManyAndReturnArgs} args - Arguments to update many Levels.
+     * @example
+     * // Update many Levels
+     * const level = await prisma.level.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Levels and only return the `id`
+     * const levelWithIdOnly = await prisma.level.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LevelUpdateManyAndReturnArgs>(args: SelectSubset<T, LevelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Level.
+     * @param {LevelUpsertArgs} args - Arguments to update or create a Level.
+     * @example
+     * // Update or create a Level
+     * const level = await prisma.level.upsert({
+     *   create: {
+     *     // ... data to create a Level
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Level we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LevelUpsertArgs>(args: SelectSubset<T, LevelUpsertArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Levels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LevelCountArgs} args - Arguments to filter Levels to count.
+     * @example
+     * // Count the number of Levels
+     * const count = await prisma.level.count({
+     *   where: {
+     *     // ... the filter for the Levels we want to count
+     *   }
+     * })
+    **/
+    count<T extends LevelCountArgs>(
+      args?: Subset<T, LevelCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LevelCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Level.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LevelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LevelAggregateArgs>(args: Subset<T, LevelAggregateArgs>): Prisma.PrismaPromise<GetLevelAggregateType<T>>
+
+    /**
+     * Group by Level.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LevelGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LevelGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LevelGroupByArgs['orderBy'] }
+        : { orderBy?: LevelGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LevelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLevelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Level model
+   */
+  readonly fields: LevelFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Level.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LevelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    userLevels<T extends Level$userLevelsArgs<ExtArgs> = {}>(args?: Subset<T, Level$userLevelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Level model
+   */
+  interface LevelFieldRefs {
+    readonly id: FieldRef<"Level", 'Int'>
+    readonly level: FieldRef<"Level", 'Int'>
+    readonly points: FieldRef<"Level", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Level findUnique
+   */
+  export type LevelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * Filter, which Level to fetch.
+     */
+    where: LevelWhereUniqueInput
+  }
+
+  /**
+   * Level findUniqueOrThrow
+   */
+  export type LevelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * Filter, which Level to fetch.
+     */
+    where: LevelWhereUniqueInput
+  }
+
+  /**
+   * Level findFirst
+   */
+  export type LevelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * Filter, which Level to fetch.
+     */
+    where?: LevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Levels to fetch.
+     */
+    orderBy?: LevelOrderByWithRelationInput | LevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Levels.
+     */
+    cursor?: LevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Levels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Levels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Levels.
+     */
+    distinct?: LevelScalarFieldEnum | LevelScalarFieldEnum[]
+  }
+
+  /**
+   * Level findFirstOrThrow
+   */
+  export type LevelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * Filter, which Level to fetch.
+     */
+    where?: LevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Levels to fetch.
+     */
+    orderBy?: LevelOrderByWithRelationInput | LevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Levels.
+     */
+    cursor?: LevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Levels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Levels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Levels.
+     */
+    distinct?: LevelScalarFieldEnum | LevelScalarFieldEnum[]
+  }
+
+  /**
+   * Level findMany
+   */
+  export type LevelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * Filter, which Levels to fetch.
+     */
+    where?: LevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Levels to fetch.
+     */
+    orderBy?: LevelOrderByWithRelationInput | LevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Levels.
+     */
+    cursor?: LevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Levels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Levels.
+     */
+    skip?: number
+    distinct?: LevelScalarFieldEnum | LevelScalarFieldEnum[]
+  }
+
+  /**
+   * Level create
+   */
+  export type LevelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Level.
+     */
+    data: XOR<LevelCreateInput, LevelUncheckedCreateInput>
+  }
+
+  /**
+   * Level createMany
+   */
+  export type LevelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Levels.
+     */
+    data: LevelCreateManyInput | LevelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Level createManyAndReturn
+   */
+  export type LevelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * The data used to create many Levels.
+     */
+    data: LevelCreateManyInput | LevelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Level update
+   */
+  export type LevelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Level.
+     */
+    data: XOR<LevelUpdateInput, LevelUncheckedUpdateInput>
+    /**
+     * Choose, which Level to update.
+     */
+    where: LevelWhereUniqueInput
+  }
+
+  /**
+   * Level updateMany
+   */
+  export type LevelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Levels.
+     */
+    data: XOR<LevelUpdateManyMutationInput, LevelUncheckedUpdateManyInput>
+    /**
+     * Filter which Levels to update
+     */
+    where?: LevelWhereInput
+    /**
+     * Limit how many Levels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Level updateManyAndReturn
+   */
+  export type LevelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * The data used to update Levels.
+     */
+    data: XOR<LevelUpdateManyMutationInput, LevelUncheckedUpdateManyInput>
+    /**
+     * Filter which Levels to update
+     */
+    where?: LevelWhereInput
+    /**
+     * Limit how many Levels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Level upsert
+   */
+  export type LevelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Level to update in case it exists.
+     */
+    where: LevelWhereUniqueInput
+    /**
+     * In case the Level found by the `where` argument doesn't exist, create a new Level with this data.
+     */
+    create: XOR<LevelCreateInput, LevelUncheckedCreateInput>
+    /**
+     * In case the Level was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LevelUpdateInput, LevelUncheckedUpdateInput>
+  }
+
+  /**
+   * Level delete
+   */
+  export type LevelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+    /**
+     * Filter which Level to delete.
+     */
+    where: LevelWhereUniqueInput
+  }
+
+  /**
+   * Level deleteMany
+   */
+  export type LevelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Levels to delete
+     */
+    where?: LevelWhereInput
+    /**
+     * Limit how many Levels to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Level.userLevels
+   */
+  export type Level$userLevelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    where?: UserLevelWhereInput
+    orderBy?: UserLevelOrderByWithRelationInput | UserLevelOrderByWithRelationInput[]
+    cursor?: UserLevelWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserLevelScalarFieldEnum | UserLevelScalarFieldEnum[]
+  }
+
+  /**
+   * Level without action
+   */
+  export type LevelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Level
+     */
+    select?: LevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Level
+     */
+    omit?: LevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LevelInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserLevel
+   */
+
+  export type AggregateUserLevel = {
+    _count: UserLevelCountAggregateOutputType | null
+    _avg: UserLevelAvgAggregateOutputType | null
+    _sum: UserLevelSumAggregateOutputType | null
+    _min: UserLevelMinAggregateOutputType | null
+    _max: UserLevelMaxAggregateOutputType | null
+  }
+
+  export type UserLevelAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    levelId: number | null
+  }
+
+  export type UserLevelSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    levelId: number | null
+  }
+
+  export type UserLevelMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    levelId: number | null
+    gainedAt: Date | null
+  }
+
+  export type UserLevelMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    levelId: number | null
+    gainedAt: Date | null
+  }
+
+  export type UserLevelCountAggregateOutputType = {
+    id: number
+    userId: number
+    levelId: number
+    gainedAt: number
+    _all: number
+  }
+
+
+  export type UserLevelAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    levelId?: true
+  }
+
+  export type UserLevelSumAggregateInputType = {
+    id?: true
+    userId?: true
+    levelId?: true
+  }
+
+  export type UserLevelMinAggregateInputType = {
+    id?: true
+    userId?: true
+    levelId?: true
+    gainedAt?: true
+  }
+
+  export type UserLevelMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    levelId?: true
+    gainedAt?: true
+  }
+
+  export type UserLevelCountAggregateInputType = {
+    id?: true
+    userId?: true
+    levelId?: true
+    gainedAt?: true
+    _all?: true
+  }
+
+  export type UserLevelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserLevel to aggregate.
+     */
+    where?: UserLevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserLevels to fetch.
+     */
+    orderBy?: UserLevelOrderByWithRelationInput | UserLevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserLevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserLevels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserLevels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserLevels
+    **/
+    _count?: true | UserLevelCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserLevelAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserLevelSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserLevelMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserLevelMaxAggregateInputType
+  }
+
+  export type GetUserLevelAggregateType<T extends UserLevelAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserLevel]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserLevel[P]>
+      : GetScalarType<T[P], AggregateUserLevel[P]>
+  }
+
+
+
+
+  export type UserLevelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserLevelWhereInput
+    orderBy?: UserLevelOrderByWithAggregationInput | UserLevelOrderByWithAggregationInput[]
+    by: UserLevelScalarFieldEnum[] | UserLevelScalarFieldEnum
+    having?: UserLevelScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserLevelCountAggregateInputType | true
+    _avg?: UserLevelAvgAggregateInputType
+    _sum?: UserLevelSumAggregateInputType
+    _min?: UserLevelMinAggregateInputType
+    _max?: UserLevelMaxAggregateInputType
+  }
+
+  export type UserLevelGroupByOutputType = {
+    id: number
+    userId: number
+    levelId: number
+    gainedAt: Date
+    _count: UserLevelCountAggregateOutputType | null
+    _avg: UserLevelAvgAggregateOutputType | null
+    _sum: UserLevelSumAggregateOutputType | null
+    _min: UserLevelMinAggregateOutputType | null
+    _max: UserLevelMaxAggregateOutputType | null
+  }
+
+  type GetUserLevelGroupByPayload<T extends UserLevelGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserLevelGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserLevelGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserLevelGroupByOutputType[P]>
+            : GetScalarType<T[P], UserLevelGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserLevelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    levelId?: boolean
+    gainedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    level?: boolean | LevelDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userLevel"]>
+
+  export type UserLevelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    levelId?: boolean
+    gainedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    level?: boolean | LevelDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userLevel"]>
+
+  export type UserLevelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    levelId?: boolean
+    gainedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    level?: boolean | LevelDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userLevel"]>
+
+  export type UserLevelSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    levelId?: boolean
+    gainedAt?: boolean
+  }
+
+  export type UserLevelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "levelId" | "gainedAt", ExtArgs["result"]["userLevel"]>
+  export type UserLevelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    level?: boolean | LevelDefaultArgs<ExtArgs>
+  }
+  export type UserLevelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    level?: boolean | LevelDefaultArgs<ExtArgs>
+  }
+  export type UserLevelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    level?: boolean | LevelDefaultArgs<ExtArgs>
+  }
+
+  export type $UserLevelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserLevel"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      level: Prisma.$LevelPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      levelId: number
+      gainedAt: Date
+    }, ExtArgs["result"]["userLevel"]>
+    composites: {}
+  }
+
+  type UserLevelGetPayload<S extends boolean | null | undefined | UserLevelDefaultArgs> = $Result.GetResult<Prisma.$UserLevelPayload, S>
+
+  type UserLevelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserLevelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserLevelCountAggregateInputType | true
+    }
+
+  export interface UserLevelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserLevel'], meta: { name: 'UserLevel' } }
+    /**
+     * Find zero or one UserLevel that matches the filter.
+     * @param {UserLevelFindUniqueArgs} args - Arguments to find a UserLevel
+     * @example
+     * // Get one UserLevel
+     * const userLevel = await prisma.userLevel.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserLevelFindUniqueArgs>(args: SelectSubset<T, UserLevelFindUniqueArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserLevel that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserLevelFindUniqueOrThrowArgs} args - Arguments to find a UserLevel
+     * @example
+     * // Get one UserLevel
+     * const userLevel = await prisma.userLevel.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserLevelFindUniqueOrThrowArgs>(args: SelectSubset<T, UserLevelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserLevel that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserLevelFindFirstArgs} args - Arguments to find a UserLevel
+     * @example
+     * // Get one UserLevel
+     * const userLevel = await prisma.userLevel.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserLevelFindFirstArgs>(args?: SelectSubset<T, UserLevelFindFirstArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserLevel that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserLevelFindFirstOrThrowArgs} args - Arguments to find a UserLevel
+     * @example
+     * // Get one UserLevel
+     * const userLevel = await prisma.userLevel.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserLevelFindFirstOrThrowArgs>(args?: SelectSubset<T, UserLevelFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserLevels that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserLevelFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserLevels
+     * const userLevels = await prisma.userLevel.findMany()
+     * 
+     * // Get first 10 UserLevels
+     * const userLevels = await prisma.userLevel.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userLevelWithIdOnly = await prisma.userLevel.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserLevelFindManyArgs>(args?: SelectSubset<T, UserLevelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserLevel.
+     * @param {UserLevelCreateArgs} args - Arguments to create a UserLevel.
+     * @example
+     * // Create one UserLevel
+     * const UserLevel = await prisma.userLevel.create({
+     *   data: {
+     *     // ... data to create a UserLevel
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserLevelCreateArgs>(args: SelectSubset<T, UserLevelCreateArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserLevels.
+     * @param {UserLevelCreateManyArgs} args - Arguments to create many UserLevels.
+     * @example
+     * // Create many UserLevels
+     * const userLevel = await prisma.userLevel.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserLevelCreateManyArgs>(args?: SelectSubset<T, UserLevelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserLevels and returns the data saved in the database.
+     * @param {UserLevelCreateManyAndReturnArgs} args - Arguments to create many UserLevels.
+     * @example
+     * // Create many UserLevels
+     * const userLevel = await prisma.userLevel.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserLevels and only return the `id`
+     * const userLevelWithIdOnly = await prisma.userLevel.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserLevelCreateManyAndReturnArgs>(args?: SelectSubset<T, UserLevelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserLevel.
+     * @param {UserLevelDeleteArgs} args - Arguments to delete one UserLevel.
+     * @example
+     * // Delete one UserLevel
+     * const UserLevel = await prisma.userLevel.delete({
+     *   where: {
+     *     // ... filter to delete one UserLevel
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserLevelDeleteArgs>(args: SelectSubset<T, UserLevelDeleteArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserLevel.
+     * @param {UserLevelUpdateArgs} args - Arguments to update one UserLevel.
+     * @example
+     * // Update one UserLevel
+     * const userLevel = await prisma.userLevel.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserLevelUpdateArgs>(args: SelectSubset<T, UserLevelUpdateArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserLevels.
+     * @param {UserLevelDeleteManyArgs} args - Arguments to filter UserLevels to delete.
+     * @example
+     * // Delete a few UserLevels
+     * const { count } = await prisma.userLevel.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserLevelDeleteManyArgs>(args?: SelectSubset<T, UserLevelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserLevels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserLevelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserLevels
+     * const userLevel = await prisma.userLevel.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserLevelUpdateManyArgs>(args: SelectSubset<T, UserLevelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserLevels and returns the data updated in the database.
+     * @param {UserLevelUpdateManyAndReturnArgs} args - Arguments to update many UserLevels.
+     * @example
+     * // Update many UserLevels
+     * const userLevel = await prisma.userLevel.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserLevels and only return the `id`
+     * const userLevelWithIdOnly = await prisma.userLevel.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserLevelUpdateManyAndReturnArgs>(args: SelectSubset<T, UserLevelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserLevel.
+     * @param {UserLevelUpsertArgs} args - Arguments to update or create a UserLevel.
+     * @example
+     * // Update or create a UserLevel
+     * const userLevel = await prisma.userLevel.upsert({
+     *   create: {
+     *     // ... data to create a UserLevel
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserLevel we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserLevelUpsertArgs>(args: SelectSubset<T, UserLevelUpsertArgs<ExtArgs>>): Prisma__UserLevelClient<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserLevels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserLevelCountArgs} args - Arguments to filter UserLevels to count.
+     * @example
+     * // Count the number of UserLevels
+     * const count = await prisma.userLevel.count({
+     *   where: {
+     *     // ... the filter for the UserLevels we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserLevelCountArgs>(
+      args?: Subset<T, UserLevelCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserLevelCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserLevel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserLevelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserLevelAggregateArgs>(args: Subset<T, UserLevelAggregateArgs>): Prisma.PrismaPromise<GetUserLevelAggregateType<T>>
+
+    /**
+     * Group by UserLevel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserLevelGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserLevelGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserLevelGroupByArgs['orderBy'] }
+        : { orderBy?: UserLevelGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserLevelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserLevelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserLevel model
+   */
+  readonly fields: UserLevelFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserLevel.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserLevelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    level<T extends LevelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LevelDefaultArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserLevel model
+   */
+  interface UserLevelFieldRefs {
+    readonly id: FieldRef<"UserLevel", 'Int'>
+    readonly userId: FieldRef<"UserLevel", 'Int'>
+    readonly levelId: FieldRef<"UserLevel", 'Int'>
+    readonly gainedAt: FieldRef<"UserLevel", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserLevel findUnique
+   */
+  export type UserLevelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * Filter, which UserLevel to fetch.
+     */
+    where: UserLevelWhereUniqueInput
+  }
+
+  /**
+   * UserLevel findUniqueOrThrow
+   */
+  export type UserLevelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * Filter, which UserLevel to fetch.
+     */
+    where: UserLevelWhereUniqueInput
+  }
+
+  /**
+   * UserLevel findFirst
+   */
+  export type UserLevelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * Filter, which UserLevel to fetch.
+     */
+    where?: UserLevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserLevels to fetch.
+     */
+    orderBy?: UserLevelOrderByWithRelationInput | UserLevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserLevels.
+     */
+    cursor?: UserLevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserLevels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserLevels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserLevels.
+     */
+    distinct?: UserLevelScalarFieldEnum | UserLevelScalarFieldEnum[]
+  }
+
+  /**
+   * UserLevel findFirstOrThrow
+   */
+  export type UserLevelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * Filter, which UserLevel to fetch.
+     */
+    where?: UserLevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserLevels to fetch.
+     */
+    orderBy?: UserLevelOrderByWithRelationInput | UserLevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserLevels.
+     */
+    cursor?: UserLevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserLevels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserLevels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserLevels.
+     */
+    distinct?: UserLevelScalarFieldEnum | UserLevelScalarFieldEnum[]
+  }
+
+  /**
+   * UserLevel findMany
+   */
+  export type UserLevelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * Filter, which UserLevels to fetch.
+     */
+    where?: UserLevelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserLevels to fetch.
+     */
+    orderBy?: UserLevelOrderByWithRelationInput | UserLevelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserLevels.
+     */
+    cursor?: UserLevelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserLevels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserLevels.
+     */
+    skip?: number
+    distinct?: UserLevelScalarFieldEnum | UserLevelScalarFieldEnum[]
+  }
+
+  /**
+   * UserLevel create
+   */
+  export type UserLevelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserLevel.
+     */
+    data: XOR<UserLevelCreateInput, UserLevelUncheckedCreateInput>
+  }
+
+  /**
+   * UserLevel createMany
+   */
+  export type UserLevelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserLevels.
+     */
+    data: UserLevelCreateManyInput | UserLevelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserLevel createManyAndReturn
+   */
+  export type UserLevelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserLevels.
+     */
+    data: UserLevelCreateManyInput | UserLevelCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserLevel update
+   */
+  export type UserLevelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserLevel.
+     */
+    data: XOR<UserLevelUpdateInput, UserLevelUncheckedUpdateInput>
+    /**
+     * Choose, which UserLevel to update.
+     */
+    where: UserLevelWhereUniqueInput
+  }
+
+  /**
+   * UserLevel updateMany
+   */
+  export type UserLevelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserLevels.
+     */
+    data: XOR<UserLevelUpdateManyMutationInput, UserLevelUncheckedUpdateManyInput>
+    /**
+     * Filter which UserLevels to update
+     */
+    where?: UserLevelWhereInput
+    /**
+     * Limit how many UserLevels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserLevel updateManyAndReturn
+   */
+  export type UserLevelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * The data used to update UserLevels.
+     */
+    data: XOR<UserLevelUpdateManyMutationInput, UserLevelUncheckedUpdateManyInput>
+    /**
+     * Filter which UserLevels to update
+     */
+    where?: UserLevelWhereInput
+    /**
+     * Limit how many UserLevels to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserLevel upsert
+   */
+  export type UserLevelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserLevel to update in case it exists.
+     */
+    where: UserLevelWhereUniqueInput
+    /**
+     * In case the UserLevel found by the `where` argument doesn't exist, create a new UserLevel with this data.
+     */
+    create: XOR<UserLevelCreateInput, UserLevelUncheckedCreateInput>
+    /**
+     * In case the UserLevel was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserLevelUpdateInput, UserLevelUncheckedUpdateInput>
+  }
+
+  /**
+   * UserLevel delete
+   */
+  export type UserLevelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+    /**
+     * Filter which UserLevel to delete.
+     */
+    where: UserLevelWhereUniqueInput
+  }
+
+  /**
+   * UserLevel deleteMany
+   */
+  export type UserLevelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserLevels to delete
+     */
+    where?: UserLevelWhereInput
+    /**
+     * Limit how many UserLevels to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserLevel without action
+   */
+  export type UserLevelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLevel
+     */
+    select?: UserLevelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLevel
+     */
+    omit?: UserLevelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLevelInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Product
    */
 
@@ -6179,31 +8665,31 @@ export namespace Prisma {
 
   export type ProductAvgAggregateOutputType = {
     id: number | null
+    userId: number | null
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
-    level: number | null
   }
 
   export type ProductSumAggregateOutputType = {
     id: number | null
+    userId: number | null
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
-    level: number | null
   }
 
   export type ProductMinAggregateOutputType = {
     id: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    userId: number | null
     title: string | null
     description: string | null
     image: string | null
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
-    level: number | null
     deletedAt: Date | null
   }
 
@@ -6211,13 +8697,13 @@ export namespace Prisma {
     id: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    userId: number | null
     title: string | null
     description: string | null
     image: string | null
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
-    level: number | null
     deletedAt: Date | null
   }
 
@@ -6225,13 +8711,13 @@ export namespace Prisma {
     id: number
     createdAt: number
     updatedAt: number
+    userId: number
     title: number
     description: number
     image: number
     price: number
     dailyIncome: number
     fee: number
-    level: number
     deletedAt: number
     _all: number
   }
@@ -6239,31 +8725,31 @@ export namespace Prisma {
 
   export type ProductAvgAggregateInputType = {
     id?: true
+    userId?: true
     price?: true
     dailyIncome?: true
     fee?: true
-    level?: true
   }
 
   export type ProductSumAggregateInputType = {
     id?: true
+    userId?: true
     price?: true
     dailyIncome?: true
     fee?: true
-    level?: true
   }
 
   export type ProductMinAggregateInputType = {
     id?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
     title?: true
     description?: true
     image?: true
     price?: true
     dailyIncome?: true
     fee?: true
-    level?: true
     deletedAt?: true
   }
 
@@ -6271,13 +8757,13 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
     title?: true
     description?: true
     image?: true
     price?: true
     dailyIncome?: true
     fee?: true
-    level?: true
     deletedAt?: true
   }
 
@@ -6285,13 +8771,13 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
+    userId?: true
     title?: true
     description?: true
     image?: true
     price?: true
     dailyIncome?: true
     fee?: true
-    level?: true
     deletedAt?: true
     _all?: true
   }
@@ -6386,13 +8872,13 @@ export namespace Prisma {
     id: number
     createdAt: Date
     updatedAt: Date
+    userId: number | null
     title: string
     description: string | null
     image: string
     price: Decimal
     dailyIncome: Decimal
     fee: Decimal
-    level: number
     deletedAt: Date | null
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
@@ -6419,13 +8905,13 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     image?: boolean
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    level?: boolean
     deletedAt?: boolean
     userProducts?: boolean | Product$userProductsArgs<ExtArgs>
     rewards?: boolean | Product$rewardsArgs<ExtArgs>
@@ -6439,13 +8925,13 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     image?: boolean
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    level?: boolean
     deletedAt?: boolean
   }, ExtArgs["result"]["product"]>
 
@@ -6453,13 +8939,13 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     image?: boolean
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    level?: boolean
     deletedAt?: boolean
   }, ExtArgs["result"]["product"]>
 
@@ -6467,17 +8953,17 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     image?: boolean
     price?: boolean
     dailyIncome?: boolean
     fee?: boolean
-    level?: boolean
     deletedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "level" | "deletedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "userId" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "deletedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userProducts?: boolean | Product$userProductsArgs<ExtArgs>
     rewards?: boolean | Product$rewardsArgs<ExtArgs>
@@ -6502,13 +8988,13 @@ export namespace Prisma {
       id: number
       createdAt: Date
       updatedAt: Date
+      userId: number | null
       title: string
       description: string | null
       image: string
       price: Prisma.Decimal
       dailyIncome: Prisma.Decimal
       fee: Prisma.Decimal
-      level: number
       deletedAt: Date | null
     }, ExtArgs["result"]["product"]>
     composites: {}
@@ -6941,13 +9427,13 @@ export namespace Prisma {
     readonly id: FieldRef<"Product", 'Int'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
+    readonly userId: FieldRef<"Product", 'Int'>
     readonly title: FieldRef<"Product", 'String'>
     readonly description: FieldRef<"Product", 'String'>
     readonly image: FieldRef<"Product", 'String'>
     readonly price: FieldRef<"Product", 'Decimal'>
     readonly dailyIncome: FieldRef<"Product", 'Decimal'>
     readonly fee: FieldRef<"Product", 'Decimal'>
-    readonly level: FieldRef<"Product", 'Int'>
     readonly deletedAt: FieldRef<"Product", 'DateTime'>
   }
     
@@ -18813,7 +21299,7 @@ export namespace Prisma {
   export type TrialFundGroupByOutputType = {
     id: number
     userId: number
-    productId: number
+    productId: number | null
     amount: Decimal
     grantedAt: Date
     expiresAt: Date
@@ -18852,7 +21338,7 @@ export namespace Prisma {
     recoveredAt?: boolean
     usedAmount?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | TrialFund$productArgs<ExtArgs>
   }, ExtArgs["result"]["trialFund"]>
 
   export type TrialFundSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18866,7 +21352,7 @@ export namespace Prisma {
     recoveredAt?: boolean
     usedAmount?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | TrialFund$productArgs<ExtArgs>
   }, ExtArgs["result"]["trialFund"]>
 
   export type TrialFundSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18880,7 +21366,7 @@ export namespace Prisma {
     recoveredAt?: boolean
     usedAmount?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | TrialFund$productArgs<ExtArgs>
   }, ExtArgs["result"]["trialFund"]>
 
   export type TrialFundSelectScalar = {
@@ -18898,27 +21384,27 @@ export namespace Prisma {
   export type TrialFundOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "amount" | "grantedAt" | "expiresAt" | "status" | "recoveredAt" | "usedAmount", ExtArgs["result"]["trialFund"]>
   export type TrialFundInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | TrialFund$productArgs<ExtArgs>
   }
   export type TrialFundIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | TrialFund$productArgs<ExtArgs>
   }
   export type TrialFundIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | TrialFund$productArgs<ExtArgs>
   }
 
   export type $TrialFundPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TrialFund"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      product: Prisma.$ProductPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       userId: number
-      productId: number
+      productId: number | null
       amount: Prisma.Decimal
       grantedAt: Date
       expiresAt: Date
@@ -19320,7 +21806,7 @@ export namespace Prisma {
   export interface Prisma__TrialFundClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends TrialFund$productArgs<ExtArgs> = {}>(args?: Subset<T, TrialFund$productArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19755,6 +22241,25 @@ export namespace Prisma {
   }
 
   /**
+   * TrialFund.product
+   */
+  export type TrialFund$productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+  }
+
+  /**
    * TrialFund without action
    */
   export type TrialFundDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19793,11 +22298,14 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     username: 'username',
     phone: 'phone',
+    profile: 'profile',
     email: 'email',
     emailVerified: 'emailVerified',
     password: 'password',
     referralCode: 'referralCode',
-    role: 'role'
+    role: 'role',
+    level: 'level',
+    status: 'status'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -19827,17 +22335,36 @@ export namespace Prisma {
   export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum]
 
 
+  export const LevelScalarFieldEnum: {
+    id: 'id',
+    level: 'level',
+    points: 'points'
+  };
+
+  export type LevelScalarFieldEnum = (typeof LevelScalarFieldEnum)[keyof typeof LevelScalarFieldEnum]
+
+
+  export const UserLevelScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    levelId: 'levelId',
+    gainedAt: 'gainedAt'
+  };
+
+  export type UserLevelScalarFieldEnum = (typeof UserLevelScalarFieldEnum)[keyof typeof UserLevelScalarFieldEnum]
+
+
   export const ProductScalarFieldEnum: {
     id: 'id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    userId: 'userId',
     title: 'title',
     description: 'description',
     image: 'image',
     price: 'price',
     dailyIncome: 'dailyIncome',
     fee: 'fee',
-    level: 'level',
     deletedAt: 'deletedAt'
   };
 
@@ -20067,6 +22594,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'UserStatus'
+   */
+  export type EnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserStatus[]'
+   */
+  export type ListEnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Decimal'
    */
   export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -20148,11 +22689,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     username?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
+    profile?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
     emailVerified?: BoolFilter<"User"> | boolean
     password?: StringFilter<"User"> | string
     referralCode?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    level?: IntFilter<"User"> | number
+    status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     withdraws?: WithdrawListRelationFilter
     userProducts?: UserProductListRelationFilter
@@ -20165,6 +22709,7 @@ export namespace Prisma {
     trialFund?: XOR<TrialFundNullableScalarRelationFilter, TrialFundWhereInput> | null
     verifications?: VerificationListRelationFilter
     passwordResets?: PasswordResetListRelationFilter
+    UserLevel?: UserLevelListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -20173,11 +22718,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
     username?: SortOrder
     phone?: SortOrderInput | SortOrder
+    profile?: SortOrderInput | SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrderInput | SortOrder
     role?: SortOrder
+    level?: SortOrder
+    status?: SortOrder
     wallet?: WalletOrderByWithRelationInput
     withdraws?: WithdrawOrderByRelationAggregateInput
     userProducts?: UserProductOrderByRelationAggregateInput
@@ -20190,6 +22738,7 @@ export namespace Prisma {
     trialFund?: TrialFundOrderByWithRelationInput
     verifications?: VerificationOrderByRelationAggregateInput
     passwordResets?: PasswordResetOrderByRelationAggregateInput
+    UserLevel?: UserLevelOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -20203,9 +22752,12 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     phone?: StringNullableFilter<"User"> | string | null
+    profile?: StringNullableFilter<"User"> | string | null
     emailVerified?: BoolFilter<"User"> | boolean
     password?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    level?: IntFilter<"User"> | number
+    status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     withdraws?: WithdrawListRelationFilter
     userProducts?: UserProductListRelationFilter
@@ -20218,6 +22770,7 @@ export namespace Prisma {
     trialFund?: XOR<TrialFundNullableScalarRelationFilter, TrialFundWhereInput> | null
     verifications?: VerificationListRelationFilter
     passwordResets?: PasswordResetListRelationFilter
+    UserLevel?: UserLevelListRelationFilter
   }, "id" | "username" | "email" | "referralCode">
 
   export type UserOrderByWithAggregationInput = {
@@ -20226,11 +22779,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
     username?: SortOrder
     phone?: SortOrderInput | SortOrder
+    profile?: SortOrderInput | SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrderInput | SortOrder
     role?: SortOrder
+    level?: SortOrder
+    status?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -20247,11 +22803,14 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     username?: StringWithAggregatesFilter<"User"> | string
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    profile?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     password?: StringWithAggregatesFilter<"User"> | string
     referralCode?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    level?: IntWithAggregatesFilter<"User"> | number
+    status?: EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   }
 
   export type VerificationWhereInput = {
@@ -20378,6 +22937,109 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"PasswordReset"> | Date | string
   }
 
+  export type LevelWhereInput = {
+    AND?: LevelWhereInput | LevelWhereInput[]
+    OR?: LevelWhereInput[]
+    NOT?: LevelWhereInput | LevelWhereInput[]
+    id?: IntFilter<"Level"> | number
+    level?: IntFilter<"Level"> | number
+    points?: IntFilter<"Level"> | number
+    userLevels?: UserLevelListRelationFilter
+  }
+
+  export type LevelOrderByWithRelationInput = {
+    id?: SortOrder
+    level?: SortOrder
+    points?: SortOrder
+    userLevels?: UserLevelOrderByRelationAggregateInput
+  }
+
+  export type LevelWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    level?: number
+    AND?: LevelWhereInput | LevelWhereInput[]
+    OR?: LevelWhereInput[]
+    NOT?: LevelWhereInput | LevelWhereInput[]
+    points?: IntFilter<"Level"> | number
+    userLevels?: UserLevelListRelationFilter
+  }, "id" | "level">
+
+  export type LevelOrderByWithAggregationInput = {
+    id?: SortOrder
+    level?: SortOrder
+    points?: SortOrder
+    _count?: LevelCountOrderByAggregateInput
+    _avg?: LevelAvgOrderByAggregateInput
+    _max?: LevelMaxOrderByAggregateInput
+    _min?: LevelMinOrderByAggregateInput
+    _sum?: LevelSumOrderByAggregateInput
+  }
+
+  export type LevelScalarWhereWithAggregatesInput = {
+    AND?: LevelScalarWhereWithAggregatesInput | LevelScalarWhereWithAggregatesInput[]
+    OR?: LevelScalarWhereWithAggregatesInput[]
+    NOT?: LevelScalarWhereWithAggregatesInput | LevelScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Level"> | number
+    level?: IntWithAggregatesFilter<"Level"> | number
+    points?: IntWithAggregatesFilter<"Level"> | number
+  }
+
+  export type UserLevelWhereInput = {
+    AND?: UserLevelWhereInput | UserLevelWhereInput[]
+    OR?: UserLevelWhereInput[]
+    NOT?: UserLevelWhereInput | UserLevelWhereInput[]
+    id?: IntFilter<"UserLevel"> | number
+    userId?: IntFilter<"UserLevel"> | number
+    levelId?: IntFilter<"UserLevel"> | number
+    gainedAt?: DateTimeFilter<"UserLevel"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    level?: XOR<LevelScalarRelationFilter, LevelWhereInput>
+  }
+
+  export type UserLevelOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    levelId?: SortOrder
+    gainedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    level?: LevelOrderByWithRelationInput
+  }
+
+  export type UserLevelWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userId_levelId?: UserLevelUserIdLevelIdCompoundUniqueInput
+    AND?: UserLevelWhereInput | UserLevelWhereInput[]
+    OR?: UserLevelWhereInput[]
+    NOT?: UserLevelWhereInput | UserLevelWhereInput[]
+    userId?: IntFilter<"UserLevel"> | number
+    levelId?: IntFilter<"UserLevel"> | number
+    gainedAt?: DateTimeFilter<"UserLevel"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    level?: XOR<LevelScalarRelationFilter, LevelWhereInput>
+  }, "id" | "userId_levelId">
+
+  export type UserLevelOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    levelId?: SortOrder
+    gainedAt?: SortOrder
+    _count?: UserLevelCountOrderByAggregateInput
+    _avg?: UserLevelAvgOrderByAggregateInput
+    _max?: UserLevelMaxOrderByAggregateInput
+    _min?: UserLevelMinOrderByAggregateInput
+    _sum?: UserLevelSumOrderByAggregateInput
+  }
+
+  export type UserLevelScalarWhereWithAggregatesInput = {
+    AND?: UserLevelScalarWhereWithAggregatesInput | UserLevelScalarWhereWithAggregatesInput[]
+    OR?: UserLevelScalarWhereWithAggregatesInput[]
+    NOT?: UserLevelScalarWhereWithAggregatesInput | UserLevelScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"UserLevel"> | number
+    userId?: IntWithAggregatesFilter<"UserLevel"> | number
+    levelId?: IntWithAggregatesFilter<"UserLevel"> | number
+    gainedAt?: DateTimeWithAggregatesFilter<"UserLevel"> | Date | string
+  }
+
   export type ProductWhereInput = {
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
@@ -20385,13 +23047,13 @@ export namespace Prisma {
     id?: IntFilter<"Product"> | number
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
+    userId?: IntNullableFilter<"Product"> | number | null
     title?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     image?: StringFilter<"Product"> | string
     price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
-    level?: IntFilter<"Product"> | number
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     userProducts?: UserProductListRelationFilter
     rewards?: RewardListRelationFilter
@@ -20404,13 +23066,13 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrderInput | SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     image?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    level?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     userProducts?: UserProductOrderByRelationAggregateInput
     rewards?: RewardOrderByRelationAggregateInput
@@ -20426,13 +23088,13 @@ export namespace Prisma {
     NOT?: ProductWhereInput | ProductWhereInput[]
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
+    userId?: IntNullableFilter<"Product"> | number | null
     title?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     image?: StringFilter<"Product"> | string
     price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
-    level?: IntFilter<"Product"> | number
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     userProducts?: UserProductListRelationFilter
     rewards?: RewardListRelationFilter
@@ -20445,13 +23107,13 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrderInput | SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     image?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    level?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
@@ -20467,13 +23129,13 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Product"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+    userId?: IntNullableWithAggregatesFilter<"Product"> | number | null
     title?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     image?: StringWithAggregatesFilter<"Product"> | string
     price?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
-    level?: IntWithAggregatesFilter<"Product"> | number
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
   }
 
@@ -21100,7 +23762,7 @@ export namespace Prisma {
     NOT?: TrialFundWhereInput | TrialFundWhereInput[]
     id?: IntFilter<"TrialFund"> | number
     userId?: IntFilter<"TrialFund"> | number
-    productId?: IntFilter<"TrialFund"> | number
+    productId?: IntNullableFilter<"TrialFund"> | number | null
     amount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFilter<"TrialFund"> | Date | string
     expiresAt?: DateTimeFilter<"TrialFund"> | Date | string
@@ -21108,13 +23770,13 @@ export namespace Prisma {
     recoveredAt?: DateTimeNullableFilter<"TrialFund"> | Date | string | null
     usedAmount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
   }
 
   export type TrialFundOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    productId?: SortOrder
+    productId?: SortOrderInput | SortOrder
     amount?: SortOrder
     grantedAt?: SortOrder
     expiresAt?: SortOrder
@@ -21131,7 +23793,7 @@ export namespace Prisma {
     AND?: TrialFundWhereInput | TrialFundWhereInput[]
     OR?: TrialFundWhereInput[]
     NOT?: TrialFundWhereInput | TrialFundWhereInput[]
-    productId?: IntFilter<"TrialFund"> | number
+    productId?: IntNullableFilter<"TrialFund"> | number | null
     amount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFilter<"TrialFund"> | Date | string
     expiresAt?: DateTimeFilter<"TrialFund"> | Date | string
@@ -21139,13 +23801,13 @@ export namespace Prisma {
     recoveredAt?: DateTimeNullableFilter<"TrialFund"> | Date | string | null
     usedAmount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
   }, "id" | "userId">
 
   export type TrialFundOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    productId?: SortOrder
+    productId?: SortOrderInput | SortOrder
     amount?: SortOrder
     grantedAt?: SortOrder
     expiresAt?: SortOrder
@@ -21165,7 +23827,7 @@ export namespace Prisma {
     NOT?: TrialFundScalarWhereWithAggregatesInput | TrialFundScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"TrialFund"> | number
     userId?: IntWithAggregatesFilter<"TrialFund"> | number
-    productId?: IntWithAggregatesFilter<"TrialFund"> | number
+    productId?: IntNullableWithAggregatesFilter<"TrialFund"> | number | null
     amount?: DecimalWithAggregatesFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeWithAggregatesFilter<"TrialFund"> | Date | string
     expiresAt?: DateTimeWithAggregatesFilter<"TrialFund"> | Date | string
@@ -21179,11 +23841,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -21196,6 +23861,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -21204,11 +23870,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -21221,6 +23890,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -21228,11 +23898,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -21245,6 +23918,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -21253,11 +23927,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -21270,6 +23947,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21278,11 +23956,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
   }
 
   export type UserUpdateManyMutationInput = {
@@ -21290,11 +23971,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -21303,11 +23987,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   }
 
   export type VerificationCreateInput = {
@@ -21428,16 +24115,103 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LevelCreateInput = {
+    level: number
+    points: number
+    userLevels?: UserLevelCreateNestedManyWithoutLevelInput
+  }
+
+  export type LevelUncheckedCreateInput = {
+    id?: number
+    level: number
+    points: number
+    userLevels?: UserLevelUncheckedCreateNestedManyWithoutLevelInput
+  }
+
+  export type LevelUpdateInput = {
+    level?: IntFieldUpdateOperationsInput | number
+    points?: IntFieldUpdateOperationsInput | number
+    userLevels?: UserLevelUpdateManyWithoutLevelNestedInput
+  }
+
+  export type LevelUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    points?: IntFieldUpdateOperationsInput | number
+    userLevels?: UserLevelUncheckedUpdateManyWithoutLevelNestedInput
+  }
+
+  export type LevelCreateManyInput = {
+    id?: number
+    level: number
+    points: number
+  }
+
+  export type LevelUpdateManyMutationInput = {
+    level?: IntFieldUpdateOperationsInput | number
+    points?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LevelUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    points?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserLevelCreateInput = {
+    gainedAt?: Date | string
+    user: UserCreateNestedOneWithoutUserLevelInput
+    level: LevelCreateNestedOneWithoutUserLevelsInput
+  }
+
+  export type UserLevelUncheckedCreateInput = {
+    id?: number
+    userId: number
+    levelId: number
+    gainedAt?: Date | string
+  }
+
+  export type UserLevelUpdateInput = {
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserLevelNestedInput
+    level?: LevelUpdateOneRequiredWithoutUserLevelsNestedInput
+  }
+
+  export type UserLevelUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    levelId?: IntFieldUpdateOperationsInput | number
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserLevelCreateManyInput = {
+    id?: number
+    userId: number
+    levelId: number
+    gainedAt?: Date | string
+  }
+
+  export type UserLevelUpdateManyMutationInput = {
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserLevelUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    levelId?: IntFieldUpdateOperationsInput | number
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ProductCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
@@ -21450,13 +24224,13 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
@@ -21468,13 +24242,13 @@ export namespace Prisma {
   export type ProductUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
@@ -21487,13 +24261,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
@@ -21506,26 +24280,26 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
   }
 
   export type ProductUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -21533,13 +24307,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -22109,13 +24883,13 @@ export namespace Prisma {
     recoveredAt?: Date | string | null
     usedAmount?: Decimal | DecimalJsLike | number | string
     user: UserCreateNestedOneWithoutTrialFundInput
-    product: ProductCreateNestedOneWithoutTrialFundsInput
+    product?: ProductCreateNestedOneWithoutTrialFundsInput
   }
 
   export type TrialFundUncheckedCreateInput = {
     id?: number
     userId: number
-    productId: number
+    productId?: number | null
     amount?: Decimal | DecimalJsLike | number | string
     grantedAt?: Date | string
     expiresAt: Date | string
@@ -22132,13 +24906,13 @@ export namespace Prisma {
     recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     user?: UserUpdateOneRequiredWithoutTrialFundNestedInput
-    product?: ProductUpdateOneRequiredWithoutTrialFundsNestedInput
+    product?: ProductUpdateOneWithoutTrialFundsNestedInput
   }
 
   export type TrialFundUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    productId?: IntFieldUpdateOperationsInput | number
+    productId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22150,7 +24924,7 @@ export namespace Prisma {
   export type TrialFundCreateManyInput = {
     id?: number
     userId: number
-    productId: number
+    productId?: number | null
     amount?: Decimal | DecimalJsLike | number | string
     grantedAt?: Date | string
     expiresAt: Date | string
@@ -22171,7 +24945,7 @@ export namespace Prisma {
   export type TrialFundUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    productId?: IntFieldUpdateOperationsInput | number
+    productId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22244,6 +25018,13 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
+  export type EnumUserStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusFilter<$PrismaModel> | $Enums.UserStatus
+  }
+
   export type WalletNullableScalarRelationFilter = {
     is?: WalletWhereInput | null
     isNot?: WalletWhereInput | null
@@ -22302,6 +25083,12 @@ export namespace Prisma {
     none?: PasswordResetWhereInput
   }
 
+  export type UserLevelListRelationFilter = {
+    every?: UserLevelWhereInput
+    some?: UserLevelWhereInput
+    none?: UserLevelWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -22339,21 +25126,29 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type UserLevelOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     username?: SortOrder
     phone?: SortOrder
+    profile?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrder
     role?: SortOrder
+    level?: SortOrder
+    status?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     id?: SortOrder
+    level?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -22362,11 +25157,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
     username?: SortOrder
     phone?: SortOrder
+    profile?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrder
     role?: SortOrder
+    level?: SortOrder
+    status?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -22375,15 +25173,19 @@ export namespace Prisma {
     updatedAt?: SortOrder
     username?: SortOrder
     phone?: SortOrder
+    profile?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     password?: SortOrder
     referralCode?: SortOrder
     role?: SortOrder
+    level?: SortOrder
+    status?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder
+    level?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -22468,6 +25270,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRoleFilter<$PrismaModel>
     _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type EnumUserStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusWithAggregatesFilter<$PrismaModel> | $Enums.UserStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserStatusFilter<$PrismaModel>
+    _max?: NestedEnumUserStatusFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -22581,6 +25393,79 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type LevelCountOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    points?: SortOrder
+  }
+
+  export type LevelAvgOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    points?: SortOrder
+  }
+
+  export type LevelMaxOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    points?: SortOrder
+  }
+
+  export type LevelMinOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    points?: SortOrder
+  }
+
+  export type LevelSumOrderByAggregateInput = {
+    id?: SortOrder
+    level?: SortOrder
+    points?: SortOrder
+  }
+
+  export type LevelScalarRelationFilter = {
+    is?: LevelWhereInput
+    isNot?: LevelWhereInput
+  }
+
+  export type UserLevelUserIdLevelIdCompoundUniqueInput = {
+    userId: number
+    levelId: number
+  }
+
+  export type UserLevelCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    levelId?: SortOrder
+    gainedAt?: SortOrder
+  }
+
+  export type UserLevelAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    levelId?: SortOrder
+  }
+
+  export type UserLevelMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    levelId?: SortOrder
+    gainedAt?: SortOrder
+  }
+
+  export type UserLevelMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    levelId?: SortOrder
+    gainedAt?: SortOrder
+  }
+
+  export type UserLevelSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    levelId?: SortOrder
+  }
+
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -22627,35 +25512,35 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    level?: SortOrder
     deletedAt?: SortOrder
   }
 
   export type ProductAvgOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    level?: SortOrder
   }
 
   export type ProductMaxOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    level?: SortOrder
     deletedAt?: SortOrder
   }
 
@@ -22663,22 +25548,22 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    level?: SortOrder
     deletedAt?: SortOrder
   }
 
   export type ProductSumOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
-    level?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -23194,6 +26079,11 @@ export namespace Prisma {
     not?: NestedEnumTrialFundStatusFilter<$PrismaModel> | $Enums.TrialFundStatus
   }
 
+  export type ProductNullableScalarRelationFilter = {
+    is?: ProductWhereInput | null
+    isNot?: ProductWhereInput | null
+  }
+
   export type TrialFundCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -23338,6 +26228,13 @@ export namespace Prisma {
     connect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
   }
 
+  export type UserLevelCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserLevelCreateWithoutUserInput, UserLevelUncheckedCreateWithoutUserInput> | UserLevelCreateWithoutUserInput[] | UserLevelUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutUserInput | UserLevelCreateOrConnectWithoutUserInput[]
+    createMany?: UserLevelCreateManyUserInputEnvelope
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+  }
+
   export type WalletUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
     connectOrCreate?: WalletCreateOrConnectWithoutUserInput
@@ -23420,6 +26317,13 @@ export namespace Prisma {
     connect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
   }
 
+  export type UserLevelUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserLevelCreateWithoutUserInput, UserLevelUncheckedCreateWithoutUserInput> | UserLevelCreateWithoutUserInput[] | UserLevelUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutUserInput | UserLevelCreateOrConnectWithoutUserInput[]
+    createMany?: UserLevelCreateManyUserInputEnvelope
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -23438,6 +26342,18 @@ export namespace Prisma {
 
   export type EnumRoleFieldUpdateOperationsInput = {
     set?: $Enums.Role
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type EnumUserStatusFieldUpdateOperationsInput = {
+    set?: $Enums.UserStatus
   }
 
   export type WalletUpdateOneWithoutUserNestedInput = {
@@ -23600,12 +26516,18 @@ export namespace Prisma {
     deleteMany?: PasswordResetScalarWhereInput | PasswordResetScalarWhereInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type UserLevelUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserLevelCreateWithoutUserInput, UserLevelUncheckedCreateWithoutUserInput> | UserLevelCreateWithoutUserInput[] | UserLevelUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutUserInput | UserLevelCreateOrConnectWithoutUserInput[]
+    upsert?: UserLevelUpsertWithWhereUniqueWithoutUserInput | UserLevelUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserLevelCreateManyUserInputEnvelope
+    set?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    disconnect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    delete?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    update?: UserLevelUpdateWithWhereUniqueWithoutUserInput | UserLevelUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserLevelUpdateManyWithWhereWithoutUserInput | UserLevelUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
   }
 
   export type WalletUncheckedUpdateOneWithoutUserNestedInput = {
@@ -23768,6 +26690,20 @@ export namespace Prisma {
     deleteMany?: PasswordResetScalarWhereInput | PasswordResetScalarWhereInput[]
   }
 
+  export type UserLevelUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserLevelCreateWithoutUserInput, UserLevelUncheckedCreateWithoutUserInput> | UserLevelCreateWithoutUserInput[] | UserLevelUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutUserInput | UserLevelCreateOrConnectWithoutUserInput[]
+    upsert?: UserLevelUpsertWithWhereUniqueWithoutUserInput | UserLevelUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserLevelCreateManyUserInputEnvelope
+    set?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    disconnect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    delete?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    update?: UserLevelUpdateWithWhereUniqueWithoutUserInput | UserLevelUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserLevelUpdateManyWithWhereWithoutUserInput | UserLevelUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutVerificationsInput = {
     create?: XOR<UserCreateWithoutVerificationsInput, UserUncheckedCreateWithoutVerificationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutVerificationsInput
@@ -23804,6 +26740,76 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPasswordResetsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetsInput, UserUpdateWithoutPasswordResetsInput>, UserUncheckedUpdateWithoutPasswordResetsInput>
+  }
+
+  export type UserLevelCreateNestedManyWithoutLevelInput = {
+    create?: XOR<UserLevelCreateWithoutLevelInput, UserLevelUncheckedCreateWithoutLevelInput> | UserLevelCreateWithoutLevelInput[] | UserLevelUncheckedCreateWithoutLevelInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutLevelInput | UserLevelCreateOrConnectWithoutLevelInput[]
+    createMany?: UserLevelCreateManyLevelInputEnvelope
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+  }
+
+  export type UserLevelUncheckedCreateNestedManyWithoutLevelInput = {
+    create?: XOR<UserLevelCreateWithoutLevelInput, UserLevelUncheckedCreateWithoutLevelInput> | UserLevelCreateWithoutLevelInput[] | UserLevelUncheckedCreateWithoutLevelInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutLevelInput | UserLevelCreateOrConnectWithoutLevelInput[]
+    createMany?: UserLevelCreateManyLevelInputEnvelope
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+  }
+
+  export type UserLevelUpdateManyWithoutLevelNestedInput = {
+    create?: XOR<UserLevelCreateWithoutLevelInput, UserLevelUncheckedCreateWithoutLevelInput> | UserLevelCreateWithoutLevelInput[] | UserLevelUncheckedCreateWithoutLevelInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutLevelInput | UserLevelCreateOrConnectWithoutLevelInput[]
+    upsert?: UserLevelUpsertWithWhereUniqueWithoutLevelInput | UserLevelUpsertWithWhereUniqueWithoutLevelInput[]
+    createMany?: UserLevelCreateManyLevelInputEnvelope
+    set?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    disconnect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    delete?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    update?: UserLevelUpdateWithWhereUniqueWithoutLevelInput | UserLevelUpdateWithWhereUniqueWithoutLevelInput[]
+    updateMany?: UserLevelUpdateManyWithWhereWithoutLevelInput | UserLevelUpdateManyWithWhereWithoutLevelInput[]
+    deleteMany?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
+  }
+
+  export type UserLevelUncheckedUpdateManyWithoutLevelNestedInput = {
+    create?: XOR<UserLevelCreateWithoutLevelInput, UserLevelUncheckedCreateWithoutLevelInput> | UserLevelCreateWithoutLevelInput[] | UserLevelUncheckedCreateWithoutLevelInput[]
+    connectOrCreate?: UserLevelCreateOrConnectWithoutLevelInput | UserLevelCreateOrConnectWithoutLevelInput[]
+    upsert?: UserLevelUpsertWithWhereUniqueWithoutLevelInput | UserLevelUpsertWithWhereUniqueWithoutLevelInput[]
+    createMany?: UserLevelCreateManyLevelInputEnvelope
+    set?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    disconnect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    delete?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+    update?: UserLevelUpdateWithWhereUniqueWithoutLevelInput | UserLevelUpdateWithWhereUniqueWithoutLevelInput[]
+    updateMany?: UserLevelUpdateManyWithWhereWithoutLevelInput | UserLevelUpdateManyWithWhereWithoutLevelInput[]
+    deleteMany?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutUserLevelInput = {
+    create?: XOR<UserCreateWithoutUserLevelInput, UserUncheckedCreateWithoutUserLevelInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserLevelInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LevelCreateNestedOneWithoutUserLevelsInput = {
+    create?: XOR<LevelCreateWithoutUserLevelsInput, LevelUncheckedCreateWithoutUserLevelsInput>
+    connectOrCreate?: LevelCreateOrConnectWithoutUserLevelsInput
+    connect?: LevelWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutUserLevelNestedInput = {
+    create?: XOR<UserCreateWithoutUserLevelInput, UserUncheckedCreateWithoutUserLevelInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserLevelInput
+    upsert?: UserUpsertWithoutUserLevelInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserLevelInput, UserUpdateWithoutUserLevelInput>, UserUncheckedUpdateWithoutUserLevelInput>
+  }
+
+  export type LevelUpdateOneRequiredWithoutUserLevelsNestedInput = {
+    create?: XOR<LevelCreateWithoutUserLevelsInput, LevelUncheckedCreateWithoutUserLevelsInput>
+    connectOrCreate?: LevelCreateOrConnectWithoutUserLevelsInput
+    upsert?: LevelUpsertWithoutUserLevelsInput
+    connect?: LevelWhereUniqueInput
+    update?: XOR<XOR<LevelUpdateToOneWithWhereWithoutUserLevelsInput, LevelUpdateWithoutUserLevelsInput>, LevelUncheckedUpdateWithoutUserLevelsInput>
   }
 
   export type UserProductCreateNestedManyWithoutProductInput = {
@@ -24362,10 +27368,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrialFundInput, UserUpdateWithoutTrialFundInput>, UserUncheckedUpdateWithoutTrialFundInput>
   }
 
-  export type ProductUpdateOneRequiredWithoutTrialFundsNestedInput = {
+  export type ProductUpdateOneWithoutTrialFundsNestedInput = {
     create?: XOR<ProductCreateWithoutTrialFundsInput, ProductUncheckedCreateWithoutTrialFundsInput>
     connectOrCreate?: ProductCreateOrConnectWithoutTrialFundsInput
     upsert?: ProductUpsertWithoutTrialFundsInput
+    disconnect?: ProductWhereInput | boolean
+    delete?: ProductWhereInput | boolean
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutTrialFundsInput, ProductUpdateWithoutTrialFundsInput>, ProductUncheckedUpdateWithoutTrialFundsInput>
   }
@@ -24430,6 +27438,13 @@ export namespace Prisma {
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
     notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
+  export type NestedEnumUserStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusFilter<$PrismaModel> | $Enums.UserStatus
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -24534,6 +27549,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRoleFilter<$PrismaModel>
     _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type NestedEnumUserStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserStatus | EnumUserStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserStatusWithAggregatesFilter<$PrismaModel> | $Enums.UserStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserStatusFilter<$PrismaModel>
+    _max?: NestedEnumUserStatusFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -24911,12 +27936,12 @@ export namespace Prisma {
     status?: $Enums.TrialFundStatus
     recoveredAt?: Date | string | null
     usedAmount?: Decimal | DecimalJsLike | number | string
-    product: ProductCreateNestedOneWithoutTrialFundsInput
+    product?: ProductCreateNestedOneWithoutTrialFundsInput
   }
 
   export type TrialFundUncheckedCreateWithoutUserInput = {
     id?: number
-    productId: number
+    productId?: number | null
     amount?: Decimal | DecimalJsLike | number | string
     grantedAt?: Date | string
     expiresAt: Date | string
@@ -24977,6 +28002,27 @@ export namespace Prisma {
 
   export type PasswordResetCreateManyUserInputEnvelope = {
     data: PasswordResetCreateManyUserInput | PasswordResetCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserLevelCreateWithoutUserInput = {
+    gainedAt?: Date | string
+    level: LevelCreateNestedOneWithoutUserLevelsInput
+  }
+
+  export type UserLevelUncheckedCreateWithoutUserInput = {
+    id?: number
+    levelId: number
+    gainedAt?: Date | string
+  }
+
+  export type UserLevelCreateOrConnectWithoutUserInput = {
+    where: UserLevelWhereUniqueInput
+    create: XOR<UserLevelCreateWithoutUserInput, UserLevelUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserLevelCreateManyUserInputEnvelope = {
+    data: UserLevelCreateManyUserInput | UserLevelCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -25222,12 +28268,12 @@ export namespace Prisma {
     status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
     recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    product?: ProductUpdateOneRequiredWithoutTrialFundsNestedInput
+    product?: ProductUpdateOneWithoutTrialFundsNestedInput
   }
 
   export type TrialFundUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    productId?: IntFieldUpdateOperationsInput | number
+    productId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25292,16 +28338,45 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PasswordReset"> | Date | string
   }
 
+  export type UserLevelUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserLevelWhereUniqueInput
+    update: XOR<UserLevelUpdateWithoutUserInput, UserLevelUncheckedUpdateWithoutUserInput>
+    create: XOR<UserLevelCreateWithoutUserInput, UserLevelUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserLevelUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserLevelWhereUniqueInput
+    data: XOR<UserLevelUpdateWithoutUserInput, UserLevelUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserLevelUpdateManyWithWhereWithoutUserInput = {
+    where: UserLevelScalarWhereInput
+    data: XOR<UserLevelUpdateManyMutationInput, UserLevelUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserLevelScalarWhereInput = {
+    AND?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
+    OR?: UserLevelScalarWhereInput[]
+    NOT?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
+    id?: IntFilter<"UserLevel"> | number
+    userId?: IntFilter<"UserLevel"> | number
+    levelId?: IntFilter<"UserLevel"> | number
+    gainedAt?: DateTimeFilter<"UserLevel"> | Date | string
+  }
+
   export type UserCreateWithoutVerificationsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -25313,6 +28388,7 @@ export namespace Prisma {
     rewards?: RewardCreateNestedManyWithoutUserInput
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -25321,11 +28397,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -25337,6 +28416,7 @@ export namespace Prisma {
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -25360,11 +28440,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -25376,6 +28459,7 @@ export namespace Prisma {
     rewards?: RewardUpdateManyWithoutUserNestedInput
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -25384,11 +28468,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -25400,6 +28487,7 @@ export namespace Prisma {
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetsInput = {
@@ -25407,11 +28495,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -25423,6 +28514,7 @@ export namespace Prisma {
     rewards?: RewardCreateNestedManyWithoutUserInput
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -25431,11 +28523,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -25447,6 +28542,7 @@ export namespace Prisma {
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -25470,11 +28566,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -25486,6 +28585,7 @@ export namespace Prisma {
     rewards?: RewardUpdateManyWithoutUserNestedInput
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -25494,11 +28594,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -25510,6 +28613,208 @@ export namespace Prisma {
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserLevelCreateWithoutLevelInput = {
+    gainedAt?: Date | string
+    user: UserCreateNestedOneWithoutUserLevelInput
+  }
+
+  export type UserLevelUncheckedCreateWithoutLevelInput = {
+    id?: number
+    userId: number
+    gainedAt?: Date | string
+  }
+
+  export type UserLevelCreateOrConnectWithoutLevelInput = {
+    where: UserLevelWhereUniqueInput
+    create: XOR<UserLevelCreateWithoutLevelInput, UserLevelUncheckedCreateWithoutLevelInput>
+  }
+
+  export type UserLevelCreateManyLevelInputEnvelope = {
+    data: UserLevelCreateManyLevelInput | UserLevelCreateManyLevelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserLevelUpsertWithWhereUniqueWithoutLevelInput = {
+    where: UserLevelWhereUniqueInput
+    update: XOR<UserLevelUpdateWithoutLevelInput, UserLevelUncheckedUpdateWithoutLevelInput>
+    create: XOR<UserLevelCreateWithoutLevelInput, UserLevelUncheckedCreateWithoutLevelInput>
+  }
+
+  export type UserLevelUpdateWithWhereUniqueWithoutLevelInput = {
+    where: UserLevelWhereUniqueInput
+    data: XOR<UserLevelUpdateWithoutLevelInput, UserLevelUncheckedUpdateWithoutLevelInput>
+  }
+
+  export type UserLevelUpdateManyWithWhereWithoutLevelInput = {
+    where: UserLevelScalarWhereInput
+    data: XOR<UserLevelUpdateManyMutationInput, UserLevelUncheckedUpdateManyWithoutLevelInput>
+  }
+
+  export type UserCreateWithoutUserLevelInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    profile?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
+    salesSold?: SaleCreateNestedManyWithoutSellerInput
+    salesBought?: SaleCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    rewards?: RewardCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutUserLevelInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    profile?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
+    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
+    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutUserLevelInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUserLevelInput, UserUncheckedCreateWithoutUserLevelInput>
+  }
+
+  export type LevelCreateWithoutUserLevelsInput = {
+    level: number
+    points: number
+  }
+
+  export type LevelUncheckedCreateWithoutUserLevelsInput = {
+    id?: number
+    level: number
+    points: number
+  }
+
+  export type LevelCreateOrConnectWithoutUserLevelsInput = {
+    where: LevelWhereUniqueInput
+    create: XOR<LevelCreateWithoutUserLevelsInput, LevelUncheckedCreateWithoutUserLevelsInput>
+  }
+
+  export type UserUpsertWithoutUserLevelInput = {
+    update: XOR<UserUpdateWithoutUserLevelInput, UserUncheckedUpdateWithoutUserLevelInput>
+    create: XOR<UserCreateWithoutUserLevelInput, UserUncheckedCreateWithoutUserLevelInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserLevelInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserLevelInput, UserUncheckedUpdateWithoutUserLevelInput>
+  }
+
+  export type UserUpdateWithoutUserLevelInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserLevelInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type LevelUpsertWithoutUserLevelsInput = {
+    update: XOR<LevelUpdateWithoutUserLevelsInput, LevelUncheckedUpdateWithoutUserLevelsInput>
+    create: XOR<LevelCreateWithoutUserLevelsInput, LevelUncheckedCreateWithoutUserLevelsInput>
+    where?: LevelWhereInput
+  }
+
+  export type LevelUpdateToOneWithWhereWithoutUserLevelsInput = {
+    where?: LevelWhereInput
+    data: XOR<LevelUpdateWithoutUserLevelsInput, LevelUncheckedUpdateWithoutUserLevelsInput>
+  }
+
+  export type LevelUpdateWithoutUserLevelsInput = {
+    level?: IntFieldUpdateOperationsInput | number
+    points?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LevelUncheckedUpdateWithoutUserLevelsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    points?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserProductCreateWithoutProductInput = {
@@ -25691,7 +28996,7 @@ export namespace Prisma {
     NOT?: TrialFundScalarWhereInput | TrialFundScalarWhereInput[]
     id?: IntFilter<"TrialFund"> | number
     userId?: IntFilter<"TrialFund"> | number
-    productId?: IntFilter<"TrialFund"> | number
+    productId?: IntNullableFilter<"TrialFund"> | number | null
     amount?: DecimalFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
     grantedAt?: DateTimeFilter<"TrialFund"> | Date | string
     expiresAt?: DateTimeFilter<"TrialFund"> | Date | string
@@ -25747,11 +29052,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     rentals?: RentalCreateNestedManyWithoutUserInput
@@ -25763,6 +29071,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserProductsInput = {
@@ -25771,11 +29080,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
@@ -25787,6 +29099,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserProductsInput = {
@@ -25797,13 +29110,13 @@ export namespace Prisma {
   export type ProductCreateWithoutUserProductsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
@@ -25815,13 +29128,13 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
@@ -25850,11 +29163,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     rentals?: RentalUpdateManyWithoutUserNestedInput
@@ -25866,6 +29182,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserProductsInput = {
@@ -25874,11 +29191,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
@@ -25890,6 +29210,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutUserProductsInput = {
@@ -25906,13 +29227,13 @@ export namespace Prisma {
   export type ProductUpdateWithoutUserProductsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
@@ -25924,13 +29245,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
@@ -25943,11 +29264,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -25959,6 +29283,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRentalsInput = {
@@ -25967,11 +29292,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -25983,6 +29311,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRentalsInput = {
@@ -25993,13 +29322,13 @@ export namespace Prisma {
   export type ProductCreateWithoutRentalsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
@@ -26011,13 +29340,13 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
@@ -26046,11 +29375,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -26062,6 +29394,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRentalsInput = {
@@ -26070,11 +29403,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -26086,6 +29422,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutRentalsInput = {
@@ -26102,13 +29439,13 @@ export namespace Prisma {
   export type ProductUpdateWithoutRentalsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
@@ -26120,13 +29457,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
@@ -26139,11 +29476,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -26155,6 +29495,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsMadeInput = {
@@ -26163,11 +29504,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -26179,6 +29523,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsMadeInput = {
@@ -26191,11 +29536,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -26207,6 +29555,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsReceivedInput = {
@@ -26215,11 +29564,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -26231,6 +29583,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsReceivedInput = {
@@ -26279,11 +29632,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -26295,6 +29651,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsMadeInput = {
@@ -26303,11 +29660,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -26319,6 +29679,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReferralsReceivedInput = {
@@ -26337,11 +29698,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -26353,6 +29717,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsReceivedInput = {
@@ -26361,11 +29726,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -26377,6 +29745,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommissionUpsertWithWhereUniqueWithoutReferralInput = {
@@ -26412,11 +29781,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -26428,6 +29800,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSalesSoldInput = {
@@ -26436,11 +29809,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -26452,6 +29828,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSalesSoldInput = {
@@ -26464,11 +29841,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -26480,6 +29860,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSalesBoughtInput = {
@@ -26488,11 +29869,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -26504,6 +29888,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSalesBoughtInput = {
@@ -26548,11 +29933,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -26564,6 +29952,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesSoldInput = {
@@ -26572,11 +29961,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -26588,6 +29980,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutSalesBoughtInput = {
@@ -26606,11 +29999,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -26622,6 +30018,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesBoughtInput = {
@@ -26630,11 +30027,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -26646,6 +30046,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleItemUpsertWithWhereUniqueWithoutSaleInput = {
@@ -26687,13 +30088,13 @@ export namespace Prisma {
   export type ProductCreateWithoutSaleItemsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
@@ -26705,13 +30106,13 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
@@ -26764,13 +30165,13 @@ export namespace Prisma {
   export type ProductUpdateWithoutSaleItemsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
@@ -26782,13 +30183,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
@@ -26801,11 +30202,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -26817,6 +30221,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRewardsInput = {
@@ -26825,11 +30230,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -26841,6 +30249,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRewardsInput = {
@@ -26851,13 +30260,13 @@ export namespace Prisma {
   export type ProductCreateWithoutRewardsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
@@ -26869,13 +30278,13 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
@@ -26904,11 +30313,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -26920,6 +30332,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRewardsInput = {
@@ -26928,11 +30341,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -26944,6 +30360,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutRewardsInput = {
@@ -26960,13 +30377,13 @@ export namespace Prisma {
   export type ProductUpdateWithoutRewardsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
@@ -26978,13 +30395,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
@@ -27043,11 +30460,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
     rentals?: RentalCreateNestedManyWithoutUserInput
@@ -27059,6 +30479,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWalletInput = {
@@ -27067,11 +30488,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
@@ -27083,6 +30507,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWalletInput = {
@@ -27106,11 +30531,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
     rentals?: RentalUpdateManyWithoutUserNestedInput
@@ -27122,6 +30550,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletInput = {
@@ -27130,11 +30559,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
@@ -27146,6 +30578,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWithdrawsInput = {
@@ -27153,11 +30586,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
     rentals?: RentalCreateNestedManyWithoutUserInput
@@ -27169,6 +30605,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawsInput = {
@@ -27177,11 +30614,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
     rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
@@ -27193,6 +30633,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawsInput = {
@@ -27216,11 +30657,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
     rentals?: RentalUpdateManyWithoutUserNestedInput
@@ -27232,6 +30676,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawsInput = {
@@ -27240,11 +30685,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
     rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
@@ -27256,6 +30704,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTrialFundInput = {
@@ -27263,11 +30712,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
     userProducts?: UserProductCreateNestedManyWithoutUserInput
@@ -27279,6 +30731,7 @@ export namespace Prisma {
     rewards?: RewardCreateNestedManyWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrialFundInput = {
@@ -27287,11 +30740,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     username: string
     phone?: string | null
+    profile?: string | null
     email: string
     emailVerified?: boolean
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    level?: number
+    status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
     userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
@@ -27303,6 +30759,7 @@ export namespace Prisma {
     rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrialFundInput = {
@@ -27313,13 +30770,13 @@ export namespace Prisma {
   export type ProductCreateWithoutTrialFundsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
@@ -27331,13 +30788,13 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    userId?: number | null
     title: string
     description?: string | null
     image: string
     price: Decimal | DecimalJsLike | number | string
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
-    level: number
     deletedAt?: Date | string | null
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
@@ -27366,11 +30823,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUpdateManyWithoutUserNestedInput
@@ -27382,6 +30842,7 @@ export namespace Prisma {
     rewards?: RewardUpdateManyWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrialFundInput = {
@@ -27390,11 +30851,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     username?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
     userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
@@ -27406,6 +30870,7 @@ export namespace Prisma {
     rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutTrialFundsInput = {
@@ -27422,13 +30887,13 @@ export namespace Prisma {
   export type ProductUpdateWithoutTrialFundsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
@@ -27440,13 +30905,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    level?: IntFieldUpdateOperationsInput | number
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
@@ -27530,6 +30995,12 @@ export namespace Prisma {
     expiresAt: Date | string
     used?: boolean
     createdAt?: Date | string
+  }
+
+  export type UserLevelCreateManyUserInput = {
+    id?: number
+    levelId: number
+    gainedAt?: Date | string
   }
 
   export type WithdrawUpdateWithoutUserInput = {
@@ -27762,6 +31233,46 @@ export namespace Prisma {
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     used?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserLevelUpdateWithoutUserInput = {
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    level?: LevelUpdateOneRequiredWithoutUserLevelsNestedInput
+  }
+
+  export type UserLevelUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    levelId?: IntFieldUpdateOperationsInput | number
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserLevelUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    levelId?: IntFieldUpdateOperationsInput | number
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserLevelCreateManyLevelInput = {
+    id?: number
+    userId: number
+    gainedAt?: Date | string
+  }
+
+  export type UserLevelUpdateWithoutLevelInput = {
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserLevelNestedInput
+  }
+
+  export type UserLevelUncheckedUpdateWithoutLevelInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserLevelUncheckedUpdateManyWithoutLevelInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserProductCreateManyProductInput = {

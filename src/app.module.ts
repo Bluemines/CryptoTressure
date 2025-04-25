@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { CommonModule } from './common/common.module';
 import { ProductService } from './product/product.service';
 import { ProductModule } from './product/product.module';
+import { LevelModule } from './level/level.module';
+import { LevelService } from './level/level.service';
 
 @Module({
   imports: [
@@ -17,7 +19,8 @@ import { ProductModule } from './product/product.module';
     UserModule,
     CommonModule,
     ProductModule,
+    LevelModule,
   ],
-  providers: [ProductService],
+  providers: [ProductService, LevelService],
 })
 export class AppModule {}

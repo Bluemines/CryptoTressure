@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -22,12 +16,15 @@ model User {
 
   username          String             @unique
   phone             String?
+  profile           String?
   email             String             @unique
   emailVerified     Boolean            @default(false)
   password          String
   referralCode      String?            @unique
   role              Role               @default(USER)
+  level             Int                @default(1)
 
+  status            UserStatus
   wallet            Wallet?
   withdraws         Withdraw[]
   userProducts      UserProduct[]      
@@ -41,6 +38,8 @@ model User {
 
   verifications     Verification[]
   passwordResets    PasswordReset[]
+
+  UserLevel UserLevel[]
 }
 
 model Verification {
@@ -68,18 +67,35 @@ model PasswordReset {
   @@index([expiresAt])
 }
 
+model Level {
+  id      Int      @id @default(autoincrement())
+  level   Int      @unique       
+  points  Int 
+  userLevels  UserLevel[]
+}
+
+model UserLevel {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  level     Level     @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  levelId   Int
+  gainedAt  DateTime  @default(now()) 
+  @@unique([userId, levelId]) 
+}
+
 model Product {
   id           Int        @id @default(autoincrement())
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
+  userId       Int
   title        String
   description  String?
   image        String
   price        Decimal
   dailyIncome  Decimal
   fee          Decimal
-  level        Int
   deletedAt    DateTime?
 
   userProducts UserProduct[]    
@@ -89,7 +105,7 @@ model Product {
     
   rentals    Rental[] 
 }
-
+ 
 model UserProduct {
   id         Int      @id @default(autoincrement())
   acquiredAt DateTime @default(now())
@@ -173,7 +189,6 @@ model Reward {
   productId    Int
 }
 
-
 model Commission {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
@@ -217,8 +232,8 @@ model TrialFund {
   user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int               @unique
 
-  product      Product           @relation(fields: [productId], references: [id])
-  productId    Int
+  product      Product?           @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId    Int?
 
   amount       Decimal           @default(200)
   grantedAt    DateTime          @default(now())
@@ -228,6 +243,11 @@ model TrialFund {
   usedAmount   Decimal           @default(0)
 }
 
+
+enum UserStatus {
+  APPROVED
+  SUSPENDED
+}
 
 enum WithdrawStatus {
   PENDING

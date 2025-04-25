@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UploadedFile,
   UseGuards,
 } from '@nestjs/common';
@@ -21,7 +22,7 @@ import {
   AdminViewProductsPaginationDto,
 } from './dto';
 import { ApiError, ApiResponse, RolesGuard } from 'src/common';
-import { Product } from '../../generated/prisma/client';
+import { Product, Sale } from '../../generated/prisma/client';
 import { FileUpload } from 'src/common/decorators/file-upload.decorator';
 
 @Controller('products')
@@ -31,16 +32,20 @@ export class ProductController {
   // ─── ADMIN ────────────────────────────────────────
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles('USER') // Change to Admin later
   @FileUpload({ fieldName: 'image' })
   async createProduct(
     @UploadedFile() file: Express.Multer.File,
     @Body() dto: CreateProductDto,
+    @Req() req: any,
   ): Promise<ApiResponse<Product>> {
+    const userId = req.user.id;
+    console.log('userId', userId);
     if (!file) throw new ApiError(400, 'Image is required');
     const imagePath = `/uploads/${file.filename}`;
     const product = await this.productService.createProduct({
       ...dto,
+      userId,
       image: imagePath,
     });
     return new ApiResponse(201, product, 'Product created');
@@ -126,5 +131,29 @@ export class ProductController {
   ): Promise<ApiResponse<Product>> {
     const product = await this.productService.viewProduct(id);
     return new ApiResponse(200, product, 'Product retrieved');
+  }
+
+  @Post(':id/buy')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  async buyProduct(
+    @Param('id', ParseIntPipe) productId: number,
+    @Req() req,
+  ): Promise<ApiResponse<Sale>> {
+    const userId = req.user.id as number;
+    const sale = await this.productService.buyProduct(userId, productId);
+    return new ApiResponse(200, sale, 'Product purchased');
+  }
+
+  @Post(':id/sell')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  async sellToAdmin(
+    @Param('id', ParseIntPipe) productId: number,
+    @Req() req,
+  ): Promise<ApiResponse<Sale>> {
+    const userId = req.user.id as number;
+    const sale = await this.productService.sellToAdmin(userId, productId);
+    return new ApiResponse(200, sale, 'Product sold to platform');
   }
 }
