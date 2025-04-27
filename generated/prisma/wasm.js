@@ -129,6 +129,7 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   referralCode: 'referralCode',
   role: 'role',
+  points: 'points',
   level: 'level',
   status: 'status'
 };

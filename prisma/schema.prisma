@@ -22,6 +22,7 @@ model User {
   password          String
   referralCode      String?            @unique
   role              Role               @default(USER)
+  points            Int                @default(0) 
   level             Int                @default(1)
 
   status            UserStatus
@@ -41,7 +42,7 @@ model User {
 
   UserLevel UserLevel[]
 }
-
+  
 model Verification {
   id          Int       @id @default(autoincrement())
   email       String

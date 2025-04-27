@@ -21,6 +21,7 @@ model User {
   password      String
   referralCode  String? @unique
   role          Role    @default(USER)
+  points        Int     @default(0)
   level         Int     @default(1)
 
   status            UserStatus
@@ -89,7 +90,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId      Int?
+  userId      Int
   title       String
   description String?
   image       String

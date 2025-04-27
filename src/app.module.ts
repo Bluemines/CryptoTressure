@@ -8,6 +8,7 @@ import { ProductService } from './product/product.service';
 import { ProductModule } from './product/product.module';
 import { LevelModule } from './level/level.module';
 import { LevelService } from './level/level.service';
+import { ReferralModule } from './referral/referral.module';
 
 @Module({
   imports: [
@@ -20,7 +21,9 @@ import { LevelService } from './level/level.service';
     CommonModule,
     ProductModule,
     LevelModule,
+    ReferralModule,
   ],
   providers: [ProductService, LevelService],
+  controllers: [],
 })
 export class AppModule {}

@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
+import { awardPoints } from 'src/common/utils/points';
 
 @Injectable()
 export class AuthService {
@@ -87,9 +88,34 @@ export class AuthService {
       await tx.userLevel.create({
         data: {
           user: { connect: { id: user.id } },
-          level: { connect: { id: 1 } },
+          level: {
+            connectOrCreate: {
+              where: { level: 1 },
+              create: { level: 1, points: 0 },
+            },
+          },
         },
       });
+
+      if (dto.referralCode) {
+        const referrer = await tx.user.findUnique({
+          where: { referralCode: dto.referralCode },
+        });
+        if (referrer) {
+          await tx.referral.create({
+            data: {
+              code: dto.referralCode,
+              referrerId: referrer.id,
+              referredId: user.id,
+            },
+          });
+          await tx.wallet.update({
+            where: { userId: referrer.id },
+            data: { balance: { increment: 10 } },
+          });
+          await awardPoints(referrer.id, 10, tx);
+        }
+      }
 
       await tx.verification.delete({ where: { email } });
 
@@ -115,7 +141,7 @@ export class AuthService {
 
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) {
-      throw new ApiError(400, 'Invalid credentials');
+      throw new ApiError(400, 'User not found');
     }
 
     const match = await argon.verify(user.password, password);

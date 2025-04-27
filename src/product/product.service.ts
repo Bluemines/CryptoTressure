@@ -9,6 +9,7 @@ import {
   MachineUpdateInput,
   ProductCreateInput,
 } from './interfaces';
+import { awardPoints } from 'src/common/utils/points';
 
 @Injectable()
 export class ProductService {
@@ -196,32 +197,36 @@ export class ProductService {
       create: { user: { connect: { id: sellerId } }, balance: 0 },
     });
 
-    const [sale] = await this.prisma.$transaction([
-      this.prisma.sale.create({
+    const [sale] = await this.prisma.$transaction(async (tx) => {
+      const sale = await tx.sale.create({
         data: {
           total: price,
           seller: { connect: { id: sellerId } },
           buyer: { connect: { id: userId } },
         },
-      }),
+      });
 
-      this.prisma.wallet.update({
+      await tx.wallet.update({
         where: { userId },
         data: { balance: { decrement: price } },
-      }),
+      });
 
-      this.prisma.wallet.update({
+      await tx.wallet.update({
         where: { userId: sellerId },
         data: { balance: { increment: price } },
-      }),
+      });
 
-      this.prisma.userProduct.create({
+      await tx.userProduct.create({
         data: {
           user: { connect: { id: userId } },
           product: { connect: { id: productId } },
         },
-      }),
-    ]);
+      });
+
+      await awardPoints(userId, Number(price) * 0.1, tx);
+
+      return [sale];
+    });
 
     await this.prisma.saleItem.create({
       data: {

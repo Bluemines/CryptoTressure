@@ -2709,11 +2709,13 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     id: number | null
+    points: number | null
     level: number | null
   }
 
   export type UserSumAggregateOutputType = {
     id: number | null
+    points: number | null
     level: number | null
   }
 
@@ -2729,6 +2731,7 @@ export namespace Prisma {
     password: string | null
     referralCode: string | null
     role: $Enums.Role | null
+    points: number | null
     level: number | null
     status: $Enums.UserStatus | null
   }
@@ -2745,6 +2748,7 @@ export namespace Prisma {
     password: string | null
     referralCode: string | null
     role: $Enums.Role | null
+    points: number | null
     level: number | null
     status: $Enums.UserStatus | null
   }
@@ -2761,6 +2765,7 @@ export namespace Prisma {
     password: number
     referralCode: number
     role: number
+    points: number
     level: number
     status: number
     _all: number
@@ -2769,11 +2774,13 @@ export namespace Prisma {
 
   export type UserAvgAggregateInputType = {
     id?: true
+    points?: true
     level?: true
   }
 
   export type UserSumAggregateInputType = {
     id?: true
+    points?: true
     level?: true
   }
 
@@ -2789,6 +2796,7 @@ export namespace Prisma {
     password?: true
     referralCode?: true
     role?: true
+    points?: true
     level?: true
     status?: true
   }
@@ -2805,6 +2813,7 @@ export namespace Prisma {
     password?: true
     referralCode?: true
     role?: true
+    points?: true
     level?: true
     status?: true
   }
@@ -2821,6 +2830,7 @@ export namespace Prisma {
     password?: true
     referralCode?: true
     role?: true
+    points?: true
     level?: true
     status?: true
     _all?: true
@@ -2924,6 +2934,7 @@ export namespace Prisma {
     password: string
     referralCode: string | null
     role: $Enums.Role
+    points: number
     level: number
     status: $Enums.UserStatus
     _count: UserCountAggregateOutputType | null
@@ -2959,6 +2970,7 @@ export namespace Prisma {
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    points?: boolean
     level?: boolean
     status?: boolean
     wallet?: boolean | User$walletArgs<ExtArgs>
@@ -2989,6 +3001,7 @@ export namespace Prisma {
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    points?: boolean
     level?: boolean
     status?: boolean
   }, ExtArgs["result"]["user"]>
@@ -3005,6 +3018,7 @@ export namespace Prisma {
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    points?: boolean
     level?: boolean
     status?: boolean
   }, ExtArgs["result"]["user"]>
@@ -3021,11 +3035,12 @@ export namespace Prisma {
     password?: boolean
     referralCode?: boolean
     role?: boolean
+    points?: boolean
     level?: boolean
     status?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "username" | "phone" | "profile" | "email" | "emailVerified" | "password" | "referralCode" | "role" | "level" | "status", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "username" | "phone" | "profile" | "email" | "emailVerified" | "password" | "referralCode" | "role" | "points" | "level" | "status", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdraws?: boolean | User$withdrawsArgs<ExtArgs>
@@ -3074,6 +3089,7 @@ export namespace Prisma {
       password: string
       referralCode: string | null
       role: $Enums.Role
+      points: number
       level: number
       status: $Enums.UserStatus
     }, ExtArgs["result"]["user"]>
@@ -3523,6 +3539,7 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly referralCode: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
+    readonly points: FieldRef<"User", 'Int'>
     readonly level: FieldRef<"User", 'Int'>
     readonly status: FieldRef<"User", 'UserStatus'>
   }
@@ -8872,7 +8889,7 @@ export namespace Prisma {
     id: number
     createdAt: Date
     updatedAt: Date
-    userId: number | null
+    userId: number
     title: string
     description: string | null
     image: string
@@ -8988,7 +9005,7 @@ export namespace Prisma {
       id: number
       createdAt: Date
       updatedAt: Date
-      userId: number | null
+      userId: number
       title: string
       description: string | null
       image: string
@@ -22304,6 +22321,7 @@ export namespace Prisma {
     password: 'password',
     referralCode: 'referralCode',
     role: 'role',
+    points: 'points',
     level: 'level',
     status: 'status'
   };
@@ -22695,6 +22713,7 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     referralCode?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    points?: IntFilter<"User"> | number
     level?: IntFilter<"User"> | number
     status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
@@ -22724,6 +22743,7 @@ export namespace Prisma {
     password?: SortOrder
     referralCode?: SortOrderInput | SortOrder
     role?: SortOrder
+    points?: SortOrder
     level?: SortOrder
     status?: SortOrder
     wallet?: WalletOrderByWithRelationInput
@@ -22756,6 +22776,7 @@ export namespace Prisma {
     emailVerified?: BoolFilter<"User"> | boolean
     password?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    points?: IntFilter<"User"> | number
     level?: IntFilter<"User"> | number
     status?: EnumUserStatusFilter<"User"> | $Enums.UserStatus
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
@@ -22785,6 +22806,7 @@ export namespace Prisma {
     password?: SortOrder
     referralCode?: SortOrderInput | SortOrder
     role?: SortOrder
+    points?: SortOrder
     level?: SortOrder
     status?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -22809,6 +22831,7 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     referralCode?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    points?: IntWithAggregatesFilter<"User"> | number
     level?: IntWithAggregatesFilter<"User"> | number
     status?: EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   }
@@ -23047,7 +23070,7 @@ export namespace Prisma {
     id?: IntFilter<"Product"> | number
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
-    userId?: IntNullableFilter<"Product"> | number | null
+    userId?: IntFilter<"Product"> | number
     title?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     image?: StringFilter<"Product"> | string
@@ -23066,7 +23089,7 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     image?: SortOrder
@@ -23088,7 +23111,7 @@ export namespace Prisma {
     NOT?: ProductWhereInput | ProductWhereInput[]
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
-    userId?: IntNullableFilter<"Product"> | number | null
+    userId?: IntFilter<"Product"> | number
     title?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     image?: StringFilter<"Product"> | string
@@ -23107,7 +23130,7 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     image?: SortOrder
@@ -23129,7 +23152,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Product"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
-    userId?: IntNullableWithAggregatesFilter<"Product"> | number | null
+    userId?: IntWithAggregatesFilter<"Product"> | number
     title?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     image?: StringWithAggregatesFilter<"Product"> | string
@@ -23847,6 +23870,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -23876,6 +23900,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -23904,6 +23929,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -23933,6 +23959,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -23962,6 +23989,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
   }
@@ -23977,6 +24005,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   }
@@ -23993,6 +24022,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   }
@@ -24205,7 +24235,7 @@ export namespace Prisma {
   export type ProductCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -24224,7 +24254,7 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -24242,7 +24272,7 @@ export namespace Prisma {
   export type ProductUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -24261,7 +24291,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -24280,7 +24310,7 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -24293,7 +24323,7 @@ export namespace Prisma {
   export type ProductUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -24307,7 +24337,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -25142,12 +25172,14 @@ export namespace Prisma {
     password?: SortOrder
     referralCode?: SortOrder
     role?: SortOrder
+    points?: SortOrder
     level?: SortOrder
     status?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     id?: SortOrder
+    points?: SortOrder
     level?: SortOrder
   }
 
@@ -25163,6 +25195,7 @@ export namespace Prisma {
     password?: SortOrder
     referralCode?: SortOrder
     role?: SortOrder
+    points?: SortOrder
     level?: SortOrder
     status?: SortOrder
   }
@@ -25179,12 +25212,14 @@ export namespace Prisma {
     password?: SortOrder
     referralCode?: SortOrder
     role?: SortOrder
+    points?: SortOrder
     level?: SortOrder
     status?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     id?: SortOrder
+    points?: SortOrder
     level?: SortOrder
   }
 
@@ -28375,6 +28410,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -28403,6 +28439,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -28446,6 +28483,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -28474,6 +28512,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -28501,6 +28540,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -28529,6 +28569,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -28572,6 +28613,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -28600,6 +28642,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -28664,6 +28707,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -28692,6 +28736,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -28751,6 +28796,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -28779,6 +28825,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -29058,6 +29105,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -29086,6 +29134,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -29110,7 +29159,7 @@ export namespace Prisma {
   export type ProductCreateWithoutUserProductsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -29128,7 +29177,7 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -29169,6 +29218,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -29197,6 +29247,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -29227,7 +29278,7 @@ export namespace Prisma {
   export type ProductUpdateWithoutUserProductsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -29245,7 +29296,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -29270,6 +29321,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -29298,6 +29350,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -29322,7 +29375,7 @@ export namespace Prisma {
   export type ProductCreateWithoutRentalsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -29340,7 +29393,7 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -29381,6 +29434,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -29409,6 +29463,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -29439,7 +29494,7 @@ export namespace Prisma {
   export type ProductUpdateWithoutRentalsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -29457,7 +29512,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -29482,6 +29537,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -29510,6 +29566,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -29542,6 +29599,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -29570,6 +29628,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -29638,6 +29697,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -29666,6 +29726,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -29704,6 +29765,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -29732,6 +29794,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -29787,6 +29850,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -29815,6 +29879,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -29847,6 +29912,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -29875,6 +29941,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -29939,6 +30006,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -29967,6 +30035,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -30005,6 +30074,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -30033,6 +30103,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -30088,7 +30159,7 @@ export namespace Prisma {
   export type ProductCreateWithoutSaleItemsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -30106,7 +30177,7 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -30165,7 +30236,7 @@ export namespace Prisma {
   export type ProductUpdateWithoutSaleItemsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -30183,7 +30254,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -30208,6 +30279,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -30236,6 +30308,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -30260,7 +30333,7 @@ export namespace Prisma {
   export type ProductCreateWithoutRewardsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -30278,7 +30351,7 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -30319,6 +30392,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -30347,6 +30421,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -30377,7 +30452,7 @@ export namespace Prisma {
   export type ProductUpdateWithoutRewardsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -30395,7 +30470,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -30466,6 +30541,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     withdraws?: WithdrawCreateNestedManyWithoutUserInput
@@ -30494,6 +30570,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
@@ -30537,6 +30614,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     withdraws?: WithdrawUpdateManyWithoutUserNestedInput
@@ -30565,6 +30643,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
@@ -30592,6 +30671,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -30620,6 +30700,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -30663,6 +30744,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -30691,6 +30773,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -30718,6 +30801,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletCreateNestedOneWithoutUserInput
@@ -30746,6 +30830,7 @@ export namespace Prisma {
     password: string
     referralCode?: string | null
     role?: $Enums.Role
+    points?: number
     level?: number
     status: $Enums.UserStatus
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
@@ -30770,7 +30855,7 @@ export namespace Prisma {
   export type ProductCreateWithoutTrialFundsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -30788,7 +30873,7 @@ export namespace Prisma {
     id?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId?: number | null
+    userId: number
     title: string
     description?: string | null
     image: string
@@ -30829,6 +30914,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUpdateOneWithoutUserNestedInput
@@ -30857,6 +30943,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     referralCode?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
     level?: IntFieldUpdateOperationsInput | number
     status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -30887,7 +30974,7 @@ export namespace Prisma {
   export type ProductUpdateWithoutTrialFundsInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
@@ -30905,7 +30992,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: StringFieldUpdateOperationsInput | string
