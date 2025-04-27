@@ -150,6 +150,7 @@ export class UserService {
           user: { connect: { id: userId } },
           product: { connect: { id: productId } },
           reward: amount,
+          date: new Date(),
         },
       }),
       this.prisma.wallet.update({

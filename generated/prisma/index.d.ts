@@ -23539,6 +23539,7 @@ export namespace Prisma {
 
   export type RewardWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    userId_productId_date?: RewardUserIdProductIdDateCompoundUniqueInput
     AND?: RewardWhereInput | RewardWhereInput[]
     OR?: RewardWhereInput[]
     NOT?: RewardWhereInput | RewardWhereInput[]
@@ -23551,7 +23552,7 @@ export namespace Prisma {
     productId?: IntFilter<"Reward"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }, "id">
+  }, "id" | "userId_productId_date">
 
   export type RewardOrderByWithAggregationInput = {
     id?: SortOrder
@@ -24646,7 +24647,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     user: UserCreateNestedOneWithoutRewardsInput
     product: ProductCreateNestedOneWithoutRewardsInput
@@ -24657,7 +24658,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     userId: number
     productId: number
@@ -24689,7 +24690,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     userId: number
     productId: number
@@ -25870,6 +25871,12 @@ export namespace Prisma {
     in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumRewardStatusFilter<$PrismaModel> | $Enums.RewardStatus
+  }
+
+  export type RewardUserIdProductIdDateCompoundUniqueInput = {
+    userId: number
+    productId: number
+    date: Date | string
   }
 
   export type RewardCountOrderByAggregateInput = {
@@ -27939,7 +27946,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     product: ProductCreateNestedOneWithoutRewardsInput
   }
@@ -27949,7 +27956,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     productId: number
   }
@@ -28889,7 +28896,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     user: UserCreateNestedOneWithoutRewardsInput
   }
@@ -28899,7 +28906,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     userId: number
   }
@@ -31063,7 +31070,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     productId: number
   }
@@ -31373,7 +31380,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     reward: Decimal | DecimalJsLike | number | string
-    date?: Date | string
+    date: Date | string
     status?: $Enums.RewardStatus
     userId: number
   }
