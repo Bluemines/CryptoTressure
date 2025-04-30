@@ -10,6 +10,8 @@ import {
   ProductCreateInput,
 } from './interfaces';
 import { awardPoints } from 'src/common/utils/points';
+import { REFERRAL_COMMISSION_RATE } from 'src/common/config/reward.constants';
+import { Decimal } from 'generated/prisma/runtime/library';
 
 @Injectable()
 export class ProductService {
@@ -215,6 +217,39 @@ export class ProductService {
           buyer: { connect: { id: userId } },
         },
       });
+
+      /* ───────────────────── REFERRAL COMMISSION ────────────────────── */
+      // Is the buyer linked to a referrer?
+      const referral = await tx.referral.findFirst({
+        where: { referredId: userId },
+        select: { id: true, referrerId: true },
+      });
+
+      if (referral) {
+        const commission = new Decimal(price)
+          .mul(REFERRAL_COMMISSION_RATE)
+          .toDecimalPlaces(2); // round to cents
+
+        // 1️⃣  record the commission row
+        await tx.commission.create({
+          data: {
+            referralId: referral.id,
+            amount: commission,
+            percentage: REFERRAL_COMMISSION_RATE * 100,
+          },
+        });
+
+        // 2️⃣  credit the referrer’s wallet (create if missing)
+        await tx.wallet.upsert({
+          where: { userId: referral.referrerId },
+          update: { balance: { increment: commission } },
+          create: {
+            user: { connect: { id: referral.referrerId } },
+            balance: commission,
+          },
+        });
+      }
+      /* ───────────── END REFERRAL COMMISSION BLOCK ──────────────────── */
 
       await tx.wallet.update({
         where: { userId },
