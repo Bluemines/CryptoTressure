@@ -40,6 +40,8 @@ model User {
   passwordResets PasswordReset[]
 
   UserLevel UserLevel[]
+
+  Deposit Deposit[]
 }
 
 model Verification {
@@ -98,6 +100,7 @@ model Product {
   dailyIncome Decimal
   fee         Decimal
   deletedAt   DateTime?
+  rentalDays  Int
 
   userProducts UserProduct[]
   rewards      Reward[]
@@ -110,6 +113,9 @@ model Product {
 model UserProduct {
   id         Int      @id @default(autoincrement())
   acquiredAt DateTime @default(now())
+
+  expiresAt DateTime
+  status    UserProductStatus @default(ACTIVE)
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
@@ -208,9 +214,11 @@ model Wallet {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  balance Decimal @default(0)
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  Int     @unique
+  balance  Decimal @default(0)
+  reserved Decimal @default(0)
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
 }
 
 model Withdraw {
@@ -223,6 +231,12 @@ model Withdraw {
   total  Decimal
   status WithdrawStatus @default(PENDING)
   date   DateTime       @default(now())
+
+  msisdn String? // phone number  (e.g. 03xxxxxxxxx)
+  cnic   String? // CNIC number   (e.g. 42101-1234567-8)
+
+  externalId String? // Easypaisa txn-id when paid
+  verifiedAt DateTime?
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
@@ -242,6 +256,21 @@ model TrialFund {
   status      TrialFundStatus @default(ACTIVE)
   recoveredAt DateTime?
   usedAmount  Decimal         @default(0)
+}
+
+model Deposit {
+  id         Int           @id @default(autoincrement())
+  user       User          @relation(fields: [userId], references: [id])
+  userId     Int
+  amount     Decimal
+  provider   String        @default("EASYPK")
+  reference  String        @unique
+  externalId String?
+  status     DepositStatus @default(PENDING)
+  fee        Decimal       @default(0)
+  total      Decimal       @default(0)
+  createdAt  DateTime      @default(now())
+  verifiedAt DateTime?
 }
 
 enum UserStatus {
@@ -278,4 +307,15 @@ enum TrialFundStatus {
 enum Role {
   USER
   ADMIN
+}
+
+enum UserProductStatus {
+  ACTIVE
+  REFUNDED
+}
+
+enum DepositStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }

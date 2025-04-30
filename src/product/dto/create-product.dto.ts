@@ -24,4 +24,9 @@ export class CreateProductDto {
   @Type(() => Number)
   @IsNumber()
   fee!: number;
+
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
+  rentalDays: number;
 }

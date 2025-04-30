@@ -17,8 +17,16 @@ export class ProductService {
 
   // ────────────────── ADMIN─────────────────────────────
   async createProduct(input: ProductCreateInput): Promise<Product> {
-    const { title, description, price, dailyIncome, fee, image, userId } =
-      input;
+    const {
+      title,
+      description,
+      price,
+      dailyIncome,
+      fee,
+      image,
+      userId,
+      rentalDays,
+    } = input;
     const exists = await this.prisma.product.findFirst({ where: { title } });
     if (exists) throw new ApiError(400, 'Product already exists');
     return this.prisma.product.create({
@@ -30,6 +38,7 @@ export class ProductService {
         price,
         dailyIncome,
         fee,
+        rentalDays,
       },
     });
   }
@@ -165,6 +174,7 @@ export class ProductService {
         price: true,
         dailyIncome: true,
         fee: true,
+        rentalDays: true,
         deletedAt: true,
         createdAt: true,
         updatedAt: true,
@@ -208,7 +218,10 @@ export class ProductService {
 
       await tx.wallet.update({
         where: { userId },
-        data: { balance: { decrement: price } },
+        data: {
+          balance: { decrement: price },
+          reserved: { increment: price },
+        },
       });
 
       await tx.wallet.update({
@@ -220,6 +233,10 @@ export class ProductService {
         data: {
           user: { connect: { id: userId } },
           product: { connect: { id: productId } },
+          acquiredAt: new Date(),
+          expiresAt: new Date(
+            Date.now() + product.rentalDays * 24 * 60 * 60 * 1000,
+          ),
         },
       });
 
@@ -227,70 +244,6 @@ export class ProductService {
 
       return [sale];
     });
-
-    await this.prisma.saleItem.create({
-      data: {
-        sale: { connect: { id: sale.id } },
-        product: { connect: { id: productId } },
-        quantity: 1,
-      },
-    });
-
-    return sale;
-  }
-
-  async sellToAdmin(userId: number, productId: number): Promise<Sale> {
-    const ownership = await this.prisma.userProduct.findUnique({
-      where: { userId_productId: { userId, productId } },
-    });
-    if (!ownership) {
-      throw new ApiError(400, 'You do not own this product');
-    }
-
-    const product = await this.prisma.product.findUnique({
-      where: { id: productId },
-    });
-    if (!product) throw new ApiError(404, 'Product not found');
-    const price = product.price;
-
-    const admin = await this.prisma.user.findFirst({
-      where: { role: 'ADMIN' },
-    });
-    if (!admin) throw new ApiError(500, 'No admin account configured');
-    const adminId = admin.id;
-
-    const [userWallet, adminWallet] = await Promise.all([
-      this.prisma.wallet.findUnique({ where: { userId } }),
-      this.prisma.wallet.findUnique({ where: { userId: adminId } }),
-    ]);
-    if (!userWallet || !adminWallet) {
-      throw new ApiError(500, 'Wallets not initialized');
-    }
-
-    if (adminWallet.balance.lt(price)) {
-      throw new ApiError(400, 'Platform has insufficient funds');
-    }
-
-    const [sale] = await this.prisma.$transaction([
-      this.prisma.sale.create({
-        data: {
-          total: price,
-          seller: { connect: { id: userId } },
-          buyer: { connect: { id: adminId } },
-        },
-      }),
-      this.prisma.wallet.update({
-        where: { userId: adminId },
-        data: { balance: { decrement: price } },
-      }),
-      this.prisma.wallet.update({
-        where: { userId },
-        data: { balance: { increment: price } },
-      }),
-      this.prisma.userProduct.delete({
-        where: { userId_productId: { userId, productId } },
-      }),
-    ]);
 
     await this.prisma.saleItem.create({
       data: {

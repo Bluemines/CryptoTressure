@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { Prisma, PrismaClient } from '../../generated/prisma/client';
 import { awardPoints } from '../common/utils/points';
 
@@ -20,6 +20,7 @@ export class RewardJob {
 
     const userProducts = await prisma.userProduct.findMany({
       where: {
+        status: 'ACTIVE',
         product: { deletedAt: null },
       },
       include: {

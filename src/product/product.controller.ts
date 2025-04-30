@@ -32,7 +32,7 @@ export class ProductController {
   // ─── ADMIN ────────────────────────────────────────
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER') // Change to Admin later
+  @Roles('ADMIN') // Change to Admin later
   @FileUpload({ fieldName: 'image' })
   async createProduct(
     @UploadedFile() file: Express.Multer.File,
@@ -143,17 +143,5 @@ export class ProductController {
     const userId = req.user.id as number;
     const sale = await this.productService.buyProduct(userId, productId);
     return new ApiResponse(200, sale, 'Product purchased');
-  }
-
-  @Post(':id/sell')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER')
-  async sellToAdmin(
-    @Param('id', ParseIntPipe) productId: number,
-    @Req() req,
-  ): Promise<ApiResponse<Sale>> {
-    const userId = req.user.id as number;
-    const sale = await this.productService.sellToAdmin(userId, productId);
-    return new ApiResponse(200, sale, 'Product sold to platform');
   }
 }

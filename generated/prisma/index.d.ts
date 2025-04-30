@@ -98,6 +98,11 @@ export type Withdraw = $Result.DefaultSelection<Prisma.$WithdrawPayload>
  * 
  */
 export type TrialFund = $Result.DefaultSelection<Prisma.$TrialFundPayload>
+/**
+ * Model Deposit
+ * 
+ */
+export type Deposit = $Result.DefaultSelection<Prisma.$DepositPayload>
 
 /**
  * Enums
@@ -159,6 +164,23 @@ export const Role: {
 
 export type Role = (typeof Role)[keyof typeof Role]
 
+
+export const UserProductStatus: {
+  ACTIVE: 'ACTIVE',
+  REFUNDED: 'REFUNDED'
+};
+
+export type UserProductStatus = (typeof UserProductStatus)[keyof typeof UserProductStatus]
+
+
+export const DepositStatus: {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED'
+};
+
+export type DepositStatus = (typeof DepositStatus)[keyof typeof DepositStatus]
+
 }
 
 export type UserStatus = $Enums.UserStatus
@@ -188,6 +210,14 @@ export const TrialFundStatus: typeof $Enums.TrialFundStatus
 export type Role = $Enums.Role
 
 export const Role: typeof $Enums.Role
+
+export type UserProductStatus = $Enums.UserProductStatus
+
+export const UserProductStatus: typeof $Enums.UserProductStatus
+
+export type DepositStatus = $Enums.DepositStatus
+
+export const DepositStatus: typeof $Enums.DepositStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -483,6 +513,16 @@ export class PrismaClient<
     * ```
     */
   get trialFund(): Prisma.TrialFundDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.deposit`: Exposes CRUD operations for the **Deposit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Deposits
+    * const deposits = await prisma.deposit.findMany()
+    * ```
+    */
+  get deposit(): Prisma.DepositDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -939,7 +979,8 @@ export namespace Prisma {
     Commission: 'Commission',
     Wallet: 'Wallet',
     Withdraw: 'Withdraw',
-    TrialFund: 'TrialFund'
+    TrialFund: 'TrialFund',
+    Deposit: 'Deposit'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -958,7 +999,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "verification" | "passwordReset" | "level" | "userLevel" | "product" | "userProduct" | "rental" | "referral" | "agreement" | "sale" | "saleItem" | "reward" | "commission" | "wallet" | "withdraw" | "trialFund"
+      modelProps: "user" | "verification" | "passwordReset" | "level" | "userLevel" | "product" | "userProduct" | "rental" | "referral" | "agreement" | "sale" | "saleItem" | "reward" | "commission" | "wallet" | "withdraw" | "trialFund" | "deposit"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2220,6 +2261,80 @@ export namespace Prisma {
           }
         }
       }
+      Deposit: {
+        payload: Prisma.$DepositPayload<ExtArgs>
+        fields: Prisma.DepositFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DepositFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DepositFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>
+          }
+          findFirst: {
+            args: Prisma.DepositFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DepositFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>
+          }
+          findMany: {
+            args: Prisma.DepositFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>[]
+          }
+          create: {
+            args: Prisma.DepositCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>
+          }
+          createMany: {
+            args: Prisma.DepositCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DepositCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>[]
+          }
+          delete: {
+            args: Prisma.DepositDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>
+          }
+          update: {
+            args: Prisma.DepositUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>
+          }
+          deleteMany: {
+            args: Prisma.DepositDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DepositUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DepositUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>[]
+          }
+          upsert: {
+            args: Prisma.DepositUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepositPayload>
+          }
+          aggregate: {
+            args: Prisma.DepositAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDeposit>
+          }
+          groupBy: {
+            args: Prisma.DepositGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DepositGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DepositCountArgs<ExtArgs>
+            result: $Utils.Optional<DepositCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2321,6 +2436,7 @@ export namespace Prisma {
     wallet?: WalletOmit
     withdraw?: WithdrawOmit
     trialFund?: TrialFundOmit
+    deposit?: DepositOmit
   }
 
   /* Types for Logging */
@@ -2426,6 +2542,7 @@ export namespace Prisma {
     verifications: number
     passwordResets: number
     UserLevel: number
+    Deposit: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2440,6 +2557,7 @@ export namespace Prisma {
     verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
     passwordResets?: boolean | UserCountOutputTypeCountPasswordResetsArgs
     UserLevel?: boolean | UserCountOutputTypeCountUserLevelArgs
+    Deposit?: boolean | UserCountOutputTypeCountDepositArgs
   }
 
   // Custom InputTypes
@@ -2528,6 +2646,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUserLevelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserLevelWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DepositWhereInput
   }
 
 
@@ -2986,6 +3111,7 @@ export namespace Prisma {
     verifications?: boolean | User$verificationsArgs<ExtArgs>
     passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
     UserLevel?: boolean | User$UserLevelArgs<ExtArgs>
+    Deposit?: boolean | User$DepositArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3055,6 +3181,7 @@ export namespace Prisma {
     verifications?: boolean | User$verificationsArgs<ExtArgs>
     passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
     UserLevel?: boolean | User$UserLevelArgs<ExtArgs>
+    Deposit?: boolean | User$DepositArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3076,6 +3203,7 @@ export namespace Prisma {
       verifications: Prisma.$VerificationPayload<ExtArgs>[]
       passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[]
       UserLevel: Prisma.$UserLevelPayload<ExtArgs>[]
+      Deposit: Prisma.$DepositPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3499,6 +3627,7 @@ export namespace Prisma {
     verifications<T extends User$verificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResets<T extends User$passwordResetsArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     UserLevel<T extends User$UserLevelArgs<ExtArgs> = {}>(args?: Subset<T, User$UserLevelArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLevelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Deposit<T extends User$DepositArgs<ExtArgs> = {}>(args?: Subset<T, User$DepositArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4229,6 +4358,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserLevelScalarFieldEnum | UserLevelScalarFieldEnum[]
+  }
+
+  /**
+   * User.Deposit
+   */
+  export type User$DepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    where?: DepositWhereInput
+    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
+    cursor?: DepositWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
   }
 
   /**
@@ -8686,6 +8839,7 @@ export namespace Prisma {
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
+    rentalDays: number | null
   }
 
   export type ProductSumAggregateOutputType = {
@@ -8694,6 +8848,7 @@ export namespace Prisma {
     price: Decimal | null
     dailyIncome: Decimal | null
     fee: Decimal | null
+    rentalDays: number | null
   }
 
   export type ProductMinAggregateOutputType = {
@@ -8708,6 +8863,7 @@ export namespace Prisma {
     dailyIncome: Decimal | null
     fee: Decimal | null
     deletedAt: Date | null
+    rentalDays: number | null
   }
 
   export type ProductMaxAggregateOutputType = {
@@ -8722,6 +8878,7 @@ export namespace Prisma {
     dailyIncome: Decimal | null
     fee: Decimal | null
     deletedAt: Date | null
+    rentalDays: number | null
   }
 
   export type ProductCountAggregateOutputType = {
@@ -8736,6 +8893,7 @@ export namespace Prisma {
     dailyIncome: number
     fee: number
     deletedAt: number
+    rentalDays: number
     _all: number
   }
 
@@ -8746,6 +8904,7 @@ export namespace Prisma {
     price?: true
     dailyIncome?: true
     fee?: true
+    rentalDays?: true
   }
 
   export type ProductSumAggregateInputType = {
@@ -8754,6 +8913,7 @@ export namespace Prisma {
     price?: true
     dailyIncome?: true
     fee?: true
+    rentalDays?: true
   }
 
   export type ProductMinAggregateInputType = {
@@ -8768,6 +8928,7 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     deletedAt?: true
+    rentalDays?: true
   }
 
   export type ProductMaxAggregateInputType = {
@@ -8782,6 +8943,7 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     deletedAt?: true
+    rentalDays?: true
   }
 
   export type ProductCountAggregateInputType = {
@@ -8796,6 +8958,7 @@ export namespace Prisma {
     dailyIncome?: true
     fee?: true
     deletedAt?: true
+    rentalDays?: true
     _all?: true
   }
 
@@ -8897,6 +9060,7 @@ export namespace Prisma {
     dailyIncome: Decimal
     fee: Decimal
     deletedAt: Date | null
+    rentalDays: number
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
     _sum: ProductSumAggregateOutputType | null
@@ -8930,6 +9094,7 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     deletedAt?: boolean
+    rentalDays?: boolean
     userProducts?: boolean | Product$userProductsArgs<ExtArgs>
     rewards?: boolean | Product$rewardsArgs<ExtArgs>
     trialFunds?: boolean | Product$trialFundsArgs<ExtArgs>
@@ -8950,6 +9115,7 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     deletedAt?: boolean
+    rentalDays?: boolean
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8964,6 +9130,7 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     deletedAt?: boolean
+    rentalDays?: boolean
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectScalar = {
@@ -8978,9 +9145,10 @@ export namespace Prisma {
     dailyIncome?: boolean
     fee?: boolean
     deletedAt?: boolean
+    rentalDays?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "userId" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "deletedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "userId" | "title" | "description" | "image" | "price" | "dailyIncome" | "fee" | "deletedAt" | "rentalDays", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userProducts?: boolean | Product$userProductsArgs<ExtArgs>
     rewards?: boolean | Product$rewardsArgs<ExtArgs>
@@ -9013,6 +9181,7 @@ export namespace Prisma {
       dailyIncome: Prisma.Decimal
       fee: Prisma.Decimal
       deletedAt: Date | null
+      rentalDays: number
     }, ExtArgs["result"]["product"]>
     composites: {}
   }
@@ -9452,6 +9621,7 @@ export namespace Prisma {
     readonly dailyIncome: FieldRef<"Product", 'Decimal'>
     readonly fee: FieldRef<"Product", 'Decimal'>
     readonly deletedAt: FieldRef<"Product", 'DateTime'>
+    readonly rentalDays: FieldRef<"Product", 'Int'>
   }
     
 
@@ -10005,6 +10175,8 @@ export namespace Prisma {
   export type UserProductMinAggregateOutputType = {
     id: number | null
     acquiredAt: Date | null
+    expiresAt: Date | null
+    status: $Enums.UserProductStatus | null
     userId: number | null
     productId: number | null
   }
@@ -10012,6 +10184,8 @@ export namespace Prisma {
   export type UserProductMaxAggregateOutputType = {
     id: number | null
     acquiredAt: Date | null
+    expiresAt: Date | null
+    status: $Enums.UserProductStatus | null
     userId: number | null
     productId: number | null
   }
@@ -10019,6 +10193,8 @@ export namespace Prisma {
   export type UserProductCountAggregateOutputType = {
     id: number
     acquiredAt: number
+    expiresAt: number
+    status: number
     userId: number
     productId: number
     _all: number
@@ -10040,6 +10216,8 @@ export namespace Prisma {
   export type UserProductMinAggregateInputType = {
     id?: true
     acquiredAt?: true
+    expiresAt?: true
+    status?: true
     userId?: true
     productId?: true
   }
@@ -10047,6 +10225,8 @@ export namespace Prisma {
   export type UserProductMaxAggregateInputType = {
     id?: true
     acquiredAt?: true
+    expiresAt?: true
+    status?: true
     userId?: true
     productId?: true
   }
@@ -10054,6 +10234,8 @@ export namespace Prisma {
   export type UserProductCountAggregateInputType = {
     id?: true
     acquiredAt?: true
+    expiresAt?: true
+    status?: true
     userId?: true
     productId?: true
     _all?: true
@@ -10148,6 +10330,8 @@ export namespace Prisma {
   export type UserProductGroupByOutputType = {
     id: number
     acquiredAt: Date
+    expiresAt: Date
+    status: $Enums.UserProductStatus
     userId: number
     productId: number
     _count: UserProductCountAggregateOutputType | null
@@ -10174,6 +10358,8 @@ export namespace Prisma {
   export type UserProductSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     acquiredAt?: boolean
+    expiresAt?: boolean
+    status?: boolean
     userId?: boolean
     productId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10183,6 +10369,8 @@ export namespace Prisma {
   export type UserProductSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     acquiredAt?: boolean
+    expiresAt?: boolean
+    status?: boolean
     userId?: boolean
     productId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10192,6 +10380,8 @@ export namespace Prisma {
   export type UserProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     acquiredAt?: boolean
+    expiresAt?: boolean
+    status?: boolean
     userId?: boolean
     productId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10201,11 +10391,13 @@ export namespace Prisma {
   export type UserProductSelectScalar = {
     id?: boolean
     acquiredAt?: boolean
+    expiresAt?: boolean
+    status?: boolean
     userId?: boolean
     productId?: boolean
   }
 
-  export type UserProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "acquiredAt" | "userId" | "productId", ExtArgs["result"]["userProduct"]>
+  export type UserProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "acquiredAt" | "expiresAt" | "status" | "userId" | "productId", ExtArgs["result"]["userProduct"]>
   export type UserProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -10228,6 +10420,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       acquiredAt: Date
+      expiresAt: Date
+      status: $Enums.UserProductStatus
       userId: number
       productId: number
     }, ExtArgs["result"]["userProduct"]>
@@ -10657,6 +10851,8 @@ export namespace Prisma {
   interface UserProductFieldRefs {
     readonly id: FieldRef<"UserProduct", 'Int'>
     readonly acquiredAt: FieldRef<"UserProduct", 'DateTime'>
+    readonly expiresAt: FieldRef<"UserProduct", 'DateTime'>
+    readonly status: FieldRef<"UserProduct", 'UserProductStatus'>
     readonly userId: FieldRef<"UserProduct", 'Int'>
     readonly productId: FieldRef<"UserProduct", 'Int'>
   }
@@ -18863,12 +19059,14 @@ export namespace Prisma {
   export type WalletAvgAggregateOutputType = {
     id: number | null
     balance: Decimal | null
+    reserved: Decimal | null
     userId: number | null
   }
 
   export type WalletSumAggregateOutputType = {
     id: number | null
     balance: Decimal | null
+    reserved: Decimal | null
     userId: number | null
   }
 
@@ -18877,6 +19075,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     balance: Decimal | null
+    reserved: Decimal | null
     userId: number | null
   }
 
@@ -18885,6 +19084,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     balance: Decimal | null
+    reserved: Decimal | null
     userId: number | null
   }
 
@@ -18893,6 +19093,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     balance: number
+    reserved: number
     userId: number
     _all: number
   }
@@ -18901,12 +19102,14 @@ export namespace Prisma {
   export type WalletAvgAggregateInputType = {
     id?: true
     balance?: true
+    reserved?: true
     userId?: true
   }
 
   export type WalletSumAggregateInputType = {
     id?: true
     balance?: true
+    reserved?: true
     userId?: true
   }
 
@@ -18915,6 +19118,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     balance?: true
+    reserved?: true
     userId?: true
   }
 
@@ -18923,6 +19127,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     balance?: true
+    reserved?: true
     userId?: true
   }
 
@@ -18931,6 +19136,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     balance?: true
+    reserved?: true
     userId?: true
     _all?: true
   }
@@ -19026,6 +19232,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     balance: Decimal
+    reserved: Decimal
     userId: number
     _count: WalletCountAggregateOutputType | null
     _avg: WalletAvgAggregateOutputType | null
@@ -19053,6 +19260,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     balance?: boolean
+    reserved?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
@@ -19062,6 +19270,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     balance?: boolean
+    reserved?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
@@ -19071,6 +19280,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     balance?: boolean
+    reserved?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
@@ -19080,10 +19290,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     balance?: boolean
+    reserved?: boolean
     userId?: boolean
   }
 
-  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "balance" | "userId", ExtArgs["result"]["wallet"]>
+  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "balance" | "reserved" | "userId", ExtArgs["result"]["wallet"]>
   export type WalletInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -19104,6 +19315,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       balance: Prisma.Decimal
+      reserved: Prisma.Decimal
       userId: number
     }, ExtArgs["result"]["wallet"]>
     composites: {}
@@ -19533,6 +19745,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Wallet", 'DateTime'>
     readonly updatedAt: FieldRef<"Wallet", 'DateTime'>
     readonly balance: FieldRef<"Wallet", 'Decimal'>
+    readonly reserved: FieldRef<"Wallet", 'Decimal'>
     readonly userId: FieldRef<"Wallet", 'Int'>
   }
     
@@ -19985,6 +20198,10 @@ export namespace Prisma {
     total: Decimal | null
     status: $Enums.WithdrawStatus | null
     date: Date | null
+    msisdn: string | null
+    cnic: string | null
+    externalId: string | null
+    verifiedAt: Date | null
     userId: number | null
   }
 
@@ -19997,6 +20214,10 @@ export namespace Prisma {
     total: Decimal | null
     status: $Enums.WithdrawStatus | null
     date: Date | null
+    msisdn: string | null
+    cnic: string | null
+    externalId: string | null
+    verifiedAt: Date | null
     userId: number | null
   }
 
@@ -20009,6 +20230,10 @@ export namespace Prisma {
     total: number
     status: number
     date: number
+    msisdn: number
+    cnic: number
+    externalId: number
+    verifiedAt: number
     userId: number
     _all: number
   }
@@ -20039,6 +20264,10 @@ export namespace Prisma {
     total?: true
     status?: true
     date?: true
+    msisdn?: true
+    cnic?: true
+    externalId?: true
+    verifiedAt?: true
     userId?: true
   }
 
@@ -20051,6 +20280,10 @@ export namespace Prisma {
     total?: true
     status?: true
     date?: true
+    msisdn?: true
+    cnic?: true
+    externalId?: true
+    verifiedAt?: true
     userId?: true
   }
 
@@ -20063,6 +20296,10 @@ export namespace Prisma {
     total?: true
     status?: true
     date?: true
+    msisdn?: true
+    cnic?: true
+    externalId?: true
+    verifiedAt?: true
     userId?: true
     _all?: true
   }
@@ -20162,6 +20399,10 @@ export namespace Prisma {
     total: Decimal
     status: $Enums.WithdrawStatus
     date: Date
+    msisdn: string | null
+    cnic: string | null
+    externalId: string | null
+    verifiedAt: Date | null
     userId: number
     _count: WithdrawCountAggregateOutputType | null
     _avg: WithdrawAvgAggregateOutputType | null
@@ -20193,6 +20434,10 @@ export namespace Prisma {
     total?: boolean
     status?: boolean
     date?: boolean
+    msisdn?: boolean
+    cnic?: boolean
+    externalId?: boolean
+    verifiedAt?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["withdraw"]>
@@ -20206,6 +20451,10 @@ export namespace Prisma {
     total?: boolean
     status?: boolean
     date?: boolean
+    msisdn?: boolean
+    cnic?: boolean
+    externalId?: boolean
+    verifiedAt?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["withdraw"]>
@@ -20219,6 +20468,10 @@ export namespace Prisma {
     total?: boolean
     status?: boolean
     date?: boolean
+    msisdn?: boolean
+    cnic?: boolean
+    externalId?: boolean
+    verifiedAt?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["withdraw"]>
@@ -20232,10 +20485,14 @@ export namespace Prisma {
     total?: boolean
     status?: boolean
     date?: boolean
+    msisdn?: boolean
+    cnic?: boolean
+    externalId?: boolean
+    verifiedAt?: boolean
     userId?: boolean
   }
 
-  export type WithdrawOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "amount" | "fee" | "total" | "status" | "date" | "userId", ExtArgs["result"]["withdraw"]>
+  export type WithdrawOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "amount" | "fee" | "total" | "status" | "date" | "msisdn" | "cnic" | "externalId" | "verifiedAt" | "userId", ExtArgs["result"]["withdraw"]>
   export type WithdrawInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -20260,6 +20517,10 @@ export namespace Prisma {
       total: Prisma.Decimal
       status: $Enums.WithdrawStatus
       date: Date
+      msisdn: string | null
+      cnic: string | null
+      externalId: string | null
+      verifiedAt: Date | null
       userId: number
     }, ExtArgs["result"]["withdraw"]>
     composites: {}
@@ -20693,6 +20954,10 @@ export namespace Prisma {
     readonly total: FieldRef<"Withdraw", 'Decimal'>
     readonly status: FieldRef<"Withdraw", 'WithdrawStatus'>
     readonly date: FieldRef<"Withdraw", 'DateTime'>
+    readonly msisdn: FieldRef<"Withdraw", 'String'>
+    readonly cnic: FieldRef<"Withdraw", 'String'>
+    readonly externalId: FieldRef<"Withdraw", 'String'>
+    readonly verifiedAt: FieldRef<"Withdraw", 'DateTime'>
     readonly userId: FieldRef<"Withdraw", 'Int'>
   }
     
@@ -22296,6 +22561,1192 @@ export namespace Prisma {
 
 
   /**
+   * Model Deposit
+   */
+
+  export type AggregateDeposit = {
+    _count: DepositCountAggregateOutputType | null
+    _avg: DepositAvgAggregateOutputType | null
+    _sum: DepositSumAggregateOutputType | null
+    _min: DepositMinAggregateOutputType | null
+    _max: DepositMaxAggregateOutputType | null
+  }
+
+  export type DepositAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    amount: Decimal | null
+    fee: Decimal | null
+    total: Decimal | null
+  }
+
+  export type DepositSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    amount: Decimal | null
+    fee: Decimal | null
+    total: Decimal | null
+  }
+
+  export type DepositMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    amount: Decimal | null
+    provider: string | null
+    reference: string | null
+    externalId: string | null
+    status: $Enums.DepositStatus | null
+    fee: Decimal | null
+    total: Decimal | null
+    createdAt: Date | null
+    verifiedAt: Date | null
+  }
+
+  export type DepositMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    amount: Decimal | null
+    provider: string | null
+    reference: string | null
+    externalId: string | null
+    status: $Enums.DepositStatus | null
+    fee: Decimal | null
+    total: Decimal | null
+    createdAt: Date | null
+    verifiedAt: Date | null
+  }
+
+  export type DepositCountAggregateOutputType = {
+    id: number
+    userId: number
+    amount: number
+    provider: number
+    reference: number
+    externalId: number
+    status: number
+    fee: number
+    total: number
+    createdAt: number
+    verifiedAt: number
+    _all: number
+  }
+
+
+  export type DepositAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    fee?: true
+    total?: true
+  }
+
+  export type DepositSumAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    fee?: true
+    total?: true
+  }
+
+  export type DepositMinAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    provider?: true
+    reference?: true
+    externalId?: true
+    status?: true
+    fee?: true
+    total?: true
+    createdAt?: true
+    verifiedAt?: true
+  }
+
+  export type DepositMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    provider?: true
+    reference?: true
+    externalId?: true
+    status?: true
+    fee?: true
+    total?: true
+    createdAt?: true
+    verifiedAt?: true
+  }
+
+  export type DepositCountAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    provider?: true
+    reference?: true
+    externalId?: true
+    status?: true
+    fee?: true
+    total?: true
+    createdAt?: true
+    verifiedAt?: true
+    _all?: true
+  }
+
+  export type DepositAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deposit to aggregate.
+     */
+    where?: DepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deposits to fetch.
+     */
+    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deposits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Deposits
+    **/
+    _count?: true | DepositCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DepositAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DepositSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DepositMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DepositMaxAggregateInputType
+  }
+
+  export type GetDepositAggregateType<T extends DepositAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeposit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeposit[P]>
+      : GetScalarType<T[P], AggregateDeposit[P]>
+  }
+
+
+
+
+  export type DepositGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DepositWhereInput
+    orderBy?: DepositOrderByWithAggregationInput | DepositOrderByWithAggregationInput[]
+    by: DepositScalarFieldEnum[] | DepositScalarFieldEnum
+    having?: DepositScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DepositCountAggregateInputType | true
+    _avg?: DepositAvgAggregateInputType
+    _sum?: DepositSumAggregateInputType
+    _min?: DepositMinAggregateInputType
+    _max?: DepositMaxAggregateInputType
+  }
+
+  export type DepositGroupByOutputType = {
+    id: number
+    userId: number
+    amount: Decimal
+    provider: string
+    reference: string
+    externalId: string | null
+    status: $Enums.DepositStatus
+    fee: Decimal
+    total: Decimal
+    createdAt: Date
+    verifiedAt: Date | null
+    _count: DepositCountAggregateOutputType | null
+    _avg: DepositAvgAggregateOutputType | null
+    _sum: DepositSumAggregateOutputType | null
+    _min: DepositMinAggregateOutputType | null
+    _max: DepositMaxAggregateOutputType | null
+  }
+
+  type GetDepositGroupByPayload<T extends DepositGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DepositGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DepositGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DepositGroupByOutputType[P]>
+            : GetScalarType<T[P], DepositGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DepositSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    provider?: boolean
+    reference?: boolean
+    externalId?: boolean
+    status?: boolean
+    fee?: boolean
+    total?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deposit"]>
+
+  export type DepositSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    provider?: boolean
+    reference?: boolean
+    externalId?: boolean
+    status?: boolean
+    fee?: boolean
+    total?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deposit"]>
+
+  export type DepositSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    provider?: boolean
+    reference?: boolean
+    externalId?: boolean
+    status?: boolean
+    fee?: boolean
+    total?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deposit"]>
+
+  export type DepositSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    provider?: boolean
+    reference?: boolean
+    externalId?: boolean
+    status?: boolean
+    fee?: boolean
+    total?: boolean
+    createdAt?: boolean
+    verifiedAt?: boolean
+  }
+
+  export type DepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "provider" | "reference" | "externalId" | "status" | "fee" | "total" | "createdAt" | "verifiedAt", ExtArgs["result"]["deposit"]>
+  export type DepositInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DepositIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DepositIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $DepositPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Deposit"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      amount: Prisma.Decimal
+      provider: string
+      reference: string
+      externalId: string | null
+      status: $Enums.DepositStatus
+      fee: Prisma.Decimal
+      total: Prisma.Decimal
+      createdAt: Date
+      verifiedAt: Date | null
+    }, ExtArgs["result"]["deposit"]>
+    composites: {}
+  }
+
+  type DepositGetPayload<S extends boolean | null | undefined | DepositDefaultArgs> = $Result.GetResult<Prisma.$DepositPayload, S>
+
+  type DepositCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DepositFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DepositCountAggregateInputType | true
+    }
+
+  export interface DepositDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Deposit'], meta: { name: 'Deposit' } }
+    /**
+     * Find zero or one Deposit that matches the filter.
+     * @param {DepositFindUniqueArgs} args - Arguments to find a Deposit
+     * @example
+     * // Get one Deposit
+     * const deposit = await prisma.deposit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DepositFindUniqueArgs>(args: SelectSubset<T, DepositFindUniqueArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Deposit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DepositFindUniqueOrThrowArgs} args - Arguments to find a Deposit
+     * @example
+     * // Get one Deposit
+     * const deposit = await prisma.deposit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DepositFindUniqueOrThrowArgs>(args: SelectSubset<T, DepositFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deposit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepositFindFirstArgs} args - Arguments to find a Deposit
+     * @example
+     * // Get one Deposit
+     * const deposit = await prisma.deposit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DepositFindFirstArgs>(args?: SelectSubset<T, DepositFindFirstArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deposit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepositFindFirstOrThrowArgs} args - Arguments to find a Deposit
+     * @example
+     * // Get one Deposit
+     * const deposit = await prisma.deposit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DepositFindFirstOrThrowArgs>(args?: SelectSubset<T, DepositFindFirstOrThrowArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Deposits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepositFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Deposits
+     * const deposits = await prisma.deposit.findMany()
+     * 
+     * // Get first 10 Deposits
+     * const deposits = await prisma.deposit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const depositWithIdOnly = await prisma.deposit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DepositFindManyArgs>(args?: SelectSubset<T, DepositFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Deposit.
+     * @param {DepositCreateArgs} args - Arguments to create a Deposit.
+     * @example
+     * // Create one Deposit
+     * const Deposit = await prisma.deposit.create({
+     *   data: {
+     *     // ... data to create a Deposit
+     *   }
+     * })
+     * 
+     */
+    create<T extends DepositCreateArgs>(args: SelectSubset<T, DepositCreateArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Deposits.
+     * @param {DepositCreateManyArgs} args - Arguments to create many Deposits.
+     * @example
+     * // Create many Deposits
+     * const deposit = await prisma.deposit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DepositCreateManyArgs>(args?: SelectSubset<T, DepositCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Deposits and returns the data saved in the database.
+     * @param {DepositCreateManyAndReturnArgs} args - Arguments to create many Deposits.
+     * @example
+     * // Create many Deposits
+     * const deposit = await prisma.deposit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Deposits and only return the `id`
+     * const depositWithIdOnly = await prisma.deposit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DepositCreateManyAndReturnArgs>(args?: SelectSubset<T, DepositCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Deposit.
+     * @param {DepositDeleteArgs} args - Arguments to delete one Deposit.
+     * @example
+     * // Delete one Deposit
+     * const Deposit = await prisma.deposit.delete({
+     *   where: {
+     *     // ... filter to delete one Deposit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DepositDeleteArgs>(args: SelectSubset<T, DepositDeleteArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Deposit.
+     * @param {DepositUpdateArgs} args - Arguments to update one Deposit.
+     * @example
+     * // Update one Deposit
+     * const deposit = await prisma.deposit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DepositUpdateArgs>(args: SelectSubset<T, DepositUpdateArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Deposits.
+     * @param {DepositDeleteManyArgs} args - Arguments to filter Deposits to delete.
+     * @example
+     * // Delete a few Deposits
+     * const { count } = await prisma.deposit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DepositDeleteManyArgs>(args?: SelectSubset<T, DepositDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deposits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepositUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Deposits
+     * const deposit = await prisma.deposit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DepositUpdateManyArgs>(args: SelectSubset<T, DepositUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deposits and returns the data updated in the database.
+     * @param {DepositUpdateManyAndReturnArgs} args - Arguments to update many Deposits.
+     * @example
+     * // Update many Deposits
+     * const deposit = await prisma.deposit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Deposits and only return the `id`
+     * const depositWithIdOnly = await prisma.deposit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DepositUpdateManyAndReturnArgs>(args: SelectSubset<T, DepositUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Deposit.
+     * @param {DepositUpsertArgs} args - Arguments to update or create a Deposit.
+     * @example
+     * // Update or create a Deposit
+     * const deposit = await prisma.deposit.upsert({
+     *   create: {
+     *     // ... data to create a Deposit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Deposit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DepositUpsertArgs>(args: SelectSubset<T, DepositUpsertArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Deposits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepositCountArgs} args - Arguments to filter Deposits to count.
+     * @example
+     * // Count the number of Deposits
+     * const count = await prisma.deposit.count({
+     *   where: {
+     *     // ... the filter for the Deposits we want to count
+     *   }
+     * })
+    **/
+    count<T extends DepositCountArgs>(
+      args?: Subset<T, DepositCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DepositCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Deposit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepositAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DepositAggregateArgs>(args: Subset<T, DepositAggregateArgs>): Prisma.PrismaPromise<GetDepositAggregateType<T>>
+
+    /**
+     * Group by Deposit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepositGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DepositGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DepositGroupByArgs['orderBy'] }
+        : { orderBy?: DepositGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DepositGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDepositGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Deposit model
+   */
+  readonly fields: DepositFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Deposit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DepositClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Deposit model
+   */
+  interface DepositFieldRefs {
+    readonly id: FieldRef<"Deposit", 'Int'>
+    readonly userId: FieldRef<"Deposit", 'Int'>
+    readonly amount: FieldRef<"Deposit", 'Decimal'>
+    readonly provider: FieldRef<"Deposit", 'String'>
+    readonly reference: FieldRef<"Deposit", 'String'>
+    readonly externalId: FieldRef<"Deposit", 'String'>
+    readonly status: FieldRef<"Deposit", 'DepositStatus'>
+    readonly fee: FieldRef<"Deposit", 'Decimal'>
+    readonly total: FieldRef<"Deposit", 'Decimal'>
+    readonly createdAt: FieldRef<"Deposit", 'DateTime'>
+    readonly verifiedAt: FieldRef<"Deposit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Deposit findUnique
+   */
+  export type DepositFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * Filter, which Deposit to fetch.
+     */
+    where: DepositWhereUniqueInput
+  }
+
+  /**
+   * Deposit findUniqueOrThrow
+   */
+  export type DepositFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * Filter, which Deposit to fetch.
+     */
+    where: DepositWhereUniqueInput
+  }
+
+  /**
+   * Deposit findFirst
+   */
+  export type DepositFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * Filter, which Deposit to fetch.
+     */
+    where?: DepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deposits to fetch.
+     */
+    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deposits.
+     */
+    cursor?: DepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deposits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deposits.
+     */
+    distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
+  }
+
+  /**
+   * Deposit findFirstOrThrow
+   */
+  export type DepositFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * Filter, which Deposit to fetch.
+     */
+    where?: DepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deposits to fetch.
+     */
+    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deposits.
+     */
+    cursor?: DepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deposits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deposits.
+     */
+    distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
+  }
+
+  /**
+   * Deposit findMany
+   */
+  export type DepositFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * Filter, which Deposits to fetch.
+     */
+    where?: DepositWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deposits to fetch.
+     */
+    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Deposits.
+     */
+    cursor?: DepositWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deposits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deposits.
+     */
+    skip?: number
+    distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
+  }
+
+  /**
+   * Deposit create
+   */
+  export type DepositCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Deposit.
+     */
+    data: XOR<DepositCreateInput, DepositUncheckedCreateInput>
+  }
+
+  /**
+   * Deposit createMany
+   */
+  export type DepositCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Deposits.
+     */
+    data: DepositCreateManyInput | DepositCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Deposit createManyAndReturn
+   */
+  export type DepositCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * The data used to create many Deposits.
+     */
+    data: DepositCreateManyInput | DepositCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Deposit update
+   */
+  export type DepositUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Deposit.
+     */
+    data: XOR<DepositUpdateInput, DepositUncheckedUpdateInput>
+    /**
+     * Choose, which Deposit to update.
+     */
+    where: DepositWhereUniqueInput
+  }
+
+  /**
+   * Deposit updateMany
+   */
+  export type DepositUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Deposits.
+     */
+    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyInput>
+    /**
+     * Filter which Deposits to update
+     */
+    where?: DepositWhereInput
+    /**
+     * Limit how many Deposits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deposit updateManyAndReturn
+   */
+  export type DepositUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * The data used to update Deposits.
+     */
+    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyInput>
+    /**
+     * Filter which Deposits to update
+     */
+    where?: DepositWhereInput
+    /**
+     * Limit how many Deposits to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Deposit upsert
+   */
+  export type DepositUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Deposit to update in case it exists.
+     */
+    where: DepositWhereUniqueInput
+    /**
+     * In case the Deposit found by the `where` argument doesn't exist, create a new Deposit with this data.
+     */
+    create: XOR<DepositCreateInput, DepositUncheckedCreateInput>
+    /**
+     * In case the Deposit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DepositUpdateInput, DepositUncheckedUpdateInput>
+  }
+
+  /**
+   * Deposit delete
+   */
+  export type DepositDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    /**
+     * Filter which Deposit to delete.
+     */
+    where: DepositWhereUniqueInput
+  }
+
+  /**
+   * Deposit deleteMany
+   */
+  export type DepositDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deposits to delete
+     */
+    where?: DepositWhereInput
+    /**
+     * Limit how many Deposits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deposit without action
+   */
+  export type DepositDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -22383,7 +23834,8 @@ export namespace Prisma {
     price: 'price',
     dailyIncome: 'dailyIncome',
     fee: 'fee',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    rentalDays: 'rentalDays'
   };
 
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -22392,6 +23844,8 @@ export namespace Prisma {
   export const UserProductScalarFieldEnum: {
     id: 'id',
     acquiredAt: 'acquiredAt',
+    expiresAt: 'expiresAt',
+    status: 'status',
     userId: 'userId',
     productId: 'productId'
   };
@@ -22483,6 +23937,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     balance: 'balance',
+    reserved: 'reserved',
     userId: 'userId'
   };
 
@@ -22498,6 +23953,10 @@ export namespace Prisma {
     total: 'total',
     status: 'status',
     date: 'date',
+    msisdn: 'msisdn',
+    cnic: 'cnic',
+    externalId: 'externalId',
+    verifiedAt: 'verifiedAt',
     userId: 'userId'
   };
 
@@ -22517,6 +23976,23 @@ export namespace Prisma {
   };
 
   export type TrialFundScalarFieldEnum = (typeof TrialFundScalarFieldEnum)[keyof typeof TrialFundScalarFieldEnum]
+
+
+  export const DepositScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    amount: 'amount',
+    provider: 'provider',
+    reference: 'reference',
+    externalId: 'externalId',
+    status: 'status',
+    fee: 'fee',
+    total: 'total',
+    createdAt: 'createdAt',
+    verifiedAt: 'verifiedAt'
+  };
+
+  export type DepositScalarFieldEnum = (typeof DepositScalarFieldEnum)[keyof typeof DepositScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -22640,6 +24116,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'UserProductStatus'
+   */
+  export type EnumUserProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserProductStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserProductStatus[]'
+   */
+  export type ListEnumUserProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserProductStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'RewardStatus'
    */
   export type EnumRewardStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewardStatus'>
@@ -22693,6 +24183,20 @@ export namespace Prisma {
    */
   export type ListEnumTrialFundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrialFundStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'DepositStatus'
+   */
+  export type EnumDepositStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepositStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DepositStatus[]'
+   */
+  export type ListEnumDepositStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepositStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -22729,6 +24233,7 @@ export namespace Prisma {
     verifications?: VerificationListRelationFilter
     passwordResets?: PasswordResetListRelationFilter
     UserLevel?: UserLevelListRelationFilter
+    Deposit?: DepositListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -22759,6 +24264,7 @@ export namespace Prisma {
     verifications?: VerificationOrderByRelationAggregateInput
     passwordResets?: PasswordResetOrderByRelationAggregateInput
     UserLevel?: UserLevelOrderByRelationAggregateInput
+    Deposit?: DepositOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -22792,6 +24298,7 @@ export namespace Prisma {
     verifications?: VerificationListRelationFilter
     passwordResets?: PasswordResetListRelationFilter
     UserLevel?: UserLevelListRelationFilter
+    Deposit?: DepositListRelationFilter
   }, "id" | "username" | "email" | "referralCode">
 
   export type UserOrderByWithAggregationInput = {
@@ -23078,6 +24585,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+    rentalDays?: IntFilter<"Product"> | number
     userProducts?: UserProductListRelationFilter
     rewards?: RewardListRelationFilter
     trialFunds?: TrialFundListRelationFilter
@@ -23097,6 +24605,7 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    rentalDays?: SortOrder
     userProducts?: UserProductOrderByRelationAggregateInput
     rewards?: RewardOrderByRelationAggregateInput
     trialFunds?: TrialFundOrderByRelationAggregateInput
@@ -23119,6 +24628,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
+    rentalDays?: IntFilter<"Product"> | number
     userProducts?: UserProductListRelationFilter
     rewards?: RewardListRelationFilter
     trialFunds?: TrialFundListRelationFilter
@@ -23138,6 +24648,7 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    rentalDays?: SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
@@ -23160,6 +24671,7 @@ export namespace Prisma {
     dailyIncome?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     fee?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
+    rentalDays?: IntWithAggregatesFilter<"Product"> | number
   }
 
   export type UserProductWhereInput = {
@@ -23168,6 +24680,8 @@ export namespace Prisma {
     NOT?: UserProductWhereInput | UserProductWhereInput[]
     id?: IntFilter<"UserProduct"> | number
     acquiredAt?: DateTimeFilter<"UserProduct"> | Date | string
+    expiresAt?: DateTimeFilter<"UserProduct"> | Date | string
+    status?: EnumUserProductStatusFilter<"UserProduct"> | $Enums.UserProductStatus
     userId?: IntFilter<"UserProduct"> | number
     productId?: IntFilter<"UserProduct"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -23177,6 +24691,8 @@ export namespace Prisma {
   export type UserProductOrderByWithRelationInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -23190,6 +24706,8 @@ export namespace Prisma {
     OR?: UserProductWhereInput[]
     NOT?: UserProductWhereInput | UserProductWhereInput[]
     acquiredAt?: DateTimeFilter<"UserProduct"> | Date | string
+    expiresAt?: DateTimeFilter<"UserProduct"> | Date | string
+    status?: EnumUserProductStatusFilter<"UserProduct"> | $Enums.UserProductStatus
     userId?: IntFilter<"UserProduct"> | number
     productId?: IntFilter<"UserProduct"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -23199,6 +24717,8 @@ export namespace Prisma {
   export type UserProductOrderByWithAggregationInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
     _count?: UserProductCountOrderByAggregateInput
@@ -23214,6 +24734,8 @@ export namespace Prisma {
     NOT?: UserProductScalarWhereWithAggregatesInput | UserProductScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"UserProduct"> | number
     acquiredAt?: DateTimeWithAggregatesFilter<"UserProduct"> | Date | string
+    expiresAt?: DateTimeWithAggregatesFilter<"UserProduct"> | Date | string
+    status?: EnumUserProductStatusWithAggregatesFilter<"UserProduct"> | $Enums.UserProductStatus
     userId?: IntWithAggregatesFilter<"UserProduct"> | number
     productId?: IntWithAggregatesFilter<"UserProduct"> | number
   }
@@ -23654,6 +25176,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeFilter<"Wallet"> | Date | string
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     userId?: IntFilter<"Wallet"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -23663,6 +25186,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     balance?: SortOrder
+    reserved?: SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -23676,6 +25200,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeFilter<"Wallet"> | Date | string
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId">
 
@@ -23684,6 +25209,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     balance?: SortOrder
+    reserved?: SortOrder
     userId?: SortOrder
     _count?: WalletCountOrderByAggregateInput
     _avg?: WalletAvgOrderByAggregateInput
@@ -23700,6 +25226,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
     balance?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     userId?: IntWithAggregatesFilter<"Wallet"> | number
   }
 
@@ -23715,6 +25242,10 @@ export namespace Prisma {
     total?: DecimalFilter<"Withdraw"> | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFilter<"Withdraw"> | $Enums.WithdrawStatus
     date?: DateTimeFilter<"Withdraw"> | Date | string
+    msisdn?: StringNullableFilter<"Withdraw"> | string | null
+    cnic?: StringNullableFilter<"Withdraw"> | string | null
+    externalId?: StringNullableFilter<"Withdraw"> | string | null
+    verifiedAt?: DateTimeNullableFilter<"Withdraw"> | Date | string | null
     userId?: IntFilter<"Withdraw"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -23728,6 +25259,10 @@ export namespace Prisma {
     total?: SortOrder
     status?: SortOrder
     date?: SortOrder
+    msisdn?: SortOrderInput | SortOrder
+    cnic?: SortOrderInput | SortOrder
+    externalId?: SortOrderInput | SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -23744,6 +25279,10 @@ export namespace Prisma {
     total?: DecimalFilter<"Withdraw"> | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFilter<"Withdraw"> | $Enums.WithdrawStatus
     date?: DateTimeFilter<"Withdraw"> | Date | string
+    msisdn?: StringNullableFilter<"Withdraw"> | string | null
+    cnic?: StringNullableFilter<"Withdraw"> | string | null
+    externalId?: StringNullableFilter<"Withdraw"> | string | null
+    verifiedAt?: DateTimeNullableFilter<"Withdraw"> | Date | string | null
     userId?: IntFilter<"Withdraw"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -23757,6 +25296,10 @@ export namespace Prisma {
     total?: SortOrder
     status?: SortOrder
     date?: SortOrder
+    msisdn?: SortOrderInput | SortOrder
+    cnic?: SortOrderInput | SortOrder
+    externalId?: SortOrderInput | SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
     userId?: SortOrder
     _count?: WithdrawCountOrderByAggregateInput
     _avg?: WithdrawAvgOrderByAggregateInput
@@ -23777,6 +25320,10 @@ export namespace Prisma {
     total?: DecimalWithAggregatesFilter<"Withdraw"> | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusWithAggregatesFilter<"Withdraw"> | $Enums.WithdrawStatus
     date?: DateTimeWithAggregatesFilter<"Withdraw"> | Date | string
+    msisdn?: StringNullableWithAggregatesFilter<"Withdraw"> | string | null
+    cnic?: StringNullableWithAggregatesFilter<"Withdraw"> | string | null
+    externalId?: StringNullableWithAggregatesFilter<"Withdraw"> | string | null
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"Withdraw"> | Date | string | null
     userId?: IntWithAggregatesFilter<"Withdraw"> | number
   }
 
@@ -23860,6 +25407,93 @@ export namespace Prisma {
     usedAmount?: DecimalWithAggregatesFilter<"TrialFund"> | Decimal | DecimalJsLike | number | string
   }
 
+  export type DepositWhereInput = {
+    AND?: DepositWhereInput | DepositWhereInput[]
+    OR?: DepositWhereInput[]
+    NOT?: DepositWhereInput | DepositWhereInput[]
+    id?: IntFilter<"Deposit"> | number
+    userId?: IntFilter<"Deposit"> | number
+    amount?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    provider?: StringFilter<"Deposit"> | string
+    reference?: StringFilter<"Deposit"> | string
+    externalId?: StringNullableFilter<"Deposit"> | string | null
+    status?: EnumDepositStatusFilter<"Deposit"> | $Enums.DepositStatus
+    fee?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"Deposit"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type DepositOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    provider?: SortOrder
+    reference?: SortOrder
+    externalId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    fee?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type DepositWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    reference?: string
+    AND?: DepositWhereInput | DepositWhereInput[]
+    OR?: DepositWhereInput[]
+    NOT?: DepositWhereInput | DepositWhereInput[]
+    userId?: IntFilter<"Deposit"> | number
+    amount?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    provider?: StringFilter<"Deposit"> | string
+    externalId?: StringNullableFilter<"Deposit"> | string | null
+    status?: EnumDepositStatusFilter<"Deposit"> | $Enums.DepositStatus
+    fee?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"Deposit"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "reference">
+
+  export type DepositOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    provider?: SortOrder
+    reference?: SortOrder
+    externalId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    fee?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    _count?: DepositCountOrderByAggregateInput
+    _avg?: DepositAvgOrderByAggregateInput
+    _max?: DepositMaxOrderByAggregateInput
+    _min?: DepositMinOrderByAggregateInput
+    _sum?: DepositSumOrderByAggregateInput
+  }
+
+  export type DepositScalarWhereWithAggregatesInput = {
+    AND?: DepositScalarWhereWithAggregatesInput | DepositScalarWhereWithAggregatesInput[]
+    OR?: DepositScalarWhereWithAggregatesInput[]
+    NOT?: DepositScalarWhereWithAggregatesInput | DepositScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Deposit"> | number
+    userId?: IntWithAggregatesFilter<"Deposit"> | number
+    amount?: DecimalWithAggregatesFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    provider?: StringWithAggregatesFilter<"Deposit"> | string
+    reference?: StringWithAggregatesFilter<"Deposit"> | string
+    externalId?: StringNullableWithAggregatesFilter<"Deposit"> | string | null
+    status?: EnumDepositStatusWithAggregatesFilter<"Deposit"> | $Enums.DepositStatus
+    fee?: DecimalWithAggregatesFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalWithAggregatesFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"Deposit"> | Date | string
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"Deposit"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23887,6 +25521,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -23917,6 +25552,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -23946,6 +25582,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -23976,6 +25613,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -24244,6 +25882,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
@@ -24263,6 +25902,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
@@ -24281,6 +25921,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
@@ -24300,6 +25941,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
@@ -24319,6 +25961,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
   }
 
   export type ProductUpdateManyMutationInput = {
@@ -24332,6 +25975,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
   }
 
   export type ProductUncheckedUpdateManyInput = {
@@ -24346,10 +25990,13 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserProductCreateInput = {
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     user: UserCreateNestedOneWithoutUserProductsInput
     product: ProductCreateNestedOneWithoutUserProductsInput
   }
@@ -24357,12 +26004,16 @@ export namespace Prisma {
   export type UserProductUncheckedCreateInput = {
     id?: number
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     userId: number
     productId: number
   }
 
   export type UserProductUpdateInput = {
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     user?: UserUpdateOneRequiredWithoutUserProductsNestedInput
     product?: ProductUpdateOneRequiredWithoutUserProductsNestedInput
   }
@@ -24370,6 +26021,8 @@ export namespace Prisma {
   export type UserProductUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     userId?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
   }
@@ -24377,17 +26030,23 @@ export namespace Prisma {
   export type UserProductCreateManyInput = {
     id?: number
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     userId: number
     productId: number
   }
 
   export type UserProductUpdateManyMutationInput = {
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
   }
 
   export type UserProductUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     userId?: IntFieldUpdateOperationsInput | number
     productId?: IntFieldUpdateOperationsInput | number
   }
@@ -24778,6 +26437,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     balance?: Decimal | DecimalJsLike | number | string
+    reserved?: Decimal | DecimalJsLike | number | string
     user: UserCreateNestedOneWithoutWalletInput
   }
 
@@ -24786,6 +26446,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     balance?: Decimal | DecimalJsLike | number | string
+    reserved?: Decimal | DecimalJsLike | number | string
     userId: number
   }
 
@@ -24793,6 +26454,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
   }
 
@@ -24801,6 +26463,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     userId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -24809,6 +26472,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     balance?: Decimal | DecimalJsLike | number | string
+    reserved?: Decimal | DecimalJsLike | number | string
     userId: number
   }
 
@@ -24816,6 +26480,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type WalletUncheckedUpdateManyInput = {
@@ -24823,6 +26488,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     userId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -24834,6 +26500,10 @@ export namespace Prisma {
     total: Decimal | DecimalJsLike | number | string
     status?: $Enums.WithdrawStatus
     date?: Date | string
+    msisdn?: string | null
+    cnic?: string | null
+    externalId?: string | null
+    verifiedAt?: Date | string | null
     user: UserCreateNestedOneWithoutWithdrawsInput
   }
 
@@ -24846,6 +26516,10 @@ export namespace Prisma {
     total: Decimal | DecimalJsLike | number | string
     status?: $Enums.WithdrawStatus
     date?: Date | string
+    msisdn?: string | null
+    cnic?: string | null
+    externalId?: string | null
+    verifiedAt?: Date | string | null
     userId: number
   }
 
@@ -24857,6 +26531,10 @@ export namespace Prisma {
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    msisdn?: NullableStringFieldUpdateOperationsInput | string | null
+    cnic?: NullableStringFieldUpdateOperationsInput | string | null
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutWithdrawsNestedInput
   }
 
@@ -24869,6 +26547,10 @@ export namespace Prisma {
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    msisdn?: NullableStringFieldUpdateOperationsInput | string | null
+    cnic?: NullableStringFieldUpdateOperationsInput | string | null
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -24881,6 +26563,10 @@ export namespace Prisma {
     total: Decimal | DecimalJsLike | number | string
     status?: $Enums.WithdrawStatus
     date?: Date | string
+    msisdn?: string | null
+    cnic?: string | null
+    externalId?: string | null
+    verifiedAt?: Date | string | null
     userId: number
   }
 
@@ -24892,6 +26578,10 @@ export namespace Prisma {
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    msisdn?: NullableStringFieldUpdateOperationsInput | string | null
+    cnic?: NullableStringFieldUpdateOperationsInput | string | null
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type WithdrawUncheckedUpdateManyInput = {
@@ -24903,6 +26593,10 @@ export namespace Prisma {
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    msisdn?: NullableStringFieldUpdateOperationsInput | string | null
+    cnic?: NullableStringFieldUpdateOperationsInput | string | null
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -24983,6 +26677,100 @@ export namespace Prisma {
     status?: EnumTrialFundStatusFieldUpdateOperationsInput | $Enums.TrialFundStatus
     recoveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     usedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type DepositCreateInput = {
+    amount: Decimal | DecimalJsLike | number | string
+    provider?: string
+    reference: string
+    externalId?: string | null
+    status?: $Enums.DepositStatus
+    fee?: Decimal | DecimalJsLike | number | string
+    total?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+    user: UserCreateNestedOneWithoutDepositInput
+  }
+
+  export type DepositUncheckedCreateInput = {
+    id?: number
+    userId: number
+    amount: Decimal | DecimalJsLike | number | string
+    provider?: string
+    reference: string
+    externalId?: string | null
+    status?: $Enums.DepositStatus
+    fee?: Decimal | DecimalJsLike | number | string
+    total?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type DepositUpdateInput = {
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    provider?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutDepositNestedInput
+  }
+
+  export type DepositUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    provider?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DepositCreateManyInput = {
+    id?: number
+    userId: number
+    amount: Decimal | DecimalJsLike | number | string
+    provider?: string
+    reference: string
+    externalId?: string | null
+    status?: $Enums.DepositStatus
+    fee?: Decimal | DecimalJsLike | number | string
+    total?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type DepositUpdateManyMutationInput = {
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    provider?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DepositUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    provider?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -25120,6 +26908,12 @@ export namespace Prisma {
     none?: UserLevelWhereInput
   }
 
+  export type DepositListRelationFilter = {
+    every?: DepositWhereInput
+    some?: DepositWhereInput
+    none?: DepositWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -25158,6 +26952,10 @@ export namespace Prisma {
   }
 
   export type UserLevelOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DepositOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25556,6 +27354,7 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     deletedAt?: SortOrder
+    rentalDays?: SortOrder
   }
 
   export type ProductAvgOrderByAggregateInput = {
@@ -25564,6 +27363,7 @@ export namespace Prisma {
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
+    rentalDays?: SortOrder
   }
 
   export type ProductMaxOrderByAggregateInput = {
@@ -25578,6 +27378,7 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     deletedAt?: SortOrder
+    rentalDays?: SortOrder
   }
 
   export type ProductMinOrderByAggregateInput = {
@@ -25592,6 +27393,7 @@ export namespace Prisma {
     dailyIncome?: SortOrder
     fee?: SortOrder
     deletedAt?: SortOrder
+    rentalDays?: SortOrder
   }
 
   export type ProductSumOrderByAggregateInput = {
@@ -25600,6 +27402,7 @@ export namespace Prisma {
     price?: SortOrder
     dailyIncome?: SortOrder
     fee?: SortOrder
+    rentalDays?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -25632,6 +27435,13 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type EnumUserProductStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserProductStatus | EnumUserProductStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserProductStatusFilter<$PrismaModel> | $Enums.UserProductStatus
+  }
+
   export type ProductScalarRelationFilter = {
     is?: ProductWhereInput
     isNot?: ProductWhereInput
@@ -25645,6 +27455,8 @@ export namespace Prisma {
   export type UserProductCountOrderByAggregateInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
   }
@@ -25658,6 +27470,8 @@ export namespace Prisma {
   export type UserProductMaxOrderByAggregateInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
   }
@@ -25665,6 +27479,8 @@ export namespace Prisma {
   export type UserProductMinOrderByAggregateInput = {
     id?: SortOrder
     acquiredAt?: SortOrder
+    expiresAt?: SortOrder
+    status?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
   }
@@ -25673,6 +27489,16 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     productId?: SortOrder
+  }
+
+  export type EnumUserProductStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserProductStatus | EnumUserProductStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserProductStatusWithAggregatesFilter<$PrismaModel> | $Enums.UserProductStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserProductStatusFilter<$PrismaModel>
+    _max?: NestedEnumUserProductStatusFilter<$PrismaModel>
   }
 
   export type RentalCountOrderByAggregateInput = {
@@ -26014,12 +27840,14 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     balance?: SortOrder
+    reserved?: SortOrder
     userId?: SortOrder
   }
 
   export type WalletAvgOrderByAggregateInput = {
     id?: SortOrder
     balance?: SortOrder
+    reserved?: SortOrder
     userId?: SortOrder
   }
 
@@ -26028,6 +27856,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     balance?: SortOrder
+    reserved?: SortOrder
     userId?: SortOrder
   }
 
@@ -26036,12 +27865,14 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     balance?: SortOrder
+    reserved?: SortOrder
     userId?: SortOrder
   }
 
   export type WalletSumOrderByAggregateInput = {
     id?: SortOrder
     balance?: SortOrder
+    reserved?: SortOrder
     userId?: SortOrder
   }
 
@@ -26061,6 +27892,10 @@ export namespace Prisma {
     total?: SortOrder
     status?: SortOrder
     date?: SortOrder
+    msisdn?: SortOrder
+    cnic?: SortOrder
+    externalId?: SortOrder
+    verifiedAt?: SortOrder
     userId?: SortOrder
   }
 
@@ -26081,6 +27916,10 @@ export namespace Prisma {
     total?: SortOrder
     status?: SortOrder
     date?: SortOrder
+    msisdn?: SortOrder
+    cnic?: SortOrder
+    externalId?: SortOrder
+    verifiedAt?: SortOrder
     userId?: SortOrder
   }
 
@@ -26093,6 +27932,10 @@ export namespace Prisma {
     total?: SortOrder
     status?: SortOrder
     date?: SortOrder
+    msisdn?: SortOrder
+    cnic?: SortOrder
+    externalId?: SortOrder
+    verifiedAt?: SortOrder
     userId?: SortOrder
   }
 
@@ -26188,6 +28031,81 @@ export namespace Prisma {
     _max?: NestedEnumTrialFundStatusFilter<$PrismaModel>
   }
 
+  export type EnumDepositStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusFilter<$PrismaModel> | $Enums.DepositStatus
+  }
+
+  export type DepositCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    provider?: SortOrder
+    reference?: SortOrder
+    externalId?: SortOrder
+    status?: SortOrder
+    fee?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrder
+  }
+
+  export type DepositAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    fee?: SortOrder
+    total?: SortOrder
+  }
+
+  export type DepositMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    provider?: SortOrder
+    reference?: SortOrder
+    externalId?: SortOrder
+    status?: SortOrder
+    fee?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrder
+  }
+
+  export type DepositMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    provider?: SortOrder
+    reference?: SortOrder
+    externalId?: SortOrder
+    status?: SortOrder
+    fee?: SortOrder
+    total?: SortOrder
+    createdAt?: SortOrder
+    verifiedAt?: SortOrder
+  }
+
+  export type DepositSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    fee?: SortOrder
+    total?: SortOrder
+  }
+
+  export type EnumDepositStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusWithAggregatesFilter<$PrismaModel> | $Enums.DepositStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepositStatusFilter<$PrismaModel>
+    _max?: NestedEnumDepositStatusFilter<$PrismaModel>
+  }
+
   export type WalletCreateNestedOneWithoutUserInput = {
     create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
     connectOrCreate?: WalletCreateOrConnectWithoutUserInput
@@ -26277,6 +28195,13 @@ export namespace Prisma {
     connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
   }
 
+  export type DepositCreateNestedManyWithoutUserInput = {
+    create?: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput> | DepositCreateWithoutUserInput[] | DepositUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
+    createMany?: DepositCreateManyUserInputEnvelope
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+  }
+
   export type WalletUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
     connectOrCreate?: WalletCreateOrConnectWithoutUserInput
@@ -26364,6 +28289,13 @@ export namespace Prisma {
     connectOrCreate?: UserLevelCreateOrConnectWithoutUserInput | UserLevelCreateOrConnectWithoutUserInput[]
     createMany?: UserLevelCreateManyUserInputEnvelope
     connect?: UserLevelWhereUniqueInput | UserLevelWhereUniqueInput[]
+  }
+
+  export type DepositUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput> | DepositCreateWithoutUserInput[] | DepositUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
+    createMany?: DepositCreateManyUserInputEnvelope
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -26572,6 +28504,20 @@ export namespace Prisma {
     deleteMany?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
   }
 
+  export type DepositUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput> | DepositCreateWithoutUserInput[] | DepositUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
+    upsert?: DepositUpsertWithWhereUniqueWithoutUserInput | DepositUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DepositCreateManyUserInputEnvelope
+    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    update?: DepositUpdateWithWhereUniqueWithoutUserInput | DepositUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DepositUpdateManyWithWhereWithoutUserInput | DepositUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
+  }
+
   export type WalletUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
     connectOrCreate?: WalletCreateOrConnectWithoutUserInput
@@ -26744,6 +28690,20 @@ export namespace Prisma {
     update?: UserLevelUpdateWithWhereUniqueWithoutUserInput | UserLevelUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserLevelUpdateManyWithWhereWithoutUserInput | UserLevelUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserLevelScalarWhereInput | UserLevelScalarWhereInput[]
+  }
+
+  export type DepositUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput> | DepositCreateWithoutUserInput[] | DepositUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
+    upsert?: DepositUpsertWithWhereUniqueWithoutUserInput | DepositUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DepositCreateManyUserInputEnvelope
+    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    update?: DepositUpdateWithWhereUniqueWithoutUserInput | DepositUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DepositUpdateManyWithWhereWithoutUserInput | DepositUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutVerificationsInput = {
@@ -27088,6 +29048,10 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput
   }
 
+  export type EnumUserProductStatusFieldUpdateOperationsInput = {
+    set?: $Enums.UserProductStatus
+  }
+
   export type UserUpdateOneRequiredWithoutUserProductsNestedInput = {
     create?: XOR<UserCreateWithoutUserProductsInput, UserUncheckedCreateWithoutUserProductsInput>
     connectOrCreate?: UserCreateOrConnectWithoutUserProductsInput
@@ -27420,6 +29384,24 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutTrialFundsInput, ProductUpdateWithoutTrialFundsInput>, ProductUncheckedUpdateWithoutTrialFundsInput>
   }
 
+  export type UserCreateNestedOneWithoutDepositInput = {
+    create?: XOR<UserCreateWithoutDepositInput, UserUncheckedCreateWithoutDepositInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDepositInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumDepositStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DepositStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutDepositNestedInput = {
+    create?: XOR<UserCreateWithoutDepositInput, UserUncheckedCreateWithoutDepositInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDepositInput
+    upsert?: UserUpsertWithoutDepositInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDepositInput, UserUpdateWithoutDepositInput>, UserUncheckedUpdateWithoutDepositInput>
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -27682,6 +29664,23 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumUserProductStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserProductStatus | EnumUserProductStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserProductStatusFilter<$PrismaModel> | $Enums.UserProductStatus
+  }
+
+  export type NestedEnumUserProductStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserProductStatus | EnumUserProductStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserProductStatus[] | ListEnumUserProductStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserProductStatusWithAggregatesFilter<$PrismaModel> | $Enums.UserProductStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserProductStatusFilter<$PrismaModel>
+    _max?: NestedEnumUserProductStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumRewardStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.RewardStatus | EnumRewardStatusFieldRefInput<$PrismaModel>
     in?: $Enums.RewardStatus[] | ListEnumRewardStatusFieldRefInput<$PrismaModel>
@@ -27749,10 +29748,28 @@ export namespace Prisma {
     _max?: NestedEnumTrialFundStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDepositStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusFilter<$PrismaModel> | $Enums.DepositStatus
+  }
+
+  export type NestedEnumDepositStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusWithAggregatesFilter<$PrismaModel> | $Enums.DepositStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepositStatusFilter<$PrismaModel>
+    _max?: NestedEnumDepositStatusFilter<$PrismaModel>
+  }
+
   export type WalletCreateWithoutUserInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
     balance?: Decimal | DecimalJsLike | number | string
+    reserved?: Decimal | DecimalJsLike | number | string
   }
 
   export type WalletUncheckedCreateWithoutUserInput = {
@@ -27760,6 +29777,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     balance?: Decimal | DecimalJsLike | number | string
+    reserved?: Decimal | DecimalJsLike | number | string
   }
 
   export type WalletCreateOrConnectWithoutUserInput = {
@@ -27775,6 +29793,10 @@ export namespace Prisma {
     total: Decimal | DecimalJsLike | number | string
     status?: $Enums.WithdrawStatus
     date?: Date | string
+    msisdn?: string | null
+    cnic?: string | null
+    externalId?: string | null
+    verifiedAt?: Date | string | null
   }
 
   export type WithdrawUncheckedCreateWithoutUserInput = {
@@ -27786,6 +29808,10 @@ export namespace Prisma {
     total: Decimal | DecimalJsLike | number | string
     status?: $Enums.WithdrawStatus
     date?: Date | string
+    msisdn?: string | null
+    cnic?: string | null
+    externalId?: string | null
+    verifiedAt?: Date | string | null
   }
 
   export type WithdrawCreateOrConnectWithoutUserInput = {
@@ -27800,12 +29826,16 @@ export namespace Prisma {
 
   export type UserProductCreateWithoutUserInput = {
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     product: ProductCreateNestedOneWithoutUserProductsInput
   }
 
   export type UserProductUncheckedCreateWithoutUserInput = {
     id?: number
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     productId: number
   }
 
@@ -28068,6 +30098,41 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DepositCreateWithoutUserInput = {
+    amount: Decimal | DecimalJsLike | number | string
+    provider?: string
+    reference: string
+    externalId?: string | null
+    status?: $Enums.DepositStatus
+    fee?: Decimal | DecimalJsLike | number | string
+    total?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type DepositUncheckedCreateWithoutUserInput = {
+    id?: number
+    amount: Decimal | DecimalJsLike | number | string
+    provider?: string
+    reference: string
+    externalId?: string | null
+    status?: $Enums.DepositStatus
+    fee?: Decimal | DecimalJsLike | number | string
+    total?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
+  export type DepositCreateOrConnectWithoutUserInput = {
+    where: DepositWhereUniqueInput
+    create: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput>
+  }
+
+  export type DepositCreateManyUserInputEnvelope = {
+    data: DepositCreateManyUserInput | DepositCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WalletUpsertWithoutUserInput = {
     update: XOR<WalletUpdateWithoutUserInput, WalletUncheckedUpdateWithoutUserInput>
     create: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
@@ -28083,6 +30148,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type WalletUncheckedUpdateWithoutUserInput = {
@@ -28090,6 +30156,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reserved?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type WithdrawUpsertWithWhereUniqueWithoutUserInput = {
@@ -28120,6 +30187,10 @@ export namespace Prisma {
     total?: DecimalFilter<"Withdraw"> | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFilter<"Withdraw"> | $Enums.WithdrawStatus
     date?: DateTimeFilter<"Withdraw"> | Date | string
+    msisdn?: StringNullableFilter<"Withdraw"> | string | null
+    cnic?: StringNullableFilter<"Withdraw"> | string | null
+    externalId?: StringNullableFilter<"Withdraw"> | string | null
+    verifiedAt?: DateTimeNullableFilter<"Withdraw"> | Date | string | null
     userId?: IntFilter<"Withdraw"> | number
   }
 
@@ -28145,6 +30216,8 @@ export namespace Prisma {
     NOT?: UserProductScalarWhereInput | UserProductScalarWhereInput[]
     id?: IntFilter<"UserProduct"> | number
     acquiredAt?: DateTimeFilter<"UserProduct"> | Date | string
+    expiresAt?: DateTimeFilter<"UserProduct"> | Date | string
+    status?: EnumUserProductStatusFilter<"UserProduct"> | $Enums.UserProductStatus
     userId?: IntFilter<"UserProduct"> | number
     productId?: IntFilter<"UserProduct"> | number
   }
@@ -28406,6 +30479,39 @@ export namespace Prisma {
     gainedAt?: DateTimeFilter<"UserLevel"> | Date | string
   }
 
+  export type DepositUpsertWithWhereUniqueWithoutUserInput = {
+    where: DepositWhereUniqueInput
+    update: XOR<DepositUpdateWithoutUserInput, DepositUncheckedUpdateWithoutUserInput>
+    create: XOR<DepositCreateWithoutUserInput, DepositUncheckedCreateWithoutUserInput>
+  }
+
+  export type DepositUpdateWithWhereUniqueWithoutUserInput = {
+    where: DepositWhereUniqueInput
+    data: XOR<DepositUpdateWithoutUserInput, DepositUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DepositUpdateManyWithWhereWithoutUserInput = {
+    where: DepositScalarWhereInput
+    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DepositScalarWhereInput = {
+    AND?: DepositScalarWhereInput | DepositScalarWhereInput[]
+    OR?: DepositScalarWhereInput[]
+    NOT?: DepositScalarWhereInput | DepositScalarWhereInput[]
+    id?: IntFilter<"Deposit"> | number
+    userId?: IntFilter<"Deposit"> | number
+    amount?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    provider?: StringFilter<"Deposit"> | string
+    reference?: StringFilter<"Deposit"> | string
+    externalId?: StringNullableFilter<"Deposit"> | string | null
+    status?: EnumDepositStatusFilter<"Deposit"> | $Enums.DepositStatus
+    fee?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalFilter<"Deposit"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"Deposit"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
+  }
+
   export type UserCreateWithoutVerificationsInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28432,6 +30538,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -28461,6 +30568,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -28505,6 +30613,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -28534,6 +30643,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetsInput = {
@@ -28562,6 +30672,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -28591,6 +30702,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -28635,6 +30747,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -28664,6 +30777,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserLevelCreateWithoutLevelInput = {
@@ -28729,6 +30843,7 @@ export namespace Prisma {
     trialFund?: TrialFundCreateNestedOneWithoutUserInput
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserLevelInput = {
@@ -28758,6 +30873,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserLevelInput = {
@@ -28818,6 +30934,7 @@ export namespace Prisma {
     trialFund?: TrialFundUpdateOneWithoutUserNestedInput
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserLevelInput = {
@@ -28847,6 +30964,7 @@ export namespace Prisma {
     trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LevelUpsertWithoutUserLevelsInput = {
@@ -28873,12 +30991,16 @@ export namespace Prisma {
 
   export type UserProductCreateWithoutProductInput = {
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     user: UserCreateNestedOneWithoutUserProductsInput
   }
 
   export type UserProductUncheckedCreateWithoutProductInput = {
     id?: number
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     userId: number
   }
 
@@ -29127,6 +31249,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserProductsInput = {
@@ -29156,6 +31279,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserProductsInput = {
@@ -29174,6 +31298,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
     saleItems?: SaleItemCreateNestedManyWithoutProductInput
@@ -29192,6 +31317,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
@@ -29240,6 +31366,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserProductsInput = {
@@ -29269,6 +31396,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutUserProductsInput = {
@@ -29293,6 +31421,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUpdateManyWithoutProductNestedInput
@@ -29311,6 +31440,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
@@ -29343,6 +31473,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRentalsInput = {
@@ -29372,6 +31503,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRentalsInput = {
@@ -29390,6 +31522,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
@@ -29408,6 +31541,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
@@ -29456,6 +31590,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRentalsInput = {
@@ -29485,6 +31620,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutRentalsInput = {
@@ -29509,6 +31645,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
@@ -29527,6 +31664,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
@@ -29559,6 +31697,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsMadeInput = {
@@ -29588,6 +31727,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsMadeInput = {
@@ -29621,6 +31761,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReferralsReceivedInput = {
@@ -29650,6 +31791,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReferralsReceivedInput = {
@@ -29719,6 +31861,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsMadeInput = {
@@ -29748,6 +31891,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReferralsReceivedInput = {
@@ -29787,6 +31931,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReferralsReceivedInput = {
@@ -29816,6 +31961,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommissionUpsertWithWhereUniqueWithoutReferralInput = {
@@ -29872,6 +32018,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSalesSoldInput = {
@@ -29901,6 +32048,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSalesSoldInput = {
@@ -29934,6 +32082,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSalesBoughtInput = {
@@ -29963,6 +32112,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSalesBoughtInput = {
@@ -30028,6 +32178,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesSoldInput = {
@@ -30057,6 +32208,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutSalesBoughtInput = {
@@ -30096,6 +32248,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesBoughtInput = {
@@ -30125,6 +32278,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleItemUpsertWithWhereUniqueWithoutSaleInput = {
@@ -30174,6 +32328,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
@@ -30192,6 +32347,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
@@ -30251,6 +32407,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
@@ -30269,6 +32426,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
@@ -30301,6 +32459,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRewardsInput = {
@@ -30330,6 +32489,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRewardsInput = {
@@ -30348,6 +32508,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundCreateNestedManyWithoutProductInput
     saleItems?: SaleItemCreateNestedManyWithoutProductInput
@@ -30366,6 +32527,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     trialFunds?: TrialFundUncheckedCreateNestedManyWithoutProductInput
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
@@ -30414,6 +32576,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRewardsInput = {
@@ -30443,6 +32606,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutRewardsInput = {
@@ -30467,6 +32631,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUpdateManyWithoutProductNestedInput
@@ -30485,6 +32650,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     trialFunds?: TrialFundUncheckedUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
@@ -30563,6 +32729,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWalletInput = {
@@ -30592,6 +32759,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWalletInput = {
@@ -30636,6 +32804,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletInput = {
@@ -30665,6 +32834,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWithdrawsInput = {
@@ -30693,6 +32863,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawsInput = {
@@ -30722,6 +32893,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawsInput = {
@@ -30766,6 +32938,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawsInput = {
@@ -30795,6 +32968,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTrialFundInput = {
@@ -30823,6 +32997,7 @@ export namespace Prisma {
     verifications?: VerificationCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+    Deposit?: DepositCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrialFundInput = {
@@ -30852,6 +33027,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrialFundInput = {
@@ -30870,6 +33046,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductCreateNestedManyWithoutProductInput
     rewards?: RewardCreateNestedManyWithoutProductInput
     saleItems?: SaleItemCreateNestedManyWithoutProductInput
@@ -30888,6 +33065,7 @@ export namespace Prisma {
     dailyIncome: Decimal | DecimalJsLike | number | string
     fee: Decimal | DecimalJsLike | number | string
     deletedAt?: Date | string | null
+    rentalDays: number
     userProducts?: UserProductUncheckedCreateNestedManyWithoutProductInput
     rewards?: RewardUncheckedCreateNestedManyWithoutProductInput
     saleItems?: SaleItemUncheckedCreateNestedManyWithoutProductInput
@@ -30936,6 +33114,7 @@ export namespace Prisma {
     verifications?: VerificationUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrialFundInput = {
@@ -30965,6 +33144,7 @@ export namespace Prisma {
     verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutTrialFundsInput = {
@@ -30989,6 +33169,7 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUpdateManyWithoutProductNestedInput
     rewards?: RewardUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUpdateManyWithoutProductNestedInput
@@ -31007,10 +33188,145 @@ export namespace Prisma {
     dailyIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rentalDays?: IntFieldUpdateOperationsInput | number
     userProducts?: UserProductUncheckedUpdateManyWithoutProductNestedInput
     rewards?: RewardUncheckedUpdateManyWithoutProductNestedInput
     saleItems?: SaleItemUncheckedUpdateManyWithoutProductNestedInput
     rentals?: RentalUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type UserCreateWithoutDepositInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    profile?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    points?: number
+    level?: number
+    status: $Enums.UserStatus
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawCreateNestedManyWithoutUserInput
+    userProducts?: UserProductCreateNestedManyWithoutUserInput
+    rentals?: RentalCreateNestedManyWithoutUserInput
+    salesSold?: SaleCreateNestedManyWithoutSellerInput
+    salesBought?: SaleCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralCreateNestedManyWithoutReferredInput
+    rewards?: RewardCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundCreateNestedOneWithoutUserInput
+    verifications?: VerificationCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDepositInput = {
+    id?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username: string
+    phone?: string | null
+    profile?: string | null
+    email: string
+    emailVerified?: boolean
+    password: string
+    referralCode?: string | null
+    role?: $Enums.Role
+    points?: number
+    level?: number
+    status: $Enums.UserStatus
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    withdraws?: WithdrawUncheckedCreateNestedManyWithoutUserInput
+    userProducts?: UserProductUncheckedCreateNestedManyWithoutUserInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutUserInput
+    salesSold?: SaleUncheckedCreateNestedManyWithoutSellerInput
+    salesBought?: SaleUncheckedCreateNestedManyWithoutBuyerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralsReceived?: ReferralUncheckedCreateNestedManyWithoutReferredInput
+    rewards?: RewardUncheckedCreateNestedManyWithoutUserInput
+    trialFund?: TrialFundUncheckedCreateNestedOneWithoutUserInput
+    verifications?: VerificationUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    UserLevel?: UserLevelUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDepositInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDepositInput, UserUncheckedCreateWithoutDepositInput>
+  }
+
+  export type UserUpsertWithoutDepositInput = {
+    update: XOR<UserUpdateWithoutDepositInput, UserUncheckedUpdateWithoutDepositInput>
+    create: XOR<UserCreateWithoutDepositInput, UserUncheckedCreateWithoutDepositInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDepositInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDepositInput, UserUncheckedUpdateWithoutDepositInput>
+  }
+
+  export type UserUpdateWithoutDepositInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUpdateManyWithoutUserNestedInput
+    rentals?: RentalUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDepositInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    password?: StringFieldUpdateOperationsInput | string
+    referralCode?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    points?: IntFieldUpdateOperationsInput | number
+    level?: IntFieldUpdateOperationsInput | number
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    withdraws?: WithdrawUncheckedUpdateManyWithoutUserNestedInput
+    userProducts?: UserProductUncheckedUpdateManyWithoutUserNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutUserNestedInput
+    salesSold?: SaleUncheckedUpdateManyWithoutSellerNestedInput
+    salesBought?: SaleUncheckedUpdateManyWithoutBuyerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralsReceived?: ReferralUncheckedUpdateManyWithoutReferredNestedInput
+    rewards?: RewardUncheckedUpdateManyWithoutUserNestedInput
+    trialFund?: TrialFundUncheckedUpdateOneWithoutUserNestedInput
+    verifications?: VerificationUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    UserLevel?: UserLevelUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WithdrawCreateManyUserInput = {
@@ -31022,11 +33338,17 @@ export namespace Prisma {
     total: Decimal | DecimalJsLike | number | string
     status?: $Enums.WithdrawStatus
     date?: Date | string
+    msisdn?: string | null
+    cnic?: string | null
+    externalId?: string | null
+    verifiedAt?: Date | string | null
   }
 
   export type UserProductCreateManyUserInput = {
     id?: number
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     productId: number
   }
 
@@ -31097,6 +33419,19 @@ export namespace Prisma {
     gainedAt?: Date | string
   }
 
+  export type DepositCreateManyUserInput = {
+    id?: number
+    amount: Decimal | DecimalJsLike | number | string
+    provider?: string
+    reference: string
+    externalId?: string | null
+    status?: $Enums.DepositStatus
+    fee?: Decimal | DecimalJsLike | number | string
+    total?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    verifiedAt?: Date | string | null
+  }
+
   export type WithdrawUpdateWithoutUserInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31105,6 +33440,10 @@ export namespace Prisma {
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    msisdn?: NullableStringFieldUpdateOperationsInput | string | null
+    cnic?: NullableStringFieldUpdateOperationsInput | string | null
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type WithdrawUncheckedUpdateWithoutUserInput = {
@@ -31116,6 +33455,10 @@ export namespace Prisma {
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    msisdn?: NullableStringFieldUpdateOperationsInput | string | null
+    cnic?: NullableStringFieldUpdateOperationsInput | string | null
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type WithdrawUncheckedUpdateManyWithoutUserInput = {
@@ -31127,22 +33470,32 @@ export namespace Prisma {
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    msisdn?: NullableStringFieldUpdateOperationsInput | string | null
+    cnic?: NullableStringFieldUpdateOperationsInput | string | null
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserProductUpdateWithoutUserInput = {
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     product?: ProductUpdateOneRequiredWithoutUserProductsNestedInput
   }
 
   export type UserProductUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     productId?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserProductUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     productId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -31346,6 +33699,44 @@ export namespace Prisma {
     gainedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DepositUpdateWithoutUserInput = {
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    provider?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DepositUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    provider?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DepositUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    provider?: StringFieldUpdateOperationsInput | string
+    reference?: StringFieldUpdateOperationsInput | string
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type UserLevelCreateManyLevelInput = {
     id?: number
     userId: number
@@ -31372,6 +33763,8 @@ export namespace Prisma {
   export type UserProductCreateManyProductInput = {
     id?: number
     acquiredAt?: Date | string
+    expiresAt: Date | string
+    status?: $Enums.UserProductStatus
     userId: number
   }
 
@@ -31411,18 +33804,24 @@ export namespace Prisma {
 
   export type UserProductUpdateWithoutProductInput = {
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     user?: UserUpdateOneRequiredWithoutUserProductsNestedInput
   }
 
   export type UserProductUncheckedUpdateWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     userId?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserProductUncheckedUpdateManyWithoutProductInput = {
     id?: IntFieldUpdateOperationsInput | number
     acquiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumUserProductStatusFieldUpdateOperationsInput | $Enums.UserProductStatus
     userId?: IntFieldUpdateOperationsInput | number
   }
 

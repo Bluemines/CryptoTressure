@@ -176,12 +176,15 @@ exports.Prisma.ProductScalarFieldEnum = {
   price: 'price',
   dailyIncome: 'dailyIncome',
   fee: 'fee',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  rentalDays: 'rentalDays'
 };
 
 exports.Prisma.UserProductScalarFieldEnum = {
   id: 'id',
   acquiredAt: 'acquiredAt',
+  expiresAt: 'expiresAt',
+  status: 'status',
   userId: 'userId',
   productId: 'productId'
 };
@@ -249,6 +252,7 @@ exports.Prisma.WalletScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   balance: 'balance',
+  reserved: 'reserved',
   userId: 'userId'
 };
 
@@ -261,6 +265,10 @@ exports.Prisma.WithdrawScalarFieldEnum = {
   total: 'total',
   status: 'status',
   date: 'date',
+  msisdn: 'msisdn',
+  cnic: 'cnic',
+  externalId: 'externalId',
+  verifiedAt: 'verifiedAt',
   userId: 'userId'
 };
 
@@ -274,6 +282,20 @@ exports.Prisma.TrialFundScalarFieldEnum = {
   status: 'status',
   recoveredAt: 'recoveredAt',
   usedAmount: 'usedAmount'
+};
+
+exports.Prisma.DepositScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  provider: 'provider',
+  reference: 'reference',
+  externalId: 'externalId',
+  status: 'status',
+  fee: 'fee',
+  total: 'total',
+  createdAt: 'createdAt',
+  verifiedAt: 'verifiedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -300,6 +322,11 @@ exports.UserStatus = exports.$Enums.UserStatus = {
   SUSPENDED: 'SUSPENDED'
 };
 
+exports.UserProductStatus = exports.$Enums.UserProductStatus = {
+  ACTIVE: 'ACTIVE',
+  REFUNDED: 'REFUNDED'
+};
+
 exports.RewardStatus = exports.$Enums.RewardStatus = {
   FAILED: 'FAILED',
   SUCCESS: 'SUCCESS'
@@ -314,6 +341,12 @@ exports.WithdrawStatus = exports.$Enums.WithdrawStatus = {
 exports.TrialFundStatus = exports.$Enums.TrialFundStatus = {
   ACTIVE: 'ACTIVE',
   RECOVERED: 'RECOVERED'
+};
+
+exports.DepositStatus = exports.$Enums.DepositStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED'
 };
 
 exports.Prisma.ModelName = {
@@ -333,7 +366,8 @@ exports.Prisma.ModelName = {
   Commission: 'Commission',
   Wallet: 'Wallet',
   Withdraw: 'Withdraw',
-  TrialFund: 'TrialFund'
+  TrialFund: 'TrialFund',
+  Deposit: 'Deposit'
 };
 
 /**

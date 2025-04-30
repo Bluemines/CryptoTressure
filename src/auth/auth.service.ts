@@ -149,7 +149,7 @@ export class AuthService {
       throw new ApiError(400, 'Invalid credentials');
     }
 
-    const payload = { sub: user.id, email };
+    const payload = { sub: user.id, email, role: user.role };
 
     const secret = this.config.get<string>('JWT_SECRET');
 

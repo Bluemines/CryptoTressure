@@ -12,6 +12,10 @@ import { ReferralModule } from './referral/referral.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { RewardJob } from './reward/reward.service';
 import { RewardModule } from './reward/reward.module';
+import { WithdrawModule } from './withdraw/withdraw.module';
+import { DepositModule } from './deposit/deposit.module';
+import { WalletModule } from './wallet/wallet.module';
+import { EasypaisaModule } from './easypaisa/easypaisa.module';
 
 @Module({
   imports: [
@@ -27,6 +31,10 @@ import { RewardModule } from './reward/reward.module';
     LevelModule,
     ReferralModule,
     RewardModule,
+    WithdrawModule,
+    DepositModule,
+    WalletModule,
+    EasypaisaModule,
   ],
   providers: [ProductService, LevelService, RewardJob],
   controllers: [],
