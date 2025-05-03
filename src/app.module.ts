@@ -16,11 +16,17 @@ import { WithdrawModule } from './withdraw/withdraw.module';
 import { DepositModule } from './deposit/deposit.module';
 import { WalletModule } from './wallet/wallet.module';
 import { EasypaisaModule } from './easypaisa/easypaisa.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
     }),
     ScheduleModule.forRoot(),
     PrismaModule,
