@@ -4,6 +4,9 @@
 /build
 *.tar
 
+/generated/prisma/
+/uploads/
+
 # Logs
 logs
 *.log
