@@ -1,7 +1,43 @@
+version: '1.0'
+
 services:
-  dev-db:
-    image: postgres:13
+  nest-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nest-app
     ports:
-      - '5434:5432'
-    env_file:
-      - .env
+      - '3000:3000'
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_SECURE: ${SMTP_SECURE}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM: ${SMTP_FROM}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      EASYPAISA_MERCHANT_ID: ${EASYPAISA_MERCHANT_ID}
+      EASYPAISA_API_KEY: ${EASYPAISA_API_KEY}
+      EASYPAISA_SECRET: ${EASYPAISA_SECRET}
+      EASYPAISA_CALLBACK_URL: ${EASYPAISA_CALLBACK_URL}
+
+  db:
+    image: postgres:13
+    container_name: ${DATABASE_HOST:-postgres-db}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
