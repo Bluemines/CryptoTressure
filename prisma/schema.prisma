@@ -24,8 +24,8 @@ model User {
   role              Role               @default(USER)
   points            Int                @default(0) 
   level             Int                @default(1)
-  firstLoginBonus  Boolean      @default(false)
-  firstDepositBonus Boolean     @default(false)
+  firstLoginBonus  Boolean?      @default(false)
+  firstDepositBonus Boolean?     @default(false)
 
   status            UserStatus
   wallet            Wallet?
