@@ -76,19 +76,29 @@ export class AuthService {
       throw new ApiError(400, 'Code expired');
     }
 
-    // ─── 2. Hash password ──────────────────────────────────────────────────
+    // ─── 2. Check if Email or Username Already Exists ─────────────────────
+    const existingUser = await this.prisma.user.findFirst({
+      where: {
+        OR: [{ email: dto.email }, { username: dto.username }],
+      },
+    });
+    if (existingUser) {
+      throw new ApiError(409, 'Email or username already exists');
+    }
+
+    // ─── 3. Hash password ──────────────────────────────────────────────────
     const hashed = await argon.hash(password);
 
-    // ─── 3. Prepare constants ──────────────────────────────────────────────
+    // ─── 4. Prepare constants ──────────────────────────────────────────────
     const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
     const referralBonus = this.config.get<number>('REFERRAL_BONUS_USD', 10);
     const pointsBonus = this.config.get<number>('REFERRAL_BONUS_PTS', 10);
 
-    // ─── 4. Create DB records atomically ───────────────────────────────────
+    // ─── 5. Create DB records atomically ───────────────────────────────────
     let trialFund;
     try {
       trialFund = await this.prisma.$transaction(async (tx) => {
-        // 4‑A: User
+        // 5‑A: Create User
         const user = await tx.user.create({
           data: {
             email: dto.email,
@@ -101,12 +111,12 @@ export class AuthService {
           },
         });
 
-        // 4‑B: Wallet
+        // 5‑B: Create Wallet
         await tx.wallet.create({
           data: { userId: user.id, balance: 0, reserved: 0 },
         });
 
-        // 4‑C: Level row
+        // 5‑C: Create User Level
         await tx.userLevel.create({
           data: {
             user: {
@@ -121,7 +131,7 @@ export class AuthService {
           },
         });
 
-        // 4‑D: Referral (optional)
+        // 5‑D: Handle Referral (if any)
         if (dto.referralCode) {
           const referrer = await tx.user.findUnique({
             where: { referralCode: dto.referralCode },
@@ -135,7 +145,7 @@ export class AuthService {
               },
             });
 
-            // bonuses
+            // Handle referral bonuses
             if (referralBonus > 0) {
               await tx.wallet.update({
                 where: { userId: referrer.id },
@@ -148,15 +158,16 @@ export class AuthService {
           }
         }
 
-        // 4‑E: Delete OTP
+        // 5‑E: Delete OTP
         await tx.verification.delete({ where: { email: dto.email } });
 
-        // 4‑F: Default product for trial fund (if any)
+        // 5‑F: Default product for trial fund (if any)
         const defaultProduct = await tx.product.findFirst({
           where: { deletedAt: null },
           orderBy: { id: 'asc' },
         });
 
+        // 5‑G: Create Trial Fund
         return tx.trialFund.create({
           data: {
             userId: user.id,
@@ -167,56 +178,22 @@ export class AuthService {
         });
       });
     } catch (e) {
+      // Handle unique constraint error
       if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
         throw new ApiError(409, 'Email or username already exists');
       }
       throw e;
     }
 
-    // ─── 5. Schedule auto‑recovery ───────────────────────────────────────────
+    // ─── 6. Schedule trial fund auto-recovery ──────────────────────────────
     await this.trialFundSvc.scheduleRecovery(trialFund);
 
-    // ─── 6. Send welcome e‑mail ──────────────────────────────────────────────
+    // ─── 7. Send welcome email ──────────────────────────────────────────────
     await this.mailService.sendMail(
       dto.email,
       'Welcome to Bluemines',
       'Welcome to Bluemines',
     );
-
-    trialFund = await this.prisma.$transaction(async (tx) => {
-      // 4‑A: User
-      const user = await tx.user.create({
-        data: {
-          email: dto.email,
-          phone: dto.phone,
-          username: dto.username,
-          password: hashed,
-          referralCode: uuidv4(),
-          emailVerified: true,
-          status: 'APPROVED',
-        },
-      });
-
-      // 4‑B: Wallet
-      await tx.wallet.create({
-        data: { userId: user.id, balance: 0, reserved: 0 },
-      });
-
-      // 4‑C: Level row
-      await tx.userLevel.create({
-        data: {
-          user: {
-            connect: { id: user.id },
-          },
-          level: {
-            connectOrCreate: {
-              where: { level: 1 },
-              create: { level: 1, points: 0 },
-            },
-          },
-        },
-      });
-    });
   }
 
   async signin(dto: LoginDto) {
