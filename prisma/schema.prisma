@@ -103,7 +103,7 @@ model Product {
   fee          Decimal
   deletedAt    DateTime?
   rentalDays   Int
-  roiPercent     Float? 
+  roiPercent Float @default(0.0) 
 
   userProducts UserProduct[]    
   rewards      Reward[]       
