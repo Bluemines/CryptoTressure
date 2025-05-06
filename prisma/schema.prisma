@@ -19,11 +19,13 @@ model User {
   profile           String?
   email             String             @unique
   emailVerified     Boolean            @default(false)
-  password          String
-  referralCode      String?            @unique
+  password          String 
+  referralCode      String            @unique
   role              Role               @default(USER)
   points            Int                @default(0) 
   level             Int                @default(1)
+  firstLoginBonus  Boolean      @default(false)
+  firstDepositBonus Boolean     @default(false)
 
   status            UserStatus
   wallet            Wallet?
@@ -101,6 +103,7 @@ model Product {
   fee          Decimal
   deletedAt    DateTime?
   rentalDays   Int
+  roiPercent     Float 
 
   userProducts UserProduct[]    
   rewards      Reward[]       
@@ -205,6 +208,7 @@ model Commission {
 
   amount      Decimal
   percentage  Float
+  levelDepth  Int?
 
   referral    Referral  @relation(fields: [referralId], references: [id], onDelete: Cascade)
   referralId  Int
@@ -236,6 +240,7 @@ model Withdraw {
 
   msisdn     String?        // phone number  (e.g. 03xxxxxxxxx)
   cnic       String?        // CNIC number   (e.g. 42101-1234567-8)
+  processedAt    DateTime?
 
   externalId String?        // Easypaisa txn-id when paid
   verifiedAt DateTime?
@@ -274,9 +279,8 @@ model Deposit {
   total   Decimal      @default(0)
   createdAt     DateTime @default(now())
   verifiedAt    DateTime?
+  lockedUntil    DateTime?
 }
-
-
 
 enum UserStatus {
   APPROVED

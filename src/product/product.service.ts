@@ -12,10 +12,15 @@ import {
 import { awardPoints } from 'src/common/utils/points';
 import { REFERRAL_COMMISSION_RATE } from 'src/common/config/reward.constants';
 import { Decimal } from 'generated/prisma/runtime/library';
+import { round } from 'src/common/utils/round.util';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private config: ConfigService,
+  ) {}
 
   // ────────────────── ADMIN─────────────────────────────
   async createProduct(input: ProductCreateInput): Promise<Product> {
@@ -31,6 +36,8 @@ export class ProductService {
     } = input;
     const exists = await this.prisma.product.findFirst({ where: { title } });
     if (exists) throw new ApiError(400, 'Product already exists');
+
+    const roiPercent = round((dailyIncome / price) * 100);
     return this.prisma.product.create({
       data: {
         userId,
@@ -41,6 +48,7 @@ export class ProductService {
         dailyIncome,
         fee,
         rentalDays,
+        roiPercent,
       },
     });
   }
@@ -162,9 +170,7 @@ export class ProductService {
     });
   }
 
-  async viewProduct(
-    id: number,
-  ): Promise<Product & { _count: { rentals: number; saleItems: number } }> {
+  async viewProduct(id: number) {
     const product = await this.prisma.product.findFirst({
       where: { id, deletedAt: null },
       select: {
@@ -177,6 +183,7 @@ export class ProductService {
         dailyIncome: true,
         fee: true,
         rentalDays: true,
+        roiPercent: true,
         deletedAt: true,
         createdAt: true,
         updatedAt: true,
@@ -189,85 +196,121 @@ export class ProductService {
   }
 
   async buyProduct(userId: number, productId: number): Promise<Sale> {
+    /* ─── 1. Load product & buyer wallet ─────────────────────────── */
     const [product, buyerWallet] = await Promise.all([
       this.prisma.product.findUnique({ where: { id: productId } }),
       this.prisma.wallet.findUnique({ where: { userId } }),
     ]);
-    if (!product) throw new ApiError(404, 'Product not found');
+
+    if (!product || product.deletedAt)
+      throw new ApiError(404, 'Product not found or unavailable');
     if (!buyerWallet) throw new ApiError(400, 'Buyer wallet missing');
 
-    const balance = buyerWallet.balance.toNumber();
     const price = product.price.toNumber();
-    const sellerId = product.userId;
-    if (balance < price) {
-      throw new ApiError(400, 'Insufficient funds');
+    let walletSpend = price; // amount to deduct from buyer balance
+    let trialFundSpend = 0; // amount to take from trial fund, if any
+
+    /* ─── 2. Check active trial fund & determine split ───────────── */
+    const trial = await this.prisma.trialFund.findFirst({
+      where: { userId, status: 'ACTIVE' },
+    });
+    if (trial) {
+      const remaining = trial.amount.minus(trial.usedAmount).toNumber();
+      if (remaining > 0) {
+        trialFundSpend = Math.min(price, remaining);
+        walletSpend = price - trialFundSpend;
+      }
     }
 
-    await this.prisma.wallet.upsert({
-      where: { userId: sellerId },
-      update: {},
-      create: { user: { connect: { id: sellerId } }, balance: 0 },
-    });
+    /* ─── 3. Validate balance ────────────────────────────────────── */
+    const balance = buyerWallet.balance.toNumber();
+    if (walletSpend > balance)
+      throw new ApiError(400, 'Insufficient wallet funds');
 
-    const [sale] = await this.prisma.$transaction(async (tx) => {
-      const sale = await tx.sale.create({
+    const sellerId = product.userId;
+
+    /* ─── 5. Execute atomic transaction ──────────────────────────── */
+    const sale = await this.prisma.$transaction(async (tx) => {
+      /* 5‑A. Record SALE */
+      const saleRow = await tx.sale.create({
         data: {
           total: price,
-          seller: { connect: { id: sellerId } },
-          buyer: { connect: { id: userId } },
+          sellerId,
+          buyerId: userId,
         },
       });
 
-      /* ───────────────────── REFERRAL COMMISSION ────────────────────── */
-      // Is the buyer linked to a referrer?
+      /* 5‑B. Ensure seller wallet exists */
+      await tx.wallet.upsert({
+        where: { userId: sellerId },
+        update: {},
+        create: { userId: sellerId, balance: 0 },
+      });
+
+      /* 5‑C. Referral commission (single level) */
       const referral = await tx.referral.findFirst({
         where: { referredId: userId },
         select: { id: true, referrerId: true },
       });
-
       if (referral) {
-        const commission = new Decimal(price)
+        const commissionAmt = new Decimal(price)
           .mul(REFERRAL_COMMISSION_RATE)
-          .toDecimalPlaces(2); // round to cents
+          .toDecimalPlaces(2);
 
-        // 1️⃣  record the commission row
         await tx.commission.create({
           data: {
             referralId: referral.id,
-            amount: commission,
+            amount: commissionAmt,
             percentage: REFERRAL_COMMISSION_RATE * 100,
+            levelDepth: 1,
           },
         });
 
-        // 2️⃣  credit the referrer’s wallet (create if missing)
         await tx.wallet.upsert({
           where: { userId: referral.referrerId },
-          update: { balance: { increment: commission } },
-          create: {
-            user: { connect: { id: referral.referrerId } },
-            balance: commission,
+          update: { balance: { increment: commissionAmt } },
+          create: { userId: referral.referrerId, balance: commissionAmt },
+        });
+      }
+
+      /* 5‑D. Update buyer wallet (balance ↓, reserved ↑) */
+      if (walletSpend > 0) {
+        await tx.wallet.update({
+          where: { userId },
+          data: {
+            balance: { decrement: walletSpend },
+            reserved: { increment: price },
+          },
+        });
+      } else {
+        // still lock principal even if fully covered by trial fund
+        await tx.wallet.update({
+          where: { userId },
+          data: {
+            reserved: { increment: price },
           },
         });
       }
-      /* ───────────── END REFERRAL COMMISSION BLOCK ──────────────────── */
 
-      await tx.wallet.update({
-        where: { userId },
-        data: {
-          balance: { decrement: price },
-          reserved: { increment: price },
-        },
-      });
+      /* 5‑E. Update trial fund usage */
+      if (trialFundSpend > 0 && trial) {
+        await tx.trialFund.update({
+          where: { id: trial.id },
+          data: { usedAmount: { increment: trialFundSpend } },
+        });
+      }
 
+      /* 5‑F. Credit seller wallet */
       await tx.wallet.update({
         where: { userId: sellerId },
         data: { balance: { increment: price } },
       });
 
+      /* 5‑G. Create UserProduct row */
       await tx.userProduct.create({
         data: {
-          user: { connect: { id: userId } },
-          product: { connect: { id: productId } },
+          userId,
+          productId,
           acquiredAt: new Date(),
           expiresAt: new Date(
             Date.now() + product.rentalDays * 24 * 60 * 60 * 1000,
@@ -275,17 +318,19 @@ export class ProductService {
         },
       });
 
-      await awardPoints(userId, Number(price) * 0.1, tx);
+      /* 5‑H. Add SaleItem (quantity always 1) */
+      await tx.saleItem.create({
+        data: {
+          saleId: saleRow.id,
+          productId,
+          quantity: 1,
+        },
+      });
 
-      return [sale];
-    });
+      /* 5‑I. Award loyalty points (1 pt per 10 USD spend) */
+      await awardPoints(userId, Math.floor(price / 10), tx);
 
-    await this.prisma.saleItem.create({
-      data: {
-        sale: { connect: { id: sale.id } },
-        product: { connect: { id: productId } },
-        quantity: 1,
-      },
+      return saleRow;
     });
 
     return sale;

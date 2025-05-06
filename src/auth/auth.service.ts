@@ -11,6 +11,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { awardPoints } from 'src/common/utils/points';
+import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -50,9 +52,17 @@ export class AuthService {
     }
   }
 
+  /**
+   * Signup flow:
+   *  1. Verify OTP
+   *  2. Create user, wallet, level row, trial fund; handle referral bonuses
+   *  3. Delete verification row
+   *  4. Send welcome e‑mail
+   */
   async signup(dto: SignupDto): Promise<void> {
     const { email, code, username, password } = dto;
 
+    // ─── 1. OTP check ──────────────────────────────────────────────────────
     const v = await this.prisma.verification.findUnique({
       where: { email },
     });
@@ -66,28 +76,138 @@ export class AuthService {
       throw new ApiError(400, 'Code expired');
     }
 
+    // ─── 2. Hash password ──────────────────────────────────────────────────
     const hashed = await argon.hash(password);
-    const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
 
-    // Transaction: create user, delete OTP, grant trial
-    const result = await this.prisma.$transaction(async (tx) => {
+    // ─── 3. Prepare constants ──────────────────────────────────────────────
+    const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
+    const referralBonus = this.config.get<number>('REFERRAL_BONUS_USD', 10);
+    const pointsBonus = this.config.get<number>('REFERRAL_BONUS_PTS', 10);
+
+    // ─── 4. Create DB records atomically ───────────────────────────────────
+    let trialFund;
+    try {
+      trialFund = await this.prisma.$transaction(async (tx) => {
+        // 4‑A: User
+        const user = await tx.user.create({
+          data: {
+            email: dto.email,
+            phone: dto.phone,
+            username: dto.username,
+            password: hashed,
+            referralCode: uuidv4(),
+            emailVerified: true,
+            status: 'APPROVED',
+          },
+        });
+
+        // 4‑B: Wallet
+        await tx.wallet.create({
+          data: { userId: user.id, balance: 0, reserved: 0 },
+        });
+
+        // 4‑C: Level row
+        await tx.userLevel.create({
+          data: {
+            user: {
+              connect: { id: user.id },
+            },
+            level: {
+              connectOrCreate: {
+                where: { level: 1 },
+                create: { level: 1, points: 0 },
+              },
+            },
+          },
+        });
+
+        // 4‑D: Referral (optional)
+        if (dto.referralCode) {
+          const referrer = await tx.user.findUnique({
+            where: { referralCode: dto.referralCode },
+          });
+          if (referrer) {
+            await tx.referral.create({
+              data: {
+                code: uuidv4(),
+                referrerId: referrer.id,
+                referredId: user.id,
+              },
+            });
+
+            // bonuses
+            if (referralBonus > 0) {
+              await tx.wallet.update({
+                where: { userId: referrer.id },
+                data: { balance: { increment: referralBonus } },
+              });
+            }
+            if (pointsBonus > 0) {
+              await awardPoints(referrer.id, pointsBonus, tx);
+            }
+          }
+        }
+
+        // 4‑E: Delete OTP
+        await tx.verification.delete({ where: { email: dto.email } });
+
+        // 4‑F: Default product for trial fund (if any)
+        const defaultProduct = await tx.product.findFirst({
+          where: { deletedAt: null },
+          orderBy: { id: 'asc' },
+        });
+
+        return tx.trialFund.create({
+          data: {
+            userId: user.id,
+            productId: defaultProduct?.id,
+            amount: 200,
+            expiresAt: trialExpiry,
+          },
+        });
+      });
+    } catch (e) {
+      if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
+        throw new ApiError(409, 'Email or username already exists');
+      }
+      throw e;
+    }
+
+    // ─── 5. Schedule auto‑recovery ───────────────────────────────────────────
+    await this.trialFundSvc.scheduleRecovery(trialFund);
+
+    // ─── 6. Send welcome e‑mail ──────────────────────────────────────────────
+    await this.mailService.sendMail(
+      dto.email,
+      'Welcome to Bluemines',
+      'Welcome to Bluemines',
+    );
+
+    trialFund = await this.prisma.$transaction(async (tx) => {
+      // 4‑A: User
       const user = await tx.user.create({
         data: {
-          email,
-          username,
+          email: dto.email,
+          phone: dto.phone,
+          username: dto.username,
           password: hashed,
+          referralCode: uuidv4(),
           emailVerified: true,
           status: 'APPROVED',
         },
       });
 
+      // 4‑B: Wallet
       await tx.wallet.create({
-        data: { user: { connect: { id: user.id } }, balance: 0 },
+        data: { userId: user.id, balance: 0, reserved: 0 },
       });
 
+      // 4‑C: Level row
       await tx.userLevel.create({
         data: {
-          user: { connect: { id: user.id } },
+          user: {
+            connect: { id: user.id },
+          },
           level: {
             connectOrCreate: {
               where: { level: 1 },
@@ -96,44 +216,7 @@ export class AuthService {
           },
         },
       });
-
-      if (dto.referralCode) {
-        const referrer = await tx.user.findUnique({
-          where: { referralCode: dto.referralCode },
-        });
-        if (referrer) {
-          await tx.referral.create({
-            data: {
-              code: dto.referralCode,
-              referrerId: referrer.id,
-              referredId: user.id,
-            },
-          });
-          await tx.wallet.update({
-            where: { userId: referrer.id },
-            data: { balance: { increment: 10 } },
-          });
-          await awardPoints(referrer.id, 10, tx);
-        }
-      }
-
-      await tx.verification.delete({ where: { email } });
-
-      const defaultProduct = await tx.product.findFirst();
-      const tfData: any = {
-        user: { connect: { id: user.id } },
-        amount: 200,
-        grantedAt: new Date(),
-        expiresAt: trialExpiry,
-      };
-      if (defaultProduct) {
-        tfData.product = { connect: { id: defaultProduct.id } };
-      }
-      return tx.trialFund.create({ data: tfData });
     });
-
-    // Schedule the auto-recovery
-    await this.trialFundSvc.scheduleRecovery(result);
   }
 
   async signin(dto: LoginDto) {

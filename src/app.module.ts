@@ -10,7 +10,6 @@ import { LevelModule } from './level/level.module';
 import { LevelService } from './level/level.service';
 import { ReferralModule } from './referral/referral.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { RewardJob } from './reward/reward.service';
 import { RewardModule } from './reward/reward.module';
 import { WithdrawModule } from './withdraw/withdraw.module';
 import { DepositModule } from './deposit/deposit.module';
@@ -18,6 +17,7 @@ import { WalletModule } from './wallet/wallet.module';
 import { EasypaisaModule } from './easypaisa/easypaisa.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -41,8 +41,10 @@ import { join } from 'path';
     DepositModule,
     WalletModule,
     EasypaisaModule,
+    JobsModule,
+    RewardModule,
   ],
-  providers: [ProductService, LevelService, RewardJob],
+  providers: [ProductService, LevelService],
   controllers: [],
 })
 export class AppModule {}
