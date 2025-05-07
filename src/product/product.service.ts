@@ -207,8 +207,8 @@ export class ProductService {
     if (!buyerWallet) throw new ApiError(400, 'Buyer wallet missing');
 
     const price = product.price.toNumber();
-    let walletSpend = price; // amount to deduct from buyer balance
-    let trialFundSpend = 0; // amount to take from trial fund, if any
+    let walletSpend = price;
+    let trialFundSpend = 0;
 
     /* ─── 2. Check active trial fund & determine split ───────────── */
     const trial = await this.prisma.trialFund.findFirst({
@@ -305,6 +305,14 @@ export class ProductService {
         where: { userId: sellerId },
         data: { balance: { increment: price } },
       });
+
+      // Prevent duplicate purchase of the same product
+      const existing = await tx.userProduct.findFirst({
+        where: { userId, productId, status: 'ACTIVE' },
+      });
+      if (existing) {
+        throw new ApiError(400, 'You already own this product');
+      }
 
       /* 5‑G. Create UserProduct row */
       await tx.userProduct.create({
