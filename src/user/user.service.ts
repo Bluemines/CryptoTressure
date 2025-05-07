@@ -131,6 +131,10 @@ export class UserService {
       throw new ApiError(404, 'User not found');
     }
 
+    if (user.status === 'SUSPENDED') {
+      throw new ApiError(400, 'User already suspended');
+    }
+
     return this.prisma.user.update({
       where: { id },
       data: { status: 'SUSPENDED' },
