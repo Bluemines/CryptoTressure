@@ -25,7 +25,7 @@ export class UserController {
 
   @Get('all')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER') // Make it admin later
+  @Roles('ADMIN')
   async getAllUsers(@Query() dto: GetAllUsersDTO): Promise<
     ApiResponse<{
       items: UserListView[];
@@ -47,7 +47,7 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER') // Make it admin later
+  @Roles('ADMIN')
   async getUserById(@Param('id', ParseIntPipe) id: number) {
     const user = await this.userService.getUserById(id);
     return new ApiResponse(200, user, 'User retrieved');
@@ -55,18 +55,10 @@ export class UserController {
 
   @Post('suspend/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER') // Make it admin later
+  @Roles('ADMIN')
   async suspendUser(@Param('id', ParseIntPipe) id: number) {
     const user = await this.userService.suspendUser(id);
     return new ApiResponse(200, user, 'User suspended');
-  }
-
-  @Post('reward')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER') // Make it admin later
-  async userReward(@Body() dto: UserRewardDTO): Promise<ApiResponse<any>> {
-    const reward = await this.userService.userReward(dto);
-    return new ApiResponse(200, reward, 'User rewarded');
   }
 
   // CUSTOMER

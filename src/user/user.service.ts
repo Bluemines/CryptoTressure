@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { GetAllUsersDTO, UpdateUserDTO, UserRewardDTO } from './dto';
 import { UserListView } from './interfaces';
 import { ApiError } from 'src/common';
-import { Reward, User } from '../../generated/prisma/client';
+import { Reward, User, Prisma } from '../../generated/prisma/client';
 
 @Injectable()
 export class UserService {
@@ -15,7 +15,7 @@ export class UserService {
     const { page = 1, limit = 10, search, status, time = 'ALL' } = dto;
     const skip = (page - 1) * limit;
 
-    const where: any = {};
+    const where: Prisma.UserWhereInput = { role: 'USER' };
 
     if (search) {
       where.OR = [
@@ -132,36 +132,6 @@ export class UserService {
       data: { status: 'SUSPENDED' },
     });
   }
-
-  async userReward(dto: UserRewardDTO): Promise<Reward> {
-    const { id: userId, product: productId, reward: amount } = dto;
-
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user) throw new ApiError(404, 'User not found');
-
-    const product = await this.prisma.product.findUnique({
-      where: { id: productId },
-    });
-    if (!product) throw new ApiError(404, 'Product not found');
-
-    const [rewardRecord] = await this.prisma.$transaction([
-      this.prisma.reward.create({
-        data: {
-          user: { connect: { id: userId } },
-          product: { connect: { id: productId } },
-          reward: amount,
-          date: new Date(),
-        },
-      }),
-      this.prisma.wallet.update({
-        where: { userId },
-        data: { balance: { increment: amount } },
-      }),
-    ]);
-
-    return rewardRecord;
-  }
-
   // CUSTOMER
   async updateUser(userId: number, data: UpdateUserDTO): Promise<User> {
     const user = await this.prisma.user.findUnique({

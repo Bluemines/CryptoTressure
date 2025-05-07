@@ -1,14 +1,16 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiResponse, Roles, RolesGuard } from 'src/common';
 import { AdminListRewardsDto } from './dto/admin-list-rewards.dto';
 import { RewardService } from './reward.service';
 import { Reward } from 'generated/prisma';
+import { UserRewardDTO } from 'src/user/dto';
+import { UserService } from 'src/user/user.service';
 
 @Controller('reward')
 export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
-  
+
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
@@ -37,5 +39,13 @@ export class RewardController {
       { items, meta: { total, page, limit, totalPages } },
       'Rewards retrieved',
     );
+  }
+
+  @Post('reward')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async userReward(@Body() dto: UserRewardDTO): Promise<ApiResponse<any>> {
+    const reward = await this.rewardService.userReward(dto);
+    return new ApiResponse(200, reward, 'User rewarded');
   }
 }

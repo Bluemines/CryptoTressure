@@ -122,6 +122,7 @@ export class ProductController {
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<ApiResponse<Product[]>> {
     const products = await this.productService.getUserProducts(userId);
+    console.log('Products: ', products);
     return new ApiResponse(200, products, 'User products retrieved');
   }
 
