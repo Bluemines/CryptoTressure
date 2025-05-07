@@ -196,4 +196,24 @@ export class UserService {
       data,
     });
   }
+async getUserStats() {
+  const [
+    totalUsers,
+    verifiedUsers,
+    suspendedUsers,
+  //   activeMachines,
+  ] = await Promise.all([
+    this.prisma.user.count(),
+    this.prisma.user.count({ where: { emailVerified: true } }),
+    this.prisma.user.count({ where: { status: 'SUSPENDED' } }),
+  //   this.prisma.machine.count({ where: { status: 'ACTIVE' } }),
+  ]);
+  
+  return {
+    totalUsers,
+    verifiedUsers,
+    suspendedUsers,
+    activeMachines: 0,
+  };
+  }
 }

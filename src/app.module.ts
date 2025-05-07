@@ -17,6 +17,7 @@ import { WalletModule } from './wallet/wallet.module';
 import { EasypaisaModule } from './easypaisa/easypaisa.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { NotificationsModule } from './notifications/notifications.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { join } from 'path';
 import { JobsModule } from './jobs/jobs.module';
 
@@ -45,6 +46,7 @@ import { JobsModule } from './jobs/jobs.module';
     JobsModule,
     RewardModule,
     NotificationsModule,
+    DashboardModule
   ],
   providers: [ProductService, LevelService],
   controllers: [],
