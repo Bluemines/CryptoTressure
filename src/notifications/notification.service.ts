@@ -30,4 +30,12 @@ export class NotificationService {
       data: { isRead: true },
     });
   }
+  async countUnread(userId: number): Promise<number> {
+    return this.prisma.notification.count({
+      where: {
+        userId,
+        isRead: false,
+      },
+    });
+  }
 }

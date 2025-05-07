@@ -22,8 +22,18 @@ import { Roles, RolesGuard } from 'src/common';
       return this.svc.findAll(req.user.id);
     }
     @Patch(':id/read')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('USER') 
     async markRead(@Param('id', ParseIntPipe) id: number) {
       return this.svc.markAsRead(id);
     }
+    // notification.controller.ts
+    @Get('unread/count')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('USER') 
+       async countUnread(@Req() req) {
+    return this.svc.countUnread(req.user.id);
+    }
+
   }
   

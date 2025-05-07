@@ -4,10 +4,14 @@ import { GetAllUsersDTO, UpdateUserDTO, UserRewardDTO } from './dto';
 import { UserListView } from './interfaces';
 import { ApiError } from 'src/common';
 import { Reward, User } from '../../generated/prisma/client';
+import { NotificationGateway } from 'src/notifications/notification.gateway';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notificationGateway: NotificationGateway,
+  ) {}
 
   async getAllUsers(
     dto: GetAllUsersDTO,
@@ -157,7 +161,21 @@ export class UserService {
         where: { userId },
         data: { balance: { increment: amount } },
       }),
-    ]);
+
+      this.prisma.notification.create({
+        data: {
+          user: { connect: { id: userId } },
+          type: 'REWARD_EARNED',
+          title: 'Reward Earned 🎉',
+          message: `🎉 You received a reward of ₨${amount}!`,
+        },
+      }),
+      ]);
+  
+      this.notificationGateway.sendNotification(userId, {
+        type: 'REWARD_EARNED',
+        message: `🎉 You received a reward of ₨${amount}!`,
+      }); 
 
     return rewardRecord;
   }
