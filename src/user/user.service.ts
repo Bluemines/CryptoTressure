@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { GetAllUsersDTO, UpdateUserDTO, UserRewardDTO } from './dto';
 import { UserListView } from './interfaces';
 import { ApiError } from 'src/common';
-import { Reward, User } from '../../generated/prisma/client';
+import { Reward, User, Prisma } from '../../generated/prisma/client';
 import { NotificationGateway } from 'src/notifications/notification.gateway';
 
 @Injectable()
@@ -170,12 +170,12 @@ export class UserService {
           message: `🎉 You received a reward of ₨${amount}!`,
         },
       }),
-      ]);
-  
-      this.notificationGateway.sendNotification(userId, {
-        type: 'REWARD_EARNED',
-        message: `🎉 You received a reward of ₨${amount}!`,
-      }); 
+    ]);
+
+    this.notificationGateway.sendNotification(userId, {
+      type: 'REWARD_EARNED',
+      message: `🎉 You received a reward of ₨${amount}!`,
+    });
 
     return rewardRecord;
   }
