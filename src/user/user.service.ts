@@ -3,11 +3,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { GetAllUsersDTO, UpdateUserDTO, UserRewardDTO } from './dto';
 import { UserListView } from './interfaces';
 import { ApiError } from 'src/common';
-import { Reward, User, Prisma } from '../../generated/prisma/client';
+import { Reward, User } from '../../generated/prisma/client';
+import { NotificationGateway } from 'src/notifications/notification.gateway';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notificationGateway: NotificationGateway,
+  ) {}
 
   async getAllUsers(
     dto: GetAllUsersDTO,
@@ -132,6 +136,50 @@ export class UserService {
       data: { status: 'SUSPENDED' },
     });
   }
+
+  async userReward(dto: UserRewardDTO): Promise<Reward> {
+    const { id: userId, product: productId, reward: amount } = dto;
+
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new ApiError(404, 'User not found');
+
+    const product = await this.prisma.product.findUnique({
+      where: { id: productId },
+    });
+    if (!product) throw new ApiError(404, 'Product not found');
+
+    const [rewardRecord] = await this.prisma.$transaction([
+      this.prisma.reward.create({
+        data: {
+          user: { connect: { id: userId } },
+          product: { connect: { id: productId } },
+          reward: amount,
+          date: new Date(),
+        },
+      }),
+      this.prisma.wallet.update({
+        where: { userId },
+        data: { balance: { increment: amount } },
+      }),
+
+      this.prisma.notification.create({
+        data: {
+          user: { connect: { id: userId } },
+          type: 'REWARD_EARNED',
+          title: 'Reward Earned 🎉',
+          message: `🎉 You received a reward of ₨${amount}!`,
+        },
+      }),
+      ]);
+  
+      this.notificationGateway.sendNotification(userId, {
+        type: 'REWARD_EARNED',
+        message: `🎉 You received a reward of ₨${amount}!`,
+      }); 
+
+    return rewardRecord;
+  }
+
   // CUSTOMER
   async updateUser(userId: number, data: UpdateUserDTO): Promise<User> {
     const user = await this.prisma.user.findUnique({
