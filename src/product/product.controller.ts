@@ -117,7 +117,7 @@ export class ProductController {
     return new ApiResponse(200, products, 'Popular products retrieved');
   }
 
-  @Get('user/:userId')
+  @Get('by-user/:userId')
   async getUserProducts(
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<ApiResponse<Product[]>> {
