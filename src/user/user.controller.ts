@@ -23,6 +23,12 @@ import { User } from '../../generated/prisma/client';
 export class UserController {
   constructor(private userService: UserService) {}
 
+    @Get('stats')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  getStats() {
+    return this.userService.getUserStats();
+  }
   @Get('all')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')

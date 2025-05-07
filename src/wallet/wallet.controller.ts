@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { WalletService } from './wallet.service';
-import { ApiResponse } from 'src/common';
+import { ApiResponse, Roles, RolesGuard } from 'src/common';
 import { AdminWalletListDto } from './dto/admin-wallet.dto';
 
 @Controller('wallet')
@@ -23,6 +23,12 @@ export class WalletController {
   async myWallet(@Req() req) {
     const data = await this.svc.getUserWallet(req.user.id);
     return new ApiResponse(200, data, 'Wallet snapshot');
+  }
+  @Get('overview')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('USER')
+  getWalletOverview(@Req() req) {
+    return this.svc.getWalletOverview(req.user.id);
   }
 
   // ADMIN
