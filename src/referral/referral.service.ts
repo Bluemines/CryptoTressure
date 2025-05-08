@@ -14,8 +14,6 @@ export class ReferralService {
     private notificationGateway: NotificationGateway,
   ) {}
 
-  
-
   async getReferralHistory(userId: number) {
     const referrals = await this.prisma.referral.findMany({
       where: { referrerId: userId },

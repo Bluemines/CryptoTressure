@@ -91,8 +91,12 @@ export class AuthService {
 
     // ─── 4. Prepare constants ──────────────────────────────────────────────
     const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
-    const referralBonus = this.config.get<number>('REFERRAL_BONUS_USD', 10);
-    const pointsBonus = this.config.get<number>('REFERRAL_BONUS_PTS', 10);
+    const referralBonus = Number(
+      this.config.get<number>('REFERRAL_BONUS_USD', 10),
+    );
+    const pointsBonus = Number(
+      this.config.get<number>('REFERRAL_BONUS_PTS', 10),
+    );
 
     // ─── 5. Create DB records atomically ───────────────────────────────────
     let trialFund;
@@ -153,7 +157,7 @@ export class AuthService {
               });
             }
             if (pointsBonus > 0) {
-              await awardPoints(referrer.id, pointsBonus, tx);
+              await awardPoints(referrer.id, Math.floor(pointsBonus), tx);
             }
           }
         }

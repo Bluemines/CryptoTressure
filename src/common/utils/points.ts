@@ -7,10 +7,13 @@ export async function awardPoints(
   delta: number,
   tx: Prisma.TransactionClient = prisma,
 ) {
+  const inc = Math.floor(Number(delta) || 0); 
+  if (inc === 0) return;
+
   // Increment points
   const updatedUser = await tx.user.update({
     where: { id: userId },
-    data: { points: { increment: delta } },
+    data: { points: { increment: inc } },
     select: { id: true, points: true, level: true },
   });
 
