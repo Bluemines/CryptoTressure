@@ -1,44 +1,37 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ReferralService } from './referral.service';
-import { ApiResponse, Roles, RolesGuard } from 'src/common';
+import { ApiError, ApiResponse, Roles, RolesGuard } from 'src/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateReferralDto } from './dto/create-referral.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('referral')
 export class ReferralController {
-  constructor(private referralService: ReferralService) {}
+  constructor(
+    private referralService: ReferralService,
+    private config: ConfigService,
+  ) {}
 
-  @Post('link')
+  @Get('link')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER')
-  async createReferral(@Req() req): Promise<ApiResponse<{ url: string }>> {
-    const userId = req.user.id as number;
-    const url = await this.referralService.createReferralLink(userId);
-    return new ApiResponse(200, { url }, 'Referral link created');
-  }
+  async getReferralLink(@Req() req) {
+    const { referralCode } = req.user;
 
-  @Post()
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles('USER')
-  async create(
-    @Req() req,
-    @Body() createReferralDto: CreateReferralDto,
-  ) {
-    return this.referralService.createReferral(req.user.id, createReferralDto);
+    if (!referralCode) {
+      throw new ApiError(400, 'Referral code not assigned to this user');
+    }
+
+    const base = this.config.get<string>('FRONTEND_URL').replace(/\/+$/, '');
+    const link = `${base}/?ref=${referralCode}`;
+
+    return new ApiResponse(200, { link }, 'Referral link generated');
   }
 
   @Get('history')
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER')
   async getHistory(@Req() req) {
     return this.referralService.getReferralHistory(req.user.id);
   }
-
-  // @Get('stats')
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Roles('USER')
-  // async getStats(@Req() req) {
-  //   return this.referralService.getReferralStats(req.user.id);
-  // }
-
 }
