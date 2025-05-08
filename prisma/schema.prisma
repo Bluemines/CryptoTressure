@@ -154,6 +154,7 @@ model Referral {
   referred   User @relation("UserReferralsReceived", fields: [referredId], references: [id], onDelete: Cascade)
   referredId Int
 
+
   commissions Commission[]
 }
 
@@ -212,6 +213,7 @@ model Commission {
 
   referral   Referral @relation(fields: [referralId], references: [id], onDelete: Cascade)
   referralId Int
+  status     String?
 }
 
 model Wallet {

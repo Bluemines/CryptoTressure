@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { ReferralService } from './referral.service';
 import { ApiError, ApiResponse, Roles, RolesGuard } from 'src/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { CreateReferralDto } from './dto/create-referral.dto';
 import { ConfigService } from '@nestjs/config';
+import { ReferralFilterDto } from './dto/referral-filter.dto';
+import { PaginatedReferralResponseDto } from './dto/referral-response.dto';
 
 @Controller('referral')
 export class ReferralController {
@@ -34,4 +35,12 @@ export class ReferralController {
   async getHistory(@Req() req) {
     return this.referralService.getReferralHistory(req.user.id);
   }
+
+  @Get('management')
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles('ADMIN')
+  getReferrals(@Query() filter: ReferralFilterDto): Promise<PaginatedReferralResponseDto> {
+    return this.referralService.getReferrals(filter);
+  }
+
 }
