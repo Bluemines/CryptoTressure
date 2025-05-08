@@ -140,22 +140,37 @@ export class AuthService {
           const referrer = await tx.user.findUnique({
             where: { referralCode: dto.referralCode },
           });
+
           if (referrer) {
-            await tx.referral.create({
+            /* 1) create Referral row and keep the ID for commission */
+            const referralRow = await tx.referral.create({
               data: {
                 code: uuidv4(),
                 referrerId: referrer.id,
                 referredId: user.id,
               },
+              select: { id: true },
             });
 
-            // Handle referral bonuses
+            /* 2) wallet bonus */
             if (referralBonus > 0) {
               await tx.wallet.update({
                 where: { userId: referrer.id },
                 data: { balance: { increment: referralBonus } },
               });
+
+              /* 2a) commission record (monetary bonus) */
+              await tx.commission.create({
+                data: {
+                  referralId: referralRow.id,
+                  amount: referralBonus,
+                  percentage: 100,
+                  levelDepth: 1,
+                },
+              });
             }
+
+            /* 3) points bonus */
             if (pointsBonus > 0) {
               await awardPoints(referrer.id, Math.floor(pointsBonus), tx);
             }
