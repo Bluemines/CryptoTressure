@@ -20,6 +20,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { join } from 'path';
 import { JobsModule } from './jobs/jobs.module';
+import { AgreementModule } from './agreement/agreement.module';
+
 
 @Module({
   imports: [
@@ -46,7 +48,8 @@ import { JobsModule } from './jobs/jobs.module';
     JobsModule,
     RewardModule,
     NotificationsModule,
-    DashboardModule
+    DashboardModule,
+    AgreementModule
   ],
   providers: [ProductService, LevelService],
   controllers: [],
