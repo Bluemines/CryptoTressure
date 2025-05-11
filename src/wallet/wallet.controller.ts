@@ -20,13 +20,15 @@ export class WalletController {
   // Customer
   /** Logged-in user wallet snapshot */
   @Get('me')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
   async myWallet(@Req() req) {
     const data = await this.svc.getUserWallet(req.user.id);
     return new ApiResponse(200, data, 'Wallet snapshot');
   }
   @Get('overview')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('USER')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
   getWalletOverview(@Req() req) {
     return this.svc.getWalletOverview(req.user.id);
   }
@@ -34,6 +36,8 @@ export class WalletController {
   // ADMIN
   /** paginated list */
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async list(@Query() q: AdminWalletListDto) {
     const { items, total } = await this.svc.listWallets(
       q.page,
@@ -45,6 +49,8 @@ export class WalletController {
 
   /** single wallet */
   @Get(':userId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async single(@Param('userId', ParseIntPipe) userId: number) {
     const w = await this.svc.getWalletByUser(userId);
     return new ApiResponse(200, w, 'Wallet detail');
