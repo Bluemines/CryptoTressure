@@ -307,12 +307,12 @@ export class ProductService {
       });
 
       // Prevent duplicate purchase of the same product
-      const existing = await tx.userProduct.findFirst({
-        where: { userId, productId, status: 'ACTIVE' },
-      });
-      if (existing) {
-        throw new ApiError(400, 'You already own this product');
-      }
+      // const existing = await tx.userProduct.findFirst({
+      //   where: { userId, productId, status: 'ACTIVE' },
+      // });
+      // if (existing) {
+      //   throw new ApiError(400, 'You already own this product');
+      // }
 
       /* 5‑G. Create UserProduct row */
       await tx.userProduct.create({
