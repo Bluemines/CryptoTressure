@@ -8,7 +8,7 @@ export function FileUpload(opts: FileUploadOptions) {
   const {
     fieldName,
     destination = './uploads',
-    maxSize = 5 * 1024 * 1024,
+    maxSize = 20 * 1024 * 1024,
     fileFilter,
   } = opts;
 
