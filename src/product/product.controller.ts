@@ -118,10 +118,8 @@ export class ProductController {
   }
 
   @Get('all')
-  async getAllProducts(
-    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number,
-  ): Promise<ApiResponse<Product[]>> {
-    const products = await this.productService.getPopularProducts(limit);
+  async getAllProducts(): Promise<ApiResponse<Product[]>> {
+    const products = await this.productService.getAllProducts();
     return new ApiResponse(200, products, 'All products retrieved');
   }
 

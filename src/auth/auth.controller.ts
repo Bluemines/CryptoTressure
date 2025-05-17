@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, SendEmailDto, SignupDto } from './dto';
-import { ApiResponse } from 'src/common';
+import { ApiResponse, Roles } from 'src/common';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
@@ -33,6 +33,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
+  @Roles('USER', 'ADMIN')
   async getCurrentUser(@Req() request: any): Promise<ApiResponse> {
     const user = await this.authService.getCurrentUser(request.user.id);
 
