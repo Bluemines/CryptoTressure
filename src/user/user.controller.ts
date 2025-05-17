@@ -70,7 +70,7 @@ export class UserController {
   // CUSTOMER
   @Patch('update')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER')
+  @Roles('USER', 'ADMIN')
   @FileUpload({ fieldName: 'profile' })
   async updateUser(
     @UploadedFile() file: Express.Multer.File,
