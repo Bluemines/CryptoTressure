@@ -14,12 +14,7 @@ export class AgreementController {
   create(@Body() dto: CreateAgreementDto) {
     return this.agreementService.create(dto);
   }
-  @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  getAll(){
-    return this.agreementService.getAll();
-  }
+  
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')

@@ -13,22 +13,18 @@ export class AgreementService {
       },
     });
   }
-  async getAll() {
-    return this.prisma.agreement.findMany({})
-  }
 
   async getById(id: number) {
     const existing = await this.prisma.agreement.findUnique({ where: { id } });
-  
+
     if (!existing) {
       throw new NotFoundException(`Agreement with ID ${id} not found.`);
     }
-    return existing
+    return existing;
   }
   async update(id: number, dto: UpdateAgreementDto) {
-  
     const existing = await this.prisma.agreement.findUnique({ where: { id } });
-  
+
     if (!existing) {
       throw new NotFoundException(`Agreement with ID ${id} not found.`);
     }
@@ -40,16 +36,16 @@ export class AgreementService {
       },
     });
   }
-  
+
   async delete(id: number) {
     const existing = await this.prisma.agreement.findUnique({ where: { id } });
-  
+
     if (!existing) {
       throw new NotFoundException(`Agreement with ID ${id} not found.`);
     }
-  
+
     return this.prisma.agreement.delete({
       where: { id },
     });
-  } 
+  }
 }

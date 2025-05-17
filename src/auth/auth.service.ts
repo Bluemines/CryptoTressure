@@ -248,6 +248,8 @@ export class AuthService {
         username: true,
         email: true,
         emailVerified: true,
+        profile: true,
+        phone: true,
         createdAt: true,
         updatedAt: true,
       },
