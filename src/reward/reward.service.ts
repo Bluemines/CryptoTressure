@@ -6,10 +6,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { FindRewardsParams } from './interfaces/find-rewards-params.interface';
 import { UserRewardDTO } from 'src/user/dto';
 import { ApiError } from 'src/common';
+import { NotificationGateway } from 'src/notifications/notification.gateway';
 
 @Injectable()
 export class RewardService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private notificationGateway: NotificationGateway,
+  ) {}
 
   async findAllAdmin({
     skip,
@@ -71,7 +75,22 @@ export class RewardService {
         where: { userId },
         data: { balance: { increment: amount } },
       }),
+
+      this.prisma.notification.create({
+        data: {
+          user: { connect: { id: userId } },
+          type: 'REWARD_EARNED',
+          title: 'Reward Earned 🎉',
+          message: `🎉 You received a reward of ₨${amount}!`,
+        },
+      }),
     ]);
+    
+    this.notificationGateway.sendNotification(userId, {
+      type: 'REWARD_EARNED',
+      message: `🎉 You received a reward of ₨${amount}!`,
+    });
+
 
     return rewardRecord;
   }
