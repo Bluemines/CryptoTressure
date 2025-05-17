@@ -1,10 +1,20 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, SendEmailDto, SignupDto } from './dto';
 import { ApiResponse, Roles } from 'src/common';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ChangePasswordDto } from './dto/changePasswordDto.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -53,4 +63,25 @@ export class AuthController {
     await this.authService.resetPassword(dto);
     return new ApiResponse(200, null, 'Password has been reset');
   }
+
+  @Patch('password')
+  @UseGuards(JwtAuthGuard)
+  async changePassword(
+    @Req() req,
+    @Body() dto: ChangePasswordDto,
+  ): Promise<ApiResponse<null>> {
+    if (dto.newPassword !== dto.confirmPassword) {
+      throw new ForbiddenException('New passwords do not match.');
+    }
+
+    const userId = req.user.id;
+    await this.authService.changePassword(
+      userId,
+      dto.currentPassword,
+      dto.newPassword,
+    );
+
+    return new ApiResponse(200, null, 'Password updated successfully');
+  }
+  s;
 }

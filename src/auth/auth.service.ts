@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { LoginDto, SendEmailDto, SignupDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2';
@@ -13,6 +13,7 @@ import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { awardPoints } from 'src/common/utils/points';
 import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library';
 import { v4 as uuidv4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -312,5 +313,35 @@ export class AuthService {
         data: { used: true },
       }),
     ]);
+  }
+
+  async changePassword(
+    userId: number,
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { password: true },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('User not found.');
+    }
+
+    // 1️⃣ verify current password
+    const matches = await bcrypt.compare(currentPassword, user.password);
+    if (!matches) {
+      throw new ForbiddenException('Current password is incorrect.');
+    }
+
+    // 2️⃣ hash new password
+    const hash = await bcrypt.hash(newPassword, 12);
+
+    // 3️⃣ update
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { password: hash },
+    });
   }
 }
