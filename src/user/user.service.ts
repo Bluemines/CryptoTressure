@@ -206,7 +206,7 @@ async getUserStats() {
     this.prisma.user.count(),
     this.prisma.user.count({ where: { emailVerified: true } }),
     this.prisma.user.count({ where: { status: 'SUSPENDED' } }),
-  //   this.prisma.machine.count({ where: { status: 'ACTIVE' } }),
+    this.prisma.product.count(),
   ]);
   
   return {
