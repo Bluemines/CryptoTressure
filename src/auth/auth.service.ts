@@ -322,7 +322,6 @@ export class AuthService {
   ): Promise<void> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { password: true },
     });
 
     if (!user) {
@@ -330,13 +329,16 @@ export class AuthService {
     }
 
     // 1️⃣ verify current password
-    const matches = await bcrypt.compare(currentPassword, user.password);
-    if (!matches) {
-      throw new ForbiddenException('Current password is incorrect.');
+    
+
+    const match = await argon.verify(user.password, currentPassword);
+    if (!match) {
+      throw new ApiError(400, 'Invalid credentials');
     }
 
     // 2️⃣ hash new password
-    const hash = await bcrypt.hash(newPassword, 12);
+    const hash= await argon.hash(newPassword);
+
 
     // 3️⃣ update
     await this.prisma.user.update({
