@@ -159,8 +159,7 @@ model Referral {
 
 model Agreement {
   id        Int      @id @default(autoincrement())
-  title     String
-  content   String
+  agreement String
   createdAt DateTime @default(now())
 }
 
