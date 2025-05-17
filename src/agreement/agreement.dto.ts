@@ -2,10 +2,7 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateAgreementDto {
   @IsNotEmpty()
-  title: string;
-
-  @IsNotEmpty()
-  content: string; // This will contain the raw HTML
+  agreement: string// This will contain the raw HTML
 }
 
 export class UpdateAgreementDto {

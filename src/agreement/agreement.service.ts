@@ -9,8 +9,7 @@ export class AgreementService {
   async create(dto: CreateAgreementDto) {
     return this.prisma.agreement.create({
       data: {
-        title: dto.title,
-        content: dto.content, // Store raw HTML
+        agreement: dto.agreement,
       },
     });
   }
