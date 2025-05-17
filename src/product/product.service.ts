@@ -153,13 +153,7 @@ export class ProductService {
 
   async getAllProducts(): Promise<Product[]> {
     const products = await this.prisma.product.findMany({
-      where: { deletedAt: null },
-      include: {
-        _count: {
-          select: { rentals: true, saleItems: true },
-        },
-      },
-    });
+      where: { deletedAt: null }})
     return products;
   }
 
