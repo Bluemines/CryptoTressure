@@ -151,6 +151,19 @@ export class ProductService {
     return pool.slice(0, limit);
   }
 
+  async getAllProducts(limit = 3): Promise<Product[]> {
+    const products = await this.prisma.product.findMany({
+      where: { deletedAt: null },
+      include: {
+        _count: {
+          select: { rentals: true, saleItems: true },
+        },
+      },
+    });
+     return  products.slice(0, limit)
+
+  }
+
   async getUserProducts(userId: number): Promise<Product[]> {
     return this.prisma.product.findMany({
       where: {

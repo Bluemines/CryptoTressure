@@ -117,6 +117,14 @@ export class ProductController {
     return new ApiResponse(200, products, 'Popular products retrieved');
   }
 
+  @Get('all')
+  async getAllProducts(
+    @Query('limit', new DefaultValuePipe(3), ParseIntPipe) limit: number,
+  ): Promise<ApiResponse<Product[]>> {
+    const products = await this.productService.getPopularProducts(limit);
+    return new ApiResponse(200, products, 'All products retrieved');
+  }
+
   @Get('by-user/:userId')
   async getUserProducts(
     @Param('userId', ParseIntPipe) userId: number,
