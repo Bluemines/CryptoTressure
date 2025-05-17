@@ -153,27 +153,32 @@ export class ProductService {
 
   async getAllProducts(): Promise<Product[]> {
     const products = await this.prisma.product.findMany({
-      where: { deletedAt: null }})
+      where: { deletedAt: null },
+    });
     return products;
   }
 
   async getUserProducts(userId: number): Promise<Product[]> {
-    return this.prisma.product.findMany({
+    const direct = await this.prisma.userProduct.findMany({
       where: {
-        deletedAt: null,
-        OR: [
-          { userProducts: { some: { userId } } },
-          { rentals: { some: { userId } } },
-          {
-            saleItems: {
-              some: {
-                sale: { buyerId: userId },
-              },
-            },
-          },
-        ],
+        userId,
+        product: { deletedAt: null },
       },
+      include: { product: true },
     });
+
+    const saleItems = await this.prisma.saleItem.findMany({
+      where: {
+        sale: { buyerId: userId },
+        product: { deletedAt: null },
+      },
+      include: { product: true },
+    });
+
+    return [
+      ...direct.map((up) => up.product),
+      ...saleItems.map((si) => si.product),
+    ];
   }
 
   async viewProduct(id: number) {
