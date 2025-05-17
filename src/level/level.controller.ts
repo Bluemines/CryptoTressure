@@ -26,7 +26,7 @@ export class LevelController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER') // Change to Admin later
+  @Roles('ADMIN')
   async create(@Body() dto: CreateLevelDto): Promise<ApiResponse<Level>> {
     const lvl = await this.svc.create(dto);
     return new ApiResponse(201, lvl, 'Level created');
@@ -34,7 +34,7 @@ export class LevelController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER')
+  @Roles('ADMIN')
   async findAll(): Promise<ApiResponse<Level[]>> {
     const list = await this.svc.findAll();
     return new ApiResponse(200, list, 'Levels retrieved');
@@ -42,7 +42,7 @@ export class LevelController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER')
+  @Roles('ADMIN')
   async findOne(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ApiResponse<Level>> {
@@ -52,7 +52,7 @@ export class LevelController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER')
+  @Roles('ADMIN')
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateLevelDto,
@@ -63,7 +63,7 @@ export class LevelController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER')
+  @Roles('ADMIN')
   async remove(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ApiResponse<Level>> {
