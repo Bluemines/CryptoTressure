@@ -118,9 +118,31 @@ export class ProductController {
   }
 
   @Get('all')
-  async getAllProducts(): Promise<ApiResponse<Product[]>> {
-    const products = await this.productService.getAllProducts();
-    return new ApiResponse(200, products, 'All products retrieved');
+  async getAllProducts(
+    @Query() query: AdminViewProductsPaginationDto,
+  ): Promise<
+    ApiResponse<{
+      items: Product[];
+      meta: { total: number; page: number; limit: number; totalPages: number };
+    }>
+  > {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 10;
+    const search = query.search;
+
+    const skip = (page - 1) * limit;
+    const [items, total] = await this.productService.viewAllProducts({
+      skip,
+      take: limit,
+      search,
+    });
+
+    const totalPages = Math.ceil(total / limit);
+    return new ApiResponse(
+      200,
+      { items, meta: { total, page, limit, totalPages } },
+      'Products retrieved',
+    );
   }
 
   @Get('by-user/:userId')
