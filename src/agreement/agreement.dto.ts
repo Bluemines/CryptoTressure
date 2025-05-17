@@ -8,9 +8,5 @@ export class CreateAgreementDto {
 export class UpdateAgreementDto {
     @IsOptional()
     @IsString()
-    title?: string;
-  
-    @IsOptional()
-    @IsString()
-    content?: string; // Raw HTML
+    agreement?: string; // Raw HTML
   }
