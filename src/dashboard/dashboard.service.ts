@@ -53,54 +53,66 @@ export class DashboardService {
     });
   }
 
-    async getRevenueStats(range: 'ALL' | '12_MONTHS' | '30_DAYS' | '7_DAYS' | '24_HOURS') {
-      let fromDate: Date | undefined;
-  
-      const now = new Date();
-      switch (range) {
-        case '12_MONTHS':
-          fromDate = subMonths(now, 12);
-          break;
-        case '30_DAYS':
-          fromDate = subDays(now, 30);
-          break;
-        case '7_DAYS':
-          fromDate = subDays(now, 7);
-          break;
-        case '24_HOURS':
-          fromDate = subDays(now, 1);
-          break;
-        case 'ALL':
-        default:
-          fromDate = undefined;
-      }
-  
-      const deposits = await this.prisma.deposit.findMany({
+  async getRevenueAndSales() {
+      // 1. Fetch revenue data from deposits (successful deposits only)
+      const revenueData = await this.prisma.deposit.groupBy({
+        by: ['createdAt'],
         where: {
           status: 'SUCCESS',
-          ...(fromDate ? { createdAt: { gte: fromDate } } : {}),
         },
-        orderBy: { createdAt: 'asc' },
+        _sum: {
+          amount: true,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
       });
   
-      // Group revenue by day
-      const grouped = new Map<string, number>();
-      deposits.forEach((d) => {
-        const date = startOfDay(d.createdAt).toISOString().split('T')[0];
-        grouped.set(date, (grouped.get(date) || 0) + d.amount.toNumber());
-
+      // 2. Fetch sales data from completed sales
+      const salesData = await this.prisma.sale.groupBy({
+        by: ['date'],
+        _sum: {
+          total: true,
+        },
+        orderBy: {
+          date: 'asc',
+        },
       });
   
-      // Return sorted results
-      const sortedStats = Array.from(grouped.entries()).map(([date, value]) => ({
-        date,
-        revenue: value,
-        sales: value, // For now, treating sales same as revenue
-      }));
+      // 3. Format for monthly aggregation (example for current year)
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      
+      const currentYear = new Date().getFullYear();
+      
+      const monthlyRevenue = months.map((month, index) => {
+        const monthStart = new Date(currentYear, index, 1);
+        const monthEnd = new Date(currentYear, index + 1, 0);
+        
+        const monthlySum = revenueData
+          .filter(d => d.createdAt >= monthStart && d.createdAt <= monthEnd)
+          .reduce((sum, item) => sum + (Number(item._sum.amount) || 0), 0);
   
-      return sortedStats;
-    }
-    async getUserDashboardStats() {
+        return { month, amount: Number(monthlySum.toFixed(2)) };
+      });
+  
+      const monthlySales = months.map((month, index) => {
+        const monthStart = new Date(currentYear, index, 1);
+        const monthEnd = new Date(currentYear, index + 1, 0);
+        
+        const monthlySum = salesData
+          .filter(s => s.date >= monthStart && s.date <= monthEnd)
+          .reduce((sum, item) => sum + (Number(item._sum.total) || 0), 0);
+  
+        return { month, amount: Number(monthlySum.toFixed(2)) };
+      });
+  
+      return {
+        revenue: monthlyRevenue,
+        sales: monthlySales,
+      };
+  }
+  
+  async getUserDashboardStats() {
         return {
           currentDeposit: await this.getCurrentDeposit(),
           currentBalance: await this.getCurrentBalance(),

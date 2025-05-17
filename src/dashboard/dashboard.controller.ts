@@ -39,6 +39,6 @@ export class DashboardController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   getRevenueStats(@Query('range') range: string = 'ALL') {
-    return this.dashboardService.getRevenueStats(range.toUpperCase() as any);
+    return this.dashboardService.getRevenueAndSales();
   }
 }
