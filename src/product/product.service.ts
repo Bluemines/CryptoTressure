@@ -89,24 +89,35 @@ export class ProductService {
   }
 
   async deleteProduct(id: number): Promise<Product> {
-    const existing = await this.prisma.product.findUnique({ where: { id } });
+    const existing = await this.prisma.product.findUnique({
+      where: { id },
+      include: {
+        userProducts: true, // Fetch related purchases
+      },
+    });
+  
     if (!existing) throw new ApiError(404, 'Product not found');
-
+  
+    if (existing.userProducts.length > 0) {
+      throw new ApiError(400, 'Cannot delete: product has been bought by users');
+    }
+  
     if (existing.image) {
       const file = existing.image.replace(/^\/uploads\//, '');
       const path = join(process.cwd(), 'uploads', file);
       try {
         await unlink(path);
       } catch {
-        /* ignore */
+        // Ignore file not found errors
       }
     }
-
+  
     return this.prisma.product.update({
       where: { id },
       data: { deletedAt: new Date() },
     });
   }
+  
 
   // ────────────── CUSTOMER  ──────────────────────
   async getPopularProducts(limit = 3): Promise<Product[]> {
