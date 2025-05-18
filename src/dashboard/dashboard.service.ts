@@ -15,16 +15,22 @@ export class DashboardService {
       rewardsDistributed,
       platformBalance,
       totalRevenue,
-      pendingWithdrawals
+      pendingWithdrawals,
     ] = await Promise.all([
       this.prisma.user.count(),
       this.prisma.user.count({ where: { emailVerified: true } }),
       this.prisma.user.count({ where: { status: 'SUSPENDED' } }),
-      this.prisma.product.count(),
+      this.prisma.product.count({ where: { deletedAt: null } }),
       this.prisma.reward.aggregate({ _sum: { reward: true } }),
       this.prisma.wallet.aggregate({ _sum: { balance: true } }),
-      this.prisma.deposit.aggregate({ where: { status: 'SUCCESS' }, _sum: { amount: true } }),
-      this.prisma.withdraw.aggregate({ where: { status: 'PENDING' }, _sum: { amount: true } }),
+      this.prisma.deposit.aggregate({
+        where: { status: 'SUCCESS' },
+        _sum: { amount: true },
+      }),
+      this.prisma.withdraw.aggregate({
+        where: { status: 'PENDING' },
+        _sum: { amount: true },
+      }),
     ]);
 
     return {
@@ -54,100 +60,113 @@ export class DashboardService {
   }
 
   async getRevenueAndSales() {
-      // 1. Fetch revenue data from deposits (successful deposits only)
-      const revenueData = await this.prisma.deposit.groupBy({
-        by: ['createdAt'],
-        where: {
-          status: 'SUCCESS',
-        },
-        _sum: {
-          amount: true,
-        },
-        orderBy: {
-          createdAt: 'asc',
-        },
-      });
-  
-      // 2. Fetch sales data from completed sales
-      const salesData = await this.prisma.sale.groupBy({
-        by: ['date'],
-        _sum: {
-          total: true,
-        },
-        orderBy: {
-          date: 'asc',
-        },
-      });
-  
-      // 3. Format for monthly aggregation (example for current year)
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      
-      const currentYear = new Date().getFullYear();
-      
-      const monthlyRevenue = months.map((month, index) => {
-        const monthStart = new Date(currentYear, index, 1);
-        const monthEnd = new Date(currentYear, index + 1, 0);
-        
-        const monthlySum = revenueData
-          .filter(d => d.createdAt >= monthStart && d.createdAt <= monthEnd)
-          .reduce((sum, item) => sum + (Number(item._sum.amount) || 0), 0);
-  
-        return { month, amount: Number(monthlySum.toFixed(2)) };
-      });
-  
-      const monthlySales = months.map((month, index) => {
-        const monthStart = new Date(currentYear, index, 1);
-        const monthEnd = new Date(currentYear, index + 1, 0);
-        
-        const monthlySum = salesData
-          .filter(s => s.date >= monthStart && s.date <= monthEnd)
-          .reduce((sum, item) => sum + (Number(item._sum.total) || 0), 0);
-  
-        return { month, amount: Number(monthlySum.toFixed(2)) };
-      });
-  
-      return {
-        revenue: monthlyRevenue,
-        sales: monthlySales,
-      };
+    // 1. Fetch revenue data from deposits (successful deposits only)
+    const revenueData = await this.prisma.deposit.groupBy({
+      by: ['createdAt'],
+      where: {
+        status: 'SUCCESS',
+      },
+      _sum: {
+        amount: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
+    // 2. Fetch sales data from completed sales
+    const salesData = await this.prisma.sale.groupBy({
+      by: ['date'],
+      _sum: {
+        total: true,
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    // 3. Format for monthly aggregation (example for current year)
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const currentYear = new Date().getFullYear();
+
+    const monthlyRevenue = months.map((month, index) => {
+      const monthStart = new Date(currentYear, index, 1);
+      const monthEnd = new Date(currentYear, index + 1, 0);
+
+      const monthlySum = revenueData
+        .filter((d) => d.createdAt >= monthStart && d.createdAt <= monthEnd)
+        .reduce((sum, item) => sum + (Number(item._sum.amount) || 0), 0);
+
+      return { month, amount: Number(monthlySum.toFixed(2)) };
+    });
+
+    const monthlySales = months.map((month, index) => {
+      const monthStart = new Date(currentYear, index, 1);
+      const monthEnd = new Date(currentYear, index + 1, 0);
+
+      const monthlySum = salesData
+        .filter((s) => s.date >= monthStart && s.date <= monthEnd)
+        .reduce((sum, item) => sum + (Number(item._sum.total) || 0), 0);
+
+      return { month, amount: Number(monthlySum.toFixed(2)) };
+    });
+
+    return {
+      revenue: monthlyRevenue,
+      sales: monthlySales,
+    };
   }
-  
+
   async getUserDashboardStats() {
-        return {
-          currentDeposit: await this.getCurrentDeposit(),
-          currentBalance: await this.getCurrentBalance(),
-          totalWithdraw: await this.getTotalWithdraw(),
-          totalReferralBonus: await this.getTotalReferralBonus()
-        };
-      }
-    
-      private async getCurrentDeposit() {
-        const result = await this.prisma.deposit.aggregate({
-          _sum: { amount: true },
-          where: { status: 'SUCCESS' }
-        });
-        return result._sum.amount || 0;
-      }
-    
-      private async getCurrentBalance() {
-        const result = await this.prisma.wallet.aggregate({
-          _sum: { balance: true }
-        });
-        return result._sum.balance || 0;
-      }
-    
-      private async getTotalWithdraw() {
-        const result = await this.prisma.withdraw.aggregate({
-          _sum: { amount: true },
-          where: { status: 'APPROVED' }
-        });
-        return result._sum.amount || 0;
-      }
-    
-      private async getTotalReferralBonus() {
-        const result = await this.prisma.commission.aggregate({
-          _sum: { amount: true }
-        });
-        return result._sum.amount || 0;
-      }
+    return {
+      currentDeposit: await this.getCurrentDeposit(),
+      currentBalance: await this.getCurrentBalance(),
+      totalWithdraw: await this.getTotalWithdraw(),
+      totalReferralBonus: await this.getTotalReferralBonus(),
+    };
+  }
+
+  private async getCurrentDeposit() {
+    const result = await this.prisma.deposit.aggregate({
+      _sum: { amount: true },
+      where: { status: 'SUCCESS' },
+    });
+    return result._sum.amount || 0;
+  }
+
+  private async getCurrentBalance() {
+    const result = await this.prisma.wallet.aggregate({
+      _sum: { balance: true },
+    });
+    return result._sum.balance || 0;
+  }
+
+  private async getTotalWithdraw() {
+    const result = await this.prisma.withdraw.aggregate({
+      _sum: { amount: true },
+      where: { status: 'APPROVED' },
+    });
+    return result._sum.amount || 0;
+  }
+
+  private async getTotalReferralBonus() {
+    const result = await this.prisma.commission.aggregate({
+      _sum: { amount: true },
+    });
+    return result._sum.amount || 0;
+  }
 }
