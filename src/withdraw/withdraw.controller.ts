@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -63,4 +64,35 @@ export class WithdrawController {
     await this.svc.reject(id);
     return new ApiResponse(200, null, 'Withdrawal rejected & funds returned');
   }
+  
+  /* _________________Withdraw history ______________________*/
+  @Get('history')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async getWithdrawals(
+    @Query('page') page = '1',
+    @Query('limit') limit = '10',
+  ) {
+    return this.svc.getPaginatedWithdrawals(
+      parseInt(page),
+      parseInt(limit),
+    );
+  }
+
+  @Get('user-history')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  async getMyWithdrawals(
+    @Req() req,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+  ) {
+    const userId = req.user.id; // assuming JWT payload contains `id`
+    return this.svc.getUserWithdrawals(
+      userId,
+      parseInt(page),
+      parseInt(limit),
+    );
+  }
 }
+
