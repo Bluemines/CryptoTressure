@@ -99,7 +99,7 @@ export class ProductService {
     if (!existing) throw new ApiError(404, 'Product not found');
   
     if (existing.userProducts.length > 0) {
-      throw new ApiError(400, 'Cannot delete: product has been bought by users');
+      throw new ApiError(400, 'Cannot be deleted now: Product has been bought by users');
     }
   
     if (existing.image) {
