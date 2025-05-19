@@ -41,7 +41,7 @@ export class AuthService {
       update: { code, expiresAt, userId: null },
       create: { email, code, expiresAt },
     });
-
+    console.log("code",code)
     const info = await this.mailService.sendMail(
       email,
       'Verify your email',
@@ -141,7 +141,10 @@ export class AuthService {
           const referrer = await tx.user.findUnique({
             where: { referralCode: dto.referralCode },
           });
-
+          console.log("referrer", referrer, typeof referrer)
+          if(!referrer){
+           throw new ApiError(400, "the referral code is invalid")
+          }
           if (referrer) {
             /* 1) create Referral row and keep the ID for commission */
             const referralRow = await tx.referral.create({
