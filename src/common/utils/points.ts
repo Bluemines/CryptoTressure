@@ -7,7 +7,7 @@ export async function awardPoints(
   delta: number,
   tx: Prisma.TransactionClient = prisma,
 ) {
-  const inc = Math.floor(Number(delta) || 0); 
+  const inc = Math.floor(Number(delta) || 0);
   if (inc === 0) return;
 
   // Increment points

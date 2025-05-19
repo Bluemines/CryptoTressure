@@ -41,7 +41,7 @@ export class AuthService {
       update: { code, expiresAt, userId: null },
       create: { email, code, expiresAt },
     });
-    console.log("code",code)
+    console.log('code', code);
     const info = await this.mailService.sendMail(
       email,
       'Verify your email',
@@ -141,9 +141,9 @@ export class AuthService {
           const referrer = await tx.user.findUnique({
             where: { referralCode: dto.referralCode },
           });
-          console.log("referrer", referrer, typeof referrer)
-          if(!referrer){
-           throw new ApiError(400, "the referral code is invalid")
+          console.log('referrer', referrer, typeof referrer);
+          if (!referrer) {
+            throw new ApiError(400, 'the referral code is invalid');
           }
           if (referrer) {
             /* 1) create Referral row and keep the ID for commission */
@@ -232,7 +232,7 @@ export class AuthService {
       throw new ApiError(400, 'Invalid credentials');
     }
 
-    const payload = { sub: user.id, email, role: user.role };
+    const payload = { sub: user.id, email, role: user.role, points: user.points };
 
     const secret = this.config.get<string>('JWT_SECRET');
 
@@ -332,7 +332,6 @@ export class AuthService {
     }
 
     // 1️⃣ verify current password
-    
 
     const match = await argon.verify(user.password, currentPassword);
     if (!match) {
@@ -340,8 +339,7 @@ export class AuthService {
     }
 
     // 2️⃣ hash new password
-    const hash= await argon.hash(newPassword);
-
+    const hash = await argon.hash(newPassword);
 
     // 3️⃣ update
     await this.prisma.user.update({
