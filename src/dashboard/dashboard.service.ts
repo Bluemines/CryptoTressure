@@ -131,42 +131,44 @@ export class DashboardService {
     };
   }
 
-  async getUserDashboardStats() {
+  async getUserDashboardStats(userId: number) {
     return {
-      currentDeposit: await this.getCurrentDeposit(),
-      currentBalance: await this.getCurrentBalance(),
-      totalWithdraw: await this.getTotalWithdraw(),
-      totalReferralBonus: await this.getTotalReferralBonus(),
+      currentDeposit: await this.getCurrentDeposit(userId),
+      currentBalance: await this.getCurrentBalance(userId),
+      totalWithdraw: await this.getTotalWithdraw(userId),
+      totalReferralBonus: await this.getTotalReferralBonus(userId),
     };
   }
 
-  private async getCurrentDeposit() {
-    const result = await this.prisma.deposit.aggregate({
+  private async getCurrentDeposit(userId: number): Promise<number> {
+    const { _sum } = await this.prisma.deposit.aggregate({
       _sum: { amount: true },
-      where: { status: 'SUCCESS' },
+      where: { userId, status: 'SUCCESS' },
     });
-    return result._sum.amount || 0;
+    return _sum.amount?.toNumber() ?? 0;
   }
 
-  private async getCurrentBalance() {
-    const result = await this.prisma.wallet.aggregate({
-      _sum: { balance: true },
+  private async getCurrentBalance(userId: number): Promise<number> {
+    const wallet = await this.prisma.wallet.findUnique({
+      where: { userId },
+      select: { balance: true },
     });
-    return result._sum.balance || 0;
+    return wallet?.balance.toNumber() ?? 0;
   }
 
-  private async getTotalWithdraw() {
-    const result = await this.prisma.withdraw.aggregate({
+  private async getTotalWithdraw(userId: number): Promise<number> {
+    const { _sum } = await this.prisma.withdraw.aggregate({
       _sum: { amount: true },
-      where: { status: 'APPROVED' },
+      where: { userId, status: 'APPROVED' },
     });
-    return result._sum.amount || 0;
+    return _sum.amount?.toNumber() ?? 0;
   }
 
-  private async getTotalReferralBonus() {
-    const result = await this.prisma.commission.aggregate({
+  private async getTotalReferralBonus(userId: number): Promise<number> {
+    const { _sum } = await this.prisma.commission.aggregate({
       _sum: { amount: true },
+      where: { referral: { referrerId: userId } },
     });
-    return result._sum.amount || 0;
+    return _sum.amount?.toNumber() ?? 0;
   }
 }

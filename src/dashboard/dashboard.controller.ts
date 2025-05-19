@@ -1,6 +1,6 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { Roles, RolesGuard } from 'src/common';
+import { ApiResponse, Roles, RolesGuard } from 'src/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('dashboard')
@@ -14,12 +14,20 @@ export class DashboardController {
     return this.dashboardService.getDashboardStats();
   }
 
-    @Get('user_stats')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('USER')
-    getUserStats() {
-      return this.dashboardService.getUserDashboardStats()
-    }
+  @Get('user_stats')
+  @UseGuards(JwtAuthGuard)
+  async getUserDashboard(@Req() req): Promise<
+    ApiResponse<{
+      currentDeposit: number;
+      currentBalance: number;
+      totalWithdraw: number;
+      totalReferralBonus: number;
+    }>
+  > {
+    const userId = req.user.id as number;
+    const stats = await this.dashboardService.getUserDashboardStats(userId);
+    return new ApiResponse(200, stats, 'Dashboard stats');
+  }
 
   @Get('recent-users')
   @UseGuards(JwtAuthGuard, RolesGuard)
