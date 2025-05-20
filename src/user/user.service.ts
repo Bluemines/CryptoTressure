@@ -29,9 +29,15 @@ export class UserService {
     }
 
     if (status === 'APPROVED') {
+      // only email-verified, non-suspended users
       where.emailVerified = true;
+      where.status = 'APPROVED';
     } else if (status === 'INACTIVE') {
+      // folks who haven’t verified their email
       where.emailVerified = false;
+    } else if (status === 'SUSPENDED') {
+      // only suspended accounts
+      where.status = 'SUSPENDED';
     }
 
     if (time && time !== 'ALL') {
@@ -196,24 +202,24 @@ export class UserService {
       data,
     });
   }
-async getUserStats() {
-  const [
-    totalUsers,
-    verifiedUsers,
-    suspendedUsers,
-  //   activeMachines,
-  ] = await Promise.all([
-    this.prisma.user.count(),
-    this.prisma.user.count({ where: { emailVerified: true } }),
-    this.prisma.user.count({ where: { status: 'SUSPENDED' } }),
-    this.prisma.product.count(),
-  ]);
-  
-  return {
-    totalUsers,
-    verifiedUsers,
-    suspendedUsers,
-    activeMachines: 0,
-  };
+  async getUserStats() {
+    const [
+      totalUsers,
+      verifiedUsers,
+      suspendedUsers,
+      //   activeMachines,
+    ] = await Promise.all([
+      this.prisma.user.count(),
+      this.prisma.user.count({ where: { emailVerified: true } }),
+      this.prisma.user.count({ where: { status: 'SUSPENDED' } }),
+      this.prisma.product.count(),
+    ]);
+
+    return {
+      totalUsers,
+      verifiedUsers,
+      suspendedUsers,
+      activeMachines: 0,
+    };
   }
 }

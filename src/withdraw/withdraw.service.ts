@@ -124,48 +124,46 @@ export class WithdrawService {
   }
 
   // src/withdraw/withdraw.service.ts
-async getPaginatedWithdrawals(page = 1, limit = 10) {
-  const skip = (page - 1) * limit;
+  async getPaginatedWithdrawals(page = 1, limit = 10) {
+    const skip = (page - 1) * limit;
 
-  const [withdrawals, total] = await this.prisma.$transaction([
-    this.prisma.withdraw.findMany({
-      skip,
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-    }),
-    this.prisma.withdraw.count(),
-  ]);
+    const [withdrawals, total] = await this.prisma.$transaction([
+      this.prisma.withdraw.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.withdraw.count(),
+    ]);
 
-  return {
-    data: withdrawals,
-    total,
-    page,
-    lastPage: Math.ceil(total / limit),
-  };
-}
+    return {
+      data: withdrawals,
+      total,
+      page,
+      lastPage: Math.ceil(total / limit),
+    };
+  }
 
-// src/withdraw/withdraw.service.ts
+  // src/withdraw/withdraw.service.ts
 
-async getUserWithdrawals(userId: number, page = 1, limit = 10) {
-  const skip = (page - 1) * limit;
+  async getUserWithdrawals(userId: number, page = 1, limit = 10) {
+    const skip = (page - 1) * limit;
 
-  const [withdrawals, total] = await this.prisma.$transaction([
-    this.prisma.withdraw.findMany({
-      where: { userId },
-      skip,
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-    }),
-    this.prisma.withdraw.count({ where: { userId } }),
-  ]);
+    const [withdrawals, total] = await this.prisma.$transaction([
+      this.prisma.withdraw.findMany({
+        where: { userId },
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.withdraw.count({ where: { userId } }),
+    ]);
 
-  return {
-    data: withdrawals,
-    total,
-    page,
-    lastPage: Math.ceil(total / limit),
-  };
-}
-
-
+    return {
+      data: withdrawals,
+      total,
+      page,
+      lastPage: Math.ceil(total / limit),
+    };
+  }
 }

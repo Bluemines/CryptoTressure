@@ -327,15 +327,20 @@ export class ProductService {
       //   throw new ApiError(400, 'You already own this product');
       // }
 
+      const MS_IN_DAY = 24 * 60 * 60 * 1000;
+
       /* 5‑G. Create UserProduct row */
       await tx.userProduct.create({
         data: {
           userId,
           productId,
           acquiredAt: new Date(),
-          expiresAt: new Date(
-            Date.now() + product.rentalDays * 24 * 60 * 60 * 1000,
-          ),
+          expiresAt:
+            trialFundSpend === price
+              ? trial.expiresAt
+              : new Date(Date.now() + product.rentalDays * MS_IN_DAY),
+          walletSpend: walletSpend,
+          trialSpend: trialFundSpend,
         },
       });
 

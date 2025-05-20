@@ -92,6 +92,7 @@ export class AuthService {
 
     // ─── 4. Prepare constants ──────────────────────────────────────────────
     const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
+
     const referralBonus = Number(
       this.config.get<number>('REFERRAL_BONUS_USD', 10),
     );
@@ -232,7 +233,12 @@ export class AuthService {
       throw new ApiError(400, 'Invalid credentials');
     }
 
-    const payload = { sub: user.id, email, role: user.role, points: user.points };
+    const payload = {
+      sub: user.id,
+      email,
+      role: user.role,
+      points: user.points,
+    };
 
     const secret = this.config.get<string>('JWT_SECRET');
 

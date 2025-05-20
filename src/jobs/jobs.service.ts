@@ -14,9 +14,10 @@ export class JobsService {
   /* ────────────────────────────────────────────────────────────────
      1. EXPIRY / REFUND  – runs hourly on the hour
   ──────────────────────────────────────────────────────────────── */
-  @Cron('0 * * * *')
+  @Cron('0 * * * *', { name: 'handleExpiredMachines' })
   async handleExpiredMachines() {
     const now = new Date();
+    console.log('In HandleExiredMachines');
 
     const expired = await this.prisma.userProduct.findMany({
       where: { status: 'ACTIVE', expiresAt: { lte: now } },
@@ -93,7 +94,7 @@ export class JobsService {
         } catch (e: any) {
           // ignore duplicate key (P2002) but re‑throw anything else
           if (e?.code !== 'P2002') throw e;
-          return; 
+          return;
         }
 
         /* 2) credit wallet balance */

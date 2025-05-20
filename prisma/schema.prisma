@@ -36,7 +36,7 @@ model User {
   referralsMade     Referral[]    @relation("UserReferralsMade")
   referralsReceived Referral[]    @relation("UserReferralsReceived")
   rewards           Reward[]
-  trialFund         TrialFund?
+  trialFund         TrialFund?   
 
   verifications  Verification[]
   passwordResets PasswordReset[]
@@ -45,7 +45,7 @@ model User {
 
   Deposit      Deposit[]
   Notification Notification[]
-}
+} 
 
 model Verification {
   id        Int      @id @default(autoincrement())
@@ -127,6 +127,8 @@ model UserProduct {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
 
+  walletSpend  Decimal  @default(0)  
+  trialSpend   Decimal  @default(0)
 }
 
 model Rental {
