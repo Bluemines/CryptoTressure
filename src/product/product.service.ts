@@ -95,13 +95,16 @@ export class ProductService {
         userProducts: true, // Fetch related purchases
       },
     });
-  
+
     if (!existing) throw new ApiError(404, 'Product not found');
-  
+
     if (existing.userProducts.length > 0) {
-      throw new ApiError(400, 'Cannot be deleted now: Product has been bought by users');
+      throw new ApiError(
+        400,
+        'Cannot be deleted now: Product has been bought by users',
+      );
     }
-  
+
     if (existing.image) {
       const file = existing.image.replace(/^\/uploads\//, '');
       const path = join(process.cwd(), 'uploads', file);
@@ -111,13 +114,12 @@ export class ProductService {
         // Ignore file not found errors
       }
     }
-  
+
     return this.prisma.product.update({
       where: { id },
       data: { deletedAt: new Date() },
     });
   }
-  
 
   // ────────────── CUSTOMER  ──────────────────────
   async getPopularProducts(limit = 3): Promise<Product[]> {
@@ -178,18 +180,7 @@ export class ProductService {
       include: { product: true },
     });
 
-    const saleItems = await this.prisma.saleItem.findMany({
-      where: {
-        sale: { buyerId: userId },
-        product: { deletedAt: null },
-      },
-      include: { product: true },
-    });
-
-    return [
-      ...direct.map((up) => up.product),
-      ...saleItems.map((si) => si.product),
-    ];
+    return direct.map((up) => up.product);
   }
 
   async viewProduct(id: number) {
