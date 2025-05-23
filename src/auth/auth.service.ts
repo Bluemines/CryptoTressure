@@ -204,7 +204,10 @@ export class AuthService {
     } catch (e) {
       // Handle unique constraint error
       if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
-        throw new ApiError(409, 'Email or username already exists');
+        throw new ApiError(
+          409,
+          'Error in Catch. Email or username already exists',
+        );
       }
       throw e;
     }
