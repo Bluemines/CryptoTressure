@@ -44,8 +44,8 @@ export class DepositController {
   /** Easypaisa IPN */
   @Post('webhook')
   async webhook(@HeaderDec('x-signature') sig: string, @Body() body: any) {
-    await this.svc.handleIPN(body, sig);
-    return { ok: true };
+  const res =  await this.svc.handleIPN(body, sig);
+    return { res};
   }
 
   // Admin give deposit to User
