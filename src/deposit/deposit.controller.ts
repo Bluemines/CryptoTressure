@@ -2,17 +2,33 @@ import {
   Body,
   Controller,
   Post,
+  Get,
   Req,
   UseGuards,
   Headers as HeaderDec,
 } from '@nestjs/common';
 import { DepositService } from './deposit.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ApiResponse } from 'src/common';
+import { ApiResponse, Roles, RolesGuard } from 'src/common';
+import { AdminDepositDto } from './dto/adminDeposit.dto';
 
 @Controller('deposit')
 export class DepositController {
   constructor(private svc: DepositService) {}
+
+  // User Deposits
+  @Get('my-deposits')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  async userDeposits(@Req() req) {
+    const userId = req.user.Id;
+    const deposits = await this.svc.userDepositsService(userId);
+    return new ApiResponse(
+      200,
+      deposits,
+      'User Deposits Retrived Successfully',
+    );
+  }
 
   /** user starts a deposit */
   @Post('init')
@@ -30,5 +46,14 @@ export class DepositController {
   async webhook(@HeaderDec('x-signature') sig: string, @Body() body: any) {
     await this.svc.handleIPN(body, sig);
     return { ok: true };
+  }
+
+  // Admin give deposit to User
+  @Post('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async adminDeposit(@Body() dto: AdminDepositDto) {
+    await this.svc.adminDepositService(dto);
+    return new ApiResponse(200, '', 'Amount Deposit to User Successfully');
   }
 }

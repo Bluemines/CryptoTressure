@@ -22,6 +22,7 @@ import { join } from 'path';
 import { JobsModule } from './jobs/jobs.module';
 import { AgreementModule } from './agreement/agreement.module';
 import { DebugModule } from './debug/debug.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 
 @Module({
@@ -51,7 +52,8 @@ import { DebugModule } from './debug/debug.module';
     NotificationsModule,
     DashboardModule,
     AgreementModule,
-    DebugModule
+    DebugModule,
+    TransactionsModule
   ],
   providers: [ProductService, LevelService],
   controllers: [],

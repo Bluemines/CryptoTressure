@@ -23,7 +23,7 @@ import { User } from '../../generated/prisma/client';
 export class UserController {
   constructor(private userService: UserService) {}
 
-    @Get('stats')
+  @Get('stats')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   getStats() {
@@ -69,9 +69,9 @@ export class UserController {
 
   // CUSTOMER
   @Patch('update')
+  @FileUpload({ fieldName: 'picture', destination: './uploads', maxWidth: 800, quality: 75 })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER', 'ADMIN')
-  @FileUpload({ fieldName: 'profile' })
   async updateUser(
     @UploadedFile() file: Express.Multer.File,
     @Body() dto: UpdateUserDTO,

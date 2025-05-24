@@ -45,6 +45,8 @@ model User {
 
   Deposit      Deposit[]
   Notification Notification[]
+
+  Transaction Transaction[]
 } 
 
 model Verification {
@@ -271,7 +273,7 @@ model Deposit {
   user        User          @relation(fields: [userId], references: [id])
   userId      Int
   amount      Decimal
-  provider    String        @default("EASYPK")
+  provider    String        @default("")
   reference   String        @unique
   externalId  String?
   status      DepositStatus @default(PENDING)
@@ -291,6 +293,16 @@ model Notification {
   createdAt DateTime          @default(now())
   type      NotificationType?
   user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id                Int            @id @default(autoincrement())
+  transactiontype   TransactionType
+  amount            Int
+  date              DateTime       @default(now())
+  status            TransactionStatus 
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  Int        
 }
 
 enum NotificationType {
@@ -347,6 +359,17 @@ enum UserProductStatus {
 
 enum DepositStatus {
   PENDING
+  SUCCESS
+  FAILED
+}
+
+enum TransactionType {
+  PURCHASED
+  DEPOSIT
+  wITHDRAW
+}
+
+enum TransactionStatus {
   SUCCESS
   FAILED
 }

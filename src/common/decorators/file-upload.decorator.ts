@@ -1,8 +1,9 @@
 import { applyDecorators, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { memoryStorage } from 'multer';
 import { extname } from 'path';
 import { FileUploadOptions } from '../interfaces/file-upload-options';
+import { ImageResizeInterceptor } from '../interceptors/image-resize.interceptor';
 
 export function FileUpload(opts: FileUploadOptions) {
   const {
@@ -10,22 +11,15 @@ export function FileUpload(opts: FileUploadOptions) {
     destination = './uploads',
     maxSize = 5 * 1024 * 1024,
     fileFilter,
+    maxWidth,
+    quality,
   } = opts;
 
   return applyDecorators(
     UseInterceptors(
       FileInterceptor(fieldName, {
-        storage: diskStorage({
-          destination,
-          filename: (_req, file, cb) => {
-            const uniqueName =
-              Date.now() +
-              '-' +
-              Math.round(Math.random() * 1e9) +
-              extname(file.originalname);
-            cb(null, uniqueName);
-          },
-        }),
+        storage: memoryStorage(),
+        limits: { fileSize: maxSize },
         fileFilter:
           fileFilter ??
           ((req, file, cb) => {
@@ -34,7 +28,11 @@ export function FileUpload(opts: FileUploadOptions) {
             }
             cb(null, true);
           }),
-        limits: { fileSize: maxSize },
+      }),
+      new ImageResizeInterceptor({
+        destination,
+        maxWidth: opts.maxWidth,
+        quality: opts.quality,
       }),
     ),
   );

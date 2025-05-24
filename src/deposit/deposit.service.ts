@@ -3,6 +3,10 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { generateId } from './helpers/index';
 import * as crypto from 'node:crypto';
+import { AdminDepositDto } from './dto/adminDeposit.dto';
+import { ApiError } from 'src/common';
+import { v4 as uuidv4 } from 'uuid';
+import { Prisma } from '../../generated/prisma';
 
 @Injectable()
 export class DepositService {
@@ -10,6 +14,19 @@ export class DepositService {
     private prisma: PrismaService,
     private http: HttpService,
   ) {}
+
+  async userDepositsService(userId: number) {
+    const deposits = this.prisma.deposit.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!deposits) {
+      throw new ApiError(400, 'User has zero deposits');
+    }
+
+    return deposits;
+  }
 
   /** 1. user clicks “Top-up” */
   async initDeposit(userId: number, amount: number) {
@@ -88,5 +105,44 @@ export class DepositService {
     const h = crypto.createHmac('sha256', process.env.EASYPAISA_SECRET);
     h.update(raw);
     return h.digest('hex') === sig;
+  }
+
+  async adminDepositService(dto: AdminDepositDto) {
+    const { amount, email } = dto;
+
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new ApiError(401, 'User not found');
+    }
+
+    await this.prisma.$transaction([
+      this.prisma.deposit.create({
+        data: {
+          reference: uuidv4(),
+          amount,
+          status: 'SUCCESS',
+          provider: 'admin-manual',
+          verifiedAt: new Date(),
+          user: { connect: { id: user.id } },
+        },
+      }),
+      this.prisma.wallet.update({
+        where: { userId: user.id },
+        data: { balance: { increment: amount } },
+      }),
+      this.prisma.transaction.create({
+        data: {
+          amount,
+          transactiontype: 'DEPOSIT',
+          status: 'SUCCESS',
+          user: { connect: { id: user.id } },
+        },
+      }),
+    ] as Prisma.PrismaPromise<unknown>[]);
+
+    return { success: true };
   }
 }

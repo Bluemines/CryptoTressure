@@ -353,8 +353,16 @@ export class ProductService {
         },
       });
 
-      /* 5‑I. Award loyalty points (1 pt per 10 USD spend) */
-      await awardPoints(userId, Math.floor(price / 10), tx);
+      await tx.transaction.create({
+        data: {
+          amount: price,
+          transactiontype: 'PURCHASED',
+          status: 'SUCCESS',
+          user: { connect: { id: userId } },
+        },
+      }),
+        /* 5‑I. Award loyalty points (1 pt per 10 USD spend) */
+        await awardPoints(userId, Math.floor(price / 10), tx);
 
       return saleRow;
     });

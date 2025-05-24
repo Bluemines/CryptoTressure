@@ -33,6 +33,8 @@ export class WalletController {
     return this.svc.getWalletOverview(req.user.id);
   }
 
+  
+
   // ADMIN
   /** paginated list */
   @Get()

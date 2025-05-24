@@ -31,9 +31,14 @@ export class ProductController {
 
   // ─── ADMIN ────────────────────────────────────────
   @Post()
+  @FileUpload({
+    fieldName: 'image',
+    destination: './uploads',
+    maxWidth: 800,
+    quality: 75,
+  })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @FileUpload({ fieldName: 'image' })
   async createProduct(
     @UploadedFile() file: Express.Multer.File,
     @Body() dto: CreateProductDto,
@@ -82,9 +87,14 @@ export class ProductController {
   }
 
   @Patch(':id')
+  @FileUpload({
+    fieldName: 'image',
+    destination: './uploads',
+    maxWidth: 800,
+    quality: 75,
+  })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @FileUpload({ fieldName: 'image' })
   async updateProduct(
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile() file: Express.Multer.File,
@@ -118,9 +128,7 @@ export class ProductController {
   }
 
   @Get('all')
-  async getAllProducts(
-    @Query() query: AdminViewProductsPaginationDto,
-  ): Promise<
+  async getAllProducts(@Query() query: AdminViewProductsPaginationDto): Promise<
     ApiResponse<{
       items: Product[];
       meta: { total: number; page: number; limit: number; totalPages: number };
