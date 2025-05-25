@@ -138,26 +138,6 @@ export class AuthService {
         });
 
         // 5‑D: Handle Referral (if any)
-<<<<<<< Updated upstream
-        if (dto.referralCode) {
-          const referrer = await tx.user.findUnique({
-            where: { referralCode: dto.referralCode },
-          });
-          console.log('referrer', referrer, typeof referrer);
-          if (!referrer) {
-            throw new ApiError(400, 'the referral code is invalid');
-          }
-          if (referrer) {
-            /* 1) create Referral row and keep the ID for commission */
-            const referralRow = await tx.referral.create({
-              data: {
-                code: uuidv4(),
-                referrerId: referrer.id,
-                referredId: user.id,
-              },
-              select: { id: true },
-            });
-=======
 if (dto.referralCode) {
   const referrer = await tx.user.findUnique({
     where: { referralCode: dto.referralCode },
@@ -165,7 +145,6 @@ if (dto.referralCode) {
   if (!referrer) {
     throw new ApiError(400, "The referral code is invalid");
   }
->>>>>>> Stashed changes
 
   const levelCommissionMap = {
     1: 2,
