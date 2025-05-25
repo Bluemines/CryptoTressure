@@ -21,43 +21,56 @@ export class JobsService {
   @Cron('0 * * * *', { name: 'handleExpiredMachines' })
   async handleExpiredMachines() {
     const now = new Date();
-    console.log('In HandleExiredMachines');
+    this.logger.log('⏰  Running expired‐machines refund job');
 
     const expired = await this.prisma.userProduct.findMany({
       where: { status: 'ACTIVE', expiresAt: { lte: now } },
       include: {
-        product: { select: { price: true } },
+        product: { select: { id: true, price: true, title: true } },
         user: { select: { id: true } },
       },
     });
 
     for (const up of expired) {
-      await this.prisma.$transaction(async (tx) => {
-        const price: Decimal = up.product.price;
+      const price: Decimal = up.product.price;
+      const userId = up.user.id;
+      const productTitle = up.product.title;
 
+      await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+        // 1) refund wallet
         await tx.wallet.update({
-          where: { userId: up.userId },
+          where: { userId },
           data: {
             balance: { increment: price },
             reserved: { decrement: price },
           },
         });
 
+        // 2) mark as refunded
         await tx.userProduct.update({
           where: { id: up.id },
           data: { status: 'REFUNDED' },
         });
 
+        // 3) rollback any trial usage
         await tx.trialFund.updateMany({
-          where: { userId: up.userId, status: 'ACTIVE', usedAmount: { gt: 0 } },
+          where: { userId, status: 'ACTIVE', usedAmount: { gt: price } },
           data: { usedAmount: { decrement: price } },
         });
       });
 
+      // 4) send notification
+      this.notificationGateway.sendNotification(userId, {
+        type: 'WALLET_UPDATED',
+        message: `🔄 Your rental of "${productTitle}" has expired and ₨${price.toFixed(2)} has been returned to your wallet.`,
+      });
+
       this.logger.log(
-        `✅ Refunded ${up.product.price} to user ${up.userId} (machine ${up.productId})`,
+        `✅ Refunded ₨${price.toFixed(2)} to user ${userId} for product ${up.product.id}`,
       );
     }
+
+    this.logger.log('✅  Expired‐machines refund job complete');
   }
 
   /* ────────────────────────────────────────────────────────────────

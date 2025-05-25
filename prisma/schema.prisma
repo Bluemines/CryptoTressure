@@ -103,7 +103,6 @@ model Product {
   image       String
   price       Decimal
   dailyIncome Decimal
-  fee         Decimal
   deletedAt   DateTime?
   rentalDays  Int
   roiPercent  Float     @default(0.0)

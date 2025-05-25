@@ -3,7 +3,6 @@ export interface MachineUpdateInput {
   description?: string;
   price?: number;
   dailyIncome?: number;
-  fee?: number;
   rentalDays?: number;
   level?: number;
   image?: string;

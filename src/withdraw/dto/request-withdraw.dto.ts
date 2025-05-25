@@ -1,7 +1,17 @@
-import { IsNumber, IsOptional, ValidateIf, IsString } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  ValidateIf,
+  IsString,
+  IsNotEmpty,
+  Min,
+} from 'class-validator';
 
 export class RequestWithdrawDto {
-  @IsNumber() amount: number;
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(50)
+  amount: number;
 
   @IsOptional()
   @IsString()
@@ -27,7 +37,6 @@ export class WithdrawResponseDto {
   createdAt: Date;
 }
 
-// src/withdraw/dto/user-withdraw-response.dto.ts
 export class UserWithdrawResponseDto {
   id: string;
   amount: number;

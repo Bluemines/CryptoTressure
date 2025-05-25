@@ -5,6 +5,7 @@ import { ApiError } from 'src/common';
 import { Decimal } from '@prisma/client/runtime/library';
 import { WithdrawStatus } from '../../generated/prisma/client';
 import { EasypaisaClient } from 'src/easypaisa/easypaisa.client';
+import { NotificationGateway } from 'src/notifications/notification.gateway';
 
 const FEE_RATE = 0.03; // 3 %
 
@@ -13,6 +14,7 @@ export class WithdrawService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly easypaisa: EasypaisaClient,
+    private readonly notificationGateway: NotificationGateway,
   ) {}
 
   /* ───────────────────── USER FLOW ───────────────────── */
@@ -69,34 +71,47 @@ export class WithdrawService {
     if (!wd || wd.status !== 'PENDING')
       throw new ApiError(400, 'Withdraw not pending');
 
+    const fee = new Decimal(wd.amount).mul(0.03).toDecimalPlaces(2);
+    const netAmount = new Decimal(wd.amount).minus(fee);
+
     const identifier = wd.msisdn
       ? { msisdn: wd.msisdn }
       : wd.cnic
         ? { cnic: wd.cnic }
         : null;
+    if (!identifier) throw new ApiError(400, 'No msisdn or cnic attached');
 
-    if (!identifier)
-      throw new ApiError(400, 'No msisdn or cnic attached to withdrawal');
-
-    const easypaisaTxnId = await this.easypaisa.sendMoney({
-      ...identifier,
-      amount: wd.amount.toString(),
-      reference: `WD-${wd.id}`,
-    });
+    // TODO: Uncomment when payment integration is done
+    // const easypaisaTxnId = await this.easypaisa.sendMoney({
+    //   ...identifier,
+    //   amount: netAmount.toString(),
+    //   reference: `WD-${wd.id}`,
+    // });
 
     await this.prisma.$transaction([
       this.prisma.withdraw.update({
         where: { id },
         data: {
           status: 'APPROVED',
-          externalId: easypaisaTxnId,
+          // externalId: easypaisaTxnId,
+          externalId: 'XXX',
+          fee: fee,
+          total: netAmount,
+          processedAt: new Date(),
         },
       }),
       this.prisma.wallet.update({
         where: { userId: wd.userId },
-        data: { reserved: { decrement: wd.total } },
+        data: { reserved: { decrement: wd.amount } },
       }),
     ]);
+
+    this.notificationGateway.sendNotification(wd.userId, {
+      type: 'WALLET_UPDATED',
+      message: `✅ Your withdrawal request of ₨${wd.amount.toFixed(2)} has been approved. A fee of ₨${fee.toFixed(2)} was applied and ₨${netAmount.toFixed(2)} has been sent to you.`,
+    });
+
+    return { success: true };
   }
 
   /* ─────────────── ADMIN reject ─────────────────── ─────── */

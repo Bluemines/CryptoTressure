@@ -85,7 +85,7 @@ export class AuthService {
       },
     });
     if (existingUser) {
-      throw new ApiError(409, 'Email or username already exists');
+      throw new ApiError(409, 'Email or username already exists in database');
     }
 
     // ─── 3. Hash password ──────────────────────────────────────────────────
@@ -139,82 +139,87 @@ export class AuthService {
         });
 
         // 5‑D: Handle Referral (if any)
-if (dto.referralCode) {
-  const referrer = await tx.user.findUnique({
-    where: { referralCode: dto.referralCode },
-  });
-  if (!referrer) {
-    throw new ApiError(400, "The referral code is invalid");
-  }
+        if (dto.referralCode) {
+          const referrer = await tx.user.findUnique({
+            where: { referralCode: dto.referralCode },
+          });
+          if (!referrer) {
+            throw new ApiError(400, 'The referral code is invalid');
+          }
 
-  const levelCommissionMap = {
-    1: 2,
-    2: 1.5,
-    3: 1,
-  };
+          const levelCommissionMap = {
+            1: 2,
+            2: 1.5,
+            3: 1,
+          };
 
-  let currentReferrer = referrer;
-  let currentLevel = 1;
+          let currentReferrer = referrer;
+          let currentLevel = 1;
 
-  while (currentReferrer && currentLevel <= 3) {
-    const percentage = levelCommissionMap[currentLevel] ?? 0;
-    const commissionAmount = (referralBonus * percentage) / 100;
+          while (currentReferrer && currentLevel <= 3) {
+            const percentage = levelCommissionMap[currentLevel] ?? 0;
+            const commissionAmount = (referralBonus * percentage) / 100;
 
-    // Only for level 1, create referral entry
-    if (currentLevel === 1) {
-      await tx.referral.create({
-        data: {
-          code: Date.now().toString().slice(-9),
-          referrerId: currentReferrer.id,
-          referredId: user.id,
-        },
-      });
-    }
+            // Only for level 1, create referral entry
+            if (currentLevel === 1) {
+              await tx.referral.create({
+                data: {
+                  code: Date.now().toString().slice(-9),
+                  referrerId: currentReferrer.id,
+                  referredId: user.id,
+                },
+              });
+            }
 
-    // Add to wallet
-    if (commissionAmount > 0) {
-      await tx.wallet.update({
-        where: { userId: currentReferrer.id },
-        data: { balance: { increment: commissionAmount } },
-      });
+            // Add to wallet
+            if (commissionAmount > 0) {
+              await tx.wallet.update({
+                where: { userId: currentReferrer.id },
+                data: { balance: { increment: commissionAmount } },
+              });
 
-      // Get referral ID if exists
-      const referralEntry = await tx.referral.findFirst({
-        where: {
-          referrerId: currentReferrer.id,
-          referredId: currentLevel === 1 ? user.id : undefined,
-        },
-      });
+              // Get referral ID if exists
+              const referralEntry = await tx.referral.findFirst({
+                where: {
+                  referrerId: currentReferrer.id,
+                  referredId: currentLevel === 1 ? user.id : undefined,
+                },
+              });
 
-      await tx.commission.create({
-        data: {
-          referralId: referralEntry?.id ?? 0,
-          amount: commissionAmount,
-          percentage,
-          levelDepth: currentLevel,
-        },
-      });
-    }
+              await tx.commission.create({
+                data: {
+                  referralId: referralEntry?.id ?? 0,
+                  amount: commissionAmount,
+                  percentage,
+                  levelDepth: currentLevel,
+                },
+              });
+            }
 
-    // Points bonus
-    if (pointsBonus > 0) {
-      await awardPoints(currentReferrer.id, Math.floor(pointsBonus), tx);
-    }
+            // Points bonus
+            if (pointsBonus > 0) {
+              await awardPoints(
+                currentReferrer.id,
+                Math.floor(pointsBonus),
+                tx,
+              );
+            }
 
-    // Next referrer up the tree
-    const referralRecord = await tx.referral.findFirst({
-      where: { referredId: currentReferrer.id },
-      select: { referrerId: true },
-    });
+            // Next referrer up the tree
+            const referralRecord = await tx.referral.findFirst({
+              where: { referredId: currentReferrer.id },
+              select: { referrerId: true },
+            });
 
-    currentReferrer = referralRecord
-      ? await tx.user.findUnique({ where: { id: referralRecord.referrerId } })
-      : null;
+            currentReferrer = referralRecord
+              ? await tx.user.findUnique({
+                  where: { id: referralRecord.referrerId },
+                })
+              : null;
 
-    currentLevel++;
-  }
-}
-
+            currentLevel++;
+          }
+        }
 
         // 5‑E: Delete OTP
         await tx.verification.delete({ where: { email: dto.email } });

@@ -25,12 +25,6 @@ export class UpdateProductDto {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
-  @Min(0)
-  fee?: number;
-
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
   @Min(1)
   rentalDays?: number;
 
