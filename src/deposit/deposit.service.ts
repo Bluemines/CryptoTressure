@@ -58,8 +58,42 @@ export class DepositService {
   }
 
   /** 2. Easypaisa webhook hits us */
+  // async handleIPN(body: any, signature: string) {
+  //   // const verified = this.verifySig(JSON.stringify(body), signature);
+  //   // if (!verified) throw new ForbiddenException('Bad signature');
+
+  //   const { reference, transactionId, status } = body;
+
+  //   const deposit = await this.prisma.deposit.findUnique({
+  //     where: { reference: reference },
+  //   });
+  //   if (!deposit || deposit.status !== 'PENDING') return;
+
+  //   if (status === 'SUCCESS') {
+  //     await this.prisma.$transaction([
+  //       this.prisma.deposit.update({
+  //         where: { id: deposit.id },
+  //         data: {
+  //           status: 'SUCCESS',
+  //           externalId: transactionId,
+  //           verifiedAt: new Date(),
+  //         },
+  //       }),
+  //       this.prisma.wallet.update({
+  //         where: { userId: deposit.userId },
+  //         data: { balance: { increment: deposit.amount } },
+  //       }),
+  //     ]);
+  //   } else {
+  //     await this.prisma.deposit.update({
+  //       where: { id: deposit.id },
+  //       data: { status: 'FAILED', externalId: transactionId },
+  //     });
+  //   }
+
+  // }
   async handleIPN(body: any, signature: string) {
-    // const verified = this.verifySig(JSON.stringify(body), signature);
+        // const verified = this.verifySig(JSON.stringify(body), signature);
     // if (!verified) throw new ForbiddenException('Bad signature');
 
     const { reference, transactionId, status } = body;
@@ -68,24 +102,89 @@ export class DepositService {
       where: { reference: reference },
     });
     if (!deposit || deposit.status !== 'PENDING') return;
-
+  
     if (status === 'SUCCESS') {
-      await this.prisma.$transaction([
-        this.prisma.deposit.update({
+      await this.prisma.$transaction(async (tx) => {
+        // 1. Update main deposit
+        await tx.deposit.update({
           where: { id: deposit.id },
           data: {
             status: 'SUCCESS',
             externalId: transactionId,
             verifiedAt: new Date(),
+            // Add lock period for main deposit
+            lockedUntil: new Date(Date.now() + 30 * 86400000) // 30 days
           },
-        }),
-        this.prisma.wallet.update({
+        });
+  
+        // 2. Update wallet with main deposit
+        await tx.wallet.update({
           where: { userId: deposit.userId },
           data: { balance: { increment: deposit.amount } },
-        }),
-      ]);
+        });
+  
+        // 3. First deposit bonus logic
+        const user = await tx.user.findUnique({
+          where: { id: deposit.userId }
+        });
+  
+        if (!user?.firstDepositBonus) {
+          const bonusAmount = Number(deposit.amount) * 0.10;
+          
+          // Create bonus deposit
+          await tx.deposit.create({
+            data: {
+              userId: deposit.userId,
+              amount: bonusAmount,
+              reference: `BONUS-${deposit.reference}`,
+              lockedUntil: new Date(Date.now() + 15 * 86400000), // 15 days
+              status: 'SUCCESS',
+              provider: 'BONUS',
+              verifiedAt: new Date()
+            }
+          });
+  
+          // Update user and wallet for bonus
+          await Promise.all([
+            tx.user.update({
+              where: { id: deposit.userId },
+              data: { firstDepositBonus: true }
+            }),
+            tx.wallet.update({
+              where: { userId: deposit.userId },
+              data: { balance: { increment: bonusAmount } }
+            })
+          ]);
+        }
+      });
+  
+      // 4. Process referral bonus (outside transaction)
+      const referral = await this.prisma.referral.findFirst({
+        where: { referredId: deposit.userId },
+        include: { referrer: true }
+      });
+  
+      if (referral) {
+        const commissionAmount = Number(deposit.amount) * 0.03;
+        await this.prisma.commission.create({
+          data: {
+            amount: commissionAmount,
+            percentage: 3.0,
+            levelDepth: 1,
+            referralId: referral.id,
+            status: 'PENDING'
+          }
+        });
+  
+        await this.prisma.wallet.update({
+          where: { userId: referral.referrer.id },
+          data: { balance: { increment: commissionAmount } }
+        });
+      }
+  
     } else {
-      await this.prisma.deposit.update({
+      // ... existing failure handling ...
+            await this.prisma.deposit.update({
         where: { id: deposit.id },
         data: { status: 'FAILED', externalId: transactionId },
       });
