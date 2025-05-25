@@ -4,12 +4,16 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { awardPoints } from 'src/common/utils/points';
 import { Decimal } from 'generated/prisma/runtime/library';
+import { NotificationGateway } from 'src/notifications/notification.gateway';
 
 @Injectable()
 export class JobsService {
   private readonly logger = new Logger(JobsService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private notificationGateway: NotificationGateway,
+  ) {}
 
   /* ────────────────────────────────────────────────────────────────
      1. EXPIRY / REFUND  – runs hourly on the hour
@@ -31,7 +35,6 @@ export class JobsService {
       await this.prisma.$transaction(async (tx) => {
         const price: Decimal = up.product.price;
 
-        /* 1) refund principal (balance↑, reserved↓) */
         await tx.wallet.update({
           where: { userId: up.userId },
           data: {
@@ -40,13 +43,11 @@ export class JobsService {
           },
         });
 
-        /* 2) mark refunded */
         await tx.userProduct.update({
           where: { id: up.id },
           data: { status: 'REFUNDED' },
         });
 
-        /* 3) adjust trial‑fund usage if any */
         await tx.trialFund.updateMany({
           where: { userId: up.userId, status: 'ACTIVE', usedAmount: { gt: 0 } },
           data: { usedAmount: { decrement: price } },
@@ -66,7 +67,6 @@ export class JobsService {
   async handleDailyRewards() {
     this.logger.log('⏰  Starting daily reward cycle');
 
-    // UTC start of “today”
     const today = new Date();
     const startOfDayUTC = new Date(
       Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()),
@@ -74,37 +74,43 @@ export class JobsService {
 
     const userProducts = await this.prisma.userProduct.findMany({
       where: { status: 'ACTIVE', product: { deletedAt: null } },
-      include: { product: { select: { dailyIncome: true } } },
+      include: { product: { select: { price: true, dailyIncome: true } } },
     });
 
     for (const up of userProducts) {
-      await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-        const amount: Decimal = up.product.dailyIncome;
+      const price: Decimal = up.product.price;
+      const pct: Decimal = up.product.dailyIncome;
+      const rewardAmount = price.mul(pct).div(100).toDecimalPlaces(2);
 
-        /* 1) record reward (idempotent by unique constraint) */
+      let awarded = false;
+
+      await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         try {
           await tx.reward.create({
             data: {
               userId: up.userId,
               productId: up.productId,
-              reward: amount,
+              reward: rewardAmount,
               date: startOfDayUTC,
             },
           });
+          awarded = true;
         } catch (e: any) {
-          // ignore duplicate key (P2002) but re‑throw anything else
           if (e?.code !== 'P2002') throw e;
           return;
         }
 
-        /* 2) credit wallet balance */
         await tx.wallet.update({
           where: { userId: up.userId },
-          data: { balance: { increment: amount } },
+          data: { balance: { increment: rewardAmount } },
         });
 
-        /* 3) loyalty points: 1 pt per USD earned (rounded) */
-        await awardPoints(up.userId, amount.toNumber(), tx);
+        await awardPoints(up.userId, rewardAmount.toNumber(), tx);
+      });
+
+      this.notificationGateway.sendNotification(up.userId, {
+        type: 'REWARD_EARNED',
+        message: `🎉 You received a daily reward of ₨${rewardAmount.toFixed(2)}}!`,
       });
     }
 

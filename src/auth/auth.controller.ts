@@ -66,7 +66,7 @@ export class AuthController {
 
   @Patch('password')
   @UseGuards(JwtAuthGuard)
-  @Roles('ADMIN', "USER")
+  @Roles('ADMIN', 'USER')
   async changePassword(
     @Req() req,
     @Body() dto: ChangePasswordDto,

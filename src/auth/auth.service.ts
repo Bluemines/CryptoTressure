@@ -14,6 +14,7 @@ import { awardPoints } from 'src/common/utils/points';
 import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
+import { breakdown } from './helper/timerBreakDown';
 
 @Injectable()
 export class AuthService {
@@ -236,6 +237,17 @@ export class AuthService {
       throw new ApiError(400, 'Invalid credentials');
     }
 
+    const trialFund = await this.prisma.trialFund.findUnique({
+      where: { userId: user.id },
+    });
+    const ms = trialFund ? trialFund.expiresAt.getTime() - Date.now() : 0;
+    const trialFundTimeLeft = breakdown(ms);
+
+    let trialRemainingMs = 0;
+    if (trialFund) {
+      trialRemainingMs = trialFund.expiresAt.getTime() - Date.now();
+    }
+
     const payload = {
       sub: user.id,
       email,
@@ -250,7 +262,11 @@ export class AuthService {
       secret: secret,
     });
 
-    return { access_token: token, ...payload };
+    return {
+      access_token: token,
+      ...payload,
+      trialFundTimeLeft,
+    };
   }
 
   async getCurrentUser(id: number) {

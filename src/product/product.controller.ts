@@ -153,11 +153,11 @@ export class ProductController {
     );
   }
 
-  @Get('by-user/:userId')
-  async getUserProducts(
-    @Param('userId', ParseIntPipe) userId: number,
-  ): Promise<ApiResponse<Product[]>> {
-    const products = await this.productService.getUserProducts(userId);
+  @Get('by-user')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  async getUserProducts(@Req() req): Promise<ApiResponse<Product[]>> {
+    const products = await this.productService.getUserProducts(req.user.id);
     console.log('Products: ', products);
     return new ApiResponse(200, products, 'User products retrieved');
   }

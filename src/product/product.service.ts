@@ -14,6 +14,8 @@ import { REFERRAL_COMMISSION_RATE } from 'src/common/config/reward.constants';
 import { Decimal } from 'generated/prisma/runtime/library';
 import { round } from 'src/common/utils/round.util';
 import { ConfigService } from '@nestjs/config';
+import { UserProductWithRemaining } from './dto/UserProductWithRemaining.dto';
+import { breakdown } from 'src/auth/helper/timerBreakDown';
 
 @Injectable()
 export class ProductService {
@@ -33,11 +35,12 @@ export class ProductService {
       image,
       userId,
       rentalDays,
+      level,
     } = input;
     const exists = await this.prisma.product.findFirst({ where: { title } });
     if (exists) throw new ApiError(400, 'Product already exists');
 
-    const roiPercent = round((dailyIncome / price) * 100);
+    const roiPercent = round(dailyIncome, 2);
     return this.prisma.product.create({
       data: {
         userId,
@@ -49,6 +52,7 @@ export class ProductService {
         fee,
         rentalDays,
         roiPercent,
+        level,
       },
     });
   }
@@ -171,16 +175,27 @@ export class ProductService {
     return products;
   }
 
-  async getUserProducts(userId: number): Promise<Product[]> {
-    const direct = await this.prisma.userProduct.findMany({
+  async getUserProducts(userId: number): Promise<UserProductWithRemaining[]> {
+    const ups = await this.prisma.userProduct.findMany({
       where: {
         userId,
+        status: 'ACTIVE',
         product: { deletedAt: null },
       },
       include: { product: true },
     });
 
-    return direct.map((up) => up.product);
+    const now = Date.now();
+    return ups.map((up) => {
+      const msLeft = up.expiresAt.getTime() - now;
+      const remaining = breakdown(msLeft);
+
+      return {
+        ...up.product,
+        expiresAt: up.expiresAt,
+        remaining,
+      };
+    });
   }
 
   async viewProduct(id: number) {
@@ -197,6 +212,7 @@ export class ProductService {
         fee: true,
         rentalDays: true,
         roiPercent: true,
+        level: true,
         deletedAt: true,
         createdAt: true,
         updatedAt: true,
@@ -209,6 +225,24 @@ export class ProductService {
   }
 
   async buyProduct(userId: number, productId: number): Promise<Sale> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new ApiError(400, 'User not found');
+
+    const productExist = await this.prisma.product.findUnique({
+      where: { id: productId },
+    });
+    if (!productExist) throw new ApiError(400, 'Product not found');
+
+    const userLevel = user.level;
+    const productLevel = productExist.level;
+
+    if (userLevel < productLevel) {
+      throw new ApiError(
+        400,
+        `User level ${userLevel} is not enough to buy this product of level ${productLevel}`,
+      );
+    }
+
     /* ─── 1. Load product & buyer wallet ─────────────────────────── */
     const [product, buyerWallet] = await Promise.all([
       this.prisma.product.findUnique({ where: { id: productId } }),
