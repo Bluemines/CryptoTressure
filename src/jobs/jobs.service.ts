@@ -15,6 +15,61 @@ export class JobsService {
     private notificationGateway: NotificationGateway,
   ) {}
 
+  private async distributeTeamBonus(
+    userId: number,
+    earning: Decimal,
+    productId: number,
+    tx: Prisma.TransactionClient,
+  ) {
+    const commissionRates = [0.18, 0.09, 0.05];
+    let currentUserId = userId;
+  
+    for (let level = 0; level < 3; level++) {
+      // 1. Get the referral record of the current user
+      const referral = await tx.referral.findFirst({
+        where: { referredId: currentUserId },
+        select: { id: true, referrerId: true },
+      });
+  
+      if (!referral) break;
+  
+      const commissionAmount = earning.toNumber() * commissionRates[level];
+  
+      // 2. Create commission linked to the Referral
+      await tx.commission.create({
+        data: {
+          amount: commissionAmount,
+          percentage: commissionRates[level] * 100,
+          levelDepth: level + 1,
+          referralId: referral.id, // ✅ Correctly linking to Referral table
+          status: 'SUCCESS',
+        },
+      });
+  
+      // 3. Credit the wallet of the upline user
+      await tx.wallet.update({
+        where: { userId: referral.referrerId },
+        data: { balance: { increment: commissionAmount } },
+      });
+  
+      // 4. Notify upline user
+      await tx.notification.create({
+        data: {
+          userId: referral.referrerId,
+          title: 'Team Bonus Received',
+          message: `You received $${commissionAmount.toFixed(
+            2,
+          )} from level ${level + 1} referral's daily income.`,
+        },
+      });
+  
+      // 5. Move to next upline
+      currentUserId = referral.referrerId;
+    }
+  }
+  
+  
+
   /* ────────────────────────────────────────────────────────────────
      1. EXPIRY / REFUND  – runs hourly on the hour
   ──────────────────────────────────────────────────────────────── */
@@ -118,7 +173,7 @@ export class JobsService {
           data: { balance: { increment: rewardAmount } },
         });
 
-        await awardPoints(up.userId, rewardAmount.toNumber(), tx);
+        await this.distributeTeamBonus(up.userId, pct, up.productId, tx);
       });
 
       this.notificationGateway.sendNotification(up.userId, {
