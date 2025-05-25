@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Query,
   Req,
@@ -42,5 +44,18 @@ export class ReferralController {
   @Roles('USER')
   async getHistory(@Req() req) {
     return this.referralService.getReferralHistory(req.user.id);
+  }
+  @Get('tree')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  async getMyReferralsTree(@Req() req) {
+    return this.referralService.getReferralTree(req.user.id);
+  }
+  
+  @Get('admin/tree/:userId')
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles("ADMIN")
+  async getReferralTreeByAdmin(@Param('userId', ParseIntPipe) userId: number){
+    return this.referralService.getReferralTreeByAdmin(userId)
   }
 }
