@@ -1,8 +1,9 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiResponse, RolesGuard } from 'src/common';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { AdminTransactionListDto } from './dto/admin-transaction-list.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -19,5 +20,17 @@ export class TransactionsController {
     }
 
     return new ApiResponse(200, txns, 'User transactions retrieved');
+  }
+
+  @Get('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async adminTransactions(@Query() query: AdminTransactionListDto) {
+    const { items, total } = await this.transactions.listAllTransactions(query);
+    return new ApiResponse(
+      200,
+      { items, total, page: query.page, limit: query.limit },
+      'All user transactions retrieved',
+    );
   }
 }
