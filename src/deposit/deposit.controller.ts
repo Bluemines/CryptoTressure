@@ -9,6 +9,7 @@ import {
 import { DepositService } from './deposit.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiResponse } from 'src/common';
+import { AdminDepositDto } from './dto/adminDeposit.dto';
 
 @Controller('deposit')
 export class DepositController {
@@ -30,5 +31,16 @@ export class DepositController {
   async webhook(@HeaderDec('x-signature') sig: string, @Body() body: any) {
     await this.svc.handleIPN(body, sig);
     return { ok: true };
+  }
+
+  @Post('admin')
+  @UseGuards(JwtAuthGuard)
+  async adminDeposit(@Body() dto: AdminDepositDto) {
+    await this.svc.adminDepositService(dto);
+    return new ApiResponse(
+      200,
+      '',
+      'Deposit added to User wallet successfully!',
+    );
   }
 }
