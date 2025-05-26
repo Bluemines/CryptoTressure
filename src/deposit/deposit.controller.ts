@@ -5,11 +5,14 @@ import {
   Req,
   UseGuards,
   Headers as HeaderDec,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { DepositService } from './deposit.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ApiResponse } from 'src/common';
+import { ApiResponse, Roles, RolesGuard } from 'src/common';
 import { AdminDepositDto } from './dto/adminDeposit.dto';
+import { AdminDepositListDto } from './dto/admin-deposit-list.dto';
 
 @Controller('deposit')
 export class DepositController {
@@ -34,13 +37,31 @@ export class DepositController {
   }
 
   @Post('admin')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async adminDeposit(@Body() dto: AdminDepositDto) {
     await this.svc.adminDepositService(dto);
     return new ApiResponse(
       200,
       '',
       'Deposit added to User wallet successfully!',
+    );
+  }
+
+  @Get('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async listAdminDeposits(@Query() query: AdminDepositListDto) {
+    const { items, total } = await this.svc.listAdminDepositsForUsers(query);
+    return new ApiResponse(
+      200,
+      {
+        items,
+        total,
+        page: query.page,
+        limit: query.limit,
+      },
+      'Admin deposits fetched',
     );
   }
 }

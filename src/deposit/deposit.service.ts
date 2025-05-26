@@ -7,6 +7,7 @@ import { AdminDepositDto } from './dto/adminDeposit.dto';
 import { ApiError } from 'src/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Prisma } from '../../generated/prisma';
+import { AdminDepositListDto } from './dto/admin-deposit-list.dto';
 
 @Injectable()
 export class DepositService {
@@ -93,7 +94,7 @@ export class DepositService {
 
   // }
   async handleIPN(body: any, signature: string) {
-        // const verified = this.verifySig(JSON.stringify(body), signature);
+    // const verified = this.verifySig(JSON.stringify(body), signature);
     // if (!verified) throw new ForbiddenException('Bad signature');
 
     const { reference, transactionId, status } = body;
@@ -102,7 +103,7 @@ export class DepositService {
       where: { reference: reference },
     });
     if (!deposit || deposit.status !== 'PENDING') return;
-  
+
     if (status === 'SUCCESS') {
       await this.prisma.$transaction(async (tx) => {
         // 1. Update main deposit
@@ -113,24 +114,24 @@ export class DepositService {
             externalId: transactionId,
             verifiedAt: new Date(),
             // Add lock period for main deposit
-            lockedUntil: new Date(Date.now() + 30 * 86400000) // 30 days
+            lockedUntil: new Date(Date.now() + 30 * 86400000), // 30 days
           },
         });
-  
+
         // 2. Update wallet with main deposit
         await tx.wallet.update({
           where: { userId: deposit.userId },
           data: { balance: { increment: deposit.amount } },
         });
-  
+
         // 3. First deposit bonus logic
         const user = await tx.user.findUnique({
-          where: { id: deposit.userId }
+          where: { id: deposit.userId },
         });
-  
+
         if (!user?.firstDepositBonus) {
-          const bonusAmount = Number(deposit.amount) * 0.10;
-          
+          const bonusAmount = Number(deposit.amount) * 0.1;
+
           // Create bonus deposit
           await tx.deposit.create({
             data: {
@@ -140,30 +141,30 @@ export class DepositService {
               lockedUntil: new Date(Date.now() + 15 * 86400000), // 15 days
               status: 'SUCCESS',
               provider: 'BONUS',
-              verifiedAt: new Date()
-            }
+              verifiedAt: new Date(),
+            },
           });
-  
+
           // Update user and wallet for bonus
           await Promise.all([
             tx.user.update({
               where: { id: deposit.userId },
-              data: { firstDepositBonus: true }
+              data: { firstDepositBonus: true },
             }),
             tx.wallet.update({
               where: { userId: deposit.userId },
-              data: { balance: { increment: bonusAmount } }
-            })
+              data: { balance: { increment: bonusAmount } },
+            }),
           ]);
         }
       });
-  
+
       // 4. Process referral bonus (outside transaction)
       const referral = await this.prisma.referral.findFirst({
         where: { referredId: deposit.userId },
-        include: { referrer: true }
+        include: { referrer: true },
       });
-  
+
       if (referral) {
         const commissionAmount = Number(deposit.amount) * 0.03;
         await this.prisma.commission.create({
@@ -172,19 +173,18 @@ export class DepositService {
             percentage: 3.0,
             levelDepth: 1,
             referralId: referral.id,
-            status: 'PENDING'
-          }
+            status: 'PENDING',
+          },
         });
-  
+
         await this.prisma.wallet.update({
           where: { userId: referral.referrer.id },
-          data: { balance: { increment: commissionAmount } }
+          data: { balance: { increment: commissionAmount } },
         });
       }
-  
     } else {
       // ... existing failure handling ...
-            await this.prisma.deposit.update({
+      await this.prisma.deposit.update({
         where: { id: deposit.id },
         data: { status: 'FAILED', externalId: transactionId },
       });
@@ -243,5 +243,42 @@ export class DepositService {
     ] as Prisma.PrismaPromise<unknown>[]);
 
     return { success: true };
+  }
+
+  async listAdminDepositsForUsers(dto: AdminDepositListDto) {
+    const skip = (dto.page - 1) * dto.limit;
+    const where = { provider: 'admin-manual' };
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.deposit.findMany({
+        where,
+        skip,
+        take: dto.limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          user: {
+            select: { id: true, email: true, username: true },
+          },
+        },
+      }),
+      this.prisma.deposit.count({ where }),
+    ]);
+
+    const data = items.map((d) => ({
+      id: d.id,
+      reference: d.reference,
+      amount: d.amount,
+      status: d.status,
+      provider: d.provider,
+      verifiedAt: d.verifiedAt,
+      createdAt: d.createdAt,
+      user: {
+        id: d.user.id,
+        email: d.user.email,
+        username: d.user.username,
+      },
+    }));
+
+    return { items: data, total };
   }
 }
