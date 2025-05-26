@@ -131,8 +131,8 @@ export class AuthService {
             },
             level: {
               connectOrCreate: {
-                where: { level: 1 },
-                create: { level: 1, points: 0 },
+                where: { level: 0 },
+                create: { level: 0, points: 0 },
               },
             },
           },
