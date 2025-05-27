@@ -23,18 +23,18 @@ export class JobsService {
   ) {
     const commissionRates = [0.18, 0.09, 0.05];
     let currentUserId = userId;
-  
+
     for (let level = 0; level < 3; level++) {
       // 1. Get the referral record of the current user
       const referral = await tx.referral.findFirst({
         where: { referredId: currentUserId },
         select: { id: true, referrerId: true },
       });
-  
+
       if (!referral) break;
-  
+
       const commissionAmount = earning.toNumber() * commissionRates[level];
-  
+
       // 2. Create commission linked to the Referral
       await tx.commission.create({
         data: {
@@ -45,13 +45,13 @@ export class JobsService {
           status: 'SUCCESS',
         },
       });
-  
+
       // 3. Credit the wallet of the upline user
       await tx.wallet.update({
         where: { userId: referral.referrerId },
         data: { balance: { increment: commissionAmount } },
       });
-  
+
       // 4. Notify upline user
       await tx.notification.create({
         data: {
@@ -62,13 +62,11 @@ export class JobsService {
           )} from level ${level + 1} referral's daily income.`,
         },
       });
-  
+
       // 5. Move to next upline
       currentUserId = referral.referrerId;
     }
   }
-  
-  
 
   /* ────────────────────────────────────────────────────────────────
      1. EXPIRY / REFUND  – runs hourly on the hour

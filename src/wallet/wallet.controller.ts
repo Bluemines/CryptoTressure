@@ -11,6 +11,8 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { WalletService } from './wallet.service';
 import { ApiResponse, Roles, RolesGuard } from 'src/common';
 import { AdminWalletListDto } from './dto/admin-wallet.dto';
+import { AdminWalletDto } from './dto/admin-userWallets.dto';
+import { AdminWalletSummary } from './interfaces/AdminWalletSummary';
 
 @Controller('wallet')
 @UseGuards(JwtAuthGuard)
@@ -26,14 +28,21 @@ export class WalletController {
     const data = await this.svc.getUserWallet(req.user.id);
     return new ApiResponse(200, data, 'Wallet snapshot');
   }
+
+  @Get('admin-allWallets')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async adminWalletSummary(): Promise<ApiResponse<AdminWalletSummary>> {
+    const data = await this.svc.getAdminWalletSummary();
+    return new ApiResponse(200, data, 'Admin wallet summary');
+  }
+
   @Get('overview')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER')
   getWalletOverview(@Req() req) {
     return this.svc.getWalletOverview(req.user.id);
   }
-
-  
 
   // ADMIN
   /** paginated list */
