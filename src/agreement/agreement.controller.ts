@@ -27,11 +27,11 @@ export class AgreementController {
 
   @Get('getAgreements')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'USER')
   getAllAgreements() {
-    const result =  this.agreementService.getAgreements();
+    const result = this.agreementService.getAgreements();
 
-    return new ApiResponse(200, result, "Agreements retrieved")
+    return new ApiResponse(200, result, 'Agreements retrieved');
   }
 
   @Get(':id')
