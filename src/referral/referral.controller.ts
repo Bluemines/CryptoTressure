@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -58,4 +59,31 @@ export class ReferralController {
   async getReferralTreeByAdmin(@Param('userId', ParseIntPipe) userId: number){
     return this.referralService.getReferralTreeByAdmin(userId)
   }
+
+  @Get('admin/listing')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async getReferralListing(
+    @Query('referrerId') referrerId?: string,
+    @Query('level') level = '1',
+    @Query('page') page = '1',
+    @Query('limit') limit = '10',
+  ) {
+    const id = referrerId ? parseInt(referrerId) : undefined;
+    const lvl = parseInt(level);
+    const pg = parseInt(page);
+    const lim = parseInt(limit);
+  
+    if (referrerId && isNaN(id)) {
+      throw new BadRequestException('Invalid referrerId');
+    }
+  
+    return this.referralService.getReferralListingByAdmin({
+      referrerId: id,
+      level: lvl,
+      page: pg,
+      limit: lim,
+    });
+  }
+  
 }

@@ -128,4 +128,65 @@ export class ReferralService {
     return result;
   }
   
+// referral.service.ts
+async getReferralListingByAdmin({
+  referrerId,
+  level = 1,
+  page = 1,
+  limit = 10,
+}: {
+  referrerId?: number;
+  level?: number;
+  page?: number;
+  limit?: number;
+}) {
+  const skip = (page - 1) * limit;
+
+  const whereClause = referrerId !== undefined ? { referrerId } : {};
+
+  const referrals = await this.prisma.referral.findMany({
+    where: whereClause,
+    include: {
+      referred: {
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          referralCode: true,
+          createdAt: true,
+        },
+      },
+    },
+    skip,
+    take: limit,
+  });
+
+  const result = referrals.map(referral => ({
+    level,
+    referralId: referral.id,
+    referralCode: referral.code,
+    invitedAt: referral.createdAt,
+    referredId: referral.referred.id,
+    username: referral.referred.username,
+    email: referral.referred.email,
+    joinedAt: referral.referred.createdAt,
+  }));
+
+  const total = await this.prisma.referral.count({
+    where: whereClause,
+  });
+
+  return {
+    data: result,
+    meta: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+}
+
+
+  
 }
