@@ -14,6 +14,15 @@ export class AgreementService {
     });
   }
 
+  async getAgreements() {
+    const agreements = await this.prisma.agreement.findMany();
+    if (!agreements) {
+      throw new NotFoundException(`Agreements not found.`);
+    }
+
+    return agreements;
+  }
+
   async getById(id: number) {
     const existing = await this.prisma.agreement.findUnique({ where: { id } });
 
