@@ -15,10 +15,11 @@ export class AgreementService {
   }
 
   async getAgreements() {
-    const agreements = await this.prisma.agreement.findMany();
+    const agreements = this.prisma.agreement.findMany();
     if (!agreements) {
       throw new NotFoundException(`Agreements not found.`);
     }
+    console.log("Agreements: ", agreements)
 
     return agreements;
   }

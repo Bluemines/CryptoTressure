@@ -28,8 +28,9 @@ export class AgreementController {
   @Get('getAgreements')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN', 'USER')
-  getAllAgreements() {
-    const result = this.agreementService.getAgreements();
+  async getAllAgreements() {
+    const result = await this.agreementService.getAgreements();
+    console.log(result);
 
     return new ApiResponse(200, result, 'Agreements retrieved');
   }
