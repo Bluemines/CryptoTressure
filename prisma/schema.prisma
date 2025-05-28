@@ -36,7 +36,9 @@ model User {
   referralsMade     Referral[]    @relation("UserReferralsMade")
   referralsReceived Referral[]    @relation("UserReferralsReceived")
   rewards           Reward[]
-  trialFund         TrialFund?   
+  trialFund         TrialFund?  
+  referrerId     Int? 
+  referralBonusPercent Decimal?  
 
   verifications  Verification[]
   passwordResets PasswordReset[]
