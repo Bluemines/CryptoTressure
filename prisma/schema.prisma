@@ -330,6 +330,7 @@ enum WithdrawStatus {
 enum RewardStatus {
   FAILED
   SUCCESS
+  REVERSED
 }
 
 enum AgreementStatus {

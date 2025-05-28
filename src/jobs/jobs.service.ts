@@ -68,62 +68,107 @@ export class JobsService {
     }
   }
 
-  /* ────────────────────────────────────────────────────────────────
-     1. EXPIRY / REFUND  – runs hourly on the hour
-  ──────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────────
+   EXPIRY / REFUND – runs hourly on the hour
+   ─────────────────────────────────────────────── */
   @Cron('0 * * * *', { name: 'handleExpiredMachines' })
   async handleExpiredMachines() {
     const now = new Date();
-    this.logger.log('⏰  Running expired‐machines refund job');
+    this.logger.log('⏰  Running expired-machines refund job');
 
-    const expired = await this.prisma.userProduct.findMany({
+    const expiredByUser = await this.prisma.userProduct.groupBy({
+      by: ['userId'],
       where: { status: 'ACTIVE', expiresAt: { lte: now } },
-      include: {
-        product: { select: { id: true, price: true, title: true } },
-        user: { select: { id: true } },
-      },
+      _count: true,
     });
 
-    for (const up of expired) {
-      const price: Decimal = up.product.price;
-      const userId = up.user.id;
-      const productTitle = up.product.title;
+    for (const { userId } of expiredByUser) {
+      await this.prisma.$transaction(async (tx) => {
+        const userProducts = await tx.userProduct.findMany({
+          where: { userId, status: 'ACTIVE', expiresAt: { lte: now } },
+          include: {
+            product: { select: { id: true, price: true, title: true } },
+          },
+        });
+        if (userProducts.length === 0) return; 
 
-      await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-        // 1) refund wallet
+        let walletRefund = new Decimal(0); 
+        let walletReserved = new Decimal(0); 
+        let trialFundRecovery = new Decimal(0); 
+
+        for (const up of userProducts) {
+          walletRefund = walletRefund.plus(up.walletSpend);
+          walletReserved = walletReserved.plus(up.walletSpend);
+          trialFundRecovery = trialFundRecovery.plus(up.trialSpend);
+        }
+
         await tx.wallet.update({
           where: { userId },
           data: {
-            balance: { increment: price },
-            reserved: { decrement: price },
+            balance: { increment: walletRefund },
+            reserved: { decrement: walletReserved },
           },
         });
 
-        // 2) mark as refunded
-        await tx.userProduct.update({
-          where: { id: up.id },
+        await tx.userProduct.updateMany({
+          where: { userId, status: 'ACTIVE', expiresAt: { lte: now } },
           data: { status: 'REFUNDED' },
         });
 
-        // 3) rollback any trial usage
-        await tx.trialFund.updateMany({
-          where: { userId, status: 'ACTIVE', usedAmount: { gt: price } },
-          data: { usedAmount: { decrement: price } },
+        if (trialFundRecovery.gt(0)) {
+          const tf = await tx.trialFund.update({
+            where: { userId },
+            data: { usedAmount: { decrement: trialFundRecovery } },
+          });
+
+          if (tf.usedAmount.lte(0)) {
+            await tx.trialFund.update({
+              where: { userId },
+              data: {
+                status: 'RECOVERED',
+                recoveredAt: new Date(),
+                usedAmount: 0,
+              },
+            });
+          }
+        }
+
+        const trialProductIds = userProducts
+          .filter((u) => u.trialSpend.gt(0))
+          .map((u) => u.product.id);
+
+        if (trialProductIds.length) {
+          await tx.reward.updateMany({
+            where: {
+              userId,
+              productId: { in: trialProductIds },
+              status: 'SUCCESS',
+            },
+            data: { status: 'FAILED' },
+          });
+
+          await tx.reward.updateMany({
+            where: {
+              userId,
+              productId: { in: trialProductIds },
+              status: null,
+              createdAt: { lte: now },
+            },
+            data: { status: 'REVERSED' },
+          });
+        }
+
+        this.notificationGateway.sendNotification(userId, {
+          type: 'WALLET_UPDATED',
+          message:
+            'Your 4-day trial has ended. Trial funds and related earnings have been cleared; all real funds have been returned to your wallet.',
         });
       });
 
-      // 4) send notification
-      this.notificationGateway.sendNotification(userId, {
-        type: 'WALLET_UPDATED',
-        message: `🔄 Your rental of "${productTitle}" has expired and ₨${price.toFixed(2)} has been returned to your wallet.`,
-      });
-
-      this.logger.log(
-        `✅ Refunded ₨${price.toFixed(2)} to user ${userId} for product ${up.product.id}`,
-      );
+      this.logger.log(`✅ Finished clean-up for user ${userId}`);
     }
 
-    this.logger.log('✅  Expired‐machines refund job complete');
+    this.logger.log('✅  Expired-machines refund job complete');
   }
 
   /* ────────────────────────────────────────────────────────────────

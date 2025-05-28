@@ -3,6 +3,7 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 import { PrismaService } from '../../prisma/prisma.service';
 import { setTimeout } from 'timers';
 import { TrialFund } from 'generated/prisma';
+import { Decimal } from 'generated/prisma/runtime/library';
 
 @Injectable()
 export class TrialFundService {
@@ -13,77 +14,78 @@ export class TrialFundService {
     private readonly scheduler: SchedulerRegistry,
   ) {}
 
+  /* Schedule a one-off timeout right after issuing a trial fund */
   async scheduleRecovery(trial: TrialFund) {
     const delay = trial.expiresAt.getTime() - Date.now();
-    if (delay <= 0) {
-      // already expired
-      return this.recover(trial.id);
-    }
+    if (delay <= 0) return this.recover(trial.id); // already expired
 
     const key = `trial-recover-${trial.id}`;
     const timeout = setTimeout(() => {
-      this.recover(trial.id).catch((err) => {
-        this.logger.error(`Failed auto-recover trial ${trial.id}`, err.stack);
-      });
+      this.recover(trial.id).catch((err) =>
+        this.logger.error(`Failed auto-recover trial ${trial.id}`, err.stack),
+      );
     }, delay);
 
     this.scheduler.addTimeout(key, timeout);
-    this.logger.log(`Scheduled trialFund ${trial.id} recovery in ${delay}ms`);
+    this.logger.log(
+      `⏳ Scheduled trialFund ${trial.id} recovery in ${delay} ms`,
+    );
   }
 
-  /**
-   * Mark trial fund recovered AND refund any associated UserProduct purchases
-   */
+  /* Recover a single TrialFund immediately */
   async recover(trialId: number) {
-    // 1) Load and mark the TrialFund itself
     const trial = await this.prisma.trialFund.findUnique({
       where: { id: trialId },
     });
-    if (!trial || trial.status !== 'ACTIVE') {
-      return;
-    }
+    if (!trial || trial.status !== 'ACTIVE') return;
 
-    await this.prisma.trialFund.update({
-      where: { id: trialId },
-      data: { status: 'RECOVERED', recoveredAt: new Date() },
-    });
-    this.logger.log(`Recovered trialFund ${trialId}`);
+    await this.prisma.$transaction(async (tx) => {
+      await tx.trialFund.update({
+        where: { id: trialId },
+        data: { status: 'RECOVERED', recoveredAt: new Date(), usedAmount: 0 },
+      });
 
-    // 2) Find any ACTIVE UserProduct rows for this trial
-    const userProducts = await this.prisma.userProduct.findMany({
-      where: {
-        userId: trial.userId,
-        status: 'ACTIVE',
-        acquiredAt: { lte: trial.expiresAt },
-      },
-      include: { product: { select: { price: true } } },
-    });
+      const ups = await tx.userProduct.findMany({
+        where: {
+          userId: trial.userId,
+          status: 'ACTIVE',
+          acquiredAt: { lte: trial.expiresAt },
+        },
+        include: { product: { select: { id: true } } },
+      });
 
-    // 3) Refund each one in its own transaction
-    for (const up of userProducts) {
-      await this.prisma.$transaction(async (tx) => {
-        // 1) remove the reservation entirely
-        const price = up.walletSpend.plus(up.trialSpend);
-        // 2) refund only the wallet part
+      for (const up of ups) {
+        const reserveRelease = new Decimal(up.walletSpend);
+        const refundReal = new Decimal(up.walletSpend);
+        const revertTrial = new Decimal(up.trialSpend);
+
         await tx.wallet.update({
-          where: { userId: up.userId },
+          where: { userId: trial.userId },
           data: {
-            reserved: { decrement: price },
-            balance: { increment: up.walletSpend },
+            balance: { increment: refundReal },
+            reserved: { decrement: reserveRelease },
           },
         });
-        // 3) mark refunded
+
         await tx.userProduct.update({
           where: { id: up.id },
           data: { status: 'REFUNDED' },
         });
-      });
-    }
 
-    // 4) Clean up the scheduled timeout
+        if (revertTrial.gt(0)) {
+          await tx.reward.updateMany({
+            where: { userId: trial.userId, productId: up.productId },
+            data: { status: 'REVERSED' }, 
+          });
+        }
+      }
+    });
+
     const key = `trial-recover-${trialId}`;
     if (this.scheduler.doesExist('timeout', key)) {
       this.scheduler.deleteTimeout(key);
     }
+
+    this.logger.log(`✅ Recovered trialFund ${trialId}`);
   }
 }
