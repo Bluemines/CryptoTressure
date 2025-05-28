@@ -63,49 +63,32 @@ export class AuthService {
    */
   async signup(dto: SignupDto): Promise<void> {
     const { email, code, username, password } = dto;
-
-    // ─── 1. OTP check ──────────────────────────────────────────────────────
-    const v = await this.prisma.verification.findUnique({
-      where: { email },
-    });
-    if (!v) {
-      throw new ApiError(400, 'Email not found');
-    }
-    if (v.code !== code) {
-      throw new ApiError(400, 'Invalid code');
-    }
-    if (v.expiresAt < new Date()) {
-      throw new ApiError(400, 'Code expired');
-    }
-
-    // ─── 2. Check if Email or Username Already Exists ─────────────────────
+  
+    // 1. OTP Validation
+    const v = await this.prisma.verification.findUnique({ where: { email } });
+    if (!v) throw new ApiError(400, 'Email not found');
+    if (v.code !== code) throw new ApiError(400, 'Invalid code');
+    if (v.expiresAt < new Date()) throw new ApiError(400, 'Code expired');
+  
+    // 2. Uniqueness Check
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [{ email: dto.email }, { username: dto.username }],
       },
     });
-    if (existingUser) {
-      throw new ApiError(409, 'Email or username already exists in database');
-    }
-
-    // ─── 3. Hash password ──────────────────────────────────────────────────
+    if (existingUser) throw new ApiError(409, 'Email or username already exists');
+  
+    // 3. Password Hashing
     const hashed = await argon.hash(password);
-
-    // ─── 4. Prepare constants ──────────────────────────────────────────────
+  
+    // 4. Constants
     const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
-
-    const referralBonus = Number(
-      this.config.get<number>('REFERRAL_BONUS_USD', 10),
-    );
-    const pointsBonus = Number(
-      this.config.get<number>('REFERRAL_BONUS_PTS', 10),
-    );
-
-    // ─── 5. Create DB records atomically ───────────────────────────────────
+    const referralBonusBase = 3; // % of deposit for referrer
+  
     let trialFund;
     try {
       trialFund = await this.prisma.$transaction(async (tx) => {
-        // 5‑A: Create User
+        // A: Create User
         const user = await tx.user.create({
           data: {
             email: dto.email,
@@ -117,13 +100,11 @@ export class AuthService {
             status: 'APPROVED',
           },
         });
-
-        // 5‑B: Create Wallet
-        await tx.wallet.create({
-          data: { userId: user.id, balance: 0, reserved: 0 },
-        });
-
-        // 5‑C: Create User Level
+  
+        // B: Create Wallet
+        await tx.wallet.create({ data: { userId: user.id, balance: 0, reserved: 0 } });
+  
+        // C: Create User Level
         await tx.userLevel.create({
           data: {
             user: {
@@ -137,100 +118,43 @@ export class AuthService {
             },
           },
         });
-
-        // 5‑D: Handle Referral (if any)
+  
+        // D: Handle Referral
         if (dto.referralCode) {
           const referrer = await tx.user.findUnique({
             where: { referralCode: dto.referralCode },
           });
-          if (!referrer) {
-            throw new ApiError(400, 'The referral code is invalid');
-          }
-
-          const levelCommissionMap = {
-            1: 2,
-            2: 1.5,
-            3: 1,
-          };
-
-          let currentReferrer = referrer;
-          let currentLevel = 1;
-
-          while (currentReferrer && currentLevel <= 3) {
-            const percentage = levelCommissionMap[currentLevel] ?? 0;
-            const commissionAmount = (referralBonus * percentage) / 100;
-
-            // Only for level 1, create referral entry
-            if (currentLevel === 1) {
-              await tx.referral.create({
-                data: {
-                  code: Date.now().toString().slice(-9),
-                  referrerId: currentReferrer.id,
-                  referredId: user.id,
-                },
-              });
-            }
-
-            // Add to wallet
-            if (commissionAmount > 0) {
-              await tx.wallet.update({
-                where: { userId: currentReferrer.id },
-                data: { balance: { increment: commissionAmount } },
-              });
-
-              // Get referral ID if exists
-              const referralEntry = await tx.referral.findFirst({
-                where: {
-                  referrerId: currentReferrer.id,
-                  referredId: currentLevel === 1 ? user.id : undefined,
-                },
-              });
-
-              await tx.commission.create({
-                data: {
-                  referralId: referralEntry?.id ?? 0,
-                  amount: commissionAmount,
-                  percentage,
-                  levelDepth: currentLevel,
-                },
-              });
-            }
-
-            // Points bonus
-            if (pointsBonus > 0) {
-              await awardPoints(
-                currentReferrer.id,
-                Math.floor(pointsBonus),
-                tx,
-              );
-            }
-
-            // Next referrer up the tree
-            const referralRecord = await tx.referral.findFirst({
-              where: { referredId: currentReferrer.id },
-              select: { referrerId: true },
-            });
-
-            currentReferrer = referralRecord
-              ? await tx.user.findUnique({
-                  where: { id: referralRecord.referrerId },
-                })
-              : null;
-
-            currentLevel++;
-          }
+          if (!referrer) throw new ApiError(400, 'Referral code is invalid');
+  
+          // Link referral
+          await tx.referral.create({
+            data: {
+              code: Date.now().toString().slice(-9),
+              referrerId: referrer.id,
+              referredId: user.id,
+            },
+          });
+  
+          // Save referralBonus config to user for later use (after deposit)
+          await tx.user.update({
+            where: { id: user.id },
+            data: {
+              referrerId: referrer.id,
+              referralBonusPercent: referralBonusBase, // track for future bonus logic
+            },
+          });
         }
-
-        // 5‑E: Delete OTP
+  
+        // E: Delete OTP
         await tx.verification.delete({ where: { email: dto.email } });
-
-        // 5‑F: Default product for trial fund (if any)
+  
+        // F: Default Product
         const defaultProduct = await tx.product.findFirst({
           where: { deletedAt: null },
           orderBy: { id: 'asc' },
         });
-
-        // 5‑G: Create Trial Fund
+  
+        // G: Trial Fund
         return tx.trialFund.create({
           data: {
             userId: user.id,
@@ -241,26 +165,23 @@ export class AuthService {
         });
       });
     } catch (e) {
-      // Handle unique constraint error
       if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
-        throw new ApiError(
-          409,
-          'Error in Catch. Email or username already exists',
-        );
+        throw new ApiError(409, 'Email or username already exists');
       }
       throw e;
     }
-
-    // ─── 6. Schedule trial fund auto-recovery ──────────────────────────────
+  
+    // 6. Schedule Trial Fund Recovery
     await this.trialFundSvc.scheduleRecovery(trialFund);
-
-    // ─── 7. Send welcome email ──────────────────────────────────────────────
+  
+    // 7. Send Welcome Email
     await this.mailService.sendMail(
       dto.email,
       'Welcome to Bluemines',
       'Welcome to Bluemines',
     );
   }
+  
 
   async signin(dto: LoginDto) {
     const { email, password } = dto;
