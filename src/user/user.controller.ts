@@ -10,6 +10,7 @@ import {
   Req,
   UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -18,6 +19,7 @@ import { GetAllUsersDTO, UpdateUserDTO, UserRewardDTO } from './dto';
 import { UserListView } from './interfaces';
 import { FileUpload } from 'src/common/decorators/file-upload.decorator';
 import { User } from '../../generated/prisma/client';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -31,6 +33,7 @@ export class UserController {
   //   maxWidth: 800,
   //   quality: 75,
   // })
+  @UseInterceptors(FileInterceptor('profile'))
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER', 'ADMIN')
   async updateUser(
@@ -41,6 +44,7 @@ export class UserController {
     const userId = req.user.id as number;
     console.log('UserId: ', userId);
     const imagePath = file ? `/uploads/${file.filename}` : undefined;
+    console.log('Image path: ', imagePath);
 
     const updated = await this.userService.updateUser(userId, {
       ...dto,
