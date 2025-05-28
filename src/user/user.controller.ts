@@ -25,15 +25,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  // CUSTOMER
   @Patch('update')
-  // @FileUpload({
-  //   fieldName: 'picture',
-  //   destination: './uploads',
-  //   maxWidth: 800,
-  //   quality: 75,
-  // })
-  @UseInterceptors(FileInterceptor('profile'))
+  @FileUpload({ fieldName: 'profile' }) // <-- our decorator
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER', 'ADMIN')
   async updateUser(
@@ -42,15 +35,11 @@ export class UserController {
     @Req() req,
   ): Promise<ApiResponse<User>> {
     const userId = req.user.id as number;
-    console.log('UserId: ', userId);
-    const imagePath = file ? `/uploads/${file.filename}` : undefined;
-    console.log('Image path: ', imagePath);
 
-    const updated = await this.userService.updateUser(userId, {
-      ...dto,
-      profile: imagePath,
-    });
+    const data: UpdateUserDTO & { profile?: string } = { ...dto };
+    if (file) data.profile = `/uploads/${file.filename}`;
 
+    const updated = await this.userService.updateUser(userId, data);
     return new ApiResponse(200, updated, 'User updated');
   }
 

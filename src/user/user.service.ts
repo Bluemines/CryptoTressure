@@ -190,18 +190,19 @@ export class UserService {
     return rewardRecord;
   }
 
-  // CUSTOMER
-  async updateUser(userId: number, data: UpdateUserDTO): Promise<User> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-    if (!user) throw new ApiError(404, 'User not found');
+  async updateUser(
+    userId: number,
+    data: UpdateUserDTO & { profile?: string },
+  ): Promise<User> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new Error('User not found');
 
     return this.prisma.user.update({
       where: { id: userId },
       data,
     });
   }
+
   async getUserStats() {
     const [
       totalUsers,

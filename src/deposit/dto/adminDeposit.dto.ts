@@ -1,9 +1,10 @@
-import { IsEmail, IsInt, IsNotEmpty, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEmail, IsNotEmpty, Min } from 'class-validator';
 
 export class AdminDepositDto {
-  @IsInt()
   @Min(50)
   @IsNotEmpty()
+  @Type(() => Number)
   amount: number;
 
   @IsEmail()

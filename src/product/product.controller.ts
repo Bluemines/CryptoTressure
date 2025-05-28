@@ -34,8 +34,6 @@ export class ProductController {
   @FileUpload({
     fieldName: 'image',
     destination: './uploads',
-    maxWidth: 800,
-    quality: 75,
   })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
@@ -90,8 +88,6 @@ export class ProductController {
   @FileUpload({
     fieldName: 'image',
     destination: './uploads',
-    maxWidth: 800,
-    quality: 75,
   })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
