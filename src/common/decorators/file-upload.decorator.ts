@@ -14,6 +14,7 @@ export function FileUpload(opts: FileUploadOptions) {
     maxWidth,
     quality,
   } = opts;
+  console.log('FileUpload');
 
   return applyDecorators(
     UseInterceptors(
@@ -23,17 +24,18 @@ export function FileUpload(opts: FileUploadOptions) {
         fileFilter:
           fileFilter ??
           ((req, file, cb) => {
+            console.log('[FileInterceptor] Incoming file:', file.originalname);
             if (!file.mimetype.match(/^image\/(jpg|jpeg|png|gif)$/)) {
               return cb(new Error('Only image files are allowed'), false);
             }
             cb(null, true);
           }),
       }),
-      new ImageResizeInterceptor({
-        destination,
-        maxWidth: opts.maxWidth,
-        quality: opts.quality,
-      }),
+      // new ImageResizeInterceptor({
+      //   destination,
+      //   maxWidth: opts.maxWidth,
+      //   quality: opts.quality,
+      // }),
     ),
   );
 }

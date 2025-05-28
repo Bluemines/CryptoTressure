@@ -23,6 +23,33 @@ import { User } from '../../generated/prisma/client';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  // CUSTOMER
+  @Patch('update')
+  // @FileUpload({
+  //   fieldName: 'picture',
+  //   destination: './uploads',
+  //   maxWidth: 800,
+  //   quality: 75,
+  // })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER', 'ADMIN')
+  async updateUser(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() dto: UpdateUserDTO,
+    @Req() req,
+  ): Promise<ApiResponse<User>> {
+    const userId = req.user.id as number;
+    console.log('UserId: ', userId);
+    const imagePath = file ? `/uploads/${file.filename}` : undefined;
+
+    const updated = await this.userService.updateUser(userId, {
+      ...dto,
+      profile: imagePath,
+    });
+
+    return new ApiResponse(200, updated, 'User updated');
+  }
+
   @Get('stats')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
@@ -65,26 +92,5 @@ export class UserController {
   async suspendUser(@Param('id', ParseIntPipe) id: number) {
     const user = await this.userService.suspendUser(id);
     return new ApiResponse(200, user, 'User suspended');
-  }
-
-  // CUSTOMER
-  @Patch('update')
-  @FileUpload({ fieldName: 'picture', destination: './uploads', maxWidth: 800, quality: 75 })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER', 'ADMIN')
-  async updateUser(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() dto: UpdateUserDTO,
-    @Req() req,
-  ): Promise<ApiResponse<User>> {
-    const userId = req.user.id as number;
-    const imagePath = file ? `/uploads/${file.filename}` : undefined;
-
-    const updated = await this.userService.updateUser(userId, {
-      ...dto,
-      profile: imagePath,
-    });
-
-    return new ApiResponse(200, updated, 'User updated');
   }
 }
