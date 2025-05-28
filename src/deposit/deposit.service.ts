@@ -8,6 +8,15 @@ import { ApiError } from 'src/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Prisma } from '../../generated/prisma';
 import { AdminDepositListDto } from './dto/admin-deposit-list.dto';
+import {
+  REFERRAL_BONUS_PERCENT,
+  DEPOSIT_BONUS_PERCENT,
+  DEPOSIT_LOCK_DAYS,
+  BONUS_LOCK_DAYS
+} from 'src/constant/deposit';
+
+
+
 
 @Injectable()
 export class DepositService {
@@ -96,14 +105,15 @@ export class DepositService {
   async handleIPN(body: any, signature: string) {
     // const verified = this.verifySig(JSON.stringify(body), signature);
     // if (!verified) throw new ForbiddenException('Bad signature');
-
+  
     const { reference, transactionId, status } = body;
-
+  
     const deposit = await this.prisma.deposit.findUnique({
-      where: { reference: reference },
+      where: { reference },
     });
+  
     if (!deposit || deposit.status !== 'PENDING') return;
-
+  
     if (status === 'SUCCESS') {
       await this.prisma.$transaction(async (tx) => {
         // 1. Update main deposit
@@ -113,38 +123,37 @@ export class DepositService {
             status: 'SUCCESS',
             externalId: transactionId,
             verifiedAt: new Date(),
-            // Add lock period for main deposit
-            lockedUntil: new Date(Date.now() + 30 * 86400000), // 30 days
+            lockedUntil: new Date(Date.now() + DEPOSIT_LOCK_DAYS * 86400000),
           },
         });
-
+  
         // 2. Update wallet with main deposit
         await tx.wallet.update({
           where: { userId: deposit.userId },
           data: { balance: { increment: deposit.amount } },
         });
-
+  
         // 3. First deposit bonus logic
         const user = await tx.user.findUnique({
           where: { id: deposit.userId },
         });
-
+  
         if (!user?.firstDepositBonus) {
-          const bonusAmount = Number(deposit.amount) * 0.1;
-
+          const bonusAmount = Number(deposit.amount) * (DEPOSIT_BONUS_PERCENT / 100);
+  
           // Create bonus deposit
           await tx.deposit.create({
             data: {
               userId: deposit.userId,
               amount: bonusAmount,
               reference: `BONUS-${deposit.reference}`,
-              lockedUntil: new Date(Date.now() + 15 * 86400000), // 15 days
+              lockedUntil: new Date(Date.now() + BONUS_LOCK_DAYS * 86400000),
               status: 'SUCCESS',
               provider: 'BONUS',
               verifiedAt: new Date(),
             },
           });
-
+  
           // Update user and wallet for bonus
           await Promise.all([
             tx.user.update({
@@ -158,39 +167,38 @@ export class DepositService {
           ]);
         }
       });
-
+  
       // 4. Process referral bonus (outside transaction)
       const referral = await this.prisma.referral.findFirst({
         where: { referredId: deposit.userId },
         include: { referrer: true },
       });
-
+  
       if (referral) {
-        const commissionAmount = Number(deposit.amount) * 0.03;
+        const commissionAmount = Number(deposit.amount) * (REFERRAL_BONUS_PERCENT / 100);
+  
         await this.prisma.commission.create({
           data: {
             amount: commissionAmount,
-            percentage: 3.0,
+            percentage: REFERRAL_BONUS_PERCENT,
             levelDepth: 1,
             referralId: referral.id,
             status: 'PENDING',
           },
         });
-
+  
         await this.prisma.wallet.update({
           where: { userId: referral.referrer.id },
           data: { balance: { increment: commissionAmount } },
         });
       }
     } else {
-      // ... existing failure handling ...
       await this.prisma.deposit.update({
         where: { id: deposit.id },
         data: { status: 'FAILED', externalId: transactionId },
       });
     }
   }
-
   // --- helpers --------------------------------------------------------------
   private sign(payload: object) {
     const hmac = crypto
