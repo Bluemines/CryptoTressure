@@ -156,21 +156,33 @@ async getReferralListingByAdmin({
           createdAt: true,
         },
       },
+      commissions: {
+        select: {
+          amount: true,
+        },
+      },
     },
     skip,
     take: limit,
   });
 
-  const result = referrals.map(referral => ({
-    level,
-    referralId: referral.id,
-    referralCode: referral.code,
-    invitedAt: referral.createdAt,
-    referredId: referral.referred.id,
-    username: referral.referred.username,
-    email: referral.referred.email,
-    joinedAt: referral.referred.createdAt,
-  }));
+  const result = referrals.map(referral => {
+    const totalEarned = referral.commissions.reduce((sum, c) => {
+      return sum + Number(c.amount);
+    }, 0);
+
+    return {
+      level,
+      referralId: referral.id,
+      referralCode: referral.code,
+      invitedAt: referral.createdAt,
+      referredId: referral.referred.id,
+      username: referral.referred.username,
+      email: referral.referred.email,
+      joinedAt: referral.referred.createdAt,
+      earnedAmount: totalEarned,
+    };
+  });
 
   const total = await this.prisma.referral.count({
     where: whereClause,
@@ -186,7 +198,6 @@ async getReferralListingByAdmin({
     },
   };
 }
-
 
   
 }
