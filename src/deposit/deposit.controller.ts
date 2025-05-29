@@ -64,4 +64,21 @@ export class DepositController {
       'Admin deposits fetched',
     );
   }
+
+  @Get('history')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('USER')
+  async listDeposits(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('status') status?: string,
+    @Query('userId') userId?: string,
+  ) {
+    return this.svc.getDeposits({
+      page: Number(page),
+      limit: Number(limit),
+      status,
+      userId,
+    });
+  }
 }
