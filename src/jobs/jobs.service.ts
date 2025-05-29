@@ -90,11 +90,11 @@ export class JobsService {
             product: { select: { id: true, price: true, title: true } },
           },
         });
-        if (userProducts.length === 0) return; 
+        if (userProducts.length === 0) return;
 
-        let walletRefund = new Decimal(0); 
-        let walletReserved = new Decimal(0); 
-        let trialFundRecovery = new Decimal(0); 
+        let walletRefund = new Decimal(0);
+        let walletReserved = new Decimal(0);
+        let trialFundRecovery = new Decimal(0);
 
         for (const up of userProducts) {
           walletRefund = walletRefund.plus(up.walletSpend);
@@ -178,38 +178,57 @@ export class JobsService {
   async handleDailyRewards() {
     this.logger.log('⏰  Starting daily reward cycle');
 
-    const today = new Date();
     const startOfDayUTC = new Date(
-      Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()),
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate(),
+      ),
     );
+
+    const pctByLevel: Record<number, Decimal> = {
+      0: new Decimal(1.0),
+      1: new Decimal(1.5),
+      2: new Decimal(1.75),
+      3: new Decimal(2.0),
+      4: new Decimal(2.3),
+      5: new Decimal(2.75),
+      6: new Decimal(3.0),
+    };
 
     const userProducts = await this.prisma.userProduct.findMany({
       where: { status: 'ACTIVE', product: { deletedAt: null } },
-      include: { product: { select: { price: true, dailyIncome: true } } },
+      include: {
+        product: {
+          select: { price: true, level: true },
+        },
+      },
     });
 
     for (const up of userProducts) {
-      const price: Decimal = up.product.price;
-      const pct: Decimal = up.product.dailyIncome;
-      const rewardAmount = price.mul(pct).div(100).toDecimalPlaces(2);
+      const pct = pctByLevel[up.product.level];
 
-      let awarded = false;
+      if (pct === undefined) {
+        this.logger.warn(
+          `Product ${up.productId} has unsupported level ${up.product.level}`,
+        );
+        continue;
+      }
 
-      await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-        try {
-          await tx.reward.create({
-            data: {
-              userId: up.userId,
-              productId: up.productId,
-              reward: rewardAmount,
-              date: startOfDayUTC,
-            },
-          });
-          awarded = true;
-        } catch (e: any) {
-          if (e?.code !== 'P2002') throw e;
-          return;
-        }
+      const rewardAmount = up.product.price
+        .mul(pct)
+        .div(100)
+        .toDecimalPlaces(2);
+
+      await this.prisma.$transaction(async (tx) => {
+        await tx.reward.create({
+          data: {
+            userId: up.userId,
+            productId: up.productId,
+            reward: rewardAmount,
+            date: startOfDayUTC,
+          },
+        });
 
         await tx.wallet.update({
           where: { userId: up.userId },
@@ -221,7 +240,7 @@ export class JobsService {
 
       this.notificationGateway.sendNotification(up.userId, {
         type: 'REWARD_EARNED',
-        message: `🎉 You received a daily reward of ₨${rewardAmount.toFixed(2)}}!`,
+        message: `🎉 You received a daily reward of ₨${rewardAmount.toFixed(2)}!`,
       });
     }
 
