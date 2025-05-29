@@ -5,11 +5,13 @@ import { PrismaService } from '../prisma/prisma.service';
 import { awardPoints } from 'src/common/utils/points';
 import { Decimal } from 'generated/prisma/runtime/library';
 import { NotificationGateway } from 'src/notifications/notification.gateway';
+import { Server, Socket } from 'socket.io';
+import { WebSocketServer } from '@nestjs/websockets';
 
 @Injectable()
 export class JobsService {
   private readonly logger = new Logger(JobsService.name);
-
+  @WebSocketServer() server: Server;
   constructor(
     private readonly prisma: PrismaService,
     private notificationGateway: NotificationGateway,
@@ -310,7 +312,7 @@ export class JobsService {
         await this.distributeTeamBonus(up.userId, pct, up.productId, tx);
       });
 
-      this.notificationGateway.sendNotification(up.userId, {
+      this.server.to(up.userId.toString()).emit('notification', {
         type: 'REWARD_EARNED',
         message: `🎉 You received a reward of ₨${rewardAmount.toFixed(2)}!`,
       });
