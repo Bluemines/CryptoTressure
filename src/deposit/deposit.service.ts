@@ -14,6 +14,7 @@ import {
   DEPOSIT_LOCK_DAYS,
   BONUS_LOCK_DAYS
 } from 'src/constant/deposit';
+import { LevelService } from 'src/level/level.service';
 
 
 
@@ -23,6 +24,7 @@ export class DepositService {
   constructor(
     private prisma: PrismaService,
     private http: HttpService,
+    private readonly levelService: LevelService,
   ) {}
 
   async userDepositsService(userId: number) {
@@ -202,6 +204,8 @@ export class DepositService {
           });
         }
       }
+      await this.levelService.evaluateUserLevel(deposit.userId);
+    
     } else {
       await this.prisma.deposit.update({
         where: { id: deposit.id },
@@ -209,7 +213,7 @@ export class DepositService {
       });
     }
   }
-  
+
   // --- helpers --------------------------------------------------------------
   private sign(payload: object) {
     const hmac = crypto
