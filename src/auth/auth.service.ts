@@ -15,6 +15,7 @@ import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library'
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { breakdown } from './helper/timerBreakDown';
+import { LevelService } from 'src/level/level.service';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
     private readonly trialFundSvc: TrialFundService,
     private jwt: JwtService,
     private config: ConfigService,
+    private readonly levelService: LevelService,
   ) {}
 
   async sendEmail(dto: SendEmailDto): Promise<void> {
@@ -143,6 +145,17 @@ export class AuthService {
               referralBonusPercent: referralBonusBase, // track for future bonus logic
             },
           });
+          let currentReferrerId = referrer.id;
+          for (let i = 0; i < 3 && currentReferrerId; i++) {
+            await this.levelService.evaluateUserLevel(currentReferrerId);
+
+            const parentReferral = await tx.user.findUnique({
+              where: { id: currentReferrerId },
+              select: { referrerId: true },
+            });
+
+            currentReferrerId = parentReferral?.referrerId ?? null;
+         }
         }
   
         // E: Delete OTP
