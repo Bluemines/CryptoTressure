@@ -174,7 +174,7 @@ export class JobsService {
   /* ────────────────────────────────────────────────────────────────
      2. DAILY REWARDS  – runs at 00:05 UTC every day
   ──────────────────────────────────────────────────────────────── */
-  @Cron('5 0 * * *', { name: 'daily-reward' })
+  @Cron('0 * * * * *', { name: 'daily-reward', timeZone: 'Asia/Karachi' })
   async handleDailyRewards() {
     this.logger.log('⏰  Starting daily reward cycle');
 
