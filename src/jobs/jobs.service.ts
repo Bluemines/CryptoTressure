@@ -174,18 +174,86 @@ export class JobsService {
   /* ────────────────────────────────────────────────────────────────
      2. DAILY REWARDS  – runs at 00:05 UTC every day
   ──────────────────────────────────────────────────────────────── */
-  @Cron('0 * * * * *', { name: 'daily-reward', timeZone: 'Asia/Karachi' })
+  // @Cron('0 * * * * *', { name: 'daily-reward', timeZone: 'Asia/Karachi' })
+  // async handleDailyRewards() {
+  //   this.logger.log('⏰  Starting daily reward cycle');
+
+  //   const startOfDayUTC = new Date(
+  //     Date.UTC(
+  //       new Date().getUTCFullYear(),
+  //       new Date().getUTCMonth(),
+  //       new Date().getUTCDate(),
+  //     ),
+  //   );
+
+  //   const pctByLevel: Record<number, Decimal> = {
+  //     0: new Decimal(1.0),
+  //     1: new Decimal(1.5),
+  //     2: new Decimal(1.75),
+  //     3: new Decimal(2.0),
+  //     4: new Decimal(2.3),
+  //     5: new Decimal(2.75),
+  //     6: new Decimal(3.0),
+  //   };
+
+  //   const userProducts = await this.prisma.userProduct.findMany({
+  //     where: { status: 'ACTIVE', product: { deletedAt: null } },
+  //     include: {
+  //       product: {
+  //         select: { price: true, level: true },
+  //       },
+  //     },
+  //   });
+
+  //   for (const up of userProducts) {
+  //     const pct = pctByLevel[up.product.level];
+
+  //     if (pct === undefined) {
+  //       this.logger.warn(
+  //         `Product ${up.productId} has unsupported level ${up.product.level}`,
+  //       );
+  //       continue;
+  //     }
+
+  //     const rewardAmount = up.product.price
+  //       .mul(pct)
+  //       .div(100)
+  //       .toDecimalPlaces(2);
+
+  //     await this.prisma.$transaction(async (tx) => {
+  //       await tx.reward.create({
+  //         data: {
+  //           userId: up.userId,
+  //           productId: up.productId,
+  //           reward: rewardAmount,
+  //           date: startOfDayUTC,
+  //         },
+  //       });
+
+  //       await tx.wallet.update({
+  //         where: { userId: up.userId },
+  //         data: { balance: { increment: rewardAmount } },
+  //       });
+
+  //       await this.distributeTeamBonus(up.userId, pct, up.productId, tx);
+  //     });
+
+  //     this.notificationGateway.sendNotification(up.userId, {
+  //       type: 'REWARD_EARNED',
+  //       message: `🎉 You received a daily reward of ₨${rewardAmount.toFixed(2)}!`,
+  //     });
+  //   }
+
+  //   this.logger.log('✅  Daily reward cycle complete');
+  // }
+
+  @Cron('0 * * * * *', { name: 'daily-reward', timeZone: 'UTC' }) // ← every minute
   async handleDailyRewards() {
-    this.logger.log('⏰  Starting daily reward cycle');
+    this.logger.log('⏰  Starting reward cycle (every minute for test)');
 
-    const startOfDayUTC = new Date(
-      Date.UTC(
-        new Date().getUTCFullYear(),
-        new Date().getUTCMonth(),
-        new Date().getUTCDate(),
-      ),
-    );
-
+    /* ──────────────────────────────────────────────
+     1. build lookup table once
+  ────────────────────────────────────────────── */
     const pctByLevel: Record<number, Decimal> = {
       0: new Decimal(1.0),
       1: new Decimal(1.5),
@@ -196,18 +264,24 @@ export class JobsService {
       6: new Decimal(3.0),
     };
 
+    /* ──────────────────────────────────────────────
+     2. fetch active user-products
+  ────────────────────────────────────────────── */
     const userProducts = await this.prisma.userProduct.findMany({
       where: { status: 'ACTIVE', product: { deletedAt: null } },
       include: {
-        product: {
-          select: { price: true, level: true },
-        },
+        product: { select: { price: true, level: true } },
       },
     });
 
+    /* ──────────────────────────────────────────────
+     3. credit rewards
+  ────────────────────────────────────────────── */
+    const nowUTC = new Date(); // ← UNIQUE every run
+    // const startOfDayUTC = new Date(Date.UTC(...))               // ← switch back when you revert
+
     for (const up of userProducts) {
       const pct = pctByLevel[up.product.level];
-
       if (pct === undefined) {
         this.logger.warn(
           `Product ${up.productId} has unsupported level ${up.product.level}`,
@@ -220,13 +294,14 @@ export class JobsService {
         .div(100)
         .toDecimalPlaces(2);
 
-      await this.prisma.$transaction(async (tx) => {
+      await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         await tx.reward.create({
           data: {
             userId: up.userId,
             productId: up.productId,
             reward: rewardAmount,
-            date: startOfDayUTC,
+            date: nowUTC, // ← UNIQUE per minute
+            // date: startOfDayUTC,                                   // ← switch back later
           },
         });
 
@@ -240,10 +315,10 @@ export class JobsService {
 
       this.notificationGateway.sendNotification(up.userId, {
         type: 'REWARD_EARNED',
-        message: `🎉 You received a daily reward of ₨${rewardAmount.toFixed(2)}!`,
+        message: `🎉 You received a reward of ₨${rewardAmount.toFixed(2)}!`,
       });
     }
 
-    this.logger.log('✅  Daily reward cycle complete');
+    this.logger.log('✅  Reward cycle complete');
   }
 }
