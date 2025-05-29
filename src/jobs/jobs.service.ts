@@ -6,12 +6,11 @@ import { awardPoints } from 'src/common/utils/points';
 import { Decimal } from 'generated/prisma/runtime/library';
 import { NotificationGateway } from 'src/notifications/notification.gateway';
 import { Server, Socket } from 'socket.io';
-import { WebSocketServer } from '@nestjs/websockets';
 
 @Injectable()
 export class JobsService {
   private readonly logger = new Logger(JobsService.name);
-  @WebSocketServer() server: Server;
+
   constructor(
     private readonly prisma: PrismaService,
     private notificationGateway: NotificationGateway,
@@ -249,7 +248,7 @@ export class JobsService {
   //   this.logger.log('✅  Daily reward cycle complete');
   // }
 
-  @Cron('0 * * * * *', { name: 'daily-reward', timeZone: 'UTC' }) // every minute
+  @Cron('0 0 0 * * *', { name: 'daily-reward', timeZone: 'UTC' }) 
   async handleDailyRewards() {
     this.logger.log('⏰  Starting reward cycle (every minute for test)');
 
@@ -268,7 +267,7 @@ export class JobsService {
       include: { product: { select: { price: true, level: true } } },
     });
 
-    const nowUTC = new Date(); // unique time-stamp per run
+    const nowUTC = new Date(); 
 
     for (const up of userProducts) {
       const pct = pctByLevel[up.product.level];
@@ -285,17 +284,15 @@ export class JobsService {
         .toDecimalPlaces(2);
 
       await this.prisma.$transaction(async (tx) => {
-        /* ─────────────── UPSERT ─────────────── */
         await tx.reward.upsert({
           where: {
             userId_productId_date: {
               userId: up.userId,
               productId: up.productId,
-              date: nowUTC, // or startOfDayUTC when you revert
+              date: nowUTC, 
             },
           },
-          // if it already exists we do NOTHING; you could also add amounts here
-          update: {}, // empty update = ignore duplicate
+          update: {},
           create: {
             userId: up.userId,
             productId: up.productId,
@@ -312,7 +309,7 @@ export class JobsService {
         await this.distributeTeamBonus(up.userId, pct, up.productId, tx);
       });
 
-      this.server.to(up.userId.toString()).emit('notification', {
+      this.notificationGateway.sendNotification(up.userId, {
         type: 'REWARD_EARNED',
         message: `🎉 You received a reward of ₨${rewardAmount.toFixed(2)}!`,
       });
