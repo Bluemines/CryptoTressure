@@ -247,13 +247,10 @@ export class JobsService {
   //   this.logger.log('✅  Daily reward cycle complete');
   // }
 
-  @Cron('0 * * * * *', { name: 'daily-reward', timeZone: 'UTC' }) // ← every minute
+  @Cron('0 * * * * *', { name: 'daily-reward', timeZone: 'UTC' }) // every minute
   async handleDailyRewards() {
     this.logger.log('⏰  Starting reward cycle (every minute for test)');
 
-    /* ──────────────────────────────────────────────
-     1. build lookup table once
-  ────────────────────────────────────────────── */
     const pctByLevel: Record<number, Decimal> = {
       0: new Decimal(1.0),
       1: new Decimal(1.5),
@@ -264,21 +261,12 @@ export class JobsService {
       6: new Decimal(3.0),
     };
 
-    /* ──────────────────────────────────────────────
-     2. fetch active user-products
-  ────────────────────────────────────────────── */
     const userProducts = await this.prisma.userProduct.findMany({
       where: { status: 'ACTIVE', product: { deletedAt: null } },
-      include: {
-        product: { select: { price: true, level: true } },
-      },
+      include: { product: { select: { price: true, level: true } } },
     });
 
-    /* ──────────────────────────────────────────────
-     3. credit rewards
-  ────────────────────────────────────────────── */
-    const nowUTC = new Date(); // ← UNIQUE every run
-    // const startOfDayUTC = new Date(Date.UTC(...))               // ← switch back when you revert
+    const nowUTC = new Date(); // unique time-stamp per run
 
     for (const up of userProducts) {
       const pct = pctByLevel[up.product.level];
@@ -294,14 +282,23 @@ export class JobsService {
         .div(100)
         .toDecimalPlaces(2);
 
-      await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-        await tx.reward.create({
-          data: {
+      await this.prisma.$transaction(async (tx) => {
+        /* ─────────────── UPSERT ─────────────── */
+        await tx.reward.upsert({
+          where: {
+            userId_productId_date: {
+              userId: up.userId,
+              productId: up.productId,
+              date: nowUTC, // or startOfDayUTC when you revert
+            },
+          },
+          // if it already exists we do NOTHING; you could also add amounts here
+          update: {}, // empty update = ignore duplicate
+          create: {
             userId: up.userId,
             productId: up.productId,
             reward: rewardAmount,
-            date: nowUTC, // ← UNIQUE per minute
-            // date: startOfDayUTC,                                   // ← switch back later
+            date: nowUTC,
           },
         });
 
