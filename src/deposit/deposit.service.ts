@@ -304,4 +304,38 @@ export class DepositService {
 
     return { items: data, total };
   }
+ 
+  
+    async getDeposits(params: {
+      page: number;
+      limit: number;
+      status?: string;
+      userId?: string;
+    }) {
+      const { page, limit, status, userId } = params;
+  
+      const where: any = {};
+      if (status) where.status = status;
+      if (userId) where.userId = Number(userId);
+  
+      const [deposits, total] = await Promise.all([
+        this.prisma.deposit.findMany({
+          where,
+          skip: (page - 1) * limit,
+          take: limit,
+          orderBy: { createdAt: 'desc' },
+          include: { user: true },
+        }),
+        this.prisma.deposit.count({ where }),
+      ]);
+  
+      return {
+        data: deposits,
+        meta: {
+          total,
+          page,
+          lastPage: Math.ceil(total / limit),
+        },
+      };
+    }
 }
