@@ -134,6 +134,15 @@ export class DepositService {
           where: { userId: deposit.userId },
           data: { balance: { increment: deposit.amount } },
         });
+
+        await tx.transaction.create({
+          data: {
+            transactiontype: 'DEPOSIT',
+            amount: Number(deposit.amount),
+            status: 'SUCCESS',
+            userId: deposit.userId,
+          },
+        });
   
         // 3. First deposit bonus logic
         const user = await tx.user.findUnique({
@@ -306,36 +315,36 @@ export class DepositService {
   }
  
   
-    async getDeposits(params: {
-      page: number;
-      limit: number;
-      status?: string;
-      userId?: string;
-    }) {
-      const { page, limit, status, userId } = params;
+  async getDeposits(params: {
+    page: number;
+    limit: number;
+    status?: string;
+    userId: number; // Ensure type is number
+  }) {
+    const { page, limit, status, userId } = params;
   
-      const where: any = {};
-      if (status) where.status = status;
-      if (userId) where.userId = Number(userId);
+    const where: any = { userId };
+    if (status) where.status = status;
   
-      const [deposits, total] = await Promise.all([
-        this.prisma.deposit.findMany({
-          where,
-          skip: (page - 1) * limit,
-          take: limit,
-          orderBy: { createdAt: 'desc' },
-          include: { user: true },
-        }),
-        this.prisma.deposit.count({ where }),
-      ]);
+    const [deposits, total] = await Promise.all([
+      this.prisma.deposit.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: { user: true },
+      }),
+      this.prisma.deposit.count({ where }),
+    ]);
   
-      return {
-        data: deposits,
-        meta: {
-          total,
-          page,
-          lastPage: Math.ceil(total / limit),
-        },
-      };
-    }
+    return {
+      data: deposits,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / limit),
+      },
+    };
+  }
+  
 }
