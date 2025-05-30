@@ -66,19 +66,20 @@ export class DepositController {
   }
 
   @Get('history')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('USER')
-  async listDeposits(
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
-    @Query('status') status?: string,
-    @Query('userId') userId?: string,
-  ) {
-    return this.svc.getDeposits({
-      page: Number(page),
-      limit: Number(limit),
-      status,
-      userId,
-    });
-  }
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('USER')
+async listDeposits(
+  @Req() req: any,
+  @Query('page') page = 1,
+  @Query('limit') limit = 10,
+  @Query('status') status?: string,
+) {
+  return this.svc.getDeposits({
+    page: Number(page),
+    limit: Number(limit),
+    status,
+    userId: Number(req.user.id), // Make sure it's a number
+  });
+}
+
 }
