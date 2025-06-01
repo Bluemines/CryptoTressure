@@ -22,53 +22,84 @@ export class JobsService {
     productId: number,
     tx: Prisma.TransactionClient,
   ) {
-    const commissionRates = [0.18, 0.09, 0.05];
+    const commissionRates = [0.18, 0.09, 0.05]; // Levels 1 → 3
     let currentUserId = userId;
-
-    for (let level = 0; level < 3; level++) {
-      // 1. Get the referral record of the current user
+    let lastValidUplineUserId: number | null = null;
+  
+    for (let level = 1; level <= 3; level++) {
       const referral = await tx.referral.findFirst({
         where: { referredId: currentUserId },
-        select: { id: true, referrerId: true },
+        select: { referrerId: true, referredId:true },
       });
-
-      if (!referral) break;
-
-      const commissionAmount = earning.toNumber() * commissionRates[level];
-
-      // 2. Create commission linked to the Referral
+      if (!referral?.referrerId) {
+        // No more uplines — give remaining commission to last valid upline
+        if (lastValidUplineUserId) {
+          const commissionRate = commissionRates[level - 1];
+          const commissionAmount = earning.toNumber() * commissionRate;
+  
+          await tx.commission.create({
+            data: {
+              amount: commissionAmount,
+              percentage: commissionRate * 100,
+              levelDepth: level,
+              referralId: currentUserId, // Still link the referral source
+              status: 'SUCCESS',
+            },
+          });
+  
+          await tx.wallet.update({
+            where: { userId: lastValidUplineUserId },
+            data: { balance: { increment: commissionAmount } },
+          });
+  
+          await tx.notification.create({
+            data: {
+              userId: lastValidUplineUserId,
+              title: 'Team Bonus Received',
+              message: `You received ₨${commissionAmount.toFixed(
+                2,
+              )} from level ${level} referral's daily income.`,
+            },
+          });
+        }
+        break; // Stop the loop
+      }
+  
+      const commissionRate = commissionRates[level - 1];
+      const commissionAmount = earning.toNumber() * commissionRate;
+  
       await tx.commission.create({
         data: {
           amount: commissionAmount,
-          percentage: commissionRates[level] * 100,
-          levelDepth: level + 1,
-          referralId: referral.id, // ✅ Correctly linking to Referral table
+          percentage: commissionRate * 100,
+          levelDepth: level,
+          referralId: currentUserId,
           status: 'SUCCESS',
         },
       });
-
-      // 3. Credit the wallet of the upline user
+  
       await tx.wallet.update({
         where: { userId: referral.referrerId },
         data: { balance: { increment: commissionAmount } },
       });
-
-      // 4. Notify upline user
+  
       await tx.notification.create({
         data: {
           userId: referral.referrerId,
           title: 'Team Bonus Received',
-          message: `You received $${commissionAmount.toFixed(
+          message: `You received ₨${commissionAmount.toFixed(
             2,
-          )} from level ${level + 1} referral's daily income.`,
+          )} from level ${level} referral's daily income.`,
         },
       });
-
-      // 5. Move to next upline
+  
+      // Save current valid upline
+      lastValidUplineUserId = referral.referrerId;
       currentUserId = referral.referrerId;
     }
   }
-
+  
+  
   /* ───────────────────────────────────────────────
    EXPIRY / REFUND – runs hourly on the hour
    ─────────────────────────────────────────────── */
@@ -251,7 +282,6 @@ export class JobsService {
   @Cron('0 0 0 * * *', { name: 'daily-reward', timeZone: 'UTC' }) 
   async handleDailyRewards() {
     this.logger.log('⏰  Starting reward cycle (every minute for test)');
-
     const pctByLevel: Record<number, Decimal> = {
       0: new Decimal(1.0),
       1: new Decimal(1.5),
