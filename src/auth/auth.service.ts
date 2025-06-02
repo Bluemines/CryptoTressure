@@ -75,7 +75,7 @@ export class AuthService {
     // 2. Uniqueness Check
     const existingUser = await this.prisma.user.findFirst({
       where: {
-        OR: [{ email: dto.email }, { username: dto.username }],
+        OR: [{ email: dto.email }],
       },
     });
     if (existingUser) throw new ApiError(409, 'Email or username already exists');
@@ -214,7 +214,7 @@ export class AuthService {
     });
     const ms = trialFund ? trialFund.expiresAt.getTime() - Date.now() : 0;
     const trialFundTimeLeft = breakdown(ms);
-
+    const trialFundAmount = trialFund ? trialFund.amount : 0
     let trialRemainingMs = 0;
     if (trialFund) {
       trialRemainingMs = trialFund.expiresAt.getTime() - Date.now();
@@ -238,6 +238,7 @@ export class AuthService {
       access_token: token,
       ...payload,
       trialFundTimeLeft,
+      trialFundAmount,
     };
   }
 

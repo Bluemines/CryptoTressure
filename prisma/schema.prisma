@@ -13,7 +13,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  username          String   @unique
+  username          String 
   phone             String?
   profile           String?
   email             String   @unique
@@ -215,8 +215,8 @@ model Commission {
   percentage Float
   levelDepth Int?
 
-  referral   Referral @relation(fields: [referralId], references: [id], onDelete: Cascade)
-  referralId Int
+  referral   Referral? @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  referralId Int?
   status     String?
 }
 
