@@ -78,6 +78,21 @@ export class WithdrawController {
       parseInt(limit),
     );
   }
+  @Get('history/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async getWithdrawalByUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+  ) {
+    return this.svc.getUserWithdrawals(
+      id,
+      parseInt(page),
+      parseInt(limit),
+    );
+  }
+
 
   @Get('user-history')
   @UseGuards(JwtAuthGuard, RolesGuard)
