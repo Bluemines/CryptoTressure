@@ -103,7 +103,7 @@ export class JobsService {
   /* ───────────────────────────────────────────────
    EXPIRY / REFUND – runs hourly on the hour
    ─────────────────────────────────────────────── */
-  @Cron('*/5 * * * * *', { name: 'handleExpiredMachines' })
+   @Cron('0 * * * *', { name: 'handleExpiredMachines' })
   async handleExpiredMachines() {
     const now = new Date();
     this.logger.log('⏰  Running expired-machines refund job');
