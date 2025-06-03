@@ -103,7 +103,7 @@ export class JobsService {
   /* ───────────────────────────────────────────────
    EXPIRY / REFUND – runs hourly on the hour
    ─────────────────────────────────────────────── */
-  @Cron('0 * * * *', { name: 'handleExpiredMachines' })
+  @Cron('*/5 * * * * *', { name: 'handleExpiredMachines' })
   async handleExpiredMachines() {
     const now = new Date();
     this.logger.log('⏰  Running expired-machines refund job');
@@ -141,7 +141,6 @@ export class JobsService {
             reserved: { decrement: walletReserved },
           },
         });
-
         await tx.userProduct.updateMany({
           where: { userId, status: 'ACTIVE', expiresAt: { lte: now } },
           data: { status: 'REFUNDED' },
@@ -183,7 +182,7 @@ export class JobsService {
             where: {
               userId,
               productId: { in: trialProductIds },
-              status: null,
+              status: 'SUCCESS',
               createdAt: { lte: now },
             },
             data: { status: 'REVERSED' },
