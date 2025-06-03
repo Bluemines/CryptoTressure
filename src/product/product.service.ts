@@ -124,7 +124,7 @@ export class ProductService {
   }
 
   // ────────────── CUSTOMER  ──────────────────────
-  async getPopularProducts(limit = 3): Promise<Product[]> {
+  async getPopularProducts(limit = 7): Promise<Product[]> {
     const products = await this.prisma.product.findMany({
       where: { deletedAt: null },
       include: {
