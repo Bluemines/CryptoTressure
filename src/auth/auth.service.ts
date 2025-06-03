@@ -214,7 +214,9 @@ export class AuthService {
     });
     const ms = trialFund ? trialFund.expiresAt.getTime() - Date.now() : 0;
     const trialFundTimeLeft = breakdown(ms);
-    const trialFundAmount = trialFund ? trialFund.amount : 0
+    const trialFundAmount = trialFund
+      ? trialFund.amount.minus(trialFund.usedAmount)
+      : 0;
     let trialRemainingMs = 0;
     if (trialFund) {
       trialRemainingMs = trialFund.expiresAt.getTime() - Date.now();
