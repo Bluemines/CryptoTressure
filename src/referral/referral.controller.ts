@@ -46,6 +46,7 @@ export class ReferralController {
   async getHistory(@Req() req) {
     return this.referralService.getReferralHistory(req.user.id);
   }
+  
   @Get('tree')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER')

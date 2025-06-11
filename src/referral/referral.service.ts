@@ -46,12 +46,54 @@ export class ReferralService {
     });
   }
 
+  // async getReferralTree(userId: number, maxDepth = 10) {
+  //   const result = [];
+
+  //   const fetchReferrals = async (referrerId: number, level: number) => {
+  //     if (level > maxDepth) return;
+
+  //     const referrals = await this.prisma.referral.findMany({
+  //       where: { referrerId },
+  //       include: {
+  //         referred: {
+  //           select: {
+  //             id: true,
+  //             username: true,
+  //             email: true,
+  //             referralCode: true,
+  //             createdAt: true,
+  //           },
+  //         },
+  //       },
+  //     });
+
+  //     for (const referral of referrals) {
+  //       result.push({
+  //         level,
+  //         referralId: referral.id,
+  //         referralCode: referral.code,
+  //         invitedAt: referral.createdAt,
+  //         referredId: referral.referred.id,
+  //         username: referral.referred.username,
+  //         email: referral.referred.email,
+  //         joinedAt: referral.referred.createdAt,
+  //       });
+
+  //       await fetchReferrals(referral.referred.id, level + 1);
+  //     }
+  //   };
+
+  //   await fetchReferrals(userId, 1);
+  //   return result;
+  // }
+
   async getReferralTree(userId: number, maxDepth = 10) {
-    const result = [];
-  
-    const fetchReferrals = async (referrerId: number, level: number) => {
-      if (level > maxDepth) return;
-  
+    const buildTree = async (
+      referrerId: number,
+      level: number,
+    ): Promise<any[]> => {
+      if (level > maxDepth) return [];
+
       const referrals = await this.prisma.referral.findMany({
         where: { referrerId },
         include: {
@@ -60,144 +102,150 @@ export class ReferralService {
               id: true,
               username: true,
               email: true,
-              referralCode: true,
               createdAt: true,
             },
           },
         },
       });
-  
-      for (const referral of referrals) {
-        result.push({
+
+      const children = await Promise.all(
+        referrals.map(async (ref) => ({
+          username: ref.referred.username,
+          email: ref.referred.email,
+          joinedAt: ref.referred.createdAt,
           level,
-          referralId: referral.id,
-          referralCode: referral.code,
-          invitedAt: referral.createdAt,
-          referredId: referral.referred.id,
-          username: referral.referred.username,
-          email: referral.referred.email,
-          joinedAt: referral.referred.createdAt,
-        });
-  
-        await fetchReferrals(referral.referred.id, level + 1);
-      }
+          children: await buildTree(ref.referred.id, level + 1),
+        })),
+      );
+
+      return children;
     };
-  
-    await fetchReferrals(userId, 1);
-    return result;
-  }
-  
-  async getReferralTreeByAdmin(userId: number, maxDepth = 10) {
-    const result = [];
-  
-    const fetchReferrals = async (referrerId: number, level: number) => {
-      if (level > maxDepth) return;
-  
-      const referrals = await this.prisma.referral.findMany({
-        where: { referrerId },
-        include: {
-          referred: {
-            select: {
-              id: true,
-              username: true,
-              email: true,
-              referralCode: true,
-              createdAt: true,
-            },
-          },
-        },
-      });
-  
-      for (const referral of referrals) {
-        result.push({
-          level,
-          referralId: referral.id,
-          referralCode: referral.code,
-          invitedAt: referral.createdAt,
-          referredId: referral.referred.id,
-          username: referral.referred.username,
-          email: referral.referred.email,
-          joinedAt: referral.referred.createdAt,
-        });
-  
-        await fetchReferrals(referral.referred.id, level + 1);
-      }
-    };
-  
-    await fetchReferrals(userId, 1);
-    return result;
-  }
-  
-// referral.service.ts
-async getReferralListingByAdmin({
-  referrerId,
-  level = 1,
-  page = 1,
-  limit = 10,
-}: {
-  referrerId?: number;
-  level?: number;
-  page?: number;
-  limit?: number;
-}) {
-  const skip = (page - 1) * limit;
 
-  const whereClause = referrerId !== undefined ? { referrerId } : {};
-
-  const referrals = await this.prisma.referral.findMany({
-    where: whereClause,
-    include: {
-      referred: {
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          referralCode: true,
-          createdAt: true,
-        },
+    const rootUser = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
       },
-      commissions: {
-        select: {
-          amount: true,
-        },
-      },
-    },
-    skip,
-    take: limit,
-  });
-
-  const result = referrals.map(referral => {
-    const totalEarned = referral.commissions.reduce((sum, c) => {
-      return sum + Number(c.amount);
-    }, 0);
+    });
 
     return {
-      level,
-      referralId: referral.id,
-      referralCode: referral.code,
-      invitedAt: referral.createdAt,
-      referredId: referral.referred.id,
-      username: referral.referred.username,
-      email: referral.referred.email,
-      joinedAt: referral.referred.createdAt,
-      earnedAmount: totalEarned,
+      username: rootUser?.username || 'you',
+      userId: rootUser?.id || userId,
+      level: 0,
+      children: await buildTree(userId, 1),
     };
-  });
+  }
 
-  const total = await this.prisma.referral.count({
-    where: whereClause,
-  });
+  async getReferralTreeByAdmin(userId: number, maxDepth = 10) {
+    const result = [];
 
-  return {
-    data: result,
-    meta: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    },
-  };
-}
+    const fetchReferrals = async (referrerId: number, level: number) => {
+      if (level > maxDepth) return;
 
-  
+      const referrals = await this.prisma.referral.findMany({
+        where: { referrerId },
+        include: {
+          referred: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+              referralCode: true,
+              createdAt: true,
+            },
+          },
+        },
+      });
+
+      for (const referral of referrals) {
+        result.push({
+          level,
+          referralId: referral.id,
+          referralCode: referral.code,
+          invitedAt: referral.createdAt,
+          referredId: referral.referred.id,
+          username: referral.referred.username,
+          email: referral.referred.email,
+          joinedAt: referral.referred.createdAt,
+        });
+
+        await fetchReferrals(referral.referred.id, level + 1);
+      }
+    };
+
+    await fetchReferrals(userId, 1);
+    return result;
+  }
+
+  // referral.service.ts
+  async getReferralListingByAdmin({
+    referrerId,
+    level = 1,
+    page = 1,
+    limit = 10,
+  }: {
+    referrerId?: number;
+    level?: number;
+    page?: number;
+    limit?: number;
+  }) {
+    const skip = (page - 1) * limit;
+
+    const whereClause = referrerId !== undefined ? { referrerId } : {};
+
+    const referrals = await this.prisma.referral.findMany({
+      where: whereClause,
+      include: {
+        referred: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            referralCode: true,
+            createdAt: true,
+          },
+        },
+        commissions: {
+          select: {
+            amount: true,
+          },
+        },
+      },
+      skip,
+      take: limit,
+    });
+
+    const result = referrals.map((referral) => {
+      const totalEarned = referral.commissions.reduce((sum, c) => {
+        return sum + Number(c.amount);
+      }, 0);
+
+      return {
+        level,
+        referralId: referral.id,
+        referralCode: referral.code,
+        invitedAt: referral.createdAt,
+        referredId: referral.referred.id,
+        username: referral.referred.username,
+        email: referral.referred.email,
+        joinedAt: referral.referred.createdAt,
+        earnedAmount: totalEarned,
+      };
+    });
+
+    const total = await this.prisma.referral.count({
+      where: whereClause,
+    });
+
+    return {
+      data: result,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
 }

@@ -291,32 +291,6 @@ export class ProductService {
         create: { userId: sellerId, balance: 0 },
       });
 
-      /* 5‑C. Referral commission (single level) */
-      const referral = await tx.referral.findFirst({
-        where: { referredId: userId },
-        select: { id: true, referrerId: true },
-      });
-      if (referral) {
-        const commissionAmt = new Decimal(price)
-          .mul(REFERRAL_COMMISSION_RATE)
-          .toDecimalPlaces(2);
-
-        await tx.commission.create({
-          data: {
-            referralId: referral.id,
-            amount: commissionAmt,
-            percentage: REFERRAL_COMMISSION_RATE * 100,
-            levelDepth: 1,
-          },
-        });
-
-        await tx.wallet.upsert({
-          where: { userId: referral.referrerId },
-          update: { balance: { increment: commissionAmt } },
-          create: { userId: referral.referrerId, balance: commissionAmt },
-        });
-      }
-
       /* 5‑D. Update buyer wallet (balance ↓, reserved ↑) */
       if (walletSpend > 0) {
         await tx.wallet.update({
