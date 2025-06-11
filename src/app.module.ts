@@ -23,6 +23,7 @@ import { JobsModule } from './jobs/jobs.module';
 import { AgreementModule } from './agreement/agreement.module';
 import { DebugModule } from './debug/debug.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { BonusModule } from './bonus/bonus.module';
 
 
 @Module({
@@ -53,7 +54,8 @@ import { TransactionsModule } from './transactions/transactions.module';
     DashboardModule,
     AgreementModule,
     DebugModule,
-    TransactionsModule
+    TransactionsModule,
+    BonusModule
   ],
   providers: [ProductService, LevelService],
   controllers: [],

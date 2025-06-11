@@ -12,12 +12,9 @@ import {
   REFERRAL_BONUS_PERCENT,
   DEPOSIT_BONUS_PERCENT,
   DEPOSIT_LOCK_DAYS,
-  BONUS_LOCK_DAYS
+  BONUS_LOCK_DAYS,
 } from 'src/constant/deposit';
 import { LevelService } from 'src/level/level.service';
-
-
-
 
 @Injectable()
 export class DepositService {
@@ -107,15 +104,15 @@ export class DepositService {
   async handleIPN(body: any, signature: string) {
     // const verified = this.verifySig(JSON.stringify(body), signature);
     // if (!verified) throw new ForbiddenException('Bad signature');
-  
+
     const { reference, transactionId, status } = body;
-  
+
     const deposit = await this.prisma.deposit.findUnique({
       where: { reference },
     });
-  
+
     if (!deposit || deposit.status !== 'PENDING') return;
-  
+
     if (status === 'SUCCESS') {
       await this.prisma.$transaction(async (tx) => {
         // 1. Update main deposit
@@ -128,7 +125,7 @@ export class DepositService {
             lockedUntil: new Date(Date.now() + DEPOSIT_LOCK_DAYS * 86400000),
           },
         });
-  
+
         // 2. Update wallet with main deposit
         await tx.wallet.update({
           where: { userId: deposit.userId },
@@ -143,15 +140,16 @@ export class DepositService {
             userId: deposit.userId,
           },
         });
-  
+
         // 3. First deposit bonus logic
         const user = await tx.user.findUnique({
           where: { id: deposit.userId },
         });
-  
+
         if (!user?.firstDepositBonus) {
-          const bonusAmount = Number(deposit.amount) * (DEPOSIT_BONUS_PERCENT / 100);
-  
+          const bonusAmount =
+            Number(deposit.amount) * (DEPOSIT_BONUS_PERCENT / 100);
+
           // Create bonus deposit
           await tx.deposit.create({
             data: {
@@ -164,7 +162,16 @@ export class DepositService {
               verifiedAt: new Date(),
             },
           });
-  
+
+          await tx.bonus.create({
+            data: {
+              type: 'FIRST_DEPOSIT',
+              amount: bonusAmount,
+              userId: deposit.userId,
+              note: `First deposit bonus from deposit #${deposit.id}`,
+            },
+          });
+
           // Update user and wallet for bonus
           await Promise.all([
             tx.user.update({
@@ -178,12 +185,12 @@ export class DepositService {
           ]);
         }
       });
-  
+
       const referral = await this.prisma.referral.findFirst({
         where: { referredId: deposit.userId },
         include: { referrer: true },
       });
-  
+
       if (referral) {
         const previousDeposits = await this.prisma.deposit.count({
           where: {
@@ -193,28 +200,38 @@ export class DepositService {
             provider: { not: 'BONUS' },
           },
         });
-  
+
         if (previousDeposits === 0) {
-          const commissionAmount = Number(deposit.amount) * (REFERRAL_BONUS_PERCENT / 100);
-  
+          const commissionAmount =
+            Number(deposit.amount) * (REFERRAL_BONUS_PERCENT / 100);
+
           await this.prisma.commission.create({
             data: {
               amount: commissionAmount,
               percentage: REFERRAL_BONUS_PERCENT,
               levelDepth: 1,
               referralId: referral.id,
-              status: 'APPROVED', 
+              status: 'APPROVED',
             },
           });
-  
+
           await this.prisma.wallet.update({
             where: { userId: referral.referrer.id },
             data: { balance: { increment: commissionAmount } },
           });
+
+          await this.prisma.bonus.create({
+            data: {
+              type: 'REFERRAL',
+              amount: commissionAmount,
+              userId: referral.referrer.id,
+              sourceId: deposit.userId,
+              note: `Referral bonus from referred user ID #${deposit.userId}`,
+            },
+          });
         }
       }
       await this.levelService.evaluateUserLevel(deposit.userId);
-    
     } else {
       await this.prisma.deposit.update({
         where: { id: deposit.id },
@@ -313,8 +330,7 @@ export class DepositService {
 
     return { items: data, total };
   }
- 
-  
+
   async getDeposits(params: {
     page: number;
     limit: number;
@@ -322,10 +338,10 @@ export class DepositService {
     userId: number; // Ensure type is number
   }) {
     const { page, limit, status, userId } = params;
-  
+
     const where: any = { userId };
     if (status) where.status = status;
-  
+
     const [deposits, total] = await Promise.all([
       this.prisma.deposit.findMany({
         where,
@@ -336,7 +352,7 @@ export class DepositService {
       }),
       this.prisma.deposit.count({ where }),
     ]);
-  
+
     return {
       data: deposits,
       meta: {
@@ -346,5 +362,4 @@ export class DepositService {
       },
     };
   }
-  
 }

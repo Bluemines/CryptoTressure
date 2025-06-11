@@ -166,12 +166,12 @@ export class ProductService {
     return pool.slice(0, limit);
   }
 
-  async getAllProducts(): Promise<Product[]> {
-    const products = await this.prisma.product.findMany({
-      where: { deletedAt: null },
-    });
-    return products;
-  }
+    async getAllProducts(): Promise<Product[]> {
+      const products = await this.prisma.product.findMany({
+        where: { deletedAt: null },
+      });
+      return products;
+    }
 
   async getUserProducts(userId: number): Promise<UserProductWithRemaining[]> {
     const ups = await this.prisma.userProduct.findMany({

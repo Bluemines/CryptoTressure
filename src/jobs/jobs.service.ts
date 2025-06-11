@@ -25,85 +25,80 @@ export class JobsService {
     const commissionRates = [0.18, 0.09, 0.05]; // Levels 1 → 3
     let currentUserId = userId;
     let lastValidUplineUserId: number | null = null;
-  
+
     for (let level = 1; level <= 3; level++) {
       const referral = await tx.referral.findFirst({
         where: { referredId: currentUserId },
-        select: { referrerId: true, referredId:true },
+        select: { referrerId: true },
       });
+
       if (!referral?.referrerId) {
-        // No more uplines — give remaining commission to last valid upline
         if (lastValidUplineUserId) {
-          const commissionRate = commissionRates[level - 1];
-          const commissionAmount = earning.toNumber() * commissionRate;
-  
-          await tx.commission.create({
-            data: {
-              amount: commissionAmount,
-              percentage: commissionRate * 100,
-              levelDepth: level,
-              referralId: currentUserId, // Still link the referral source
-              status: 'SUCCESS',
-            },
-          });
-  
+          const rate = commissionRates[level - 1];
+          const bonusAmount = earning.mul(rate).toDecimalPlaces(2);
+
           await tx.wallet.update({
             where: { userId: lastValidUplineUserId },
-            data: { balance: { increment: commissionAmount } },
+            data: { balance: { increment: bonusAmount } },
           });
-  
+
+          await tx.bonus.create({
+            data: {
+              userId: lastValidUplineUserId,
+              amount: bonusAmount,
+              sourceId: userId,
+              type: `TEAM_LEVEL_${level}` as any,
+              note: `Team bonus (level ${level}) from downline user #${userId}`,
+            },
+          });
+
           await tx.notification.create({
             data: {
               userId: lastValidUplineUserId,
               title: 'Team Bonus Received',
-              message: `You received ₨${commissionAmount.toFixed(
-                2,
-              )} from level ${level} referral's daily income.`,
+              message: `You received ₨${bonusAmount.toFixed(2)} from level ${level} team.`,
             },
           });
         }
-        break; // Stop the loop
+        break;
       }
-  
-      const commissionRate = commissionRates[level - 1];
-      const commissionAmount = earning.toNumber() * commissionRate;
-  
-      await tx.commission.create({
-        data: {
-          amount: commissionAmount,
-          percentage: commissionRate * 100,
-          levelDepth: level,
-          referralId: currentUserId,
-          status: 'SUCCESS',
-        },
-      });
-  
+
+      const bonusAmount = earning
+        .mul(commissionRates[level - 1])
+        .toDecimalPlaces(2);
+
       await tx.wallet.update({
         where: { userId: referral.referrerId },
-        data: { balance: { increment: commissionAmount } },
+        data: { balance: { increment: bonusAmount } },
       });
-  
+
+      await tx.bonus.create({
+        data: {
+          userId: referral.referrerId,
+          amount: bonusAmount,
+          sourceId: userId,
+          type: `TEAM_LEVEL_${level}` as any,
+          note: `Team bonus (level ${level}) from downline user #${userId}`,
+        },
+      });
+
       await tx.notification.create({
         data: {
           userId: referral.referrerId,
           title: 'Team Bonus Received',
-          message: `You received ₨${commissionAmount.toFixed(
-            2,
-          )} from level ${level} referral's daily income.`,
+          message: `You received ₨${bonusAmount.toFixed(2)} from level ${level} team.`,
         },
       });
-  
-      // Save current valid upline
+
       lastValidUplineUserId = referral.referrerId;
       currentUserId = referral.referrerId;
     }
   }
-  
-  
+
   /* ───────────────────────────────────────────────
    EXPIRY / REFUND – runs hourly on the hour
    ─────────────────────────────────────────────── */
-   @Cron('0 * * * *', { name: 'handleExpiredMachines' })
+  @Cron('0 * * * *', { name: 'handleExpiredMachines' })
   async handleExpiredMachines() {
     const now = new Date();
     this.logger.log('⏰  Running expired-machines refund job');
@@ -278,7 +273,7 @@ export class JobsService {
   //   this.logger.log('✅  Daily reward cycle complete');
   // }
 
-  @Cron('0 0 0 * * *', { name: 'daily-reward', timeZone: 'UTC' }) 
+  @Cron('0 0 0 * * *', { name: 'daily-reward', timeZone: 'UTC' })
   async handleDailyRewards() {
     this.logger.log('⏰  Starting reward cycle (every minute for test)');
     const pctByLevel: Record<number, Decimal> = {
@@ -296,7 +291,7 @@ export class JobsService {
       include: { product: { select: { price: true, level: true } } },
     });
 
-    const nowUTC = new Date(); 
+    const nowUTC = new Date();
 
     for (const up of userProducts) {
       const pct = pctByLevel[up.product.level];
@@ -318,7 +313,7 @@ export class JobsService {
             userId_productId_date: {
               userId: up.userId,
               productId: up.productId,
-              date: nowUTC, 
+              date: nowUTC,
             },
           },
           update: {},

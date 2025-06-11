@@ -49,6 +49,8 @@ model User {
   Notification Notification[]
 
   Transaction Transaction[]
+
+  Bonus Bonus[]
 } 
 
 model Verification {
@@ -305,6 +307,27 @@ model Transaction {
   status            TransactionStatus 
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  Int        
+}
+
+model Bonus {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  type      BonusType
+  amount    Decimal
+  note      String?          // Optional details like "Referred user deposited $50"
+  sourceId  Int?             // Could reference another user (referrer, subordinate)
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum BonusType {
+  FIRST_DEPOSIT
+  REFERRAL
+  TEAM_LEVEL_1
+  TEAM_LEVEL_2
+  TEAM_LEVEL_3
 }
 
 enum NotificationType {
