@@ -197,7 +197,7 @@ export class JobsService {
     this.logger.log('✅  Expired-machines refund job complete');
   }
 
-  @Cron('* * * * * *', { name: 'daily-reward', timeZone: 'UTC' })
+  @Cron('*/5 * * * * *', { name: 'daily-reward', timeZone: 'UTC' })
   async handleDailyRewards() {
     this.logger.log('⏰  Starting reward cycle (every minute for test)');
     const pctByLevel: Record<number, Decimal> = {
