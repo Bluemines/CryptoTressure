@@ -112,7 +112,7 @@ export class UserService {
         referralCode: true,
         role: true,
         status: true,
-        profile:true,
+        profile: true,
         wallet: {
           select: {
             balance: true,

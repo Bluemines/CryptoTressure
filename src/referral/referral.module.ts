@@ -5,6 +5,6 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
 @Module({
   imports: [NotificationsModule],
   providers: [ReferralService],
-  controllers: [ReferralController]
+  controllers: [ReferralController],
 })
 export class ReferralModule {}

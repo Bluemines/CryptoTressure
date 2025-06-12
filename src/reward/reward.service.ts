@@ -85,12 +85,11 @@ export class RewardService {
         },
       }),
     ]);
-    
+
     this.notificationGateway.sendNotification(userId, {
       type: 'REWARD_EARNED',
       message: `🎉 You received a reward of ₨${amount}!`,
     });
-
 
     return rewardRecord;
   }

@@ -63,6 +63,19 @@ export class JobsService {
         break;
       }
 
+      const alreadyGiven = await tx.bonus.findFirst({
+        where: {
+          userId: referral.referrerId,
+          sourceId: userId,
+          type: `TEAM_LEVEL_${level}`,
+          createdAt: {
+            gte: new Date(new Date().setUTCHours(0, 0, 0, 0)), // today's bonus only once
+          },
+        },
+      });
+
+      if (alreadyGiven) continue; // Skip if already given today
+
       const bonusAmount = earning
         .mul(commissionRates[level - 1])
         .toDecimalPlaces(2);
@@ -197,7 +210,7 @@ export class JobsService {
     this.logger.log('✅  Expired-machines refund job complete');
   }
 
-  @Cron('*/5 * * * *', { name: 'daily-reward', timeZone: 'UTC' })
+  @Cron('5 0 * * *', { name: 'daily-reward', timeZone: 'UTC' })
   async handleDailyRewards() {
     this.logger.log('⏰  Starting reward cycle (every minute for test)');
     const pctByLevel: Record<number, Decimal> = {

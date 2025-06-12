@@ -25,7 +25,6 @@ import { DebugModule } from './debug/debug.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { BonusModule } from './bonus/bonus.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -55,7 +54,7 @@ import { BonusModule } from './bonus/bonus.module';
     AgreementModule,
     DebugModule,
     TransactionsModule,
-    BonusModule
+    BonusModule,
   ],
   providers: [ProductService, LevelService],
   controllers: [],
