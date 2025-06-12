@@ -56,7 +56,7 @@ export class JobsService {
             data: {
               userId: lastValidUplineUserId,
               title: 'Team Bonus Received',
-              message: `You received ₨${bonusAmount.toFixed(2)} from level ${level} team.`,
+              message: `You received '$'${bonusAmount.toFixed(2)} from level ${level} team.`,
             },
           });
         }

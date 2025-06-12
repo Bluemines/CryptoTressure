@@ -65,28 +65,29 @@ export class AuthService {
    */
   async signup(dto: SignupDto): Promise<void> {
     const { email, code, username, password } = dto;
-  
+
     // 1. OTP Validation
     const v = await this.prisma.verification.findUnique({ where: { email } });
     if (!v) throw new ApiError(400, 'Email not found');
     if (v.code !== code) throw new ApiError(400, 'Invalid code');
     if (v.expiresAt < new Date()) throw new ApiError(400, 'Code expired');
-  
+
     // 2. Uniqueness Check
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [{ email: dto.email }],
       },
     });
-    if (existingUser) throw new ApiError(409, 'Email or username already exists');
-  
+    if (existingUser)
+      throw new ApiError(409, 'Email or username already exists');
+
     // 3. Password Hashing
     const hashed = await argon.hash(password);
-  
+
     // 4. Constants
     const trialExpiry = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
     const referralBonusBase = 3; // % of deposit for referrer
-  
+
     let trialFund;
     try {
       trialFund = await this.prisma.$transaction(async (tx) => {
@@ -102,10 +103,12 @@ export class AuthService {
             status: 'APPROVED',
           },
         });
-  
+
         // B: Create Wallet
-        await tx.wallet.create({ data: { userId: user.id, balance: 0, reserved: 0 } });
-  
+        await tx.wallet.create({
+          data: { userId: user.id, balance: 0, reserved: 0 },
+        });
+
         // C: Create User Level
         await tx.userLevel.create({
           data: {
@@ -120,14 +123,14 @@ export class AuthService {
             },
           },
         });
-  
+
         // D: Handle Referral
         if (dto.referralCode) {
           const referrer = await tx.user.findUnique({
             where: { referralCode: dto.referralCode },
           });
           if (!referrer) throw new ApiError(400, 'Referral code is invalid');
-  
+
           // Link referral
           await tx.referral.create({
             data: {
@@ -136,7 +139,7 @@ export class AuthService {
               referredId: user.id,
             },
           });
-  
+
           // Save referralBonus config to user for later use (after deposit)
           await tx.user.update({
             where: { id: user.id },
@@ -155,18 +158,18 @@ export class AuthService {
             });
 
             currentReferrerId = parentReferral?.referrerId ?? null;
-         }
+          }
         }
-  
+
         // E: Delete OTP
         await tx.verification.delete({ where: { email: dto.email } });
-  
+
         // F: Default Product
         const defaultProduct = await tx.product.findFirst({
           where: { deletedAt: null },
           orderBy: { id: 'asc' },
         });
-  
+
         // G: Trial Fund
         return tx.trialFund.create({
           data: {
@@ -183,10 +186,10 @@ export class AuthService {
       }
       throw e;
     }
-  
+
     // 6. Schedule Trial Fund Recovery
     await this.trialFundSvc.scheduleRecovery(trialFund);
-  
+
     // 7. Send Welcome Email
     await this.mailService.sendMail(
       dto.email,
@@ -194,7 +197,6 @@ export class AuthService {
       'Welcome to Bluemines',
     );
   }
-  
 
   async signin(dto: LoginDto) {
     const { email, password } = dto;
@@ -227,6 +229,7 @@ export class AuthService {
       email,
       role: user.role,
       points: user.points,
+      level: user.level,
     };
 
     const secret = this.config.get<string>('JWT_SECRET');
