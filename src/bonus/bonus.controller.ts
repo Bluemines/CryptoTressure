@@ -13,10 +13,12 @@ export class BonusController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('USER')
   async getBonuses(@Req() req) {
+    console.log('req.user: ', req.user);
     const bonuses = await this.prisma.bonus.findMany({
-      where: { userId: req.user.sub },
+      where: { userId: req.user.id },
       orderBy: { createdAt: 'desc' },
     });
+    console.log('bonuses: ', bonuses);
 
     return new ApiResponse(200, bonuses, 'Bonuses retrieved successfully');
   }
