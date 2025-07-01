@@ -8,7 +8,7 @@ import { LevelModule } from 'src/level/level.module';
 
 @Module({
   imports: [JwtModule.register({}), LevelModule],
-  providers: [AuthService, JwtStrategy, LevelService],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

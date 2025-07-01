@@ -7,5 +7,6 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
   imports: [NotificationsModule],
   controllers: [LevelController],
   providers: [LevelService],
+  exports: [LevelService],
 })
 export class LevelModule {}
