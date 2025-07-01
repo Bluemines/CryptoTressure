@@ -465,7 +465,7 @@ export class JobsService {
   /* ───────────────────────────────────────────────
      DAILY REWARD – runs 00:05 UTC every day
      ─────────────────────────────────────────────── */
-  @Cron('*/3 * * * *', { name: 'daily-reward', timeZone: 'UTC' })
+  @Cron('*/2 * * * *', { name: 'daily-reward', timeZone: 'UTC' })
   async handleDailyRewards() {
     this.logger.log('⏰  Starting daily reward cycle');
 
@@ -509,20 +509,13 @@ export class JobsService {
 
       await this.prisma.$transaction(async (tx) => {
         // 🔄 CHANGED: use midnightUTC to keep one row per calendar day
-        await tx.reward.upsert({
-          where: {
-            userId_productId_date: {
-              userId: up.userId,
-              productId: up.productId,
-              date: midnightUTC,
-            },
-          },
-          update: {},
-          create: {
+        await tx.reward.create({
+          // 🔄 CHANGED
+          data: {
             userId: up.userId,
             productId: up.productId,
             reward: rewardAmount,
-            date: midnightUTC,
+            date: nowUTC,
           },
         });
 
