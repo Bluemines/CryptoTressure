@@ -361,7 +361,7 @@ export class JobsService {
   /* ───────────────────────────────────────────────
      EXPIRY / REFUND – runs hourly on the hour
      ─────────────────────────────────────────────── */
-  @Cron('*/3 * * * *', { name: 'handleExpiredMachines' }) // every hour at :00
+  @Cron('0 0 * * *', { name: 'handleExpiredMachines' }) // every hour at :00
   async handleExpiredMachines() {
     const now = new Date();
     this.logger.log('⏰  Running expired-machines refund job');
@@ -465,7 +465,7 @@ export class JobsService {
   /* ───────────────────────────────────────────────
      DAILY REWARD – runs 00:05 UTC every day
      ─────────────────────────────────────────────── */
-  @Cron('*/2 * * * *', { name: 'daily-reward', timeZone: 'UTC' })
+  @Cron('5 0 * * *', { name: 'daily-reward', timeZone: 'UTC' })
   async handleDailyRewards() {
     this.logger.log('⏰  Starting daily reward cycle');
 
