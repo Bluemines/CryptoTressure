@@ -107,7 +107,7 @@ export class LevelService {
         userId,
         status: 'SUCCESS',
         provider: { not: 'BONUS' },
-        lockedUntil: { lt: new Date() },
+        // lockedUntil: { lt: new Date() },
       },
       _sum: { amount: true },
     });
